@@ -168,8 +168,8 @@ Before diving into specific issues, try these:
 
 **Solutions:**
 1. Reduce analytics data retention period
-2. Optimize database tables
-3. Enable object caching (Redis/Memcached)
+2. Optimize database tables (use a plugin like WP-Optimize)
+3. Ask your host about server-level caching options
 4. Reduce ad rotation frequency
 
 ---
@@ -319,7 +319,7 @@ Many issues are solved in Pro version:
 - More configuration options
 - Better error handling
 
-[Learn About Pro →](link-to-pro)
+[Learn About Pro →](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/)
 
 ---
 

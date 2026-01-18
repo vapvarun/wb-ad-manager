@@ -1,6 +1,8 @@
 # Shortcode Reference
 
-All shortcodes available in WB Ad Manager (Free).
+Shortcodes let you display ads and links anywhere on your site using simple text commands. Just paste them into any page, post, or widget.
+
+**No coding required** - copy, paste, and you're done.
 
 ---
 
