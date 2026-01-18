@@ -276,7 +276,7 @@ Check logs at: `/wp-content/debug.log`
 
 ### Testing for Conflicts
 
-1. Activate only WB Starter Ads and a default theme
+1. Activate only WB Ad Manager and a default theme
 2. Test if issue persists
 3. Reactivate plugins one by one
 4. Identify the conflicting plugin

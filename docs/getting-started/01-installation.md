@@ -1,8 +1,8 @@
-# Installation Guide - WB Starter Ads
+# Installation Guide
 
 ## What You'll Learn
 
-- How to install WB Starter Ads (free plugin)
+- How to install WB Ad Manager (free plugin)
 - Initial configuration steps
 - How to verify installation
 
@@ -23,7 +23,7 @@ Before installing, make sure you have:
 
 1. Log in to your WordPress dashboard
 2. Go to **Plugins → Add New**
-3. Search for "WB Starter Ads"
+3. Search for "WB Ad Manager"
 4. Click **Install Now**
 5. Click **Activate**
 
