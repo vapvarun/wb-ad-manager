@@ -200,6 +200,9 @@ Add to any page, post, or widget:
 
 ### Viewing Stats
 
+![Analytics Dashboard](../images/for-site-owners/analytics-dashboard.png)
+*The analytics dashboard showing impressions, clicks, CTR, and trend charts*
+
 1. Go to **WB Ad Manager → Analytics**
 2. View overall stats:
    - Impressions

@@ -2,6 +2,9 @@
 
 Configure WB Ad Manager at **WB Ad Manager > Settings**.
 
+![Settings Page](../images/for-site-owners/settings-page.png)
+*The settings page with General, Display, Performance, Geo Targeting, AdSense, Privacy, and Advanced options*
+
 ---
 
 ## General Settings

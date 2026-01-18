@@ -54,6 +54,9 @@ Ad zones are containers that hold your ads. Think of them as "slots" on your web
 
 ## Step 2: Create Your First Ad (3 minutes)
 
+![Ads List](../images/getting-started/ads-list.png)
+*The ads list showing all your ads with status, zones, and performance metrics*
+
 ### For Image Ads
 
 1. Go to **WB Ad Manager → Ads**
