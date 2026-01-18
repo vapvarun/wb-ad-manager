@@ -52,6 +52,30 @@ Placements control where ads appear on your site. Assign multiple placements per
 | **bbPress Forum** | In forum listings |
 | **bbPress Topic** | In topic threads |
 
+### bbPress Widgets
+
+Two dedicated widgets for bbPress sidebar ads:
+
+| Widget | Description |
+|--------|-------------|
+| **WBAM: bbPress Forum Ad** | Display ads on bbPress forum pages |
+| **WBAM: bbPress Topic Sidebar Ad** | Display ads on single topic pages only |
+
+#### bbPress Forum Ad Widget
+
+Settings:
+- **Title** - Optional widget title
+- **Select Ad** - Choose which ad to display
+- **Show On** - All bbPress pages, Forum pages only, or Topic pages only
+
+#### bbPress Topic Sidebar Ad Widget
+
+Settings:
+- **Title** - Optional widget title
+- **Select Ad** - Choose which ad to display
+
+This widget only displays on single topic pages, making it ideal for topic-specific advertising.
+
 ---
 
 ## Setting Up Placements
