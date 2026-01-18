@@ -23,6 +23,9 @@ Instead of pasting raw URLs throughout your site, managed links offer:
 
 ## Creating Managed Links
 
+![Link Add Form](../images/for-site-owners/link-add-form.png)
+*The Add New Link form showing URL configuration, cloaking options, and SEO attributes*
+
 ### Step-by-Step
 
 1. Go to **WB Ad Manager → Links**
@@ -138,6 +141,9 @@ Allow visitors to request link placements on your site.
 
 ### Managing Partnership Requests
 
+![Link Partnerships](../images/for-site-owners/link-partnerships.png)
+*The Partnership Inquiries page with status filters, search, and inquiry management*
+
 1. Go to **WB Ad Manager → Partnerships**
 2. View pending requests
 3. Review details:
@@ -158,6 +164,9 @@ If approved: Link created → Guest notified
 ---
 
 ## Tracking Link Performance
+
+![Link Analytics](../images/for-site-owners/link-analytics.png)
+*The Link Analytics dashboard showing click trends, link types distribution, and top performers*
 
 ### Viewing Click Data
 

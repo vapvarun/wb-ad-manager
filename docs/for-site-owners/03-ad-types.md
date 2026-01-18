@@ -20,6 +20,9 @@ WB Ad Manager supports five ad types. Choose based on what you're displaying.
 
 Display banner images with click tracking.
 
+![Image Ad Editor](../images/for-site-owners/ad-editor-image-type.png)
+*The Image Ad editor showing image upload, destination URL, and tracking options*
+
 ### Settings
 
 | Field | Description |
@@ -41,6 +44,9 @@ Display banner images with click tracking.
 ## Code Ad
 
 Insert HTML, JavaScript, or ad network code.
+
+![HTML/Code Ad Editor](../images/for-site-owners/ad-editor-html-type.png)
+*The Code Ad editor showing the code input area and wrapper options*
 
 ### Settings
 
