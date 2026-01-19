@@ -446,6 +446,32 @@ class Partnership_Form {
 	private function get_default_styles() {
 		return '
 		.wbam-partnership-form-wrap {
+			/* CSS Variables with fallbacks */
+			--wbam-form-bg: var(--color-theme-white-box, var(--reign-site-sections-bg-color, #fff));
+			--wbam-form-text: var(--global-font-color, var(--reign-form-text-color, var(--reign-site-body-text-color, #333)));
+			--wbam-form-text-light: var(--color-meta, var(--reign-form-placeholder-color, var(--reign-site-alternate-text-color, #666)));
+			--wbam-form-border: var(--global-border-color, var(--reign-form-border-color, var(--reign-site-border-color, #ddd)));
+			--wbam-form-input-bg: var(--global-body-lightcolor, var(--reign-form-background-color, var(--reign-site-secondary-bg-color, #fff)));
+			--wbam-form-input-text: var(--reign-form-text-color, #333);
+			--wbam-form-placeholder: var(--reign-form-placeholder-color, #767676);
+			--wbam-form-focus: var(--color-theme-primary, var(--reign-form-focus-border-color, var(--reign-accent-color, #0073aa)));
+			--wbam-form-focus-bg: var(--reign-form-focus-background-color, #fdfdfd);
+			--wbam-form-focus-text: var(--reign-form-focus-text-color, #000);
+			--wbam-form-button-bg: var(--button-background-color, var(--reign-site-button-bg-color, #0073aa));
+			--wbam-form-button-bg-hover: var(--button-background-hover-color, var(--reign-site-button-bg-hover-color, #005a87));
+			--wbam-form-button-text: var(--button-text-color, var(--reign-site-button-text-color, #fff));
+			--wbam-form-button-text-hover: var(--button-text-hover-color, var(--reign-site-button-text-hover-color, #fff));
+			--wbam-form-button-border: var(--button-border-color, var(--reign-site-button-bg-color, transparent));
+			--wbam-form-button-border-hover: var(--button-border-hover-color, var(--reign-site-button-bg-hover-color, transparent));
+			--wbam-form-required: var(--color-danger, #c00);
+			--wbam-form-radius: 4px;
+			--wbam-form-success-bg: var(--color-success-bg, #d4edda);
+			--wbam-form-success-border: var(--color-success-border, #c3e6cb);
+			--wbam-form-success-text: var(--color-success-text, #155724);
+			--wbam-form-error-bg: var(--color-error-bg, #f8d7da);
+			--wbam-form-error-border: var(--color-error-border, #f5c6cb);
+			--wbam-form-error-text: var(--color-error-text, #721c24);
+			
 			max-width: 600px;
 			margin: 0 auto;
 			padding: 20px;
@@ -453,10 +479,11 @@ class Partnership_Form {
 		.wbam-partnership-title {
 			margin-bottom: 10px;
 			font-size: 1.5em;
+			color: var(--wbam-form-text);
 		}
 		.wbam-partnership-description {
 			margin-bottom: 20px;
-			color: #666;
+			color: var(--wbam-form-text-light);
 		}
 		.wbam-form-row {
 			margin-bottom: 20px;
@@ -475,26 +502,34 @@ class Partnership_Form {
 			display: block;
 			margin-bottom: 5px;
 			font-weight: 600;
+			color: var(--wbam-form-text);
 		}
 		.wbam-form-field .required {
-			color: #c00;
+			color: var(--wbam-form-required);
 		}
 		.wbam-form-field input,
 		.wbam-form-field textarea {
 			width: 100%;
 			padding: 10px 12px;
-			border: 1px solid #ddd;
-			border-radius: 4px;
+			border: 1px solid var(--wbam-form-border);
+			border-radius: var(--wbam-form-radius);
 			font-size: 14px;
 			min-height: 44px;
+			background-color: var(--wbam-form-input-bg);
+			color: var(--wbam-form-input-text);
+		}
+		.wbam-form-field input::placeholder,
+		.wbam-form-field textarea::placeholder {
+			color: var(--wbam-form-placeholder);
 		}
 		.wbam-form-field select {
 			width: 100%;
 			padding: 10px 40px 10px 12px;
-			border: 1px solid #ddd;
-			border-radius: 4px;
+			border: 1px solid var(--wbam-form-border);
+			border-radius: var(--wbam-form-radius);
 			font-size: 14px;
-			background-color: #fff;
+			background-color: var(--wbam-form-input-bg);
+			color: var(--wbam-form-input-text);
 			background-image: url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%23666\' d=\'M6 8L1 3h10z\'/%3E%3C/svg%3E");
 			background-repeat: no-repeat;
 			background-position: right 12px center;
@@ -509,15 +544,17 @@ class Partnership_Form {
 		.wbam-form-field input:focus,
 		.wbam-form-field select:focus,
 		.wbam-form-field textarea:focus {
-			border-color: #0073aa;
+			border-color: var(--wbam-form-focus);
+			background-color: var(--wbam-form-focus-bg);
+			color: var(--wbam-form-focus-text);
 			outline: none;
-			box-shadow: 0 0 0 1px #0073aa;
+			box-shadow: 0 0 0 1px var(--wbam-form-focus);
 		}
 		.wbam-field-help {
 			display: block;
 			margin-top: 5px;
 			font-size: 12px;
-			color: #666;
+			color: var(--wbam-form-text-light);
 		}
 		.wbam-full-width {
 			width: 100%;
@@ -527,18 +564,21 @@ class Partnership_Form {
 		}
 		.wbam-btn {
 			padding: 12px 24px;
-			border: none;
-			border-radius: 4px;
+			border: 2px solid transparent;
+			border-radius: var(--wbam-form-radius);
 			font-size: 16px;
 			cursor: pointer;
-			transition: background-color 0.2s;
+			transition: all 0.2s ease;
 		}
 		.wbam-btn-primary {
-			background-color: #0073aa;
-			color: #fff;
+			background-color: var(--wbam-form-button-bg);
+			color: var(--wbam-form-button-text);
+			border-color: var(--wbam-form-button-border);
 		}
 		.wbam-btn-primary:hover {
-			background-color: #005a87;
+			background-color: var(--wbam-form-button-bg-hover);
+			color: var(--wbam-form-button-text-hover);
+			border-color: var(--wbam-form-button-border-hover);
 		}
 		.wbam-btn:disabled {
 			opacity: 0.6;
@@ -547,17 +587,17 @@ class Partnership_Form {
 		.wbam-form-message {
 			margin-top: 20px;
 			padding: 15px;
-			border-radius: 4px;
+			border-radius: var(--wbam-form-radius);
 		}
 		.wbam-form-message.wbam-success {
-			background-color: #d4edda;
-			border: 1px solid #c3e6cb;
-			color: #155724;
+			background-color: var(--wbam-form-success-bg);
+			border: 1px solid var(--wbam-form-success-border);
+			color: var(--wbam-form-success-text);
 		}
 		.wbam-form-message.wbam-error {
-			background-color: #f8d7da;
-			border: 1px solid #f5c6cb;
-			color: #721c24;
+			background-color: var(--wbam-form-error-bg);
+			border: 1px solid var(--wbam-form-error-border);
+			color: var(--wbam-form-error-text);
 		}
 		@media (max-width: 600px) {
 			.wbam-field-half {
