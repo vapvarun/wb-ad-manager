@@ -8,6 +8,10 @@
 
 namespace WBAM\Frontend;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Settings_Helper;
 use WBAM\Core\Privacy_Helper;
 use WBAM\Core\Singleton;

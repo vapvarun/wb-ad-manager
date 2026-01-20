@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\BuddyPress;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Modules\Placements\Placement_Interface;
 use WBAM\Modules\Placements\Placement_Engine;
 
@@ -120,7 +124,7 @@ class BP_Directory_Placement implements Placement_Interface {
 	 * Render ads between members.
 	 */
 	public function render_between_members() {
-		$this->member_count++;
+		++$this->member_count;
 		$this->render_between_items( 'members', $this->member_count );
 	}
 
@@ -143,7 +147,7 @@ class BP_Directory_Placement implements Placement_Interface {
 	 * Render ads between groups.
 	 */
 	public function render_between_groups() {
-		$this->group_count++;
+		++$this->group_count;
 		$this->render_between_items( 'groups', $this->group_count );
 	}
 
@@ -161,8 +165,8 @@ class BP_Directory_Placement implements Placement_Interface {
 		}
 
 		foreach ( $ads as $ad_id ) {
-			$data         = get_post_meta( $ad_id, '_wbam_ad_data', true );
-			$ad_position  = isset( $data['bp_directory_position'] ) ? $data['bp_directory_position'] : 'before_members';
+			$data        = get_post_meta( $ad_id, '_wbam_ad_data', true );
+			$ad_position = isset( $data['bp_directory_position'] ) ? $data['bp_directory_position'] : 'before_members';
 
 			if ( $ad_position !== $position ) {
 				continue;

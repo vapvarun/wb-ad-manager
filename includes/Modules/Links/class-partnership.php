@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Partnership class.
  */

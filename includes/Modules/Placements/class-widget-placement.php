@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\Placements;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Widget Placement class.
  */
@@ -78,9 +82,6 @@ class WBAM_Ad_Widget extends \WP_Widget {
 		$ad_id = isset( $instance['ad_id'] ) ? absint( $instance['ad_id'] ) : 0;
 
 		if ( ! $ad_id ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'WB Ad Manager: Widget has no ad selected.' );
-			}
 			return;
 		}
 
@@ -88,9 +89,6 @@ class WBAM_Ad_Widget extends \WP_Widget {
 		$output = $engine->render_ad( $ad_id, array( 'placement' => 'widget' ) );
 
 		if ( empty( $output ) ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( sprintf( 'WB Ad Manager: Widget failed to render ad ID %d. Ad may be disabled or targeting rules not met.', $ad_id ) );
-			}
 			return;
 		}
 

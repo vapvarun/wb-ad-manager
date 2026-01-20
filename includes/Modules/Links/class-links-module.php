@@ -10,6 +10,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 
 /**

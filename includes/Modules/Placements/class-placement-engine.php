@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\Placements;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 use WBAM\Modules\AdTypes\Ad_Type_Interface;
 use WBAM\Modules\AdTypes\Image_Ad;

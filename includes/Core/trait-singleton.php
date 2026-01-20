@@ -8,6 +8,10 @@
 
 namespace WBAM\Core;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Singleton trait.
  */

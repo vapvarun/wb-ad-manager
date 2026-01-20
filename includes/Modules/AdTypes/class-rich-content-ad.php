@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\AdTypes;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Rich Content Ad class.
  */

@@ -10,6 +10,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 use WBAM\Core\Privacy_Helper;
 
@@ -176,7 +180,7 @@ class Partnership_Manager {
 		$orderby         = in_array( $args['orderby'], $allowed_orderby, true ) ? $args['orderby'] : 'created_at';
 		$order           = 'ASC' === strtoupper( $args['order'] ) ? 'ASC' : 'DESC';
 
-		$sql = "SELECT * FROM {$this->table} WHERE " . implode( ' AND ', $where );
+		$sql  = "SELECT * FROM {$this->table} WHERE " . implode( ' AND ', $where );
 		$sql .= " ORDER BY {$orderby} {$order}";
 		$sql .= ' LIMIT %d OFFSET %d';
 

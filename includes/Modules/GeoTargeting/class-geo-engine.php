@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\GeoTargeting;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Settings_Helper;
 use WBAM\Core\Singleton;
 
@@ -42,19 +46,19 @@ class Geo_Engine {
 	 */
 	private $providers = array(
 		'ip-api'   => array(
-			'name'     => 'ip-api.com',
+			'name'         => 'ip-api.com',
 			'requires_key' => false,
-			'limit'    => '45 requests/minute',
+			'limit'        => '45 requests/minute',
 		),
 		'ipinfo'   => array(
-			'name'     => 'ipinfo.io',
+			'name'         => 'ipinfo.io',
 			'requires_key' => true,
-			'limit'    => '50K requests/month',
+			'limit'        => '50K requests/month',
 		),
 		'ipapi-co' => array(
-			'name'     => 'ipapi.co',
+			'name'         => 'ipapi.co',
 			'requires_key' => false,
-			'limit'    => '1K requests/day',
+			'limit'        => '1K requests/day',
 		),
 	);
 

@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\BuddyPress;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Modules\Placements\Placement_Engine;
 
 /**

@@ -8,6 +8,10 @@
 
 namespace WBAM\Admin;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 use WBAM\Modules\GeoTargeting\Geo_Engine;
 

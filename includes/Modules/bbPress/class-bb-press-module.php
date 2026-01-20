@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\bbPress;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Modules\Placements\Placement_Engine;
 
 /**
@@ -192,7 +196,7 @@ class bbPress_Placement implements \WBAM\Modules\Placements\Placement_Interface 
 	 * Render between replies.
 	 */
 	public function render_between_replies() {
-		$this->reply_count++;
+		++$this->reply_count;
 		$this->render_between_items( 'replies', $this->reply_count );
 	}
 

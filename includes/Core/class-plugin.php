@@ -8,6 +8,10 @@
 
 namespace WBAM\Core;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Modules\Placements\Placement_Engine;
 use WBAM\Modules\Targeting\Targeting_Engine;
 use WBAM\Modules\Targeting\Frequency_Manager;

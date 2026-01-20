@@ -11,6 +11,10 @@
 
 namespace WBAM\Core;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

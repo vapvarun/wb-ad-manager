@@ -10,6 +10,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Settings_Helper;
 use WBAM\Core\Singleton;
 
@@ -106,7 +110,7 @@ class Link_Cloaker {
 		$link_manager->increment_clicks( $link->id );
 
 		// Allow filtering before redirect.
-		$destination = apply_filters( 'wbam_link_redirect_url', $link->get_destination_url(), $link );
+		$destination   = apply_filters( 'wbam_link_redirect_url', $link->get_destination_url(), $link );
 		$redirect_type = apply_filters( 'wbam_link_redirect_type', $link->redirect_type, $link );
 
 		do_action( 'wbam_before_link_redirect', $link, $destination );

@@ -10,6 +10,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 
 /**
@@ -471,7 +475,8 @@ class Links_Admin {
 					</tr>
 				</table>
 			</div>
-		<?php endif;
+			<?php
+		endif;
 	}
 
 	/**
@@ -522,7 +527,7 @@ class Links_Admin {
 		$link_manager = Link_Manager::get_instance();
 
 		if ( $link_id ) {
-			$result = $link_manager->update( $link_id, $data );
+			$result  = $link_manager->update( $link_id, $data );
 			$message = $result ? 'link_updated' : 'link_error';
 		} else {
 			$new_id = $link_manager->create( $data );

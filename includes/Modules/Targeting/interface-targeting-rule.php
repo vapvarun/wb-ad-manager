@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\Targeting;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Interface for targeting rules.
  */

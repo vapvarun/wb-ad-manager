@@ -10,6 +10,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 
 /**
@@ -238,7 +242,7 @@ class Link_Manager {
 		$orderby         = in_array( $args['orderby'], $allowed_orderby, true ) ? $args['orderby'] : 'created_at';
 		$order           = 'ASC' === strtoupper( $args['order'] ) ? 'ASC' : 'DESC';
 
-		$sql = "SELECT * FROM {$this->table} WHERE " . implode( ' AND ', $where );
+		$sql  = "SELECT * FROM {$this->table} WHERE " . implode( ' AND ', $where );
 		$sql .= " ORDER BY {$orderby} {$order}";
 		$sql .= ' LIMIT %d OFFSET %d';
 
@@ -497,11 +501,11 @@ class Link_Manager {
 	public function slug_exists( $slug, $exclude = null ) {
 		global $wpdb;
 
-		$sql = "SELECT COUNT(*) FROM {$this->table} WHERE slug = %s";
+		$sql    = "SELECT COUNT(*) FROM {$this->table} WHERE slug = %s";
 		$values = array( $slug );
 
 		if ( $exclude ) {
-			$sql .= ' AND id != %d';
+			$sql     .= ' AND id != %d';
 			$values[] = $exclude;
 		}
 
@@ -706,7 +710,7 @@ class Link_Manager {
 		$orderby         = in_array( $args['orderby'], $allowed_orderby, true ) ? $args['orderby'] : 'name';
 		$order           = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
 
-		$sql = "SELECT * FROM {$this->categories_table} WHERE " . implode( ' AND ', $where );
+		$sql  = "SELECT * FROM {$this->categories_table} WHERE " . implode( ' AND ', $where );
 		$sql .= " ORDER BY {$orderby} {$order}";
 
 		if ( ! empty( $values ) ) {
@@ -859,13 +863,13 @@ class Link_Manager {
 
 		switch ( $period ) {
 			case 'today':
-				$where   .= ' AND DATE(clicked_at) = CURDATE()';
+				$where .= ' AND DATE(clicked_at) = CURDATE()';
 				break;
 			case 'week':
-				$where   .= ' AND clicked_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)';
+				$where .= ' AND clicked_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)';
 				break;
 			case 'month':
-				$where   .= ' AND clicked_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)';
+				$where .= ' AND clicked_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)';
 				break;
 		}
 

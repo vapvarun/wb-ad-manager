@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\AdTypes;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Settings_Helper;
 
 /**

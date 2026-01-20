@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\Targeting;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 use WBAM\Admin\Settings;
 
@@ -87,8 +91,8 @@ class Frequency_Manager {
 	 * @return bool
 	 */
 	public function page_limit_reached() {
-		$settings  = Settings::get_instance();
-		$max_page  = $settings->get( 'max_ads_per_page', 0 );
+		$settings = Settings::get_instance();
+		$max_page = $settings->get( 'max_ads_per_page', 0 );
 
 		if ( $max_page <= 0 ) {
 			return false;
@@ -130,15 +134,15 @@ class Frequency_Manager {
 	 * @return int
 	 */
 	public function get_ad_views( $ad_id ) {
-		$cookie_data = $this->get_cookie_data();
+		$cookie_data  = $this->get_cookie_data();
 		$cookie_views = isset( $cookie_data[ $ad_id ] ) ? (int) $cookie_data[ $ad_id ] : 0;
 
 		// Server-side fallback: Check IP-based transient.
 		$visitor_hash = $this->get_visitor_hash();
 		if ( ! empty( $visitor_hash ) ) {
 			$transient_key = 'wbam_freq_' . $visitor_hash . '_' . $ad_id;
-			$server_views = get_transient( $transient_key );
-			$server_views = false !== $server_views ? (int) $server_views : 0;
+			$server_views  = get_transient( $transient_key );
+			$server_views  = false !== $server_views ? (int) $server_views : 0;
 
 			// Return the higher count to prevent bypassing limits.
 			return max( $cookie_views, $server_views );
@@ -190,12 +194,12 @@ class Frequency_Manager {
 			return;
 		}
 
-		$cookie_data = $this->get_cookie_data();
+		$cookie_data  = $this->get_cookie_data();
 		$visitor_hash = $this->get_visitor_hash();
 
 		foreach ( $this->page_ads as $ad_id ) {
 			if ( isset( $cookie_data[ $ad_id ] ) ) {
-				$cookie_data[ $ad_id ]++;
+				++$cookie_data[ $ad_id ];
 			} else {
 				$cookie_data[ $ad_id ] = 1;
 			}
@@ -235,7 +239,7 @@ class Frequency_Manager {
 		$ads_with_priority = array();
 
 		foreach ( $ad_ids as $ad_id ) {
-			$priority = get_post_meta( $ad_id, '_wbam_priority', true );
+			$priority                    = get_post_meta( $ad_id, '_wbam_priority', true );
 			$ads_with_priority[ $ad_id ] = ! empty( $priority ) ? (int) $priority : 5;
 		}
 

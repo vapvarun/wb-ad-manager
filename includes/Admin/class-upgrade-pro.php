@@ -10,6 +10,10 @@
 
 namespace WBAM\Admin;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Upgrade_Pro class.
  */

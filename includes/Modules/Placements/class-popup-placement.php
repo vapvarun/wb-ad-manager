@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\Placements;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Popup Placement class.
  */

@@ -8,6 +8,10 @@
 
 namespace WBAM\Admin;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Help_Docs class.
  */
@@ -91,25 +95,25 @@ class Help_Docs {
 
 			<nav class="nav-tab-wrapper wbam-nav-tabs">
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=getting-started' ) ); ?>"
-				   class="nav-tab <?php echo 'getting-started' === $active_tab ? 'nav-tab-active' : ''; ?>">
+					class="nav-tab <?php echo 'getting-started' === $active_tab ? 'nav-tab-active' : ''; ?>">
 					<?php esc_html_e( 'Getting Started', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=features' ) ); ?>"
-				   class="nav-tab <?php echo 'features' === $active_tab ? 'nav-tab-active' : ''; ?>">
+					class="nav-tab <?php echo 'features' === $active_tab ? 'nav-tab-active' : ''; ?>">
 					<?php esc_html_e( 'Features', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=links' ) ); ?>"
-				   class="nav-tab <?php echo 'links' === $active_tab ? 'nav-tab-active' : ''; ?>">
+					class="nav-tab <?php echo 'links' === $active_tab ? 'nav-tab-active' : ''; ?>">
 					<?php esc_html_e( 'Link Management', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 				<?php if ( $this->is_pro_active ) : ?>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=pro-features' ) ); ?>"
-				   class="nav-tab <?php echo 'pro-features' === $active_tab ? 'nav-tab-active' : ''; ?>">
+					class="nav-tab <?php echo 'pro-features' === $active_tab ? 'nav-tab-active' : ''; ?>">
 					<?php esc_html_e( 'PRO Features', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 				<?php endif; ?>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=faq' ) ); ?>"
-				   class="nav-tab <?php echo 'faq' === $active_tab ? 'nav-tab-active' : ''; ?>">
+					class="nav-tab <?php echo 'faq' === $active_tab ? 'nav-tab-active' : ''; ?>">
 					<?php esc_html_e( 'FAQ', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 			</nav>

@@ -8,6 +8,10 @@
 
 namespace WBAM\Admin;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 
 /**
@@ -407,14 +411,14 @@ class Settings {
 		}
 
 		// Geo targeting settings.
-		$valid_providers                     = array( 'ip-api', 'ipinfo', 'ipapi-co' );
-		$geo_provider                        = isset( $input['geo_primary_provider'] ) ? sanitize_key( $input['geo_primary_provider'] ) : 'ip-api';
-		$sanitized['geo_primary_provider']   = in_array( $geo_provider, $valid_providers, true ) ? $geo_provider : 'ip-api';
-		$sanitized['geo_ipinfo_key']         = sanitize_text_field( $input['geo_ipinfo_key'] ?? '' );
+		$valid_providers                   = array( 'ip-api', 'ipinfo', 'ipapi-co' );
+		$geo_provider                      = isset( $input['geo_primary_provider'] ) ? sanitize_key( $input['geo_primary_provider'] ) : 'ip-api';
+		$sanitized['geo_primary_provider'] = in_array( $geo_provider, $valid_providers, true ) ? $geo_provider : 'ip-api';
+		$sanitized['geo_ipinfo_key']       = sanitize_text_field( $input['geo_ipinfo_key'] ?? '' );
 
 		// AdSense settings.
-		$sanitized['adsense_publisher_id']   = sanitize_text_field( $input['adsense_publisher_id'] ?? '' );
-		$sanitized['adsense_auto_ads']       = ! empty( $input['adsense_auto_ads'] );
+		$sanitized['adsense_publisher_id'] = sanitize_text_field( $input['adsense_publisher_id'] ?? '' );
+		$sanitized['adsense_auto_ads']     = ! empty( $input['adsense_auto_ads'] );
 
 		// Privacy settings.
 		$sanitized['require_consent_adsense'] = ! empty( $input['require_consent_adsense'] );
@@ -651,7 +655,10 @@ class Settings {
 		?>
 		<fieldset>
 			<?php foreach ( $post_types as $post_type ) : ?>
-				<?php if ( 'wbam-ad' === $post_type->name ) continue; ?>
+				<?php
+				if ( 'wbam-ad' === $post_type->name ) {
+					continue;}
+				?>
 				<label style="display: block; margin-bottom: 5px;">
 					<input type="checkbox" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $id . '][]' ); ?>" value="<?php echo esc_attr( $post_type->name ); ?>" <?php checked( in_array( $post_type->name, $value, true ) ); ?> />
 					<?php echo esc_html( $post_type->labels->name ); ?>

@@ -8,6 +8,10 @@
 
 namespace WBAM\Modules\Targeting;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 
 /**
@@ -188,8 +192,8 @@ class Content_Analyzer {
 		// Short content - only after content.
 		if ( 'short' === $analysis['content_length'] ) {
 			$positions[] = array(
-				'type'     => 'after_content',
-				'reason'   => __( 'Content is short, ad after content only', 'wb-ads-rotator-with-split-test' ),
+				'type'   => 'after_content',
+				'reason' => __( 'Content is short, ad after content only', 'wb-ads-rotator-with-split-test' ),
 			);
 			return $positions;
 		}
@@ -225,7 +229,7 @@ class Content_Analyzer {
 
 			// Middle ad.
 			if ( $paragraphs >= 8 ) {
-				$middle = (int) floor( $paragraphs / 2 );
+				$middle      = (int) floor( $paragraphs / 2 );
 				$positions[] = array(
 					'type'      => 'after_paragraph',
 					'paragraph' => $middle,

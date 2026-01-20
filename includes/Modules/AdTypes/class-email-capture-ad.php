@@ -30,6 +30,10 @@
 
 namespace WBAM\Modules\AdTypes;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Email_Capture_Ad class.
  */
@@ -90,17 +94,17 @@ class Email_Capture_Ad implements Ad_Type_Interface {
 		 */
 		$data = apply_filters( 'wbam_email_form_data', $data, $ad_id );
 
-		$headline      = isset( $data['headline'] ) ? $data['headline'] : __( 'Subscribe to our Newsletter', 'wb-ads-rotator-with-split-test' );
-		$description   = isset( $data['description'] ) ? $data['description'] : '';
-		$button_text   = isset( $data['button_text'] ) ? $data['button_text'] : __( 'Subscribe', 'wb-ads-rotator-with-split-test' );
-		$success_msg   = isset( $data['success_message'] ) ? $data['success_message'] : __( 'Thank you for subscribing!', 'wb-ads-rotator-with-split-test' );
-		$show_name     = ! empty( $data['show_name_field'] );
-		$cookie_days   = isset( $data['cookie_days'] ) ? absint( $data['cookie_days'] ) : 7;
-		$redirect_url  = isset( $data['redirect_url'] ) ? $data['redirect_url'] : '';
-		$privacy_text  = isset( $data['privacy_text'] ) ? $data['privacy_text'] : '';
-		$bg_color      = isset( $data['bg_color'] ) ? $data['bg_color'] : '#ffffff';
-		$text_color    = isset( $data['text_color'] ) ? $data['text_color'] : '#1d2327';
-		$button_color  = isset( $data['button_color'] ) ? $data['button_color'] : '#2271b1';
+		$headline     = isset( $data['headline'] ) ? $data['headline'] : __( 'Subscribe to our Newsletter', 'wb-ads-rotator-with-split-test' );
+		$description  = isset( $data['description'] ) ? $data['description'] : '';
+		$button_text  = isset( $data['button_text'] ) ? $data['button_text'] : __( 'Subscribe', 'wb-ads-rotator-with-split-test' );
+		$success_msg  = isset( $data['success_message'] ) ? $data['success_message'] : __( 'Thank you for subscribing!', 'wb-ads-rotator-with-split-test' );
+		$show_name    = ! empty( $data['show_name_field'] );
+		$cookie_days  = isset( $data['cookie_days'] ) ? absint( $data['cookie_days'] ) : 7;
+		$redirect_url = isset( $data['redirect_url'] ) ? $data['redirect_url'] : '';
+		$privacy_text = isset( $data['privacy_text'] ) ? $data['privacy_text'] : '';
+		$bg_color     = isset( $data['bg_color'] ) ? $data['bg_color'] : '#ffffff';
+		$text_color   = isset( $data['text_color'] ) ? $data['text_color'] : '#1d2327';
+		$button_color = isset( $data['button_color'] ) ? $data['button_color'] : '#2271b1';
 
 		/**
 		 * Filter the button text.
@@ -197,10 +201,10 @@ class Email_Capture_Ad implements Ad_Type_Interface {
 		do_action( 'wbam_email_form_before', $ad_id, $data );
 		?>
 		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>"
-			 data-ad-id="<?php echo esc_attr( $ad_id ); ?>"
-			 data-placement="<?php echo esc_attr( $placement ); ?>"
-			 data-cookie-days="<?php echo esc_attr( $cookie_days ); ?>"
-			 style="--wbam-email-bg: <?php echo esc_attr( $bg_color ); ?>; --wbam-email-text: <?php echo esc_attr( $text_color ); ?>; --wbam-email-btn: <?php echo esc_attr( $button_color ); ?>;">
+			data-ad-id="<?php echo esc_attr( $ad_id ); ?>"
+			data-placement="<?php echo esc_attr( $placement ); ?>"
+			data-cookie-days="<?php echo esc_attr( $cookie_days ); ?>"
+			style="--wbam-email-bg: <?php echo esc_attr( $bg_color ); ?>; --wbam-email-text: <?php echo esc_attr( $text_color ); ?>; --wbam-email-btn: <?php echo esc_attr( $button_color ); ?>;">
 
 			<button type="button" class="wbam-email-close" aria-label="<?php esc_attr_e( 'Close', 'wb-ads-rotator-with-split-test' ); ?>">
 				<span class="dashicons dashicons-no-alt"></span>
@@ -320,17 +324,17 @@ class Email_Capture_Ad implements Ad_Type_Interface {
 	 * @param array $data  Data.
 	 */
 	public function render_metabox( $ad_id, $data ) {
-		$headline       = isset( $data['headline'] ) ? $data['headline'] : __( 'Subscribe to our Newsletter', 'wb-ads-rotator-with-split-test' );
-		$description    = isset( $data['description'] ) ? $data['description'] : '';
-		$button_text    = isset( $data['button_text'] ) ? $data['button_text'] : __( 'Subscribe', 'wb-ads-rotator-with-split-test' );
+		$headline        = isset( $data['headline'] ) ? $data['headline'] : __( 'Subscribe to our Newsletter', 'wb-ads-rotator-with-split-test' );
+		$description     = isset( $data['description'] ) ? $data['description'] : '';
+		$button_text     = isset( $data['button_text'] ) ? $data['button_text'] : __( 'Subscribe', 'wb-ads-rotator-with-split-test' );
 		$success_message = isset( $data['success_message'] ) ? $data['success_message'] : __( 'Thank you for subscribing!', 'wb-ads-rotator-with-split-test' );
-		$show_name      = ! empty( $data['show_name_field'] );
-		$cookie_days    = isset( $data['cookie_days'] ) ? absint( $data['cookie_days'] ) : 7;
-		$redirect_url   = isset( $data['redirect_url'] ) ? $data['redirect_url'] : '';
-		$privacy_text   = isset( $data['privacy_text'] ) ? $data['privacy_text'] : '';
-		$bg_color       = isset( $data['bg_color'] ) ? $data['bg_color'] : '#ffffff';
-		$text_color     = isset( $data['text_color'] ) ? $data['text_color'] : '#1d2327';
-		$button_color   = isset( $data['button_color'] ) ? $data['button_color'] : '#2271b1';
+		$show_name       = ! empty( $data['show_name_field'] );
+		$cookie_days     = isset( $data['cookie_days'] ) ? absint( $data['cookie_days'] ) : 7;
+		$redirect_url    = isset( $data['redirect_url'] ) ? $data['redirect_url'] : '';
+		$privacy_text    = isset( $data['privacy_text'] ) ? $data['privacy_text'] : '';
+		$bg_color        = isset( $data['bg_color'] ) ? $data['bg_color'] : '#ffffff';
+		$text_color      = isset( $data['text_color'] ) ? $data['text_color'] : '#1d2327';
+		$button_color    = isset( $data['button_color'] ) ? $data['button_color'] : '#2271b1';
 		?>
 		<div class="wbam-field">
 			<label for="wbam_email_headline"><?php esc_html_e( 'Headline', 'wb-ads-rotator-with-split-test' ); ?></label>

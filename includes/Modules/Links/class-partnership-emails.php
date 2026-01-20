@@ -10,6 +10,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 
 /**
@@ -120,12 +124,13 @@ class Partnership_Emails {
 	 * @return string
 	 */
 	private function get_admin_notification_message( $partnership ) {
-		$site_name  = get_bloginfo( 'name' );
-		$admin_url  = admin_url( 'admin.php?page=wbam-partnerships&view=' . $partnership->id );
+		$site_name = get_bloginfo( 'name' );
+		$admin_url = admin_url( 'admin.php?page=wbam-partnerships&view=' . $partnership->id );
 
 		$message = sprintf(
 			/* translators: %1$s: site name, %2$s: contact name, %3$s: email, %4$s: website URL, %5$s: partnership type, %6$s: budget range, %7$s: message, %8$s: admin URL, %9$s: site name again */
-			__( 'Hello,
+			__(
+				'Hello,
 
 A new link partnership inquiry has been submitted on %1$s.
 
@@ -146,7 +151,9 @@ You can review and respond to this inquiry here:
 %8$s
 
 Best regards,
-%9$s', 'wb-ads-rotator-with-split-test' ),
+%9$s',
+				'wb-ads-rotator-with-split-test'
+			),
 			$site_name,
 			$partnership->name,
 			$partnership->email,
@@ -173,7 +180,8 @@ Best regards,
 
 		$message = sprintf(
 			/* translators: %1$s: requester name, %2$s: site name */
-			__( 'Hello %1$s,
+			__(
+				'Hello %1$s,
 
 Great news! Your link partnership inquiry for %2$s has been accepted.
 
@@ -190,7 +198,9 @@ If you have any questions, please feel free to reply to this email.
 
 Best regards,
 %2$s
-%5$s', 'wb-ads-rotator-with-split-test' ),
+%5$s',
+				'wb-ads-rotator-with-split-test'
+			),
 			$partnership->name,
 			$site_name,
 			$partnership->get_type_label(),
@@ -213,7 +223,8 @@ Best regards,
 
 		$message = sprintf(
 			/* translators: %1$s: requester name, %2$s: site name */
-			__( 'Hello %1$s,
+			__(
+				'Hello %1$s,
 
 Thank you for your interest in partnering with %2$s.
 
@@ -225,7 +236,9 @@ Thank you for your understanding.
 
 Best regards,
 %2$s
-%3$s', 'wb-ads-rotator-with-split-test' ),
+%3$s',
+				'wb-ads-rotator-with-split-test'
+			),
 			$partnership->name,
 			$site_name,
 			$site_url

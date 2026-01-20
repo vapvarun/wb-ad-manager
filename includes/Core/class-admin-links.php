@@ -10,6 +10,10 @@
 
 namespace WBAM\Core;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -140,8 +144,8 @@ class Admin_Links {
 	 * @return string Admin URL with nonce.
 	 */
 	public static function action_link( $action, $args = array(), $nonce = '' ) {
-		$args['action'] = $action;
-		$nonce_action   = $nonce ? $nonce : 'wbam_' . $action;
+		$args['action']   = $action;
+		$nonce_action     = $nonce ? $nonce : 'wbam_' . $action;
 		$args['_wpnonce'] = wp_create_nonce( $nonce_action );
 
 		return add_query_arg( $args, admin_url( 'admin.php' ) );

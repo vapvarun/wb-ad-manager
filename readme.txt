@@ -5,7 +5,7 @@ Tags: ads, ad manager, ad rotation, split test, adsense
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.5.0
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -153,6 +153,15 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 7. Setup wizard for first-time users
 
 == Changelog ==
+
+= 2.6.0 =
+* New: Complete rewrite of upgrade page with comprehensive Free vs Pro comparison
+* New: 47 features across 9 sections (Ad Management, Link Management, Advertiser Portal, Payments, Analytics, Classifieds, Developer, Support)
+* Improvement: Add CSS variables with multi-theme dark mode support to partnership form
+* Improvement: Frontend CSS for link shortcodes ([wbam_link] and [wbam_links])
+* Improvement: Comprehensive documentation with screenshots
+* Fix: Distribution excludes development files
+* Dev: Updated POT file for translations
 
 = 2.5.0 =
 * Fix: Add GDPR privacy helper for IP anonymization in frequency tracking

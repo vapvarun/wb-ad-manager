@@ -10,6 +10,10 @@
 
 namespace WBAM\Modules\Links;
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 use WBAM\Core\Singleton;
 
 /**
@@ -292,7 +296,7 @@ class Partnership_Form {
 							<?php
 							$pages = get_pages( array( 'post_status' => 'publish' ) );
 							foreach ( $pages as $page ) :
-							?>
+								?>
 								<option value="<?php echo esc_attr( $page->ID ); ?>"><?php echo esc_html( $page->post_title ); ?></option>
 							<?php endforeach; ?>
 						</select>
@@ -311,15 +315,15 @@ class Partnership_Form {
 					</div>
 				</div>
 
-				<?php
-				/**
-				 * Fires after the anchor text field.
-				 *
-				 * @since 2.2.0
-				 * @param array $atts Shortcode attributes.
-				 */
-				do_action( 'wbam_partnership_form_after_anchor', $atts );
-				?>
+					<?php
+					/**
+					 * Fires after the anchor text field.
+					 *
+					 * @since 2.2.0
+					 * @param array $atts Shortcode attributes.
+					 */
+					do_action( 'wbam_partnership_form_after_anchor', $atts );
+					?>
 				<?php endif; ?>
 
 				<?php if ( 'yes' === $atts['show_budget'] ) : ?>
@@ -336,15 +340,15 @@ class Partnership_Form {
 					<small class="wbam-field-help wbam-full-width"><?php esc_html_e( 'For paid link partnerships, let us know your budget range.', 'wb-ads-rotator-with-split-test' ); ?></small>
 				</div>
 
-				<?php
-				/**
-				 * Fires after the budget fields.
-				 *
-				 * @since 2.2.0
-				 * @param array $atts Shortcode attributes.
-				 */
-				do_action( 'wbam_partnership_form_after_budget', $atts );
-				?>
+					<?php
+					/**
+					 * Fires after the budget fields.
+					 *
+					 * @since 2.2.0
+					 * @param array $atts Shortcode attributes.
+					 */
+					do_action( 'wbam_partnership_form_after_budget', $atts );
+					?>
 				<?php endif; ?>
 
 				<?php if ( 'yes' === $atts['show_message'] ) : ?>
@@ -356,15 +360,15 @@ class Partnership_Form {
 					</div>
 				</div>
 
-				<?php
-				/**
-				 * Fires after the message field.
-				 *
-				 * @since 2.2.0
-				 * @param array $atts Shortcode attributes.
-				 */
-				do_action( 'wbam_partnership_form_after_message', $atts );
-				?>
+					<?php
+					/**
+					 * Fires after the message field.
+					 *
+					 * @since 2.2.0
+					 * @param array $atts Shortcode attributes.
+					 */
+					do_action( 'wbam_partnership_form_after_message', $atts );
+					?>
 				<?php endif; ?>
 
 				<?php
