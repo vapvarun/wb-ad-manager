@@ -107,22 +107,57 @@ class Upgrade_Pro {
 							<td colspan="3"><?php esc_html_e( 'Ad Management', 'wb-ads-rotator-with-split-test' ); ?></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Image, HTML, AdSense, Video Ads', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Image, HTML/Code, AdSense, Rich Content Ads', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Multiple Placements', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Email Capture Forms', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Display Rules (Pages, Categories)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( '14+ Placements (Header, Footer, Content, Sidebar, etc.)', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Device Targeting', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'BuddyPress & bbPress Integration', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Display Rules (Pages, Categories, Post Types)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Device Targeting (Desktop, Tablet, Mobile)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Geo-Targeting (Country, Region)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Scheduling (Dates, Days, Times)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'User Role Targeting', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Frequency Control (Limit Impressions)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Ad Rotation with Weighted Priority', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
@@ -137,7 +172,7 @@ class Upgrade_Pro {
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Basic Click Tracking', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Click Tracking', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
@@ -147,12 +182,22 @@ class Upgrade_Pro {
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
+							<td><?php esc_html_e( 'Broken Link Detection', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
 							<td><?php esc_html_e( 'Keyword Auto-Linking', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Link Health Checker', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Link Scanner (Find Monetization Opportunities)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Partnership Management', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
@@ -162,14 +207,14 @@ class Upgrade_Pro {
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Link Analytics (Detailed)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Advanced Link Analytics', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 
-						<!-- Monetization -->
+						<!-- Advertiser Portal -->
 						<tr class="wbam-section-header">
-							<td colspan="3"><?php esc_html_e( 'Monetization', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td colspan="3"><?php esc_html_e( 'Advertiser Portal', 'wb-ads-rotator-with-split-test' ); ?></td>
 						</tr>
 						<tr>
 							<td><?php esc_html_e( 'Advertiser Registration', 'wb-ads-rotator-with-split-test' ); ?></td>
@@ -177,12 +222,17 @@ class Upgrade_Pro {
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Ad Submission System', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Advertiser Dashboard', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Advertising Packages', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Self-Service Ad Submission', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Wallet & Prepaid Credits', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
@@ -192,14 +242,39 @@ class Upgrade_Pro {
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Payment Integration (WooCommerce, Stripe)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Advertising Packages', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 
-						<!-- Analytics -->
+						<!-- Payments -->
 						<tr class="wbam-section-header">
-							<td colspan="3"><?php esc_html_e( 'Analytics & Reporting', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td colspan="3"><?php esc_html_e( 'Payments', 'wb-ads-rotator-with-split-test' ); ?></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'WooCommerce Integration', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Stripe Integration', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'PayPal Integration', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'CPM / CPC / Flat-Rate Billing', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+
+						<!-- Analytics & Testing -->
+						<tr class="wbam-section-header">
+							<td colspan="3"><?php esc_html_e( 'Analytics & Testing', 'wb-ads-rotator-with-split-test' ); ?></td>
 						</tr>
 						<tr>
 							<td><?php esc_html_e( 'Impressions & Click Tracking', 'wb-ads-rotator-with-split-test' ); ?></td>
@@ -216,10 +291,25 @@ class Upgrade_Pro {
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
+						<tr>
+							<td><?php esc_html_e( 'A/B Testing with Statistics', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Share of Voice Reports', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Export to CSV', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
 
-						<!-- Classifieds -->
+						<!-- Classifieds Marketplace -->
 						<tr class="wbam-section-header">
-							<td colspan="3"><?php esc_html_e( 'Classifieds', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td colspan="3"><?php esc_html_e( 'Classifieds Marketplace', 'wb-ads-rotator-with-split-test' ); ?></td>
 						</tr>
 						<tr>
 							<td><?php esc_html_e( 'Classified Listings', 'wb-ads-rotator-with-split-test' ); ?></td>
@@ -227,12 +317,57 @@ class Upgrade_Pro {
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Locations & Categories', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Categories & Locations', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Inquiry System', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'Image Galleries', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Buyer Inquiry System', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Favorites & Saved Listings', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Seller Profiles', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Paid Upgrades (Featured, Bump to Top)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Multiple Price Types (Fixed, Negotiable, Free)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+
+						<!-- Developer & Admin -->
+						<tr class="wbam-section-header">
+							<td colspan="3"><?php esc_html_e( 'Developer & Admin', 'wb-ads-rotator-with-split-test' ); ?></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'REST API Access', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Audit Logs', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
+							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
+						</tr>
+						<tr>
+							<td><?php esc_html_e( 'Ad Review Queue', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-cross"><span class="dashicons dashicons-minus"></span></td>
 							<td class="wbam-check"><span class="dashicons dashicons-yes-alt"></span></td>
 						</tr>
@@ -265,39 +400,39 @@ class Upgrade_Pro {
 
 				<div class="wbam-highlights-grid">
 					<div class="wbam-highlight-card">
-						<span class="dashicons dashicons-admin-links"></span>
-						<h3><?php esc_html_e( 'Automatic Keyword Linking', 'wb-ads-rotator-with-split-test' ); ?></h3>
-						<p><?php esc_html_e( 'Set up keywords once, and they automatically become affiliate links across your entire site. Save hours of manual work!', 'wb-ads-rotator-with-split-test' ); ?></p>
+						<span class="dashicons dashicons-id-alt"></span>
+						<h3><?php esc_html_e( 'Advertiser Portal', 'wb-ads-rotator-with-split-test' ); ?></h3>
+						<p><?php esc_html_e( 'Complete self-service dashboard for advertisers to register, submit ads, manage campaigns, and track performance.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</div>
 
 					<div class="wbam-highlight-card">
-						<span class="dashicons dashicons-businessperson"></span>
-						<h3><?php esc_html_e( 'Sell Ad Space', 'wb-ads-rotator-with-split-test' ); ?></h3>
-						<p><?php esc_html_e( 'Let advertisers register, submit ads, and pay for placements. Turn your site into an advertising platform!', 'wb-ads-rotator-with-split-test' ); ?></p>
+						<span class="dashicons dashicons-randomize"></span>
+						<h3><?php esc_html_e( 'A/B Testing', 'wb-ads-rotator-with-split-test' ); ?></h3>
+						<p><?php esc_html_e( 'Test ad variations automatically and let statistics determine the winner. Optimize your ad performance with data.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</div>
 
 					<div class="wbam-highlight-card">
-						<span class="dashicons dashicons-chart-area"></span>
-						<h3><?php esc_html_e( 'Detailed Analytics', 'wb-ads-rotator-with-split-test' ); ?></h3>
-						<p><?php esc_html_e( 'Track impressions, clicks, CTR, revenue, and more. Know exactly how your ads perform.', 'wb-ads-rotator-with-split-test' ); ?></p>
-					</div>
-
-					<div class="wbam-highlight-card">
-						<span class="dashicons dashicons-heart"></span>
-						<h3><?php esc_html_e( 'Link Health Monitoring', 'wb-ads-rotator-with-split-test' ); ?></h3>
-						<p><?php esc_html_e( 'Automatically detect broken links, redirect chains, and slow links before they hurt your SEO.', 'wb-ads-rotator-with-split-test' ); ?></p>
-					</div>
-
-					<div class="wbam-highlight-card">
-						<span class="dashicons dashicons-upload"></span>
-						<h3><?php esc_html_e( 'Bulk Import', 'wb-ads-rotator-with-split-test' ); ?></h3>
-						<p><?php esc_html_e( 'Import hundreds of links and keywords from CSV. Perfect for large affiliate sites.', 'wb-ads-rotator-with-split-test' ); ?></p>
+						<span class="dashicons dashicons-money-alt"></span>
+						<h3><?php esc_html_e( 'Monetize Your Site', 'wb-ads-rotator-with-split-test' ); ?></h3>
+						<p><?php esc_html_e( 'Accept payments via Stripe, PayPal, or WooCommerce. Offer CPM, CPC, or flat-rate ad packages to advertisers.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</div>
 
 					<div class="wbam-highlight-card">
 						<span class="dashicons dashicons-megaphone"></span>
-						<h3><?php esc_html_e( 'Classifieds System', 'wb-ads-rotator-with-split-test' ); ?></h3>
-						<p><?php esc_html_e( 'Run a classifieds marketplace on your site with categories, locations, and inquiry system.', 'wb-ads-rotator-with-split-test' ); ?></p>
+						<h3><?php esc_html_e( 'Classifieds Marketplace', 'wb-ads-rotator-with-split-test' ); ?></h3>
+						<p><?php esc_html_e( 'Full classified listings with categories, locations, seller profiles, image galleries, and paid upgrades.', 'wb-ads-rotator-with-split-test' ); ?></p>
+					</div>
+
+					<div class="wbam-highlight-card">
+						<span class="dashicons dashicons-admin-links"></span>
+						<h3><?php esc_html_e( 'Keyword Auto-Linking', 'wb-ads-rotator-with-split-test' ); ?></h3>
+						<p><?php esc_html_e( 'Set up keywords once, and they automatically become affiliate links across your entire site. Save hours!', 'wb-ads-rotator-with-split-test' ); ?></p>
+					</div>
+
+					<div class="wbam-highlight-card">
+						<span class="dashicons dashicons-chart-area"></span>
+						<h3><?php esc_html_e( 'Advanced Analytics', 'wb-ads-rotator-with-split-test' ); ?></h3>
+						<p><?php esc_html_e( 'Track impressions, clicks, CTR, revenue, geo data, and more. Export reports to CSV for detailed analysis.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</div>
 				</div>
 			</div>
