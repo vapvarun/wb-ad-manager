@@ -141,7 +141,7 @@ class Link_Cloaker {
 		nocache_headers();
 
 		// Perform redirect.
-		wp_redirect( $url, $redirect_type );
+		wp_safe_redirect( $url, $redirect_type );
 		exit;
 	}
 
@@ -174,7 +174,7 @@ class Link_Cloaker {
 			case 'custom':
 				$custom_url = Settings_Helper::get( 'link_inactive_url', '' );
 				if ( ! empty( $custom_url ) ) {
-					wp_redirect( $custom_url, 302 );
+					wp_safe_redirect( $custom_url, 302 );
 					exit;
 				}
 				// Fall through to 404.
