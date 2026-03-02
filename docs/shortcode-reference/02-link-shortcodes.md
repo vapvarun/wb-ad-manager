@@ -198,19 +198,19 @@ Display a form for visitors to request link partnerships.
 [wbam_partnership_inquiry title="Become a Partner"]
 ```
 
-**Custom success message:**
+**Show budget field:**
 ```
-[wbam_partnership_inquiry success_message="Thanks! We'll review your request within 24 hours."]
-```
-
-**Redirect after submission:**
-```
-[wbam_partnership_inquiry redirect="/thank-you/"]
+[wbam_partnership_inquiry show_budget="yes"]
 ```
 
-**Without title:**
+**Custom button text:**
 ```
-[wbam_partnership_inquiry show_title="false"]
+[wbam_partnership_inquiry button_text="Apply Now"]
+```
+
+**Custom description:**
+```
+[wbam_partnership_inquiry description="Tell us about your site and we'll get back to you within 48 hours."]
 ```
 
 ### Form Fields
@@ -302,7 +302,7 @@ For each link:
 <h1>Our Partners</h1>
 <p>We're proud to work with these amazing companies.</p>
 
-[wbam_links category="partners" layout="grid" columns="3" show_description="true"]
+[wbam_links category="partners" format="grid" limit="6"]
 
 <h2>Become a Partner</h2>
 [wbam_partnership_inquiry title="Apply for Partnership"]
@@ -313,7 +313,7 @@ For each link:
 ```html
 <div class="sponsors-widget">
     <h4>Our Sponsors</h4>
-    [wbam_links category="sponsors" count="5" layout="list" show_description="false"]
+    [wbam_links category="sponsors" limit="5" format="list"]
 </div>
 ```
 
@@ -322,7 +322,7 @@ For each link:
 ```html
 <section class="resources">
     <h2>Helpful Resources</h2>
-    [wbam_links category="resources" count="6" layout="grid" columns="2"]
+    [wbam_links category="resources" limit="6" format="grid"]
 </section>
 ```
 

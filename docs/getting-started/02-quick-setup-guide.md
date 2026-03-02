@@ -186,7 +186,7 @@ Ready for more? WB Ad Manager Pro includes:
 - **Wallet System** - Accept payments
 - **Advanced Analytics** - Detailed reports
 
-[Learn More About Pro →](link-to-pro)
+*WB Ad Manager Pro adds campaigns, wallet payments, classifieds marketplace, and advanced analytics.*
 
 ---
 

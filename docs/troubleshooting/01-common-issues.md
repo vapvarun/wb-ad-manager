@@ -156,7 +156,7 @@ Before diving into specific issues, try these:
 
 **Solutions:**
 1. Enable ad query caching in Settings
-2. Disable unused modules in Settings
+2. Reduce the number of active placements per page
 3. Optimize database tables (use a plugin like WP-Optimize)
 
 ---

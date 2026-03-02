@@ -92,12 +92,14 @@ With custom text:
 
 Show all links from a category:
 ```
-[wbam_links category="partners"]
+[wbam_links category="1"]
 ```
+
+> **Note:** The `category` parameter requires a numeric category ID, not a slug. Find the ID in **WB Ad Manager → Links → Categories** (hover the category name to see the ID in the URL).
 
 Grid layout:
 ```
-[wbam_links category="sponsors" layout="grid" columns="4"]
+[wbam_links category="1" format="grid"]
 ```
 
 ### Just the URL
@@ -135,7 +137,7 @@ Allow visitors to request link placements on your site.
 ```
 [wbam_partnership_inquiry
     title="Request Link Partnership"
-    success_message="Thanks! We'll review your request within 48 hours."
+    description="Thanks for your interest! We'll review your request within 48 hours."
 ]
 ```
 
@@ -215,7 +217,7 @@ Or via shortcode:
 
 Setting in shortcode:
 ```
-[wbam_link id="123" rel="sponsored"]
+[wbam_link id="123" sponsored="true"]
 ```
 
 ---
@@ -227,7 +229,7 @@ Setting in shortcode:
 ```html
 <section class="sponsors">
     <h2>Our Sponsors</h2>
-    [wbam_links category="sponsors" layout="grid" columns="4" show_description="false"]
+    [wbam_links category="1" format="grid"]
 </section>
 ```
 
@@ -238,10 +240,10 @@ Setting in shortcode:
 <p>Tools and services we recommend:</p>
 
 <h2>Development Tools</h2>
-[wbam_links category="dev-tools" layout="list"]
+[wbam_links category="2" format="list"]
 
 <h2>Design Resources</h2>
-[wbam_links category="design" layout="list"]
+[wbam_links category="3" format="list"]
 ```
 
 ### Footer Partners
@@ -249,7 +251,7 @@ Setting in shortcode:
 ```html
 <div class="footer-partners">
     <span>Partners:</span>
-    [wbam_links category="partners" count="5" show_icon="false" show_description="false"]
+    [wbam_links category="1" limit="5" format="inline"]
 </div>
 ```
 
@@ -344,4 +346,4 @@ Use filters in **WB Ad Manager → Links**:
 
 ---
 
-*Want more link features? [Upgrade to Pro](link-to-pro) for auto-linking, link injection, and advanced analytics.*
+*Want more link features? WB Ad Manager Pro adds auto-linking, link injection, and advanced analytics.*

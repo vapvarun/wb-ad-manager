@@ -121,17 +121,14 @@ Ad appears after the 3rd paragraph in post content.
 
 | Setting | Description |
 |---------|-------------|
-| **Trigger** | On load, scroll %, exit intent, time delay |
+| **Trigger** | Time delay, scroll percentage, or exit intent |
 | **Delay** | Seconds before showing |
-| **Frequency** | Once per session, once per day, always |
 
 ### Sticky Bar Settings
 
 | Setting | Description |
 |---------|-------------|
-| **Position** | Top or bottom of screen |
-| **Close Button** | Allow users to dismiss |
-| **Mobile** | Show/hide on mobile |
+| **Position** | Bottom Right, Bottom Left, Bottom Bar (Full Width), or Top Bar (Full Width) |
 
 ---
 

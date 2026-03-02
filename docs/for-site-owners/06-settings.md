@@ -176,7 +176,7 @@ When enabled, uninstalling the plugin will permanently delete:
 
 - Enable lazy loading for ads below the fold
 - Enable ad query caching
-- Disable unused modules
+- Limit the maximum ads per page in General Settings
 - Optimize images before uploading to media library
 
 ### For Accuracy

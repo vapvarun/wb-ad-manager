@@ -112,7 +112,7 @@ Want more features? WB Ad Manager Pro adds:
 - Email Notifications
 - And much more!
 
-[Learn about Pro →](link-to-pro-page)
+*Learn about WB Ad Manager Pro for advanced features like campaigns, wallet, classifieds, and analytics.*
 
 ---
 
@@ -139,4 +139,4 @@ Want more features? WB Ad Manager Pro adds:
 
 ---
 
-*Need help? Visit our [support forum](link-to-support)*
+*Need help? Visit the support forum*

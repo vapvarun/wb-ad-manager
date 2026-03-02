@@ -275,4 +275,4 @@ Create categories to organize ads:
 
 ---
 
-*Need more features? [Upgrade to Pro](link-to-pro) for the advertiser portal, payments, and more.*
+*Upgrade to WB Ad Manager Pro for campaigns, wallet payments, classifieds, and analytics.*
