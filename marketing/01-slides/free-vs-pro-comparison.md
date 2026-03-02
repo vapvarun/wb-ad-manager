@@ -42,7 +42,7 @@
 - See detailed analytics (impressions, clicks, revenue)
 - Let advertisers submit and manage their own ads
 - Run a classified listings marketplace
-- Accept payments (Stripe, PayPal, WooCommerce)
+- Accept payments (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
 - Create ad packages with different pricing
 - Let advertisers prepay with wallet credits
 - Run A/B tests to optimize ad performance
@@ -95,7 +95,9 @@
 | **Payments** | | |
 | Stripe integration | - | ✓ |
 | PayPal integration | - | ✓ |
+| Razorpay integration | - | ✓ |
 | WooCommerce integration | - | ✓ |
+| Manual/Bank Transfer | - | ✓ |
 | **Testing** | | |
 | A/B testing ads | - | ✓ |
 | Statistical winner detection | - | ✓ |
@@ -181,7 +183,7 @@
 ## Slide 8: FAQs
 
 **Q: Can I try PRO features before buying?**
-A: Yes, we offer a 30-day money-back guarantee.
+A: Yes, we offer a 14-day money-back guarantee.
 
 **Q: Do I need PRO for AdSense?**
 A: No, full AdSense support is in the FREE version.

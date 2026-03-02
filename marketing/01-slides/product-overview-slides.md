@@ -218,14 +218,16 @@ Not all visitors are the same. Show mobile-specific ads to phone users. Show pre
 
 ## Slide 13: Feature - Payment Integration (PRO)
 
-**Visual:** Payment gateway logos (Stripe, PayPal, WooCommerce)
+**Visual:** Payment gateway logos (Stripe, PayPal, Razorpay, WooCommerce, Manual/Bank Transfer)
 
 **Headline:** Accept Payments Seamlessly
 
 **Body:**
 - **Stripe** - cards, Apple Pay, Google Pay
 - **PayPal** - worldwide acceptance
+- **Razorpay** - preferred for India and South Asia
 - **WooCommerce** - use any WC gateway
+- **Manual/Bank Transfer** - offline payments, invoicing
 - **Wallet system** - advertisers prepay and spend
 - Automatic receipts and invoices
 
@@ -372,7 +374,7 @@ The free version alone replaces 3-4 other plugins. Pro is for site owners who wa
 **Body:**
 - Download FREE from WordPress.org
 - Upgrade to PRO at wbcomdesigns.com
-- 30-day money-back guarantee
+- 14-day money-back guarantee
 
 **CTA Button:** Download Free Now
 

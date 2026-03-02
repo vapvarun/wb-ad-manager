@@ -45,7 +45,7 @@
 Registration form
 
 **Step 2: Add Funds**
-"They add funds to their wallet via Stripe, PayPal, or WooCommerce."
+"They add funds to their wallet via Stripe, PayPal, Razorpay, WooCommerce, or bank transfer."
 
 **[SHOW]**
 Add funds interface
@@ -76,19 +76,61 @@ Approval notification
 **[SHOW]**
 Advertiser dashboard
 
-"They see their wallet balance, active ads, pending submissions, and key metrics at a glance."
+"They see their wallet balance, active ads, pending submissions, and key metrics at a glance. The portal is organized into 12 tabs so everything has its place."
 
 **Overview Tab:**
-"The overview shows total impressions, clicks, and spending."
+"The overview shows total impressions, clicks, and spending at a glance - the numbers that matter most."
 
 **[SHOW]**
 Overview stats
 
-**My Ads Tab:**
+**Ads Tab:**
 "They can manage all their ads - see which are active, paused, or pending approval."
 
 **[SHOW]**
 Ads list
+
+**Campaigns Tab:**
+"For CPM and CPC campaigns, this tab shows budget consumed, impressions delivered, and campaign status. Advertisers can pause or cancel campaigns directly from here."
+
+**[SHOW]**
+Campaigns list
+
+**Classifieds Tab:**
+"Advertisers who post classified listings manage them here - edit details, renew listings, or mark items as sold."
+
+**[SHOW]**
+Classifieds list
+
+**Inquiries Tab:**
+"Buyer messages about classified listings come in here. Advertisers can reply, archive, or flag inquiries without leaving the portal."
+
+**[SHOW]**
+Inquiries inbox
+
+**Favorites Tab:**
+"Advertisers can save listings they want to reference later. Handy for competitor research or tracking categories they advertise in."
+
+**[SHOW]**
+Favorites list
+
+**Following Tab:**
+"Advertisers who follow other sellers or categories see updates here - new listings, price changes, activity."
+
+**[SHOW]**
+Following feed
+
+**Links Tab:**
+"Managed deep links and tracked URLs live here. Advertisers can create campaign-specific links and see click counts per link."
+
+**[SHOW]**
+Links list
+
+**Wallet Tab:**
+"They can view transaction history, add more funds, and download receipts. Bank transfer requests are also submitted from here."
+
+**[SHOW]**
+Wallet interface
 
 **Analytics Tab:**
 "They get detailed analytics on their ad performance - impressions, clicks, CTR, daily trends."
@@ -96,11 +138,17 @@ Ads list
 **[SHOW]**
 Analytics charts
 
-**Wallet Tab:**
-"They can view transaction history, add more funds, and download receipts."
+**Profile Tab:**
+"Advertisers keep their business details, contact info, and payment preferences up to date from the Profile tab."
 
 **[SHOW]**
-Wallet interface
+Profile form
+
+**Share of Voice Tab:**
+"This is a standout feature. Advertisers can see what percentage of impressions they received in each placement compared to the fair share for that slot. A green indicator means they're on track. Yellow or red means they should reach out."
+
+**[SHOW]**
+Share of Voice dashboard
 
 ---
 
@@ -189,10 +237,18 @@ Revenue dashboard
 5. Submission confirmation
 6. Admin notification
 7. Advertiser dashboard (overview)
-8. My Ads list
-9. Analytics tab with charts
-10. Wallet / transactions
-11. Admin submissions queue
-12. Review and approve interface
-13. Package management
-14. Revenue dashboard
+8. Ads list
+9. Campaigns list with budget/status
+10. Classifieds list
+11. Inquiries inbox
+12. Favorites list
+13. Following feed
+14. Links list with click counts
+15. Wallet / transactions
+16. Analytics tab with charts
+17. Profile form
+18. Share of Voice dashboard
+19. Admin submissions queue
+20. Review and approve interface
+21. Package management
+22. Revenue dashboard

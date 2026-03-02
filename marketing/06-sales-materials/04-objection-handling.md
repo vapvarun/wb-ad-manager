@@ -206,7 +206,7 @@ Pro users get priority support for conflict resolution.
 ### "I've never heard of your company."
 
 **Response:**
-WBcom Designs has been building WordPress plugins since [year]. Our portfolio includes:
+WBcom Designs has been building WordPress plugins since 2018. Our portfolio includes:
 
 - [Other popular plugin]
 - [Another plugin]
@@ -238,7 +238,7 @@ If somehow we disappeared:
 - Free version is GPL - community could maintain it
 - Your data remains in your database
 
-We've been in business [X] years. We're not going anywhere. But your data isn't locked in regardless.
+We've been in business for over 7 years. We're not going anywhere. But your data isn't locked in regardless.
 
 ---
 

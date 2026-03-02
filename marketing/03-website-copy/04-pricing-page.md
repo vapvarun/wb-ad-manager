@@ -54,7 +54,7 @@
 **Includes everything in Free, plus:**
 - Classified marketplace module
 - Advertiser portal
-- Wallet system (Stripe, PayPal, WooCommerce)
+- Wallet system (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
 - A/B testing
 - Advanced analytics & reporting
 - Revenue tracking
@@ -104,7 +104,7 @@
 | Image, Rich Content, HTML ads | ✓ | ✓ | ✓ |
 | AdSense integration | ✓ | ✓ | ✓ |
 | Email capture forms | ✓ | ✓ | ✓ |
-| All placements (20+) | ✓ | ✓ | ✓ |
+| All placements (14+) | ✓ | ✓ | ✓ |
 | Scheduling | ✓ | ✓ | ✓ |
 | Device targeting | ✓ | ✓ | ✓ |
 | User role targeting | ✓ | ✓ | ✓ |
@@ -128,7 +128,9 @@
 | Wallet system | - | ✓ | ✓ |
 | Stripe integration | - | ✓ | ✓ |
 | PayPal integration | - | ✓ | ✓ |
+| Razorpay integration | - | ✓ | ✓ |
 | WooCommerce integration | - | ✓ | ✓ |
+| Manual/Bank Transfer | - | ✓ | ✓ |
 | **Analytics** |
 | Basic stats | ✓ | ✓ | ✓ |
 | Charts & graphs | - | ✓ | ✓ |

@@ -166,7 +166,7 @@ You want to create a local marketplace - job listings, apartment rentals, buy/se
 Frontend submission forms, categories, locations, images, contact forms - everything you need out of the box.
 
 **Revenue from Day One**
-Charge for featured listings, highlighted placements, and urgency badges. Users pay from their wallet balance (Stripe, PayPal, or WooCommerce).
+Charge for featured listings, highlighted placements, and urgency badges. Users pay from their wallet balance (Stripe, PayPal, Razorpay, WooCommerce, or bank transfer).
 
 **Automatic Management**
 Listings expire automatically. Renewal reminders go out via email. You focus on marketing while the system runs itself.

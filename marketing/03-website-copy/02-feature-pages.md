@@ -13,7 +13,7 @@
 
 **Headline:** "Put Ads Exactly Where They Convert"
 
-**Subheadline:** "20+ placement options give you complete control over where your ads appear - without touching a line of code."
+**Subheadline:** "14+ placement options give you complete control over where your ads appear - without touching a line of code."
 
 **CTA:** "Download Free Plugin"
 
@@ -451,7 +451,7 @@ With the Advertiser Portal, advertisers handle everything themselves:
 Either automatically on signup or by request
 
 **They add funds to their wallet**
-Stripe, PayPal, or WooCommerce integration
+Stripe, PayPal, Razorpay, WooCommerce, or Manual/Bank Transfer integration
 
 **They create their own ads**
 Upload images, write copy, choose placements

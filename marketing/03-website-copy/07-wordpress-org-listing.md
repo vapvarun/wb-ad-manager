@@ -29,7 +29,7 @@ Whether you're a blogger running AdSense, an affiliate marketer tracking hundred
 
 = Ad Management =
 
-Create any type of ad:
+Create any of 5 ad types:
 * **Image ads** - Upload banners of any size
 * **Rich content** - Full WYSIWYG editor
 * **HTML/Code** - Custom scripts and embeds
@@ -96,7 +96,7 @@ Need more? WB Ad Manager Pro adds:
 
 * **Classified Marketplace** - Let users post paid listings
 * **Advertiser Portal** - Self-service ad management
-* **Wallet System** - Stripe, PayPal, WooCommerce
+* **Wallet System** - Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer
 * **A/B Testing** - Optimize ad performance
 * **Advanced Analytics** - Charts, revenue tracking, exports
 * **Link Partnerships** - Track mutual link arrangements
@@ -180,19 +180,23 @@ Free users can post on the WordPress.org support forum. Pro users receive priori
 
 ## Changelog
 
-### [Latest Version]
-* Feature: [New feature description]
-* Enhancement: [Improvement description]
-* Fix: [Bug fix description]
+### 2.7.0
+* Improvement: Updated translation strings
+* Compatibility: Tested up to WordPress 6.9.1
 
-[Previous versions...]
+### 2.6.0
+* Enhancement: ABSPATH protection and WPCS fixes
+* Multiple code quality improvements
+
+### 2.5.1
+* Bug fixes and stability improvements
 
 ---
 
 ## Upgrade Notice
 
-### [Latest Version]
-[Brief note about what's new and why users should update]
+### 2.7.0
+Updated translation strings and confirmed compatibility with WordPress 6.9.1.
 
 ---
 

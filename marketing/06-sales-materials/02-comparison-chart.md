@@ -79,7 +79,7 @@
 | **Pro-Only** |
 | Classifieds | ✓ | ✗ |
 | Advertiser portal | ✓ | ✗ |
-| Wallet system | ✓ | ✗ |
+| Wallet system (Stripe, PayPal, Razorpay, WooCommerce, Manual/Bank Transfer) | ✓ | ✗ |
 
 **Key Differentiator:** Advanced Ads requires multiple paid add-ons to match WB Ad Manager's free features.
 
@@ -97,7 +97,7 @@
 | **Ad Management** |
 | Display ads | ✓ | ✗ |
 | Multiple ad types | ✓ | ✗ |
-| 20+ placements | ✓ | ✗ |
+| 14+ placements | ✓ | ✗ |
 | Popup ads | ✓ | ✗ |
 | AdSense | ✓ | ✗ |
 | **Community** |

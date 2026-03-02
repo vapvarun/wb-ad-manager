@@ -37,7 +37,7 @@ WordPress site owners struggle with:
 |------------|--------------|
 | Display Ads | Image, HTML, rich content, AdSense |
 | Affiliate Links | Cloaking, tracking, broken link detection |
-| Placements | 20+ options: content, popup, sticky, widget |
+| Placements | 14+ options: content, popup, sticky, widget |
 | Targeting | Device, user role, schedule, content type |
 | Community Ads | Native BuddyPress & bbPress integration |
 | Analytics | Impressions, clicks, CTR tracking |
@@ -58,7 +58,7 @@ WordPress site owners struggle with:
 Everything in Free, plus:
 - Classified marketplace
 - Advertiser self-service portal
-- Wallet system (Stripe, PayPal, WooCommerce)
+- Wallet system (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
 - A/B testing
 - Advanced analytics & reporting
 - Geographic targeting

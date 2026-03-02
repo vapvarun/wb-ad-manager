@@ -198,9 +198,11 @@ https://yoursite.com/go/wireless-headphones
 
 ---
 
-## Slide 4.3: Geo Targeting
+## Slide 4.3: Geo Targeting (Pro)
 
 **Headline:** Local Ads for Local Visitors
+
+*Available in WB Ad Manager Pro*
 
 **Target By:**
 - Country
@@ -385,6 +387,7 @@ Draft → Pending → Active → Expired
 - PayPal
 - Razorpay
 - WooCommerce (any WC gateway)
+- Manual/Bank Transfer
 
 **Wallet System:**
 - Advertisers prepay

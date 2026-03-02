@@ -50,7 +50,7 @@ WB Ad Manager works for any WordPress site that wants to monetize with advertisi
 
 Most ad plugins do one thing - display banners OR track links OR run classifieds. WB Ad Manager combines all of these into one unified system:
 
-- Ad management with 20+ placements
+- Ad management with 14+ placements
 - Affiliate link cloaking and tracking
 - BuddyPress and bbPress integration
 - AdSense management
@@ -315,7 +315,7 @@ This gives you more control than using AdSense codes directly.
 
 **Advertiser Portal**
 - Advertiser self-registration
-- Wallet system (Stripe, PayPal, WooCommerce)
+- Wallet system (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
 - Advertiser ad submission
 - Approval workflow
 - Advertiser analytics

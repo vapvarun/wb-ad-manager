@@ -164,7 +164,7 @@ Perfect for: local directories, job boards, buy/sell communities, niche marketpl
 Stop managing ads manually. With the Advertiser Portal, businesses can:
 
 - Create advertiser accounts
-- Add funds to their wallet (Stripe, PayPal, WooCommerce)
+- Add funds to their wallet (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
 - Design and submit their own ads
 - Track their own performance metrics
 - Manage their campaigns independently
@@ -271,7 +271,7 @@ A: The free version has no limits. Create as many ads as you need.
 A: Most ad plugins do one thing. WB Ad Manager combines ad management, affiliate link tracking, community monetization, and (with Pro) classified listings and advertiser portals - all in one unified system. No plugin conflicts, no fragmented data.
 
 ### Q: What payment methods does Pro support?
-A: The advertiser wallet system integrates with Stripe, PayPal, and WooCommerce. Users can add funds using any method you enable.
+A: The advertiser wallet system integrates with Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer. Users can add funds using any method you enable.
 
 ### Q: Can I try Pro before buying?
 A: Yes, we offer a 14-day money-back guarantee. If Pro doesn't meet your needs, get a full refund, no questions asked.

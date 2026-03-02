@@ -212,7 +212,7 @@
 
 **Payment System:**
 - Employers create accounts
-- Add funds via Stripe/PayPal
+- Add funds via Stripe, PayPal, Razorpay, WooCommerce, or bank transfer
 - Credits deducted automatically
 - Receipts sent by email
 
