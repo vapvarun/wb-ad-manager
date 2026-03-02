@@ -102,43 +102,41 @@ Based on your WordPress timezone setting.
 
 ## Geo Targeting
 
-Target by geographic location using IP detection.
-
-### Available Levels
-
-| Level | Accuracy |
-|-------|----------|
-| **Country** | 95-99% accurate |
-| **Region/State** | 80-90% accurate |
-| **City** | 50-80% accurate |
+Target by geographic location using IP detection at the **country level**.
 
 ### Setup
 
 1. Edit ad
 2. Find **Geo Targeting** section
-3. Select countries/regions/cities
-4. Save
+3. Choose mode: **Include** (show only in selected countries) or **Exclude** (hide in selected countries)
+4. Select countries from the dropdown
+5. Save
+
+### Supported Providers
+
+| Provider | Free Tier | Notes |
+|----------|-----------|-------|
+| ip-api.com | 45 req/min | Default, no key needed |
+| ipinfo.io | 50K/month | API key required |
+| ipapi.co | 1K/day | API key required |
 
 ### Notes
 
-- Requires geolocation data (bundled or external service)
+- Country-level targeting only (95-99% accurate)
 - VPN users may see wrong location
-- City-level less reliable than country
+- Configure provider in Settings > Geo Targeting
 
 ---
 
 ## Frequency Capping
 
-Limit how often users see an ad.
+Limit how often users see an ad within a single session.
 
 | Setting | Description |
 |---------|-------------|
-| **Per Session** | Max views in one visit |
-| **Per Day** | Max views per 24 hours |
-| **Per Week** | Max views per 7 days |
-| **Total** | Lifetime max per user |
+| **Session Impression Limit** | Maximum times the ad is shown per browser session. Leave empty or set to 0 for unlimited. |
 
-Uses cookies to track. Resets if user clears cookies.
+Uses cookies to track impressions within the current session. Resets when the user closes the browser or clears cookies.
 
 ---
 

@@ -39,13 +39,11 @@ Before installing, make sure you have:
 
 ## After Installation
 
-Once activated, you'll see:
+Once activated, you'll see a **WB Ad Manager** menu in your WordPress admin sidebar with:
 
-1. **WB Ad Manager** menu in your WordPress admin sidebar
-2. **Ads** - Manage your advertisements
-3. **Ad Zones** - Create display areas for ads
-4. **Links** - Manage tracked links
-5. **Settings** - Configure plugin options
+1. **Ads** - Create and manage your advertisements
+2. **Links** - Manage tracked affiliate links
+3. **Settings** - Configure plugin options
 
 ---
 
@@ -55,30 +53,22 @@ Once activated, you'll see:
 
 1. Go to **WB Ad Manager → Settings**
 2. Review the **General** tab:
-   - Enable/disable ad rotation
-   - Set default ad behavior
-   - Configure tracking options
-3. Click **Save Changes**
+   - Optionally hide ads from logged-in users or admins
+   - Set minimum content length for paragraph placements
+   - Configure maximum ads per page
+3. Click **Save Settings**
 
-### Step 2: Create Your First Ad Zone
-
-1. Go to **WB Ad Manager → Ad Zones**
-2. Click **Add New**
-3. Enter a name (e.g., "Sidebar Banner")
-4. Set the size (e.g., 300x250)
-5. Click **Publish**
-
-### Step 3: Create Your First Ad
+### Step 2: Create Your First Ad
 
 1. Go to **WB Ad Manager → Ads**
 2. Click **Add New**
-3. Enter ad details:
-   - Title (internal use)
-   - Ad type (Image, Text, or HTML)
-   - Content (image, text, or code)
-   - Destination URL
-4. Assign to your ad zone
-5. Click **Publish**
+3. Enter the ad title (internal reference)
+4. Choose an ad type (Image, Rich Content, Code/HTML/JS, AdSense, or Email Capture)
+5. Fill in the ad content
+6. In the **Placements** metabox, check where the ad should appear (header, footer, content, etc.)
+7. Click **Publish**
+
+> **How rotation works:** Multiple ads assigned to the same placement rotate automatically based on priority. Higher priority ads display more often.
 
 ---
 
@@ -86,9 +76,9 @@ Once activated, you'll see:
 
 To confirm everything is working:
 
-1. Add this shortcode to any page:
+1. Add this shortcode to any page or post, replacing `123` with a real ad ID:
    ```
-   [wbam_ad zone="your-zone-slug"]
+   [wbam_ad id="123"]
    ```
 2. View the page on the frontend
 3. Your ad should display
@@ -101,13 +91,13 @@ To confirm everything is working:
 | Feature | Description |
 |---------|-------------|
 | **Ad Management** | Create and manage unlimited ads |
-| **Ad Zones** | Organize ads into display zones |
-| **Ad Types** | Image, Text, HTML ads |
-| **Ad Rotation** | Random, weighted, sequential |
+| **5 Ad Types** | Image, Rich Content, Code/HTML/JS, AdSense, Email Capture |
+| **14+ Placements** | Header, footer, content, sidebar, and more |
+| **Priority-Based Rotation** | Higher priority ads show more often |
 | **Click Tracking** | Track clicks and impressions |
-| **Link Management** | Create and track outbound links |
+| **Link Management** | Create and track affiliate links |
 | **Partnership Forms** | Accept link partnership requests |
-| **Shortcodes** | Display ads anywhere |
+| **Shortcodes** | Display specific ads anywhere |
 
 ---
 
@@ -129,8 +119,7 @@ Want more features? WB Ad Manager Pro adds:
 ## Next Steps
 
 - [Quick Setup Guide](02-quick-setup-guide.md) - Complete setup in 10 minutes
-- [Create Your First Ad](03-first-ad-in-5-minutes.md) - Step-by-step guide
-- [Shortcode Reference](../shortcode-reference/01-ad-shortcodes.md) - All display options
+- [Shortcode Reference](../shortcode-reference/01-ad-shortcodes.md) - Display ads anywhere
 
 ---
 

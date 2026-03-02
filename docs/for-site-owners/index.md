@@ -10,7 +10,7 @@ Everything you need to manage ads on your WordPress site.
 |-------|-------------|
 | [Managing Ads](01-managing-ads.md) | Create, edit, enable/disable ads |
 | [Link Management](02-link-management.md) | Cloaked links and partnerships |
-| [Ad Types](03-ad-types.md) | Image, Code, Rich Content, AdSense |
+| [Ad Types](03-ad-types.md) | Image, Rich Content, Code, AdSense, Email Capture |
 | [Placements](04-placements.md) | Where ads appear on your site |
 | [Targeting](05-targeting.md) | Schedule, geo, device, user targeting |
 | [Settings](06-settings.md) | Plugin configuration |

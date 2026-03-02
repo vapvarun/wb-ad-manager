@@ -33,12 +33,13 @@ Display a tracked link with click counting.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `id` | int | required | Link ID |
+| `id` | int | - | Link ID |
+| `slug` | string | - | Link slug (alternative to id) |
 | `text` | string | link title | Display text |
 | `class` | string | - | CSS class |
-| `target` | string | "_blank" | Link target |
-| `rel` | string | varies | Rel attribute |
-| `nofollow` | bool | false | Add nofollow |
+| `nofollow` | bool | - | Add rel="nofollow" |
+| `sponsored` | bool | - | Add rel="sponsored" |
+| `new_tab` | bool | - | Open in new tab |
 
 ### Examples
 
@@ -64,12 +65,12 @@ Display a tracked link with click counting.
 
 **Open in same window:**
 ```
-[wbam_link id="123" target="_self"]
+[wbam_link id="123" new_tab="false"]
 ```
 
-**Sponsored link (rel attribute):**
+**Sponsored link:**
 ```
-[wbam_link id="123" rel="sponsored"]
+[wbam_link id="123" sponsored="true"]
 ```
 
 ---
@@ -88,13 +89,14 @@ Display multiple links in a list or grid.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `category` | string | all | Filter by category |
-| `count` | int | 10 | Number of links |
-| `layout` | string | "list" | "list" or "grid" |
-| `columns` | int | 3 | Grid columns |
-| `orderby` | string | "date" | "date", "title", "random" |
-| `show_description` | bool | true | Show link description |
-| `show_icon` | bool | true | Show favicon |
+| `category` | int/string | 0 | Filter by category ID |
+| `type` | string | all | Filter by link type |
+| `limit` | int | 10 | Number of links |
+| `orderby` | string | "name" | "name", "date", "clicks", "random" |
+| `order` | string | "ASC" | "ASC" or "DESC" |
+| `class` | string | - | Container CSS class |
+| `item_class` | string | - | Per-item CSS class |
+| `format` | string | "list" | "list", "inline", or "grid" |
 
 ### Examples
 
@@ -103,24 +105,24 @@ Display multiple links in a list or grid.
 [wbam_links category="partners"]
 ```
 
-**Sponsor grid:**
+**Inline sponsor links:**
 ```
-[wbam_links category="sponsors" count="8" layout="grid" columns="4"]
+[wbam_links category="sponsors" limit="8" format="inline"]
 ```
 
 **Random featured links:**
 ```
-[wbam_links count="5" orderby="random"]
+[wbam_links limit="5" orderby="random"]
 ```
 
-**Simple list without icons:**
+**Grid layout:**
 ```
-[wbam_links layout="list" show_icon="false" show_description="false"]
+[wbam_links format="grid" limit="6"]
 ```
 
-**Footer resources:**
+**Most clicked links:**
 ```
-[wbam_links category="resources" count="6" columns="3"]
+[wbam_links orderby="clicks" order="DESC" limit="10"]
 ```
 
 ---
@@ -175,10 +177,14 @@ Display a form for visitors to request link partnerships.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `title` | string | "Request Link Partnership" | Form title |
-| `success_message` | string | default text | Success message |
-| `redirect` | string | - | Redirect URL after submit |
-| `show_title` | bool | true | Display form title |
+| `title` | string | "Link Partnership Inquiry" | Form title |
+| `description` | string | default text | Form description |
+| `show_budget` | string | "yes" | Show budget field |
+| `show_target_page` | string | "no" | Show target page field |
+| `show_anchor` | string | "yes" | Show anchor text field |
+| `show_message` | string | "yes" | Show message field |
+| `button_text` | string | "Submit Inquiry" | Submit button text |
+| `class` | string | - | Form CSS class |
 
 ### Examples
 

@@ -47,56 +47,47 @@ Before diving into specific issues, try these:
 ### Ads not showing
 
 **Checklist:**
-- [ ] Ad is published (not draft)
-- [ ] Ad is assigned to the correct zone
-- [ ] Zone slug in shortcode matches exactly
+- [ ] Ad is published (not draft or disabled)
+- [ ] Ad has at least one placement checked, or you are using a shortcode with the correct ID
 - [ ] Start date has passed (if set)
-- [ ] End date hasn't passed (if set)
-- [ ] Ad zone has been created
+- [ ] End date has not passed (if set)
+- [ ] Session Impression Limit has not been reached for this visitor
 
 **Debug steps:**
-1. Try displaying specific ad: `[wbam_ad id="123"]`
-2. Check ad status in WB Ad Manager → Ads
-3. Verify zone exists in WB Ad Manager → Ad Zones
-4. View page source to check if container renders
+1. Try the shortcode directly: `[wbam_ad id="123"]` (use the actual ad ID)
+2. Check ad status in **WB Ad Manager → Ads**
+3. View page source to check if the ad container renders
+4. Test in an incognito window to rule out session limits
 
 ### Shortcode shows as plain text
 
-**Symptoms:** You see `[wbam_ad zone="xyz"]` instead of an ad
+**Symptoms:** You see `[wbam_ad id="123"]` instead of an ad
 
 **Solutions:**
-1. Verify plugin is activated
-2. Check shortcode spelling (case-sensitive)
+1. Verify the plugin is activated
+2. Check shortcode spelling — `wbam_ad` not `wbam-ad` (case-sensitive)
 3. Ensure no extra spaces in shortcode
 4. Try in a different page/post
-5. Switch to default theme temporarily
+5. Switch to a default theme temporarily
 
-### Wrong ad size
+### Ad not showing even though it's published
 
-**Solutions:**
-1. Check uploaded image dimensions
-2. Use size parameter: `[wbam_ad zone="x" size="300x250"]`
-3. Add CSS fix:
-```css
-.wbam-ad img {
-    max-width: 100%;
-    height: auto;
-}
-```
-4. Verify theme isn't overriding image styles
+**Common causes:**
+- The ad is disabled — check the **Ad Status** metabox (Enabled/Disabled toggle)
+- No placements are checked and there is no shortcode for that ad
+- The **Session Impression Limit** has been reached for this visitor — test in incognito mode
+- The **Disable for Admins** setting is on — go to Settings and turn it off temporarily
 
 ### Same ad always showing
 
 **Causes:**
-- Only one ad in the zone
-- Aggressive caching
-- Cookie-based rotation
+- Only one ad is assigned to that placement
+- Aggressive page caching
 
 **Solutions:**
-1. Add more ads to the zone
+1. Add more published ads with the same placement checked
 2. Clear all caches
 3. Test in incognito/private browsing
-4. Check rotation type in zone settings
 
 ---
 
@@ -106,18 +97,18 @@ Before diving into specific issues, try these:
 
 **Solutions:**
 1. Go to Settings and verify tracking is enabled
-2. Check destination URL is valid (starts with http/https)
-3. Test in incognito mode (ad blockers can interfere)
+2. Check destination URL is valid (starts with http or https)
+3. Test in incognito mode — ad blockers can interfere
 4. Check for JavaScript errors in browser console
-5. Verify link isn't cached by CDN
+5. Verify the link is not cached by a CDN
 
 ### Analytics showing zero
 
 **Solutions:**
 1. Wait a few minutes (stats may be delayed)
 2. Clear any caching
-3. Check database tables exist
-4. Verify tracking script is loading (view page source)
+3. Check database tables exist (deactivate and reactivate plugin if missing)
+4. Verify the tracking script is loading (view page source)
 
 ---
 
@@ -127,9 +118,8 @@ Before diving into specific issues, try these:
 
 **Solutions:**
 1. Verify link ID is correct
-2. Check link is published
+2. Check the link is published
 3. Verify shortcode syntax: `[wbam_link id="123"]`
-4. Check link category exists (if filtering)
 
 ### Partnership form not working
 
@@ -140,7 +130,6 @@ Before diving into specific issues, try these:
 2. Verify AJAX URL is accessible
 3. Check email settings in WordPress
 4. Look for form validation errors
-5. Test with fewer fields
 
 ### Partnership emails not sending
 
@@ -148,8 +137,8 @@ Before diving into specific issues, try these:
 1. Check WordPress email works (test with other plugins)
 2. Verify email address in settings is correct
 3. Check spam/junk folder
-4. Use SMTP plugin (WP Mail SMTP recommended)
-5. Check server isn't blocking mail
+4. Use an SMTP plugin (WP Mail SMTP recommended)
+5. Check if your server is blocking outbound mail
 
 ---
 
@@ -158,19 +147,17 @@ Before diving into specific issues, try these:
 ### Pages loading slowly
 
 **Solutions:**
-1. Enable built-in caching (if available)
-2. Reduce number of ads per page
-3. Optimize ad images before uploading
-4. Use lazy loading for below-fold ads
-5. Check for slow database queries
+1. Enable lazy loading in **WB Ad Manager → Settings → Performance**
+2. Enable cache ad queries in the same section
+3. Reduce number of ad placements per page
+4. Optimize ad images before uploading
 
 ### High server resource usage
 
 **Solutions:**
-1. Reduce analytics data retention period
-2. Optimize database tables (use a plugin like WP-Optimize)
-3. Ask your host about server-level caching options
-4. Reduce ad rotation frequency
+1. Enable ad query caching in Settings
+2. Disable unused modules in Settings
+3. Optimize database tables (use a plugin like WP-Optimize)
 
 ---
 
@@ -187,8 +174,7 @@ Before diving into specific issues, try these:
 }
 ```
 2. Check for responsive issues on mobile
-3. Verify ad zone size matches content area
-4. Use browser inspector to find conflicts
+3. Use browser inspector to find conflicts
 
 ### Ads not responsive
 
@@ -218,18 +204,17 @@ Before diving into specific issues, try these:
 ### "Table doesn't exist" error
 
 **Solutions:**
-1. Deactivate and reactivate plugin
-2. Check database prefix matches wp-config.php
-3. Manually run table creation (advanced)
-4. Contact hosting for database access issues
+1. Deactivate and reactivate plugin — this re-runs the table creation
+2. Check database prefix matches `wp-config.php`
+3. Contact hosting for database access issues
 
 ### Stats not saving
 
 **Solutions:**
 1. Check database write permissions
-2. Verify tables exist
+2. Verify tables exist (deactivate and reactivate)
 3. Check available disk space
-4. Look for database errors in error log
+4. Look for database errors in the error log
 
 ---
 
@@ -239,9 +224,9 @@ Before diving into specific issues, try these:
 
 Add to `wp-config.php`:
 ```php
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', false);
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true );
+define( 'WP_DEBUG_DISPLAY', false );
 ```
 
 Check logs at: `/wp-content/debug.log`
@@ -251,14 +236,14 @@ Check logs at: `/wp-content/debug.log`
 1. Open browser Developer Tools (F12)
 2. Go to Console tab
 3. Look for red error messages
-4. Note any errors related to wbam
+4. Note any errors mentioning `wbam`
 
 ### Check Network Tab
 
 1. Open Developer Tools → Network tab
 2. Reload the page
-3. Look for failed requests (red)
-4. Check AJAX calls are succeeding
+3. Look for failed requests (shown in red)
+4. Check AJAX calls are returning 200 responses
 
 ---
 
@@ -299,8 +284,8 @@ Gather this information:
 
 ### Checking Plugin Version
 
-1. Go to Plugins → Installed Plugins
-2. Find "WB Starter Ads"
+1. Go to **Plugins → Installed Plugins**
+2. Find "WB Ad Manager"
 3. Note the version number
 
 ### Support Resources
@@ -313,7 +298,7 @@ Gather this information:
 
 ## Upgrade to Pro
 
-Many issues are solved in Pro version:
+Many issues are solved in the Pro version:
 - Advanced debugging tools
 - Priority support
 - More configuration options

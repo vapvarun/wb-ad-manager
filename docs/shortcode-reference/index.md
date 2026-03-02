@@ -11,7 +11,7 @@ Shortcodes let you display ads and links anywhere on your site using simple text
 | Shortcode | Description |
 |-----------|-------------|
 | `[wbam_ad id="123"]` | Display a specific ad by ID |
-| `[wbam_ads placement="sidebar"]` | Display ads from a placement |
+| `[wbam_ads ids="1,2,3"]` | Display multiple specific ads |
 
 [Full ad shortcode reference →](01-ad-shortcodes.md)
 
@@ -40,10 +40,10 @@ Shortcodes let you display ads and links anywhere on your site using simple text
 
 Find the ad ID in **WB Ads > All Ads** (ID column).
 
-### Display Ads from a Placement
+### Display Multiple Ads
 
 ```
-[wbam_ads placement="sidebar" limit="2"]
+[wbam_ads ids="42,55,67"]
 ```
 
 ### Display a Tracked Link
@@ -69,19 +69,26 @@ Add this to a "Work With Us" or "Advertise" page:
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `id` | Ad post ID (required) | - |
+| `class` | Custom CSS class | - |
 
 ### [wbam_ads]
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `placement` | Placement slug | - |
-| `limit` | Max ads to show | 1 |
+| `ids` | Comma-separated ad IDs (required) | - |
+| `class` | Custom CSS class | - |
 
 ### [wbam_link]
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `id` | Link post ID (required) | - |
+| `id` | Link post ID | - |
+| `slug` | Link slug (alternative to id) | - |
+| `text` | Custom anchor text | link title |
+| `class` | Custom CSS class | - |
+| `nofollow` | Add rel="nofollow" | - |
+| `sponsored` | Add rel="sponsored" | - |
+| `new_tab` | Open in new tab | - |
 
 ---
 

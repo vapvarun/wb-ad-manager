@@ -137,15 +137,9 @@ Ad appears after the 3rd paragraph in post content.
 
 ## Multiple Ads Per Placement
 
-When multiple ads share a placement:
+When multiple ads share a placement, they rotate automatically. The ad shown is selected based on **Priority**, set per ad using a slider from 1 to 10 in the **Ad Status** metabox.
 
-| Rotation Mode | Behavior |
-|---------------|----------|
-| **Random** | One random ad shown |
-| **Weighted** | Higher weight = more likely |
-| **Sequential** | Rotate through in order |
-
-Set weight in each ad's settings (1-100, higher = priority).
+Higher priority ads are shown more often. No zone configuration is needed — simply assign multiple ads to the same placement.
 
 ---
 
@@ -173,16 +167,16 @@ Set weight in each ad's settings (1-100, higher = priority).
 ## Shortcode Parameters
 
 ```
-[wbam_ad id="123"]                    # Specific ad
-[wbam_ads placement="sidebar"]        # Random from placement
-[wbam_ads placement="sidebar" limit="2"]  # Multiple ads
+[wbam_ad id="123"]                    # Display a specific ad
+[wbam_ad id="123" class="featured"]   # With custom CSS class
+[wbam_ads ids="1,2,3"]                # Display multiple specific ads
 ```
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `id` | Specific ad ID | - |
-| `placement` | Placement slug | - |
-| `limit` | Max ads to show | 1 |
+| `id` | Specific ad ID (required) | - |
+| `ids` | Comma-separated ad IDs | - |
+| `class` | Custom CSS class | - |
 
 ---
 

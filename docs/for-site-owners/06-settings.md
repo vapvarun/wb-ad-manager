@@ -1,9 +1,9 @@
 # Settings
 
-Configure WB Ad Manager at **WB Ad Manager > Settings**.
+Configure WB Ad Manager at **WB Ad Manager → Settings**.
 
 ![Settings Page](../images/for-site-owners/settings-page.png)
-*The settings page with General, Display, Performance, Geo Targeting, AdSense, Privacy, and Advanced options*
+*The settings page with General, Display, Performance, Geo Targeting, AdSense, Privacy, and Advanced sections*
 
 ---
 
@@ -13,16 +13,17 @@ Configure WB Ad Manager at **WB Ad Manager > Settings**.
 |---------|-------------|---------|
 | **Disable for Logged-in Users** | Hide all ads from logged-in users | Off |
 | **Disable for Admins** | Hide all ads from administrators | Off |
-| **Minimum Content Length** | Minimum characters required to show paragraph ads | 300 |
-| **Disabled Post Types** | Post types where ads won't show | None |
-| **Maximum Ads Per Page** | Limit how many ads display per page | 10 |
+| **Minimum Content Length** | Minimum characters required to show paragraph ads. Set 0 to disable this check. | 300 |
+| **Disable on Post Types** | Post types where automatic placements won't show | None |
+| **Maximum Ads Per Page** | Limit how many ads display per page. Set 0 for unlimited. | 10 |
 
 ### When to Use
 
 - **Disable for Admins**: See your site without ads while testing
-- **Disable for Logged-in**: Premium member perk (ad-free experience)
-- **Minimum Content Length**: Prevents ads from appearing on very short content. Set to 0 to disable this check.
-- **Maximum Ads Per Page**: Prevents ad overload. Set to 0 for unlimited.
+- **Disable for Logged-in**: Offer an ad-free experience to members
+- **Minimum Content Length**: Prevents paragraph ads from appearing on very short posts
+- **Disable on Post Types**: Exclude certain post types from automatic placements entirely
+- **Maximum Ads Per Page**: Prevents ad overload on content-heavy pages
 
 ---
 
@@ -45,7 +46,7 @@ Leave the label text empty to disable the label entirely.
 
 ### Custom Container Class
 
-Add your own CSS class to style ads consistently:
+Add your own CSS class to style ads consistently across your site:
 ```css
 .my-custom-ad-class {
     border: 1px solid #eee;
@@ -61,14 +62,14 @@ Add your own CSS class to style ads consistently:
 | Setting | Description | Default |
 |---------|-------------|---------|
 | **Lazy Load Ads** | Load ads only when scrolled into view | On |
-| **Cache Ad Queries** | Cache database queries using transients | On |
+| **Cache Ad Queries** | Cache database queries using WordPress transients | On |
 
 ### Lazy Loading
 
 When enabled, ads below the fold won't load until the user scrolls to them. This improves:
 - Initial page load time
 - Core Web Vitals scores
-- User experience
+- User experience on slow connections
 
 ### Cache Ad Queries
 
@@ -85,23 +86,24 @@ Caches ad selection queries to reduce database load. Uses WordPress transients w
 
 ### Available Providers
 
-| Provider | Requests | Accuracy | API Key Required |
-|----------|----------|----------|------------------|
-| **ip-api.com** | 45/minute | Good | No |
-| **ipinfo.io** | 50K/month | Excellent | Yes (free tier available) |
+| Provider | Requests | API Key Required |
+|----------|----------|------------------|
+| **ip-api.com** | 45/minute | No |
+| **ipinfo.io** | 50K/month | Optional (free tier available) |
+| **ipapi.co** | 1K/day | No |
+
+If the primary provider fails, the system automatically tries the next provider.
 
 ### Getting an ipinfo.io API Key
 
 1. Go to [ipinfo.io](https://ipinfo.io)
 2. Sign up for a free account
 3. Copy your API key from the dashboard
-4. Paste into the settings
-
-The free tier provides 50,000 requests per month, sufficient for most sites.
+4. Paste it into this setting
 
 ---
 
-## AdSense Settings
+## Google AdSense Settings
 
 | Setting | Description | Default |
 |---------|-------------|---------|
@@ -112,13 +114,14 @@ The free tier provides 50,000 requests per month, sufficient for most sites.
 
 1. Log into [Google AdSense](https://www.google.com/adsense/)
 2. Click your account icon
-3. Find "Publisher ID" (starts with ca-pub-)
+3. Find "Publisher ID" (starts with `ca-pub-`)
+4. Paste it here — this is the default used for all AdSense ads
 
 ### Auto Ads
 
 When enabled, Google automatically places ads throughout your site. This works alongside any manually placed ads.
 
-**Note:** Auto Ads may place ads in locations you don't control. Test thoroughly before enabling.
+**Note:** Auto Ads may place ads in locations you don't control. Test thoroughly before enabling on production.
 
 ---
 
@@ -136,7 +139,7 @@ When enabled, AdSense scripts won't load until the user gives consent. Works wit
 - CookieYes
 - Complianz
 - GDPR Cookie Consent
-- And others that fire `wp_set_consent()` or use standard consent APIs
+- Other plugins that implement standard WordPress consent APIs
 
 ### IP Anonymization
 
@@ -145,7 +148,7 @@ When enabled, IP addresses are hashed before storage, making them non-identifiab
 - Privacy protection
 - Reduced data liability
 
-Recommended to keep this ON for sites with EU visitors.
+Recommended to keep this On for sites with EU visitors.
 
 ---
 
@@ -163,80 +166,7 @@ When enabled, uninstalling the plugin will permanently delete:
 - All statistics and analytics
 - All plugin settings
 
-**Warning:** This cannot be undone. Only enable if you're certain you want complete removal.
-
----
-
-## Link Settings
-
-| Setting | Description | Default |
-|---------|-------------|---------|
-| **Link Prefix** | URL prefix for cloaked links | `go` |
-| **Default NoFollow** | Add nofollow to all links | On |
-| **Default Sponsored** | Add sponsored attribute | Off |
-| **Enable Tracking** | Track clicks by default | On |
-
-### Link URL Format
-
-With prefix "go": `yoursite.com/go/link-slug`
-
-You can change to: `yoursite.com/out/link-slug` or `yoursite.com/visit/link-slug`
-
-**Important:** Changing the prefix will break existing links. Update any hardcoded URLs after changing.
-
----
-
-## Tracking Settings
-
-| Setting | Description | Default |
-|---------|-------------|---------|
-| **Track Impressions** | Count ad views | On |
-| **Track Clicks** | Count ad clicks | On |
-| **Exclude Bots** | Don't count bot traffic | On |
-| **Exclude Admins** | Don't count admin views | On |
-
-### Data Retention
-
-| Setting | Description |
-|---------|-------------|
-| **Keep Stats For** | Days to retain detailed stats |
-| **Archive Old Stats** | Summarize old data to save space |
-
----
-
-## Modules
-
-Enable or disable plugin features:
-
-| Module | Description |
-|--------|-------------|
-| **Ad Types** | Image, Code, Rich Content, AdSense, Email |
-| **Placements** | Header, Footer, Content, Sidebar, etc. |
-| **Link Management** | Cloaked links and tracking |
-| **Geo Targeting** | Location-based targeting |
-| **BuddyPress** | BuddyPress integration |
-| **bbPress** | bbPress integration |
-
-Disable modules you don't use to simplify the admin interface.
-
----
-
-## Import/Export
-
-### Export Settings
-
-1. Go to Settings > Import/Export
-2. Click **Export Settings**
-3. Save the JSON file
-
-### Import Settings
-
-1. Go to Settings > Import/Export
-2. Click **Choose File**
-3. Select your JSON file
-4. Click **Import**
-
-Useful for migrating settings between sites or backing up your configuration.
+**Warning:** This cannot be undone. Only enable if you are certain you want complete removal.
 
 ---
 
@@ -247,24 +177,22 @@ Useful for migrating settings between sites or backing up your configuration.
 - Enable lazy loading for ads below the fold
 - Enable ad query caching
 - Disable unused modules
-- Use image optimization for ad images
-- Consider fewer ad placements
+- Optimize images before uploading to media library
 
 ### For Accuracy
 
-- Exclude bots from tracking
-- Exclude admins from tracking
-- Set appropriate data retention
+- Exclude bots from tracking (handled automatically)
+- Enable "Disable for Admins" to keep your own views out of stats
 
 ### For Privacy
 
 - Enable IP anonymization
-- Require consent for AdSense (if targeting EU)
-- Review data retention settings
+- Require consent for AdSense if targeting EU visitors
+- Review the Delete Data on Uninstall option before removing the plugin
 
 ---
 
 ## Related Guides
 
 - [Targeting](05-targeting.md) - Per-ad targeting options
-- [Placements](04-placements.md) - Available placements
+- [Placements](04-placements.md) - Available placement locations

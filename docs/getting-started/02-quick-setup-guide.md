@@ -2,8 +2,7 @@
 
 ## What You'll Learn
 
-- How to create ad zones
-- How to create and publish ads
+- How to create ads with placement checkboxes
 - How to display ads on your site
 - How to track performance
 
@@ -11,51 +10,19 @@
 
 ## Overview
 
-Setting up WB Starter Ads involves three simple steps:
+Setting up WB Ad Manager involves two simple steps:
 
-1. **Create Ad Zones** - Define where ads will appear
-2. **Create Ads** - Add your ad content
-3. **Display Ads** - Use shortcodes to show ads
+1. **Create Ads** - Add your ad content and choose where it appears
+2. **Display Ads** - Use shortcodes for manual placement anywhere
 
-Let's get started!
-
----
-
-## Step 1: Create Ad Zones (2 minutes)
-
-Ad zones are containers that hold your ads. Think of them as "slots" on your website.
-
-### Common Ad Zone Sizes
-
-| Zone Type | Size | Where to Use |
-|-----------|------|--------------|
-| Leaderboard | 728x90 | Header, above content |
-| Medium Rectangle | 300x250 | Sidebar, in-content |
-| Wide Skyscraper | 160x600 | Sidebar |
-| Mobile Banner | 320x50 | Mobile header/footer |
-
-### Creating a Zone
-
-1. Go to **WB Ad Manager → Ad Zones**
-2. Click **Add New**
-3. Fill in:
-   - **Title**: "Sidebar Banner" (descriptive name)
-   - **Slug**: `sidebar-banner` (used in shortcode)
-   - **Width**: 300
-   - **Height**: 250
-4. Set rotation options:
-   - **Rotation Type**: Random (default)
-   - **Refresh**: Disabled or set interval
-5. Click **Publish**
-
-> **Tip:** Create 2-3 zones for different areas of your site.
+Ads assigned to the same placement rotate automatically based on priority. No zones to create.
 
 ---
 
-## Step 2: Create Your First Ad (3 minutes)
+## Step 1: Create Your First Ad (5 minutes)
 
 ![Ads List](../images/getting-started/ads-list.png)
-*The ads list showing all your ads with status, zones, and performance metrics*
+*The ads list showing all your ads with status, placements, and performance metrics*
 
 ### For Image Ads
 
@@ -66,40 +33,42 @@ Ad zones are containers that hold your ads. Think of them as "slots" on your web
    - **Ad Type**: Image
 4. Upload your banner image
 5. Enter **Destination URL**: `https://example.com/sale`
-6. In the **Ad Zones** box (right sidebar), check your zone
-7. Set scheduling (optional):
-   - Start Date
-   - End Date
+6. In the **Placements** metabox, check where this ad should appear (e.g., "After Content", "Sidebar")
+7. Set **Priority** (1–10) — higher priority shows the ad more often when multiple ads share a placement
 8. Click **Publish**
 
-### For Text Ads
+### For HTML/Code Ads
 
 1. Go to **WB Ad Manager → Ads → Add New**
-2. Select **Ad Type**: Text
-3. Enter:
-   - **Headline**: "50% Off Summer Sale"
-   - **Description**: "Shop now and save big on all items"
-   - **Display URL**: "example.com/sale"
-   - **Destination URL**: Full URL
-4. Assign to zone and **Publish**
+2. Select **Ad Type**: Code/HTML/JS
+3. Paste your HTML or JavaScript code
+4. Check your desired placements and **Publish**
 
-### For HTML Ads
+### For Google AdSense
 
 1. Go to **WB Ad Manager → Ads → Add New**
-2. Select **Ad Type**: HTML
-3. Paste your HTML/JavaScript code
-4. Assign to zone and **Publish**
+2. Select **Ad Type**: AdSense
+3. Enter your Ad Unit ID
+4. Check your desired placements and **Publish**
+
+> **Tip:** Add multiple ads and assign them to the same placement. They will rotate automatically, with higher priority ads appearing more often.
 
 ---
 
-## Step 3: Display Ads on Your Site (2 minutes)
+## Step 2: Display Ads on Your Site (2 minutes)
 
-### Using Shortcodes
+### Using Shortcodes (Manual Placement)
 
-Add this shortcode where you want ads to appear:
+Use shortcodes to display a specific ad by ID anywhere — pages, posts, widgets, or theme templates:
 
 ```
-[wbam_ad zone="sidebar-banner"]
+[wbam_ad id="123"]
+```
+
+Display multiple specific ads at once:
+
+```
+[wbam_ads ids="1,2,3"]
 ```
 
 **Where to add shortcodes:**
@@ -110,63 +79,39 @@ Add this shortcode where you want ads to appear:
 | Widgets | Use Text/HTML widget in sidebar |
 | Theme | Use `do_shortcode()` in PHP |
 
-### Shortcode Examples
+### Using Automatic Placements
 
-**Single ad from zone:**
-```
-[wbam_ad zone="sidebar-banner"]
-```
+Automatic placements insert ads without shortcodes. Check the placements you want directly on each ad:
 
-**Multiple ads:**
-```
-[wbam_ads zone="sponsors" count="4"]
-```
-
-**Specific ad by ID:**
-```
-[wbam_ad id="123"]
-```
-
-### Using Widgets
-
-1. Go to **Appearance → Widgets**
-2. Find "WB Ad Manager" widget
-3. Drag to your sidebar
-4. Select the ad zone
-5. Save
+- **Before Content** / **After Content**
+- **Header** / **Footer**
+- **Sidebar**
+- **After Paragraph X** (and optionally repeat)
+- And more
 
 ---
 
-## Step 4: Verify It's Working (1 minute)
+## Step 3: Verify It's Working (1 minute)
 
-1. Visit a page where you added the shortcode
+1. Visit a page where you added the shortcode or have an automatic placement active
 2. Your ad should display
-3. Click the ad to test
-4. Go to **WB Ad Manager → Analytics**
-5. You should see 1 click recorded
+3. Click the ad to test tracking
+4. Go to **WB Ad Manager → Ads**
+5. Check the Impressions and Clicks columns
 
 ---
 
-## Step 5: Configure Tracking (2 minutes)
+## Step 4: Configure Tracking (2 minutes)
 
 ### Enable Analytics
 
-1. Go to **WB Ad Manager → Settings → Analytics**
-2. Enable:
-   - Click tracking
-   - Impression tracking
-   - Unique visitor tracking
-3. Set data retention period
-4. Click **Save Changes**
+1. Go to **WB Ad Manager → Settings**
+2. Verify tracking is enabled (it is by default)
+3. Optionally enable **Exclude Admins** to keep your own visits out of stats
 
 ### View Reports
 
-1. Go to **WB Ad Manager → Analytics**
-2. View:
-   - Total impressions
-   - Total clicks
-   - Click-through rate (CTR)
-   - Top performing ads
+Stats appear directly in the Ads list: impressions and clicks per ad.
 
 ---
 
@@ -176,11 +121,11 @@ Add this shortcode where you want ads to appear:
 
 | Shortcode | Purpose |
 |-----------|---------|
-| `[wbam_ad]` | Display single ad/zone |
-| `[wbam_ads]` | Display multiple ads |
-| `[wbam_link]` | Display managed link |
-| `[wbam_links]` | Display link list |
-| `[wbam_link_url]` | Output raw tracked URL |
+| `[wbam_ad id="123"]` | Display a single ad by ID |
+| `[wbam_ads ids="1,2,3"]` | Display multiple specific ads |
+| `[wbam_link id="123"]` | Display a managed tracked link |
+| `[wbam_links]` | Display a link list |
+| `[wbam_link_url id="123"]` | Output a raw tracked URL |
 | `[wbam_partnership_inquiry]` | Link request form |
 
 ### Ad Statuses
@@ -190,17 +135,17 @@ Add this shortcode where you want ads to appear:
 | Published | Active and showing |
 | Draft | Saved but not live |
 | Scheduled | Will go live on start date |
-| Expired | Past end date |
+| Disabled | Manually turned off in Ad Status metabox |
 
 ---
 
 ## Tips for Success
 
-1. **Use appropriate sizes** - Match ad size to zone size
-2. **Set weights** - Give important ads higher weight
-3. **Monitor performance** - Check analytics weekly
-4. **Rotate creatives** - Add multiple ads per zone
-5. **A/B test** - Create variations to find winners
+1. **Set priority** - Give important ads a higher priority (1–10) so they show more often
+2. **Monitor performance** - Check impressions and clicks weekly
+3. **Rotate creatives** - Add multiple ads to the same placement
+4. **A/B test** - Create variations and compare performance using the built-in comparison metabox
+5. **Use scheduling** - Set start and end dates for time-limited campaigns
 
 ---
 
@@ -208,19 +153,19 @@ Add this shortcode where you want ads to appear:
 
 ### How many ads can I create?
 
-Unlimited! Create as many ads and zones as you need.
+Unlimited. Create as many ads as you need.
 
 ### Can I schedule ads?
 
-Yes! Set start and end dates when creating ads.
+Yes. Set start and end dates when creating an ad.
 
 ### Does it slow down my site?
 
-No. Ads load efficiently with minimal impact.
+No. Lazy loading and query caching are enabled by default.
 
 ### Can I use Google AdSense?
 
-Yes! Create an HTML ad and paste your AdSense code.
+Yes. Use the dedicated AdSense ad type, or paste AdSense code into a Code/HTML/JS ad.
 
 ---
 

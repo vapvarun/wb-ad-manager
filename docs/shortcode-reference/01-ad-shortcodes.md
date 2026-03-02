@@ -12,129 +12,82 @@
 
 | Shortcode | Purpose |
 |-----------|---------|
-| `[wbam_ad]` | Display single ad or zone |
-| `[wbam_ads]` | Display multiple ads |
+| `[wbam_ad]` | Display a single specific ad by ID |
+| `[wbam_ads]` | Display multiple specific ads by their IDs |
+
+> **Note:** Shortcodes display ads by ID. For automatic placement (header, footer, content, etc.), use the **Placements** checkboxes on each ad — no shortcode needed.
 
 ---
 
 ## [wbam_ad] - Single Ad Display
 
-Display a single ad or all ads from a zone with rotation.
+Display one ad by its post ID.
 
 ### Basic Usage
 
 ```
-[wbam_ad zone="sidebar-banner"]
+[wbam_ad id="123"]
 ```
 
 ### All Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `zone` | string | - | Ad zone slug to display |
-| `id` | int | - | Specific ad ID to display |
-| `size` | string | - | Override size (e.g., "300x250") |
-| `class` | string | - | Custom CSS class |
-| `fallback` | string | - | HTML to show if no ads |
-| `lazy` | bool | false | Enable lazy loading |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | int | Yes | The post ID of the ad to display |
+| `class` | string | No | Custom CSS class added to the ad wrapper |
 
 ### Examples
 
-**Display ads from a zone:**
-```
-[wbam_ad zone="header-leaderboard"]
-```
-
-**Display specific ad by ID:**
+**Display a specific ad:**
 ```
 [wbam_ad id="123"]
 ```
 
-**With custom CSS class:**
+**With a custom CSS class:**
 ```
-[wbam_ad zone="sidebar" class="my-custom-ad"]
-```
-
-**With fallback content:**
-```
-[wbam_ad zone="sidebar" fallback="<p>Advertise here!</p>"]
-```
-
-**With lazy loading (for below-fold ads):**
-```
-[wbam_ad zone="footer" lazy="true"]
-```
-
-**Override display size:**
-```
-[wbam_ad zone="sidebar" size="250x250"]
+[wbam_ad id="123" class="my-custom-ad"]
 ```
 
 ---
 
 ## [wbam_ads] - Multiple Ads Display
 
-Display multiple ads from a zone in a grid or list layout.
+Display a set of specific ads by their IDs. All listed ads render in sequence inside a shared wrapper.
 
 ### Basic Usage
 
 ```
-[wbam_ads zone="sponsors" count="4"]
+[wbam_ads ids="1,2,3"]
 ```
 
 ### All Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `zone` | string | - | Ad zone slug |
-| `count` | int | 3 | Number of ads to show |
-| `columns` | int | 1 | Grid columns (1-4) |
-| `layout` | string | "grid" | "grid" or "list" |
-| `class` | string | - | Custom CSS class |
-| `orderby` | string | "random" | "random", "date", "weight" |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `ids` | string | Yes | Comma-separated list of ad post IDs |
+| `class` | string | No | Custom CSS class added to each ad wrapper |
 
 ### Examples
 
-**Show 4 sponsor ads in 2 columns:**
+**Show three specific ads:**
 ```
-[wbam_ads zone="sponsors" count="4" columns="2"]
-```
-
-**Show ads in a vertical list:**
-```
-[wbam_ads zone="sidebar" count="5" layout="list"]
+[wbam_ads ids="10,20,30"]
 ```
 
-**Show highest weighted ads first:**
+**With a custom CSS class on each ad:**
 ```
-[wbam_ads zone="premium" count="3" orderby="weight"]
-```
-
-**Show newest ads first:**
-```
-[wbam_ads zone="latest" count="6" orderby="date"]
-```
-
-**With custom container class:**
-```
-[wbam_ads zone="partners" count="4" columns="4" class="partner-logos"]
+[wbam_ads ids="10,20,30" class="partner-logo"]
 ```
 
 ---
 
-## Finding Zone Slugs
+## Finding Ad IDs
 
-To find your ad zone slug:
+To find your ad's post ID:
 
-1. Go to **WB Ad Manager → Ad Zones**
-2. Look at the "Slug" column
-3. Use that slug in your shortcode
-
-Example slugs:
-- `header-banner`
-- `sidebar`
-- `footer-ads`
-- `in-content`
+1. Go to **WB Ad Manager → Ads**
+2. Hover over an ad title — the ID appears in the URL at the bottom of your browser (e.g., `post=123`)
+3. Or click to edit an ad and check the URL: `post.php?post=123&action=edit`
 
 ---
 
@@ -142,31 +95,21 @@ Example slugs:
 
 ### In Page/Post Content
 
-Simply add the shortcode in the editor:
+Add the shortcode directly in the editor:
 ```
-[wbam_ad zone="sidebar-banner"]
+[wbam_ad id="123"]
 ```
 
 ### In Widgets
 
-1. Add a "Custom HTML" or "Text" widget
+1. Add a **Custom HTML** or **Text** widget
 2. Paste the shortcode
 3. Save
 
 ### In Theme Templates (PHP)
 
 ```php
-<?php echo do_shortcode('[wbam_ad zone="sidebar-banner"]'); ?>
-```
-
-### In Theme with Function
-
-```php
-<?php
-if (function_exists('wbam_display_zone')) {
-    wbam_display_zone('sidebar-banner');
-}
-?>
+<?php echo do_shortcode( '[wbam_ad id="123"]' ); ?>
 ```
 
 ---
@@ -176,13 +119,13 @@ if (function_exists('wbam_display_zone')) {
 ### Default CSS Classes
 
 ```css
-.wbam-ad              /* Single ad container */
-.wbam-ad-zone         /* Zone container */
-.wbam-ad-item         /* Individual ad in grid */
-.wbam-ad-image        /* Image ad type */
-.wbam-ad-text         /* Text ad type */
-.wbam-ad-html         /* HTML ad type */
-.wbam-ad-link         /* Clickable link wrapper */
+.wbam-ad                   /* Single ad container */
+.wbam-ad-image             /* Image ad type */
+.wbam-ad-rich_content      /* Rich Content ad type */
+.wbam-ad-code              /* Code/HTML/JS ad type */
+.wbam-ad-adsense           /* AdSense ad type */
+.wbam-ad-email-capture     /* Email Capture ad type */
+.wbam-placement-shortcode  /* Wrapper when using [wbam_ads] */
 ```
 
 ### Custom Styling Examples
@@ -194,47 +137,26 @@ if (function_exists('wbam_display_zone')) {
     padding: 10px;
 }
 
-/* Rounded corners */
+/* Rounded image corners */
 .wbam-ad img {
     border-radius: 8px;
 }
 
-/* Hover effect */
+/* Hover shadow effect */
 .wbam-ad:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* Grid gap */
-.wbam-ad-zone.sponsors {
-    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 ```
 
 ---
 
-## Ad Rotation
+## How Ad Rotation Works
 
-### How Rotation Works
+Rotation is not controlled by shortcodes. It happens automatically at the placement level.
 
-When multiple ads are assigned to a zone:
+When multiple published ads are assigned to the same placement (e.g., "After Content"), the plugin selects which ad to show based on **Priority** (set per ad on a 1–10 slider). Higher priority ads are shown more often.
 
-| Rotation Type | Behavior |
-|--------------|----------|
-| **Random** | Different ad each page load |
-| **Weighted** | Higher weight = more likely |
-| **Sequential** | Cycles through in order |
-
-### Setting Ad Weight
-
-1. Edit your ad
-2. Find the "Weight" field
-3. Set value (1-100)
-4. Higher numbers = more impressions
-
-Example weights:
-- Premium sponsor: 100
-- Regular sponsor: 50
-- House ads: 10
+To display a specific ad regardless of rotation, use `[wbam_ad id="123"]` with the exact ID.
 
 ---
 
@@ -242,55 +164,32 @@ Example weights:
 
 ### Ad not showing
 
-1. Check zone slug is correct (case-sensitive)
-2. Verify ad is published (not draft)
-3. Check ad is assigned to the zone
-4. Verify start/end dates if set
-5. Clear any caching
+1. Verify the ad is published (not draft or disabled)
+2. Check the ad ID is correct
+3. Verify start/end dates if set
+4. Clear any caching plugins
 
-### Wrong size displaying
+### Shortcode shows as plain text
 
-1. Check uploaded image dimensions
-2. Use `size` parameter to override
-3. Add CSS: `.wbam-ad img { max-width: 100%; height: auto; }`
-
-### Multiple ads showing same ad
-
-1. Check you have multiple ads in the zone
-2. Verify rotation type isn't "sequential"
-3. Clear cache between page loads
+1. Verify the plugin is activated
+2. Check shortcode spelling — it is case-sensitive
+3. Ensure no extra spaces inside the shortcode brackets
+4. Try on a different page/post
+5. Switch to a default theme to test for conflicts
 
 ### Clicks not tracking
 
 1. Verify tracking is enabled in settings
-2. Check destination URL is valid
-3. Test in incognito mode (ad blockers)
+2. Check destination URL starts with `http://` or `https://`
+3. Test in an incognito window (ad blockers may interfere)
 
 ---
 
 ## Performance Tips
 
-1. **Optimize images** - Compress before uploading
-2. **Use lazy loading** - For below-fold ads
-3. **Limit zones per page** - 3-5 is optimal
-4. **Enable caching** - In plugin settings
-5. **Use appropriate sizes** - Don't upscale small images
-
----
-
-## Complete Example
-
-Here's a typical sidebar setup:
-
-```html
-<aside class="sidebar">
-    <h3>Sponsors</h3>
-    [wbam_ads zone="sidebar-sponsors" count="3" layout="list"]
-
-    <h3>Featured</h3>
-    [wbam_ad zone="sidebar-featured"]
-</aside>
-```
+1. **Optimize images** — Compress ad images before uploading
+2. **Limit ads per page** — 3–5 ad placements is optimal
+3. **Enable lazy loading** — Turn on in **WB Ad Manager → Settings → Performance** for ads below the fold
 
 ---
 

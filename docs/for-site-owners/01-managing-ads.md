@@ -2,48 +2,18 @@
 
 ## What You'll Learn
 
-- How to create and manage ad zones
 - How to create different ad types
-- How to schedule and rotate ads
+- How to assign placements directly on each ad
+- How to set priority and session limits
 - Best practices for ad management
 
 ---
 
-## Understanding Ad Zones
+## How Ad Placement Works
 
-Ad zones are containers that hold and display your ads. Think of them as "slots" on your website where ads appear.
+Ads do not use zones. Instead, each ad has its own **Placements** metabox where you check which locations it should appear in (header, footer, after content, sidebar, etc.).
 
-### Creating an Ad Zone
-
-1. Go to **WB Ad Manager → Ad Zones**
-2. Click **Add New**
-3. Configure the zone:
-   - **Title**: Descriptive name (e.g., "Sidebar Banner")
-   - **Slug**: URL-friendly name (e.g., `sidebar-banner`)
-   - **Width**: Zone width in pixels
-   - **Height**: Zone height in pixels
-4. Set rotation options
-5. Click **Publish**
-
-### Common Zone Sizes
-
-| Name | Size | Best Use |
-|------|------|----------|
-| Leaderboard | 728x90 | Header, above content |
-| Medium Rectangle | 300x250 | Sidebar, in-content |
-| Wide Skyscraper | 160x600 | Sidebar |
-| Large Rectangle | 336x280 | In-content |
-| Mobile Banner | 320x50 | Mobile sites |
-| Half Page | 300x600 | Sidebar (large) |
-
-### Zone Rotation Types
-
-| Type | How It Works |
-|------|--------------|
-| **Random** | Shows random ad each load |
-| **Weighted** | Higher weight = more shows |
-| **Sequential** | Cycles through in order |
-| **Single** | Always shows same ad |
+When multiple ads share the same placement, they rotate automatically. Priority controls how often each ad is shown — higher priority ads appear more often.
 
 ---
 
@@ -53,56 +23,69 @@ Ad zones are containers that hold and display your ads. Think of them as "slots"
 
 1. Go to **WB Ad Manager → Ads**
 2. Click **Add New**
-3. Enter ad title (internal reference)
-4. Choose ad type
-5. Add content based on type
-6. Assign to zone(s)
-7. Set schedule (optional)
-8. Click **Publish**
+3. Enter the ad title (internal reference only)
+4. Choose an ad type and fill in the content
+5. In the **Placements** metabox, check all locations where the ad should appear
+6. In the **Ad Status** metabox, set priority and optional session limit
+7. Click **Publish**
 
 ### Ad Types
 
 #### Image Ads
 
-Best for: Banners, promotional graphics
+Best for: Banners, promotional graphics, affiliate images
 
 **Required fields:**
-- Image upload (JPG, PNG, GIF)
+- Image upload (JPG, PNG, GIF, WebP)
 - Destination URL
 - Alt text (for accessibility)
 
 **Tips:**
-- Optimize images before upload
-- Match image size to zone size
-- Use clear call-to-action
+- Optimize images before upload to keep page load fast
 - Animated GIFs are supported
+- Use standard IAB sizes: 300x250, 728x90, 160x600
 
-#### Text Ads
+#### Rich Content Ads
 
-Best for: Simple promotions, links
+Best for: Native advertising, styled announcements, promotional content
 
-**Required fields:**
-- Headline (main clickable text)
-- Description (supporting text)
-- Destination URL
+**Fields:**
+- HTML content area (supports basic HTML tags via `wp_kses_post`)
 
 **Tips:**
-- Keep headlines under 25 characters
-- Use action words (Get, Save, Try)
-- Include clear benefit
+- Match your site's design for a native feel
+- Keep content concise — it's an ad, not an article
 
-#### HTML Ads
+#### Code/HTML/JS Ads
 
-Best for: Third-party ad code, rich media
+Best for: Third-party ad networks, custom scripts, embedded content
 
-**Required fields:**
-- HTML/JavaScript code
+**Fields:**
+- HTML/JavaScript code input
 
 **Tips:**
 - Test code before saving
-- Be careful with JavaScript
-- Use for AdSense, affiliate codes
+- Use for affiliate network banners, custom tracking pixels
 - Check mobile compatibility
+
+#### Google AdSense
+
+Best for: Google AdSense integration with responsive sizing
+
+**Fields:**
+- Ad Unit ID (from your AdSense account)
+- Format (Auto, Horizontal, Vertical, Rectangle)
+- Responsive sizing toggle
+
+**Requirements:**
+- Active Google AdSense account approved for your site
+- Publisher ID configured in **WB Ad Manager → Settings → Google AdSense**
+
+#### Email Capture
+
+Best for: Newsletter signups, lead generation
+
+See [Ad Types](03-ad-types.md) for full Email Capture documentation.
 
 ---
 
@@ -110,11 +93,11 @@ Best for: Third-party ad code, rich media
 
 ### Setting Date Ranges
 
-When creating/editing an ad:
+When creating or editing an ad:
 
-1. Find **Schedule** section
-2. Set **Start Date** - When ad becomes active
-3. Set **End Date** - When ad expires (optional)
+1. Find the **Schedule** section
+2. Set **Start Date** — when the ad becomes active
+3. Set **End Date** — when the ad expires (optional)
 4. Save changes
 
 ### Schedule Examples
@@ -128,27 +111,95 @@ When creating/editing an ad:
 
 ---
 
-## Ad Weighting
+## Ad Priority
 
-Control how often ads show relative to others in the same zone.
+Control how often an ad appears relative to others sharing the same placement.
 
-### Setting Weight
+### Setting Priority
 
 1. Edit the ad
-2. Find **Weight** field
-3. Enter value (1-100)
+2. Find the **Ad Status** metabox (right sidebar)
+3. Drag the **Priority** slider — range is 1 to 10
 4. Save
 
-### Weight Examples
+Higher priority = shown more often when multiple ads share a placement.
 
-| Ad | Weight | Approximate Show Rate |
-|----|---------|-----------------------|
-| Premium Sponsor | 100 | 50% |
-| Regular Sponsor | 50 | 25% |
-| House Ad A | 25 | 12.5% |
-| House Ad B | 25 | 12.5% |
+### Priority Examples
 
-> Higher weight = more impressions
+| Ad | Priority | Effect |
+|----|----------|--------|
+| Featured sponsor | 10 | Shown most often |
+| Regular sponsor | 5 | Shown at medium frequency |
+| House ad | 1 | Shown least often |
+
+---
+
+## Session Impression Limit
+
+Limit how many times a single visitor sees an ad per session.
+
+### Setting the Limit
+
+1. Edit the ad
+2. Find the **Ad Status** metabox
+3. Enter a number in **Session Limit**
+4. Leave empty for unlimited
+
+| Value | Behavior |
+|-------|----------|
+| Empty | Unlimited — no cap |
+| 1 | Show once per visitor session |
+| 3 | Show up to 3 times per session |
+
+---
+
+## Managing Placements
+
+Each ad shows a **Placements** metabox listing all available locations grouped by type. Check the boxes for where this ad should appear.
+
+### Automatic Placements
+
+When you check an automatic placement (header, footer, after content, etc.), the ad appears there without any shortcode.
+
+### Shortcode Placement
+
+To display a specific ad manually using a shortcode:
+
+```
+[wbam_ad id="123"]
+```
+
+See [Shortcode Reference](../shortcode-reference/01-ad-shortcodes.md) for all shortcode options.
+
+### Via PHP (Theme)
+
+```php
+<?php echo do_shortcode( '[wbam_ad id="123"]' ); ?>
+```
+
+---
+
+## Tracking Performance
+
+### Viewing Stats
+
+![Analytics Dashboard](../images/for-site-owners/analytics-dashboard.png)
+*The ads list showing impressions, clicks, and status columns per ad*
+
+The Ads list shows impressions and clicks directly in the table columns. For per-ad details:
+
+1. Edit any ad
+2. If other active ads share the same placement, a **Ad Performance Comparison** metabox appears
+3. View side-by-side CTR comparison with a visual bar chart
+4. A "Winner" badge marks the ad with the highest CTR (requires 100+ impressions)
+
+### Key Metrics
+
+| Metric | What It Means | Good Target |
+|--------|---------------|-------------|
+| **Impressions** | Times ad was shown | Varies |
+| **Clicks** | Times ad was clicked | More is better |
+| **CTR** | Clicks ÷ Impressions | 0.5%+ |
 
 ---
 
@@ -171,90 +222,13 @@ Create categories to organize ads:
 
 ---
 
-## Displaying Ads
-
-### Via Shortcode
-
-Add to any page, post, or widget:
-
-```
-[wbam_ad zone="sidebar-banner"]
-```
-
-### Via Widget
-
-1. Go to **Appearance → Widgets**
-2. Add "WB Ad Manager" widget
-3. Select zone
-4. Save
-
-### Via PHP (Theme)
-
-```php
-<?php echo do_shortcode('[wbam_ad zone="sidebar-banner"]'); ?>
-```
-
----
-
-## Tracking Performance
-
-### Viewing Stats
-
-![Analytics Dashboard](../images/for-site-owners/analytics-dashboard.png)
-*The analytics dashboard showing impressions, clicks, CTR, and trend charts*
-
-1. Go to **WB Ad Manager → Analytics**
-2. View overall stats:
-   - Impressions
-   - Clicks
-   - CTR (Click-through rate)
-3. Filter by date range
-4. View individual ad performance
-
-### Key Metrics
-
-| Metric | What It Means | Good Target |
-|--------|---------------|-------------|
-| **Impressions** | Times ad shown | Varies |
-| **Clicks** | Times clicked | More is better |
-| **CTR** | Clicks ÷ Impressions | 0.5%+ |
-
----
-
-## Managing Third-Party Ads
-
-### Google AdSense
-
-1. Create new ad (HTML type)
-2. Paste AdSense code
-3. Assign to zone
-4. Publish
-
-### Affiliate Networks
-
-1. Get affiliate banner code
-2. Create HTML ad
-3. Paste code
-4. Track via analytics
-
-### Tips
-
-- Test ads load correctly
-- Check mobile display
-- Monitor for policy violations
-- Use fallback ads for ad blockers
-
----
-
 ## Bulk Operations
 
 ### Bulk Edit Ads
 
 1. Go to **WB Ad Manager → Ads**
 2. Check multiple ads
-3. Select bulk action:
-   - Move to Trash
-   - Edit (change status, zone)
+3. Select a bulk action (Move to Trash, Edit)
 4. Click Apply
 
 ### Export/Import
@@ -266,27 +240,27 @@ Add to any page, post, or widget:
 
 ## Best Practices
 
-### Ad Placement
+### Ad Placement Effectiveness
 
 | Location | Effectiveness | Notes |
 |----------|---------------|-------|
 | Above fold | High | Seen immediately |
+| In-content | High | Read alongside content |
 | Sidebar | Medium | Always visible |
-| In-content | High | Read with content |
 | Footer | Low | Often missed |
 
 ### Performance Tips
 
-1. **A/B test** - Try different creatives
-2. **Rotate frequently** - Prevent ad blindness
-3. **Match context** - Relevant ads perform better
-4. **Optimize images** - Faster load times
-5. **Monitor CTR** - Remove underperformers
+1. **A/B test** — Create variations and use the comparison metabox
+2. **Rotate regularly** — Add multiple ads per placement to prevent ad blindness
+3. **Match context** — Relevant ads perform better
+4. **Optimize images** — Compress before uploading for faster load times
+5. **Monitor CTR** — Disable underperformers directly from the comparison table
 
 ### Common Mistakes
 
-- Too many ads per page (3-5 is ideal)
-- Ads that don't match content
+- Too many ads per page (3–5 is ideal)
+- Ads that don't match the surrounding content
 - Slow-loading ad images
 - Ignoring mobile users
 - Not tracking performance
@@ -301,4 +275,4 @@ Add to any page, post, or widget:
 
 ---
 
-*Need more features? [Upgrade to Pro](link-to-pro) for advertiser portal, payments, and more.*
+*Need more features? [Upgrade to Pro](link-to-pro) for the advertiser portal, payments, and more.*
