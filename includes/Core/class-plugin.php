@@ -23,6 +23,7 @@ use WBAM\Admin\Setup_Wizard;
 use WBAM\Admin\Help_Docs;
 use WBAM\Admin\Upgrade_Pro;
 use WBAM\Frontend\Frontend;
+use WBAM\API\API_Bootstrap;
 
 /**
  * Plugin class.
@@ -156,6 +157,14 @@ class Plugin {
 		// Links module.
 		$this->links = Links_Module::get_instance();
 		$this->links->init();
+
+		// REST API — must load on both frontend and admin for rest_api_init to fire.
+		new API_Bootstrap();
+
+		// Abilities API (WP 6.9+) — registers categories and abilities on dedicated hooks.
+		if ( function_exists( 'wp_register_ability' ) ) {
+			new Abilities();
+		}
 	}
 
 	/**
