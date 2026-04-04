@@ -7,7 +7,7 @@ composer.lock
 
 # IDE and Editors
 .idea/
-.vscode/
+# .vscode/ — committed for team (settings.json, launch.json)
 *.sublime-project
 *.sublime-workspace
 .project
@@ -68,3 +68,8 @@ phpunit.xml.bak
 # Local development
 *.local.php
 wp-config-local.php
+
+# Playwright
+/test-results/
+/playwright-report/
+tests/e2e/.auth/

@@ -1,0 +1,22 @@
+{
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"editor.formatOnSave": false,
+	"editor.rulers": [120],
+	"phpcs.standard": "WordPress",
+	"phpcs.executablePath": "phpcs",
+	"[javascript]": {
+		"editor.tabSize": 4,
+		"editor.insertSpaces": false
+	},
+	"files.associations": {
+		"*.php": "php"
+	},
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/vendor": true,
+		"**/build": true,
+		"**/*.min.js": true,
+		"**/*.min.css": true
+	}
+}
