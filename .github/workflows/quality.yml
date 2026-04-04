@@ -1,0 +1,79 @@
+name: Quality Checks
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master, develop]
+
+jobs:
+  phpcs:
+    name: PHPCS (WordPress Standards)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer, cs2pr
+      - run: composer global require squizlabs/php_codesniffer wp-coding-standards/wpcs phpcsstandards/phpcsutils
+      - run: phpcs --config-set installed_paths $(composer global config home)/vendor/wp-coding-standards/wpcs
+      - run: phpcs --report=checkstyle | cs2pr
+
+  phpstan:
+    name: PHPStan (Static Analysis)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - run: composer install --no-interaction
+      - run: ./vendor/bin/phpstan analyse --error-format=github --memory-limit=1G
+
+  php-lint:
+    name: PHP Syntax Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+      - run: find . -name "*.php" -not -path "./vendor/*" -not -path "./node_modules/*" | xargs -n1 php -l
+
+  eslint:
+    name: ESLint (JavaScript)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npx eslint@8 assets/js/ || true
+
+  php-compatibility:
+    name: PHP Compatibility (7.4-8.4)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+      - run: composer global require phpcompatibility/phpcompatibility-wp phpcsstandards/phpcsutils squizlabs/php_codesniffer wp-coding-standards/wpcs
+      - run: phpcs --config-set installed_paths $(composer global config home)/vendor/phpcompatibility/php-compatibility,$(composer global config home)/vendor/phpcompatibility/phpcompatibility-wp,$(composer global config home)/vendor/wp-coding-standards/wpcs
+      - run: phpcs --standard=PHPCompatibilityWP --extensions=php --ignore=vendor,node_modules --runtime-set testVersion 7.4-8.4 -n .
+
+  security:
+    name: Composer Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - run: composer install --no-interaction --no-dev 2>/dev/null || true
+      - run: composer audit --no-interaction || true
