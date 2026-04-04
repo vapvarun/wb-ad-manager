@@ -1,0 +1,22 @@
+{
+	"env": {
+		"browser": true,
+		"jquery": true
+	},
+	"globals": {
+		"wp": "readonly",
+		"ajaxurl": "readonly",
+		"wbamAdmin": "readonly",
+		"wbamCodeEditor": "readonly",
+		"wbamFrontend": "readonly",
+		"wbamLinks": "readonly",
+		"wbamPartnership": "readonly"
+	},
+	"rules": {
+		"no-undef": "error",
+		"no-unused-vars": "warn",
+		"eqeqeq": "warn",
+		"no-console": "warn",
+		"no-redeclare": "error"
+	}
+}
