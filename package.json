@@ -14,7 +14,6 @@
     "watch": "grunt watch"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
     "grunt": "^1.6.1",
     "grunt-contrib-clean": "^2.0.1",
     "grunt-contrib-compress": "^2.0.0",
@@ -23,8 +22,6 @@
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-wp-i18n": "^1.0.3",
-    "load-grunt-tasks": "^5.1.0",
-    "stylelint": "^17.6.0",
-    "stylelint-config-standard": "^40.0.0"
+    "load-grunt-tasks": "^5.1.0"
   }
 }
