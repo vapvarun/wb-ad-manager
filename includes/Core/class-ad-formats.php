@@ -287,7 +287,7 @@ class Ad_Formats {
 
 		$ad_format = self::get_ad_format( $ad_id );
 
-		// Responsive ads always fit.
+		// Responsive ads always fit — by definition they fill the slot.
 		if ( self::RESPONSIVE === $ad_format ) {
 			return true;
 		}
@@ -302,14 +302,10 @@ class Ad_Formats {
 			return true;
 		}
 
-		// Placement accepts responsive ads AND the ad has fixed dims:
-		// we still allow it. Responsive on the placement side means
-		// "this slot can stretch to accommodate anything".
-		if ( in_array( self::RESPONSIVE, $placement_formats, true ) ) {
-			return true;
-		}
-
 		if ( self::CUSTOM === $ad_format ) {
+			// Translate the ad's persisted dimensions into a taxonomy
+			// slug, then check against the placement's accepted list.
+			// A custom ad with unknown dimensions can't be matched.
 			$dims = self::get_ad_dimensions( $ad_id );
 			if ( $dims['width'] <= 0 || $dims['height'] <= 0 ) {
 				return false;
@@ -323,6 +319,11 @@ class Ad_Formats {
 			return in_array( $matched_slug, $placement_formats, true );
 		}
 
+		// Fixed-format ad fits only when the placement explicitly lists
+		// the ad's format. Note: a placement listing `responsive` in its
+		// accepted_formats means "accepts responsive creatives", NOT
+		// "accepts anything" — a wide-skyscraper ad does not belong in
+		// a header slot that only lists [leaderboard, responsive].
 		return in_array( $ad_format, $placement_formats, true );
 	}
 

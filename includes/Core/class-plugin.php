@@ -108,6 +108,11 @@ class Plugin {
 	 * Initialize components.
 	 */
 	private function init_components() {
+		// Placement -> accepted-formats map. Register the filter before
+		// the Placement_Engine boots so every surface that reads the
+		// wbam_get_placements registry sees the format metadata.
+		Placement_Format_Map::register();
+
 		// Placements engine.
 		$this->placements = Placement_Engine::get_instance();
 		$this->placements->init();
