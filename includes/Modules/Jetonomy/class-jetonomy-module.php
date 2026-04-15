@@ -3,9 +3,9 @@
  * Jetonomy Module.
  *
  * Integrates WB Ad Manager with the Jetonomy discussion/forum plugin
- * (https://store.wbcomdesigns.com/jetonomy/). Adds seven placement
- * positions that map to the template action hooks shipped with
- * Jetonomy v1.3.0+.
+ * (https://store.wbcomdesigns.com/jetonomy/). Registers one distinct
+ * placement per template hook exposed by Jetonomy v1.3.0+ so each
+ * position is independently selectable on the ad edit screen.
  *
  * @package WB_Ad_Manager
  * @since   2.8.0
@@ -18,11 +18,73 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use WBAM\Modules\Placements\Placement_Engine;
+use WBAM\Modules\Placements\Placement_Interface;
 
 /**
  * Jetonomy module bootstrap.
  */
 class Jetonomy_Module {
+
+	/**
+	 * Definition of every placement this module registers. Keeping the
+	 * metadata in one table makes it trivial to add/remove a position
+	 * later - just edit this list, no extra classes needed.
+	 *
+	 * @return array<int,array{id:string,name:string,description:string,hook:string,args:int}>
+	 */
+	public static function placements() {
+		return array(
+			array(
+				'id'          => 'jetonomy_sidebar_before',
+				'name'        => __( 'Sidebar Top', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Display ads at the top of the Jetonomy sidebar, above all widgets.', 'wb-ads-rotator-with-split-test' ),
+				'hook'        => 'jetonomy_sidebar_before',
+				'args'        => 1,
+			),
+			array(
+				'id'          => 'jetonomy_sidebar_after_about',
+				'name'        => __( 'Sidebar After About', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Display ads in the sidebar, right after the About card (space pages only).', 'wb-ads-rotator-with-split-test' ),
+				'hook'        => 'jetonomy_sidebar_after_about',
+				'args'        => 1,
+			),
+			array(
+				'id'          => 'jetonomy_sidebar_after',
+				'name'        => __( 'Sidebar Bottom', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Display ads at the bottom of the Jetonomy sidebar, below all widgets.', 'wb-ads-rotator-with-split-test' ),
+				'hook'        => 'jetonomy_sidebar_after',
+				'args'        => 1,
+			),
+			array(
+				'id'          => 'jetonomy_after_post_article',
+				'name'        => __( 'After Topic Body', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Display ads between the topic article and the replies section.', 'wb-ads-rotator-with-split-test' ),
+				'hook'        => 'jetonomy_after_post_article',
+				'args'        => 1,
+			),
+			array(
+				'id'          => 'jetonomy_before_replies',
+				'name'        => __( 'Before Replies', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Display ads above the replies list on a single topic.', 'wb-ads-rotator-with-split-test' ),
+				'hook'        => 'jetonomy_before_replies',
+				'args'        => 2,
+			),
+			array(
+				'id'          => 'jetonomy_between_replies',
+				'name'        => __( 'Between Replies', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Display ads after every Nth reply (frequency configurable on each ad).', 'wb-ads-rotator-with-split-test' ),
+				'hook'        => 'jetonomy_between_replies',
+				'args'        => 3,
+			),
+			array(
+				'id'          => 'jetonomy_after_replies',
+				'name'        => __( 'After Replies', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Display ads below the replies list, above the reply composer.', 'wb-ads-rotator-with-split-test' ),
+				'hook'        => 'jetonomy_after_replies',
+				'args'        => 2,
+			),
+		);
+	}
 
 	/**
 	 * Initialize the module when Jetonomy is active.
@@ -33,23 +95,11 @@ class Jetonomy_Module {
 		}
 
 		$engine = Placement_Engine::get_instance();
-		$engine->register_placement( new Jetonomy_Placement() );
+		foreach ( self::placements() as $spec ) {
+			$engine->register_placement( new Jetonomy_Placement( $spec ) );
+		}
 
 		add_action( 'wp_head', array( __CLASS__, 'print_spacing_styles' ) );
-	}
-
-	/**
-	 * Print minimal spacing styles so ad wrappers don't collide with
-	 * Jetonomy cards, reply borders, or sidebar widgets. Kept inline to
-	 * avoid an extra HTTP request — the rules are ~10 lines.
-	 */
-	public static function print_spacing_styles() {
-		echo '<style id="wbam-jetonomy-spacing">'
-			. '.wbam-jetonomy-ad{margin:16px 0;padding:4px;box-sizing:border-box;}'
-			. '.wbam-jetonomy-ad img{max-width:100%;height:auto;display:block;margin:0 auto;}'
-			. '.wbam-jetonomy-sidebar_before,.wbam-jetonomy-sidebar_after_about,.wbam-jetonomy-sidebar_after{margin:0 0 16px 0;}'
-			. '.wbam-jetonomy-between_replies{margin:12px 0;}'
-			. '</style>';
 	}
 
 	/**
@@ -60,106 +110,84 @@ class Jetonomy_Module {
 	public static function is_jetonomy_active() {
 		return class_exists( '\\Jetonomy\\Jetonomy' ) || defined( 'JETONOMY_VERSION' );
 	}
+
+	/**
+	 * Inline spacing styles so ad wrappers don't collide with Jetonomy
+	 * cards, reply borders, or sidebar widgets. Emitted once per page.
+	 */
+	public static function print_spacing_styles() {
+		echo '<style id="wbam-jetonomy-spacing">'
+			. '.wbam-jetonomy-ad{margin:16px 0;padding:4px;box-sizing:border-box;}'
+			. '.wbam-jetonomy-ad img{max-width:100%;height:auto;display:block;margin:0 auto;}'
+			. '.wbam-jetonomy-sidebar_before,.wbam-jetonomy-sidebar_after_about,.wbam-jetonomy-sidebar_after{margin:0 0 16px 0;}'
+			. '.wbam-jetonomy-between_replies{margin:12px 0;}'
+			. '</style>';
+	}
 }
 
 /**
- * Jetonomy placement handler.
+ * Placement for a single Jetonomy position.
+ *
+ * One instance per row in Jetonomy_Module::placements(). Using a single
+ * class parameterised by spec keeps the file short while still exposing
+ * each position as an independent checkbox in the ad admin UI.
  */
-class Jetonomy_Placement implements \WBAM\Modules\Placements\Placement_Interface {
+class Jetonomy_Placement implements Placement_Interface {
 
 	/**
-	 * Index of replies already processed in the current request, for the
-	 * between-replies frequency logic.
+	 * Placement spec: id, name, description, hook, args.
 	 *
-	 * @var int
+	 * @var array
 	 */
-	private $reply_index = 0;
+	private $spec;
 
 	/**
-	 * Placement ID.
-	 *
-	 * @return string
+	 * @param array $spec Placement definition (see Jetonomy_Module::placements()).
 	 */
+	public function __construct( array $spec ) {
+		$this->spec = $spec;
+	}
+
 	public function get_id() {
-		return 'jetonomy';
+		return $this->spec['id'];
 	}
 
-	/**
-	 * Placement label.
-	 *
-	 * @return string
-	 */
 	public function get_name() {
-		return __( 'Jetonomy Discussions', 'wb-ads-rotator-with-split-test' );
+		return $this->spec['name'];
 	}
 
-	/**
-	 * Placement description.
-	 *
-	 * @return string
-	 */
 	public function get_description() {
-		return __( 'Display ads in Jetonomy forums, spaces, topic pages, and sidebars.', 'wb-ads-rotator-with-split-test' );
+		return $this->spec['description'];
 	}
 
-	/**
-	 * Placement group (for admin grouping).
-	 *
-	 * @return string
-	 */
 	public function get_group() {
 		return 'jetonomy';
 	}
 
-	/**
-	 * Whether the placement is usable on this site.
-	 *
-	 * @return bool
-	 */
 	public function is_available() {
 		return Jetonomy_Module::is_jetonomy_active();
 	}
 
-	/**
-	 * Whether to show this placement in the admin selector.
-	 *
-	 * @return bool
-	 */
 	public function show_in_selector() {
 		return true;
 	}
 
 	/**
-	 * Wire WordPress actions to render callbacks.
+	 * Wire the Jetonomy action hook to our render callback.
 	 */
 	public function register() {
-		add_action( 'jetonomy_sidebar_before',      array( $this, 'render_sidebar_before' ) );
-		add_action( 'jetonomy_sidebar_after_about', array( $this, 'render_sidebar_after_about' ) );
-		add_action( 'jetonomy_sidebar_after',       array( $this, 'render_sidebar_after' ) );
-		add_action( 'jetonomy_after_post_article',  array( $this, 'render_after_post_article' ) );
-		add_action( 'jetonomy_before_replies',      array( $this, 'render_before_replies' ), 10, 2 );
-		add_action( 'jetonomy_between_replies',     array( $this, 'render_between_replies' ), 10, 3 );
-		add_action( 'jetonomy_after_replies',       array( $this, 'render_after_replies' ), 10, 2 );
+		add_action( $this->spec['hook'], array( $this, 'render' ), 10, $this->spec['args'] );
 	}
 
-	/** Render handlers — one per exposed position. */
-	public function render_sidebar_before()      { $this->render_position( 'sidebar_before' ); }
-	public function render_sidebar_after_about() { $this->render_position( 'sidebar_after_about' ); }
-	public function render_sidebar_after()       { $this->render_position( 'sidebar_after' ); }
-	public function render_after_post_article()  { $this->render_position( 'after_post_article' ); }
-	public function render_before_replies()      { $this->render_position( 'before_replies' ); }
-	public function render_after_replies()       { $this->render_position( 'after_replies' ); }
-
 	/**
-	 * Between-replies handler applies frequency logic (every Nth reply).
+	 * Render all ads assigned to this placement.
 	 *
-	 * @param object $reply The reply just rendered.
-	 * @param int    $index Zero-based index within the current batch.
-	 * @param object $post  Current post object.
+	 * For `jetonomy_between_replies` we apply frequency logic so the ad
+	 * fires every Nth reply rather than after every single one.
+	 *
+	 * @param mixed ...$args Passed through from Jetonomy's do_action().
 	 */
-	public function render_between_replies( $reply, $index, $post ) {
-		$this->reply_index = (int) $index + 1; // Convert to one-based for frequency math.
-
+	public function render( ...$args ) {
 		$engine = Placement_Engine::get_instance();
 		$ads    = $engine->get_ads_for_placement( $this->get_id() );
 
@@ -167,138 +195,77 @@ class Jetonomy_Placement implements \WBAM\Modules\Placements\Placement_Interface
 			return;
 		}
 
-		foreach ( $ads as $ad_id ) {
-			$data        = get_post_meta( $ad_id, '_wbam_ad_data', true );
-			$ad_position = isset( $data['jetonomy_position'] ) ? $data['jetonomy_position'] : '';
-
-			if ( 'between_replies' !== $ad_position ) {
-				continue;
-			}
-
-			$every  = isset( $data['jetonomy_every'] ) ? max( 1, absint( $data['jetonomy_every'] ) ) : 5;
-			$repeat = ! empty( $data['jetonomy_repeat'] );
-
-			$show = $repeat ? ( 0 === $this->reply_index % $every ) : ( $this->reply_index === $every );
-			if ( ! $show ) {
-				continue;
-			}
-
-			$this->print_ad( $engine->render_ad( $ad_id ), 'between_replies' );
-		}
-	}
-
-	/**
-	 * Render any ads targeted at the given Jetonomy position.
-	 *
-	 * @param string $position Position key (e.g. sidebar_before).
-	 */
-	private function render_position( $position ) {
-		$engine = Placement_Engine::get_instance();
-		$ads    = $engine->get_ads_for_placement( $this->get_id() );
-
-		if ( empty( $ads ) ) {
-			return;
-		}
+		// Between-replies frequency: $args = [$reply, $index, $post].
+		$is_between = 'jetonomy_between_replies' === $this->spec['id'];
+		$index_one  = $is_between ? ( (int) ( $args[1] ?? 0 ) ) + 1 : 0;
 
 		foreach ( $ads as $ad_id ) {
-			$data        = get_post_meta( $ad_id, '_wbam_ad_data', true );
-			$ad_position = isset( $data['jetonomy_position'] ) ? $data['jetonomy_position'] : '';
+			if ( $is_between ) {
+				$data   = get_post_meta( $ad_id, '_wbam_ad_data', true );
+				$every  = isset( $data['jetonomy_every'] ) ? max( 1, absint( $data['jetonomy_every'] ) ) : 5;
+				$repeat = ! empty( $data['jetonomy_repeat'] );
+				$show   = $repeat ? ( 0 === $index_one % $every ) : ( $index_one === $every );
 
-			if ( $ad_position !== $position ) {
+				if ( ! $show ) {
+					continue;
+				}
+			}
+
+			$html = $engine->render_ad( $ad_id );
+			if ( empty( $html ) ) {
 				continue;
 			}
 
-			$this->print_ad( $engine->render_ad( $ad_id ), $position );
+			printf(
+				'<div class="wbam-jetonomy-ad wbam-jetonomy-%s">%s</div>',
+				esc_attr( str_replace( 'jetonomy_', '', $this->spec['id'] ) ),
+				$html // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rendered upstream.
+			);
 		}
 	}
 
 	/**
-	 * Output a rendered ad wrapped with a Jetonomy-namespaced container.
-	 *
-	 * @param string $html     Rendered ad HTML.
-	 * @param string $position Position key for the CSS class.
-	 */
-	private function print_ad( $html, $position ) {
-		if ( empty( $html ) ) {
-			return;
-		}
-
-		printf(
-			'<div class="wbam-jetonomy-ad wbam-jetonomy-%s">%s</div>',
-			esc_attr( $position ),
-			$html // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html comes from Placement_Engine which is already escaped/kses'd downstream.
-		);
-	}
-
-	/**
-	 * Render the position + frequency controls on the ad edit screen.
+	 * Render admin options. Only `jetonomy_between_replies` needs extra
+	 * inputs (frequency + repeat). Other positions have no extra config.
 	 *
 	 * @param int   $ad_id Ad ID.
-	 * @param array $data  Ad data.
+	 * @param array $data  Saved ad data.
 	 */
 	public function render_options( $ad_id, $data ) {
-		$position = isset( $data['jetonomy_position'] ) ? $data['jetonomy_position'] : 'sidebar_before';
-		$every    = isset( $data['jetonomy_every'] ) ? absint( $data['jetonomy_every'] ) : 5;
-		$repeat   = ! empty( $data['jetonomy_repeat'] );
+		if ( 'jetonomy_between_replies' !== $this->spec['id'] ) {
+			return;
+		}
 
-		$positions = array(
-			'sidebar_before'      => __( 'Sidebar — Top', 'wb-ads-rotator-with-split-test' ),
-			'sidebar_after_about' => __( 'Sidebar — After About Card', 'wb-ads-rotator-with-split-test' ),
-			'sidebar_after'       => __( 'Sidebar — Bottom', 'wb-ads-rotator-with-split-test' ),
-			'after_post_article'  => __( 'After Topic Body', 'wb-ads-rotator-with-split-test' ),
-			'before_replies'      => __( 'Before Replies', 'wb-ads-rotator-with-split-test' ),
-			'between_replies'     => __( 'Between Replies', 'wb-ads-rotator-with-split-test' ),
-			'after_replies'       => __( 'After Replies', 'wb-ads-rotator-with-split-test' ),
-		);
+		$every  = isset( $data['jetonomy_every'] ) ? absint( $data['jetonomy_every'] ) : 5;
+		$repeat = ! empty( $data['jetonomy_repeat'] );
 		?>
 		<div class="wbam-placement-extra">
-			<label><?php esc_html_e( 'Jetonomy Position', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<select name="wbam_data[jetonomy_position]" class="wbam-jetonomy-position-select">
-				<?php foreach ( $positions as $key => $label ) : ?>
-					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $position, $key ); ?>>
-						<?php echo esc_html( $label ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
-		</div>
-		<div class="wbam-placement-extra wbam-jetonomy-between-options" <?php echo 'between_replies' === $position ? '' : 'style="display:none;"'; ?>>
 			<label><?php esc_html_e( 'Show after every', 'wb-ads-rotator-with-split-test' ); ?></label>
 			<input type="number" name="wbam_data[jetonomy_every]" value="<?php echo esc_attr( $every ); ?>" min="1" max="50" style="width:60px;" />
 			<?php esc_html_e( 'replies', 'wb-ads-rotator-with-split-test' ); ?>
 			<label style="margin-left:15px;">
 				<input type="checkbox" name="wbam_data[jetonomy_repeat]" value="1" <?php checked( $repeat ); ?> />
-				<?php esc_html_e( 'Repeat', 'wb-ads-rotator-with-split-test' ); ?>
+				<?php esc_html_e( 'Repeat every N replies (instead of only once)', 'wb-ads-rotator-with-split-test' ); ?>
 			</label>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Sanitize and return the position + frequency settings for saving.
+	 * Sanitize and return placement-specific settings.
 	 *
 	 * @param int   $ad_id Ad ID.
 	 * @param array $data  Raw posted data.
 	 * @return array
 	 */
 	public function save_options( $ad_id, $data ) {
-		$valid = array_keys(
-			array(
-				'sidebar_before'      => 1,
-				'sidebar_after_about' => 1,
-				'sidebar_after'       => 1,
-				'after_post_article'  => 1,
-				'before_replies'      => 1,
-				'between_replies'     => 1,
-				'after_replies'       => 1,
-			)
-		);
-
-		$position = isset( $data['jetonomy_position'] ) ? sanitize_key( $data['jetonomy_position'] ) : 'sidebar_before';
+		if ( 'jetonomy_between_replies' !== $this->spec['id'] ) {
+			return array();
+		}
 
 		return array(
-			'jetonomy_position' => in_array( $position, $valid, true ) ? $position : 'sidebar_before',
-			'jetonomy_every'    => isset( $data['jetonomy_every'] ) ? absint( $data['jetonomy_every'] ) : 5,
-			'jetonomy_repeat'   => ! empty( $data['jetonomy_repeat'] ),
+			'jetonomy_every'  => isset( $data['jetonomy_every'] ) ? max( 1, absint( $data['jetonomy_every'] ) ) : 5,
+			'jetonomy_repeat' => ! empty( $data['jetonomy_repeat'] ),
 		);
 	}
 }

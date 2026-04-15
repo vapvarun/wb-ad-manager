@@ -262,7 +262,7 @@ class Plugin {
 			echo '<div class="notice notice-info"><p>';
 			printf(
 				/* translators: 1: opening link to Jetonomy store page, 2: closing link tag */
-				esc_html__( 'Jetonomy support is ready — install %1$sJetonomy%2$s to unlock seven new placement positions (sidebar, topic, and reply injection points).', 'wb-ads-rotator-with-split-test' ),
+				esc_html__( 'Jetonomy support is ready. Install %1$sJetonomy%2$s to unlock seven new placement positions (sidebar, topic, and reply injection points).', 'wb-ads-rotator-with-split-test' ),
 				'<a href="https://store.wbcomdesigns.com/jetonomy/" target="_blank" rel="noopener noreferrer">',
 				'</a>'
 			);

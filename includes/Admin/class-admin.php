@@ -277,8 +277,10 @@ class Admin {
 							?>
 							<label class="wbam-placement-option">
 								<input type="checkbox" name="wbam_placements[]" value="<?php echo esc_attr( $placement->get_id() ); ?>" <?php checked( in_array( $placement->get_id(), $placements, true ) ); ?> />
-								<span class="wbam-option-title"><?php echo esc_html( $placement->get_name() ); ?></span>
-								<span class="wbam-option-desc"><?php echo esc_html( $placement->get_description() ); ?></span>
+								<span class="wbam-option-body">
+									<span class="wbam-option-title"><?php echo esc_html( $placement->get_name() ); ?></span>
+									<span class="wbam-option-desc"><?php echo esc_html( $placement->get_description() ); ?></span>
+								</span>
 							</label>
 						<?php endforeach; ?>
 					</div>

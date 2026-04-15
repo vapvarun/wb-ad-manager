@@ -52,7 +52,7 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 * BuddyPress Activity Stream
 * BuddyPress Member/Group Directories
 * bbPress Forums and Topics
-* Jetonomy — Sidebar (top, after About, bottom), After Topic Body, Before/Between/After Replies
+* Jetonomy: Sidebar (top, after About, bottom), After Topic Body, Before/Between/After Replies
 
 **Targeting Options:**
 
@@ -157,7 +157,7 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 == Changelog ==
 
 = 2.8.0 =
-* New: Jetonomy integration module with 7 placement positions — sidebar (top / after About card / bottom), after topic body, before / between / after replies. Requires Jetonomy v1.3.0+.
+* New: Jetonomy integration module with 7 placement positions: sidebar (top / after About card / bottom), after topic body, before / between / after replies. Requires Jetonomy v1.3.0+.
 * New: Admin notice suggesting Jetonomy installation when not detected, with direct link to https://store.wbcomdesigns.com/jetonomy/
 * New: REST API (30 routes) and WordPress Abilities API (15 abilities)
 
