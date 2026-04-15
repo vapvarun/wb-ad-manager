@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom Designs - WB Ad Manager 2.7.0\n"
 "Report-Msgid-Bugs-To: https://wbcomdesigns.com/support/\n"
-"POT-Creation-Date: 2026-04-15 08:47:46+00:00\n"
+"POT-Creation-Date: 2026-04-15 09:56:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -157,7 +157,7 @@ msgid "Ad Settings"
 msgstr ""
 
 #: includes/Admin/class-admin.php:166 includes/Admin/class-admin.php:279
-#: includes/Admin/class-admin.php:1046
+#: includes/Admin/class-admin.php:1068
 msgid "Placements"
 msgstr ""
 
@@ -205,11 +205,11 @@ msgstr ""
 msgid "Repeat after every X posts"
 msgstr ""
 
-#: includes/Admin/class-admin.php:365 includes/Admin/class-admin.php:1131
+#: includes/Admin/class-admin.php:365 includes/Admin/class-admin.php:1153
 msgid "Enabled"
 msgstr ""
 
-#: includes/Admin/class-admin.php:369 includes/Admin/class-admin.php:1131
+#: includes/Admin/class-admin.php:369 includes/Admin/class-admin.php:1153
 msgid "Disabled"
 msgstr ""
 
@@ -218,154 +218,162 @@ msgid "Priority"
 msgstr ""
 
 #: includes/Admin/class-admin.php:377
-msgid "Higher priority ads display first."
+msgid ""
+"Higher priority = bigger share when multiple ads compete for the same slot. "
+"Default is 5."
 msgstr ""
 
-#: includes/Admin/class-admin.php:381
+#: includes/Admin/class-admin.php:384
 msgid "Session Limit"
 msgstr ""
 
-#: includes/Admin/class-admin.php:382
+#: includes/Admin/class-admin.php:385
 msgid "Unlimited"
 msgstr ""
 
-#: includes/Admin/class-admin.php:383
+#: includes/Admin/class-admin.php:386
 msgid "Max views per visitor session. Leave empty for unlimited."
 msgstr ""
 
-#: includes/Admin/class-admin.php:388
+#: includes/Admin/class-admin.php:391
 msgid "Sizing"
 msgstr ""
 
-#: includes/Admin/class-admin.php:389
+#: includes/Admin/class-admin.php:392
 msgid "Controls where this ad can render."
 msgstr ""
 
-#: includes/Admin/class-admin.php:392
+#: includes/Admin/class-admin.php:395
 msgid "Ad sizing mode"
 msgstr ""
 
-#: includes/Admin/class-admin.php:395
+#: includes/Admin/class-admin.php:398
 msgid "Responsive"
 msgstr ""
 
-#: includes/Admin/class-admin.php:396
+#: includes/Admin/class-admin.php:399
 msgid "Fills any slot. Best for AdSense auto and fluid HTML."
 msgstr ""
 
-#: includes/Admin/class-admin.php:400
+#: includes/Admin/class-admin.php:403
 msgid "Fixed size"
 msgstr ""
 
-#: includes/Admin/class-admin.php:401
+#: includes/Admin/class-admin.php:404
 msgid "Known width and height. Matches only compatible slots."
 msgstr ""
 
-#: includes/Admin/class-admin.php:409
+#: includes/Admin/class-admin.php:412
 msgid "Format"
 msgstr ""
 
-#: includes/Admin/class-admin.php:411
+#: includes/Admin/class-admin.php:414
 msgid "Auto-detect from image"
 msgstr ""
 
-#: includes/Admin/class-admin.php:421
+#: includes/Admin/class-admin.php:424
 msgid "Dimensions"
 msgstr ""
 
-#: includes/Admin/class-admin.php:425
+#: includes/Admin/class-admin.php:428
 msgid "px"
 msgstr ""
 
-#: includes/Admin/class-admin.php:430
+#: includes/Admin/class-admin.php:433
 msgid "Will render in:"
 msgstr ""
 
-#: includes/Admin/class-admin.php:431
+#: includes/Admin/class-admin.php:434
 msgid "Calculating..."
 msgstr ""
 
-#: includes/Admin/class-admin.php:566
+#: includes/Admin/class-admin.php:458
+msgid ""
+"In a 3-way tie with two default-priority (5) ads, this ad would win about "
+"%d%% of impressions."
+msgstr ""
+
+#: includes/Admin/class-admin.php:588
 msgid "No placements assigned to this ad."
 msgstr ""
 
-#: includes/Admin/class-admin.php:600
+#: includes/Admin/class-admin.php:622
 msgid ""
 "No other enabled ads are using the same placements. Enable more ads to "
 "compare performance."
 msgstr ""
 
-#: includes/Admin/class-admin.php:685 includes/Core/class-plugin.php:210
+#: includes/Admin/class-admin.php:707 includes/Core/class-plugin.php:210
 msgid "Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:686 includes/Admin/class-admin.php:1047
+#: includes/Admin/class-admin.php:708 includes/Admin/class-admin.php:1069
 msgid "Impressions"
 msgstr ""
 
-#: includes/Admin/class-admin.php:687 includes/Admin/class-admin.php:1048
+#: includes/Admin/class-admin.php:709 includes/Admin/class-admin.php:1070
 #: includes/Modules/Links/class-links-list-table.php:60
 msgid "Clicks"
 msgstr ""
 
-#: includes/Admin/class-admin.php:688
+#: includes/Admin/class-admin.php:710
 msgid "CTR"
 msgstr ""
 
-#: includes/Admin/class-admin.php:689 includes/Admin/class-settings.php:216
+#: includes/Admin/class-admin.php:711 includes/Admin/class-settings.php:216
 msgid "Performance"
 msgstr ""
 
-#: includes/Admin/class-admin.php:699
+#: includes/Admin/class-admin.php:721
 msgid "This Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:706
+#: includes/Admin/class-admin.php:728
 msgid "Winner"
 msgstr ""
 
-#: includes/Admin/class-admin.php:722
+#: includes/Admin/class-admin.php:744
 msgid "Disable this underperforming ad?"
 msgstr ""
 
-#: includes/Admin/class-admin.php:723
+#: includes/Admin/class-admin.php:745
 msgid "Disable"
 msgstr ""
 
-#: includes/Admin/class-admin.php:735
+#: includes/Admin/class-admin.php:757
 msgid ""
 "No winner yet — ads need at least 100 impressions each for a meaningful "
 "comparison."
 msgstr ""
 
-#: includes/Admin/class-admin.php:737
+#: includes/Admin/class-admin.php:759
 msgid "Winner is the ad with highest CTR among those with 100+ impressions."
 msgstr ""
 
-#: includes/Admin/class-admin.php:904
+#: includes/Admin/class-admin.php:926
 msgid "Auto-detected from your image on save."
 msgstr ""
 
-#: includes/Admin/class-admin.php:905
+#: includes/Admin/class-admin.php:927
 msgid "Enter width x height to see matches."
 msgstr ""
 
-#: includes/Admin/class-admin.php:906
+#: includes/Admin/class-admin.php:928
 msgid "No placements match this size yet."
 msgstr ""
 
-#: includes/Admin/class-admin.php:907
+#: includes/Admin/class-admin.php:929
 msgid "Every placement."
 msgstr ""
 
-#: includes/Admin/class-admin.php:1045 includes/Admin/class-help-docs.php:291
+#: includes/Admin/class-admin.php:1067 includes/Admin/class-help-docs.php:291
 #: includes/Modules/Links/class-links-list-table.php:59
 #: includes/Modules/Links/class-partnership-admin.php:275
 #: includes/Modules/Links/class-partnership-admin.php:492
 msgid "Type"
 msgstr ""
 
-#: includes/Admin/class-admin.php:1049
+#: includes/Admin/class-admin.php:1071
 #: includes/Modules/Links/class-links-admin.php:365
 #: includes/Modules/Links/class-links-list-table.php:61
 #: includes/Modules/Links/class-partnership-admin.php:277

@@ -1252,3 +1252,18 @@
 	color: #2271b1;
 	word-break: break-word;
 }
+
+/* ==========================================================================
+   Priority slider win-share transparency hint (Phase H.3)
+   ========================================================================== */
+
+.wbam-priority-share-hint {
+	margin: 6px 0 0;
+	padding: 8px 10px;
+	background: #f0f6fc;
+	border: 1px solid #c5dff7;
+	border-radius: 4px;
+	font-size: 12px;
+	color: #1d2327;
+	line-height: 1.4;
+}

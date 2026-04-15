@@ -374,7 +374,10 @@ class Admin {
 				<label for="wbam_priority"><?php esc_html_e( 'Priority', 'wb-ads-rotator-with-split-test' ); ?></label>
 				<input type="range" id="wbam_priority" name="wbam_priority" min="1" max="10" value="<?php echo esc_attr( $priority ); ?>" />
 				<span class="wbam-priority-value"><?php echo esc_html( $priority ); ?></span>
-				<p class="description"><?php esc_html_e( 'Higher priority ads display first.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Higher priority = bigger share when multiple ads compete for the same slot. Default is 5.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p class="wbam-priority-share-hint" aria-live="polite">
+					<?php /* Filled in by JS: 'In a 3-way tie with two default-priority ads, this ad wins ~X% of impressions.' */ ?>
+				</p>
 			</div>
 
 			<div class="wbam-session-limit-field">
@@ -444,10 +447,33 @@ class Admin {
 		</div>
 		<script>
 		jQuery(function($) {
-			// Priority slider live value.
+			// Priority slider live value + win-share transparency hint.
+			//
+			// Phase H.3: site owners and advertisers should see exactly
+			// what raising the priority slider does. Frequency_Manager
+			// builds a weighted pool where each ad contributes `priority`
+			// copies, so the win share in a tie of N ads at priorities
+			// p1..pN is p_i / sum(p). We illustrate the most common tie
+			// scenario (3 ads, two at the default priority of 5).
+			var priorityHintTpl = <?php echo wp_json_encode( __( 'In a 3-way tie with two default-priority (5) ads, this ad would win about %d%% of impressions.', 'wb-ads-rotator-with-split-test' ) ); ?>;
+
+			function updatePriorityHint( value ) {
+				var p     = parseInt( value, 10 ) || 5;
+				var share = Math.round( ( p / ( p + 5 + 5 ) ) * 100 );
+				// Translation string uses printf-style %d / %% — un-escape
+				// the literal percent so JS shows '33%' not '33%%'.
+				$( '.wbam-priority-share-hint' ).text(
+					priorityHintTpl.replace( '%d', share ).replace( /%%/g, '%' )
+				);
+			}
+
 			$('#wbam_priority').on('input', function() {
 				$(this).next('.wbam-priority-value').text(this.value);
+				updatePriorityHint( this.value );
 			});
+
+			// Initial paint so the hint is visible on page load.
+			updatePriorityHint( $( '#wbam_priority' ).val() );
 
 			// Sizing section wiring. We use a two-choice radio group for the
 			// sizing mode instead of a standalone checkbox so the mental
