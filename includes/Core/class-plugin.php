@@ -154,6 +154,12 @@ class Plugin {
 			$bbpress->init();
 		}
 
+		// Jetonomy module.
+		if ( \WBAM\Modules\Jetonomy\Jetonomy_Module::is_jetonomy_active() ) {
+			$jetonomy = new \WBAM\Modules\Jetonomy\Jetonomy_Module();
+			$jetonomy->init();
+		}
+
 		// Links module.
 		$this->links = Links_Module::get_instance();
 		$this->links->init();
@@ -249,6 +255,17 @@ class Plugin {
 		if ( ! class_exists( 'BuddyPress' ) ) {
 			echo '<div class="notice notice-info"><p>';
 			esc_html_e( 'BuddyPress is not active. BuddyPress activity placements are disabled.', 'wb-ads-rotator-with-split-test' );
+			echo '</p></div>';
+		}
+
+		if ( ! \WBAM\Modules\Jetonomy\Jetonomy_Module::is_jetonomy_active() ) {
+			echo '<div class="notice notice-info"><p>';
+			printf(
+				/* translators: 1: opening link to Jetonomy store page, 2: closing link tag */
+				esc_html__( 'Jetonomy support is ready — install %1$sJetonomy%2$s to unlock seven new placement positions (sidebar, topic, and reply injection points).', 'wb-ads-rotator-with-split-test' ),
+				'<a href="https://store.wbcomdesigns.com/jetonomy/" target="_blank" rel="noopener noreferrer">',
+				'</a>'
+			);
 			echo '</p></div>';
 		}
 	}

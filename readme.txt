@@ -9,20 +9,21 @@ Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Comprehensive ad management for WordPress with ad rotation, split testing, multiple placements, Google AdSense, BuddyPress, and bbPress integration.
+Comprehensive ad management for WordPress with ad rotation, split testing, multiple placements, Google AdSense, BuddyPress, bbPress, and Jetonomy integration.
 
 == Description ==
 
-WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. It allows you to create and manage ads with multiple placement options, targeting rules, and supports BuddyPress and bbPress.
+WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. It allows you to create and manage ads with multiple placement options, targeting rules, and supports BuddyPress, bbPress, and Jetonomy.
 
 **Key Features:**
 
 * **Ad Rotation & Split Testing** - Multiple ads rotate in same placement with weighted priority
 * **4 Ad Types** - Image, Rich Content, HTML/JS Code, and Google AdSense
-* **14+ Placements** - Header, Footer, Content, Paragraph, Sticky, Popup, Comments, Archive, Shortcode, Widget, BuddyPress, bbPress
+* **14+ Placements** - Header, Footer, Content, Paragraph, Sticky, Popup, Comments, Archive, Shortcode, Widget, BuddyPress, bbPress, Jetonomy
 * **Google AdSense** - Native AdSense support with automatic script management and Auto Ads
 * **BuddyPress Integration** - Activity stream, member/group directories, profile widgets
 * **bbPress Integration** - Forum, topic, and reply ad placements
+* **Jetonomy Integration** - Sidebar (top / after About / bottom), after topic body, before/between/after replies (requires [Jetonomy](https://store.wbcomdesigns.com/jetonomy/) v1.3.0+)
 * **Geo-Targeting** - Target ads by country using IP geolocation
 * **Device Targeting** - Desktop, tablet, or mobile specific ads
 * **Scheduling** - Start/end dates, day-of-week, and time-of-day targeting
@@ -51,6 +52,7 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 * BuddyPress Activity Stream
 * BuddyPress Member/Group Directories
 * bbPress Forums and Topics
+* Jetonomy — Sidebar (top, after About, bottom), After Topic Body, Before/Between/After Replies
 
 **Targeting Options:**
 
@@ -153,6 +155,11 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 7. Setup wizard for first-time users
 
 == Changelog ==
+
+= 2.8.0 =
+* New: Jetonomy integration module with 7 placement positions — sidebar (top / after About card / bottom), after topic body, before / between / after replies. Requires Jetonomy v1.3.0+.
+* New: Admin notice suggesting Jetonomy installation when not detected, with direct link to https://store.wbcomdesigns.com/jetonomy/
+* New: REST API (30 routes) and WordPress Abilities API (15 abilities)
 
 = 2.7.0 =
 * Improvement: Updated translation strings
