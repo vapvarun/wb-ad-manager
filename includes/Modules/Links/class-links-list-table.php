@@ -441,8 +441,17 @@ class Links_List_Table extends \WP_List_Table {
 
 	/**
 	 * Message for no items.
+	 *
+	 * Delegates to the shared empty-state renderer (Phase G.5) so
+	 * this list table matches the core Ads list treatment when the
+	 * user has not yet created any links.
 	 */
 	public function no_items() {
+		if ( class_exists( '\\WBAM\\Admin\\List_Empty_States' ) ) {
+			\WBAM\Admin\List_Empty_States::render_links_empty_state();
+			return;
+		}
+
 		esc_html_e( 'No links found.', 'wb-ads-rotator-with-split-test' );
 	}
 }

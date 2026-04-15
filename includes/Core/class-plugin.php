@@ -24,6 +24,7 @@ use WBAM\Admin\Help_Docs;
 use WBAM\Admin\Upgrade_Pro;
 use WBAM\Admin\First_Install_Pointers;
 use WBAM\Admin\Field_Tooltips;
+use WBAM\Admin\List_Empty_States;
 use WBAM\Frontend\Frontend;
 use WBAM\API\API_Bootstrap;
 
@@ -152,6 +153,10 @@ class Plugin {
 			// Field-level tooltip popovers on the Ad edit screen (Phase G.4).
 			$field_tooltips = new Field_Tooltips();
 			$field_tooltips->init();
+
+			// Friendly empty states for admin list screens (Phase G.5).
+			$empty_states = new List_Empty_States();
+			$empty_states->init();
 		}
 
 		// Frontend.

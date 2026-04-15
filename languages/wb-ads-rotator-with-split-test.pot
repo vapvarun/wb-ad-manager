@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom Designs - WB Ad Manager 2.7.0\n"
 "Report-Msgid-Bugs-To: https://wbcomdesigns.com/support/\n"
-"POT-Creation-Date: 2026-04-15 09:56:24+00:00\n"
+"POT-Creation-Date: 2026-04-15 11:28:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -157,7 +157,7 @@ msgid "Ad Settings"
 msgstr ""
 
 #: includes/Admin/class-admin.php:166 includes/Admin/class-admin.php:279
-#: includes/Admin/class-admin.php:1068
+#: includes/Admin/class-admin.php:1072
 msgid "Placements"
 msgstr ""
 
@@ -205,11 +205,11 @@ msgstr ""
 msgid "Repeat after every X posts"
 msgstr ""
 
-#: includes/Admin/class-admin.php:365 includes/Admin/class-admin.php:1153
+#: includes/Admin/class-admin.php:365 includes/Admin/class-admin.php:1157
 msgid "Enabled"
 msgstr ""
 
-#: includes/Admin/class-admin.php:369 includes/Admin/class-admin.php:1153
+#: includes/Admin/class-admin.php:369 includes/Admin/class-admin.php:1157
 msgid "Disabled"
 msgstr ""
 
@@ -293,87 +293,87 @@ msgid ""
 "%d%% of impressions."
 msgstr ""
 
-#: includes/Admin/class-admin.php:588
+#: includes/Admin/class-admin.php:592
 msgid "No placements assigned to this ad."
 msgstr ""
 
-#: includes/Admin/class-admin.php:622
+#: includes/Admin/class-admin.php:626
 msgid ""
 "No other enabled ads are using the same placements. Enable more ads to "
 "compare performance."
 msgstr ""
 
-#: includes/Admin/class-admin.php:707 includes/Core/class-plugin.php:210
+#: includes/Admin/class-admin.php:711 includes/Core/class-plugin.php:226
 msgid "Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:708 includes/Admin/class-admin.php:1069
+#: includes/Admin/class-admin.php:712 includes/Admin/class-admin.php:1073
 msgid "Impressions"
 msgstr ""
 
-#: includes/Admin/class-admin.php:709 includes/Admin/class-admin.php:1070
+#: includes/Admin/class-admin.php:713 includes/Admin/class-admin.php:1074
 #: includes/Modules/Links/class-links-list-table.php:60
 msgid "Clicks"
 msgstr ""
 
-#: includes/Admin/class-admin.php:710
+#: includes/Admin/class-admin.php:714
 msgid "CTR"
 msgstr ""
 
-#: includes/Admin/class-admin.php:711 includes/Admin/class-settings.php:216
+#: includes/Admin/class-admin.php:715 includes/Admin/class-settings.php:216
 msgid "Performance"
 msgstr ""
 
-#: includes/Admin/class-admin.php:721
+#: includes/Admin/class-admin.php:725
 msgid "This Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:728
+#: includes/Admin/class-admin.php:732
 msgid "Winner"
 msgstr ""
 
-#: includes/Admin/class-admin.php:744
+#: includes/Admin/class-admin.php:748
 msgid "Disable this underperforming ad?"
 msgstr ""
 
-#: includes/Admin/class-admin.php:745
+#: includes/Admin/class-admin.php:749
 msgid "Disable"
 msgstr ""
 
-#: includes/Admin/class-admin.php:757
+#: includes/Admin/class-admin.php:761
 msgid ""
 "No winner yet — ads need at least 100 impressions each for a meaningful "
 "comparison."
 msgstr ""
 
-#: includes/Admin/class-admin.php:759
+#: includes/Admin/class-admin.php:763
 msgid "Winner is the ad with highest CTR among those with 100+ impressions."
 msgstr ""
 
-#: includes/Admin/class-admin.php:926
+#: includes/Admin/class-admin.php:930
 msgid "Auto-detected from your image on save."
 msgstr ""
 
-#: includes/Admin/class-admin.php:927
+#: includes/Admin/class-admin.php:931
 msgid "Enter width x height to see matches."
 msgstr ""
 
-#: includes/Admin/class-admin.php:928
+#: includes/Admin/class-admin.php:932
 msgid "No placements match this size yet."
 msgstr ""
 
-#: includes/Admin/class-admin.php:929
+#: includes/Admin/class-admin.php:933
 msgid "Every placement."
 msgstr ""
 
-#: includes/Admin/class-admin.php:1067 includes/Admin/class-help-docs.php:291
+#: includes/Admin/class-admin.php:1071 includes/Admin/class-help-docs.php:291
 #: includes/Modules/Links/class-links-list-table.php:59
 #: includes/Modules/Links/class-partnership-admin.php:275
 #: includes/Modules/Links/class-partnership-admin.php:492
 msgid "Type"
 msgstr ""
 
-#: includes/Admin/class-admin.php:1071
+#: includes/Admin/class-admin.php:1075
 #: includes/Modules/Links/class-links-admin.php:365
 #: includes/Modules/Links/class-links-list-table.php:61
 #: includes/Modules/Links/class-partnership-admin.php:277
@@ -654,6 +654,65 @@ msgstr ""
 
 #: includes/Admin/class-display-options.php:487
 msgid "When location cannot be determined (e.g., VPN, local IP)."
+msgstr ""
+
+#: includes/Admin/class-field-tooltips.php:99
+msgid ""
+"Caps how many times one visitor sees this ad per browser session. 0 or "
+"empty means unlimited. Pairs with Pro advertiser-level caps if installed."
+msgstr ""
+
+#: includes/Admin/class-field-tooltips.php:100
+msgid ""
+"Weighted rotation: an ad with priority 10 appears twice as often as one "
+"with priority 5. Default 5 is neutral."
+msgstr ""
+
+#: includes/Admin/class-field-tooltips.php:101
+msgid ""
+"Responsive fits any slot and suits AdSense auto or fluid HTML. Fixed size "
+"matches only placements that accept your exact width and height."
+msgstr ""
+
+#: includes/Admin/class-field-tooltips.php:102
+msgid ""
+"Width and height in pixels are matched against each placement exactly. Only "
+"placements that accept these dimensions will render this ad."
+msgstr ""
+
+#: includes/Admin/class-field-tooltips.php:134
+msgid "More info"
+msgstr ""
+
+#: includes/Admin/class-first-install-pointers.php:226
+msgid "Pick how this ad is sized"
+msgstr ""
+
+#: includes/Admin/class-first-install-pointers.php:227
+msgid ""
+"Responsive ads fill any slot. Fixed-size ads only render where the size "
+"matches. The system auto-filters placements below based on your choice."
+msgstr ""
+
+#: includes/Admin/class-first-install-pointers.php:233
+msgid "Priority controls your win share"
+msgstr ""
+
+#: includes/Admin/class-first-install-pointers.php:234
+msgid ""
+"When multiple ads compete for the same slot, higher priority wins a bigger "
+"share. Default is 5. Live hint below shows the exact win percentage in a "
+"three-way tie."
+msgstr ""
+
+#: includes/Admin/class-first-install-pointers.php:240
+msgid "Where your ad can render"
+msgstr ""
+
+#: includes/Admin/class-first-install-pointers.php:241
+msgid ""
+"These are the placement slots this ad qualifies for. Pick one or more. The "
+"rotation engine will decide which slot fires on each page load."
 msgstr ""
 
 #: includes/Admin/class-help-docs.php:61 includes/Admin/class-help-docs.php:62
@@ -1169,6 +1228,34 @@ msgstr ""
 msgid "Upgrade to PRO"
 msgstr ""
 
+#: includes/Admin/class-list-empty-states.php:72
+msgid "No ads yet"
+msgstr ""
+
+#: includes/Admin/class-list-empty-states.php:73
+msgid ""
+"Ads are the creatives your visitors will see. Create your first ad to "
+"choose where and how it displays."
+msgstr ""
+
+#: includes/Admin/class-list-empty-states.php:74
+msgid "Create your first ad"
+msgstr ""
+
+#: includes/Admin/class-list-empty-states.php:109
+msgid "No links yet"
+msgstr ""
+
+#: includes/Admin/class-list-empty-states.php:110
+msgid ""
+"Cloaked links let you track clicks, shorten destinations, and manage "
+"affiliate URLs. Create your first link to start tracking."
+msgstr ""
+
+#: includes/Admin/class-list-empty-states.php:111
+msgid "Create your first link"
+msgstr ""
+
 #: includes/Admin/class-settings.php:74
 #: includes/Admin/class-setup-wizard.php:569
 msgid "Settings"
@@ -1363,11 +1450,11 @@ msgstr ""
 msgid "Quick Links"
 msgstr ""
 
-#: includes/Admin/class-settings.php:464 includes/Core/class-plugin.php:197
+#: includes/Admin/class-settings.php:464 includes/Core/class-plugin.php:213
 msgid "All Ads"
 msgstr ""
 
-#: includes/Admin/class-settings.php:465 includes/Core/class-plugin.php:198
+#: includes/Admin/class-settings.php:465 includes/Core/class-plugin.php:214
 msgid "Add New Ad"
 msgstr ""
 
@@ -1471,7 +1558,7 @@ msgstr ""
 msgid "WB Ad Manager Setup"
 msgstr ""
 
-#: includes/Admin/class-setup-wizard.php:198 includes/Core/class-plugin.php:196
+#: includes/Admin/class-setup-wizard.php:198 includes/Core/class-plugin.php:212
 #: includes/Modules/Placements/class-widget-placement.php:67
 msgid "WB Ad Manager"
 msgstr ""
@@ -1997,7 +2084,7 @@ msgstr ""
 msgid "Whether the ad is active."
 msgstr ""
 
-#: includes/Core/class-abilities.php:254 includes/Core/class-plugin.php:202
+#: includes/Core/class-abilities.php:254 includes/Core/class-plugin.php:218
 msgid "Update Ad"
 msgstr ""
 
@@ -2302,39 +2389,39 @@ msgstr ""
 msgid "Custom size"
 msgstr ""
 
-#: includes/Core/class-plugin.php:199
+#: includes/Core/class-plugin.php:215
 msgid "Add New"
 msgstr ""
 
-#: includes/Core/class-plugin.php:200
+#: includes/Core/class-plugin.php:216
 msgid "New Ad"
 msgstr ""
 
-#: includes/Core/class-plugin.php:201
+#: includes/Core/class-plugin.php:217
 msgid "Edit Ad"
 msgstr ""
 
-#: includes/Core/class-plugin.php:203
+#: includes/Core/class-plugin.php:219
 msgid "View Ad"
 msgstr ""
 
-#: includes/Core/class-plugin.php:204
+#: includes/Core/class-plugin.php:220
 msgid "Search Ads"
 msgstr ""
 
-#: includes/Core/class-plugin.php:205
+#: includes/Core/class-plugin.php:221
 msgid "Not found"
 msgstr ""
 
-#: includes/Core/class-plugin.php:206
+#: includes/Core/class-plugin.php:222
 msgid "Not found in Trash"
 msgstr ""
 
-#: includes/Core/class-plugin.php:262
+#: includes/Core/class-plugin.php:278
 msgid "BuddyPress is not active. BuddyPress activity placements are disabled."
 msgstr ""
 
-#: includes/Core/class-plugin.php:270
+#: includes/Core/class-plugin.php:286
 #. translators: 1: opening link to Jetonomy store page, 2: closing link tag
 msgid ""
 "Jetonomy support is ready. Install %1$sJetonomy%2$s to unlock seven new "
@@ -4000,7 +4087,7 @@ msgstr ""
 msgid "ago"
 msgstr ""
 
-#: includes/Modules/Links/class-links-list-table.php:446
+#: includes/Modules/Links/class-links-list-table.php:455
 msgid "No links found."
 msgstr ""
 
@@ -4752,12 +4839,12 @@ msgstr ""
 msgid "https://wbcomdesigns.com"
 msgstr ""
 
-#: includes/Core/class-plugin.php:194
+#: includes/Core/class-plugin.php:210
 msgctxt "Post Type General Name"
 msgid "Ads"
 msgstr ""
 
-#: includes/Core/class-plugin.php:195
+#: includes/Core/class-plugin.php:211
 msgctxt "Post Type Singular Name"
 msgid "Ad"
 msgstr ""
