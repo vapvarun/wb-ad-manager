@@ -26,7 +26,7 @@ class Installer {
 	 *
 	 * @var string
 	 */
-	const DB_VERSION = '1.5.0';
+	const DB_VERSION = '1.6.0';
 
 	/**
 	 * Option name for database version.
@@ -113,6 +113,91 @@ class Installer {
 			// Re-run create_tables to ensure rate limits table exists.
 			// dbDelta is safe to run multiple times - it will only create missing tables.
 			$this->create_tables();
+		}
+
+		// Migration to 1.6.0: Backfill ad format metadata so the
+		// format-aware placement matching layer has something to work
+		// with on existing installs. See Phase C of the format-matching
+		// plan. Safe to run multiple times — skips ads that already
+		// have _wbam_ad_format set.
+		if ( version_compare( $current_version, '1.6.0', '<' ) ) {
+			$this->backfill_ad_formats();
+		}
+	}
+
+	/**
+	 * Populate _wbam_ad_format / _wbam_ad_width / _wbam_ad_height on
+	 * every existing ad that doesn't already have them.
+	 *
+	 * Resolution rules (preserves current rendering behavior):
+	 *  - Image ad + local attachment: detect W x H, match to taxonomy.
+	 *  - Image ad + external URL:     responsive (we don't fetch remote).
+	 *  - Code / AdSense / Rich / Email Capture: responsive.
+	 *
+	 * Runs in-line during plugin upgrade. Installs typically have a few
+	 * dozen ads at most; if a site has thousands we can convert this
+	 * to an async batch via wp-cron — for now keep it simple and
+	 * synchronous so everything is consistent right after upgrade.
+	 *
+	 * @since 2.8.1
+	 */
+	private function backfill_ad_formats() {
+		$ads = get_posts(
+			array(
+				'post_type'      => 'wbam-ad',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				// Only touch ads that don't already have a format set.
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'     => array(
+					array(
+						'key'     => '_wbam_ad_format',
+						'compare' => 'NOT EXISTS',
+					),
+				),
+			)
+		);
+
+		if ( empty( $ads ) ) {
+			return;
+		}
+
+		foreach ( $ads as $ad_id ) {
+			$data = get_post_meta( $ad_id, '_wbam_ad_data', true );
+			$type = is_array( $data ) && ! empty( $data['type'] ) ? (string) $data['type'] : '';
+
+			$format = 'responsive';
+			$width  = 0;
+			$height = 0;
+
+			if ( 'image' === $type && ! empty( $data['image_url'] ) ) {
+				$attachment_id = attachment_url_to_postid( (string) $data['image_url'] );
+				if ( $attachment_id > 0 ) {
+					$src = wp_get_attachment_image_src( $attachment_id, 'full' );
+					if ( is_array( $src ) && ! empty( $src[1] ) && ! empty( $src[2] ) ) {
+						$width  = (int) $src[1];
+						$height = (int) $src[2];
+
+						if ( class_exists( '\\WBAM\\Core\\Ad_Formats' ) ) {
+							$format = \WBAM\Core\Ad_Formats::detect_by_dimensions( $width, $height );
+						}
+					}
+				}
+			}
+
+			update_post_meta( $ad_id, '_wbam_ad_format', $format );
+			update_post_meta( $ad_id, '_wbam_ad_width', $width );
+			update_post_meta( $ad_id, '_wbam_ad_height', $height );
+
+			// Keep _wbam_is_responsive in sync with the resolved format
+			// so existing admin UI toggles stay coherent.
+			if ( 'responsive' === $format ) {
+				update_post_meta( $ad_id, '_wbam_is_responsive', '1' );
+			} elseif ( '' === (string) get_post_meta( $ad_id, '_wbam_is_responsive', true ) ) {
+				update_post_meta( $ad_id, '_wbam_is_responsive', '0' );
+			}
 		}
 	}
 

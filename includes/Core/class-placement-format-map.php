@@ -31,12 +31,69 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Placement_Format_Map {
 
 	/**
-	 * Wire the filter. Called from Plugin::init().
+	 * Wire the filters. Called from Plugin::init().
+	 *
+	 * We register two callbacks on wbam_get_placements:
+	 *  - Priority 5: seed the registry from the free plugin's own
+	 *    Placement_Engine. This guarantees the registry is populated
+	 *    in every context (admin, REST, wp-cli, frontend) without
+	 *    depending on the pro plugin being active.
+	 *  - Priority 20: attach accepted_formats via the canonical map.
+	 *
+	 * Pro's Ad_Submission_Shortcodes::get_available_placements stays at
+	 * default priority 10 and remains a no-op when the free plugin has
+	 * already seeded the entry (same idempotent shape: name, description,
+	 * group). Priority 20 never overwrites non-empty accepted_formats,
+	 * so third-party placements that declare their own formats stay
+	 * authoritative.
 	 */
 	public static function register() {
-		// Priority 20: runs after Ad_Submission_Shortcodes::get_available_placements
-		// (priority 10) which seeds the registry with name/description/group.
+		add_filter( 'wbam_get_placements', array( __CLASS__, 'seed_from_engine' ), 5 );
 		add_filter( 'wbam_get_placements', array( __CLASS__, 'apply' ), 20 );
+	}
+
+	/**
+	 * Populate the registry directly from Placement_Engine so it is
+	 * available without the pro plugin.
+	 *
+	 * @param array $registry Existing registry.
+	 * @return array
+	 */
+	public static function seed_from_engine( $registry ) {
+		if ( ! is_array( $registry ) ) {
+			$registry = array();
+		}
+
+		if ( ! class_exists( '\\WBAM\\Modules\\Placements\\Placement_Engine' ) ) {
+			return $registry;
+		}
+
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+		if ( ! is_object( $engine ) || ! method_exists( $engine, 'get_placements' ) ) {
+			return $registry;
+		}
+
+		foreach ( $engine->get_placements() as $placement ) {
+			if ( ! $placement->is_available() || ! $placement->show_in_selector() ) {
+				continue;
+			}
+
+			$slug = $placement->get_id();
+
+			// Don't overwrite an entry a higher-priority filter already
+			// provided (mu-plugin, third-party customization, test mock).
+			if ( isset( $registry[ $slug ] ) && is_array( $registry[ $slug ] ) ) {
+				continue;
+			}
+
+			$registry[ $slug ] = array(
+				'name'        => $placement->get_name(),
+				'description' => $placement->get_description(),
+				'group'       => $placement->get_group(),
+			);
+		}
+
+		return $registry;
 	}
 
 	/**

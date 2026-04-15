@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom Designs - WB Ad Manager 2.7.0\n"
 "Report-Msgid-Bugs-To: https://wbcomdesigns.com/support/\n"
-"POT-Creation-Date: 2026-04-15 08:20:59+00:00\n"
+"POT-Creation-Date: 2026-04-15 08:47:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -151,164 +151,221 @@ msgstr ""
 msgid "Use This Image"
 msgstr ""
 
-#: includes/Admin/class-admin.php:149 includes/Admin/class-settings.php:74
+#: includes/Admin/class-admin.php:157 includes/Admin/class-settings.php:74
 #: includes/Admin/class-settings.php:78
 msgid "Ad Settings"
 msgstr ""
 
-#: includes/Admin/class-admin.php:158 includes/Admin/class-admin.php:271
-#: includes/Admin/class-admin.php:703
+#: includes/Admin/class-admin.php:166 includes/Admin/class-admin.php:279
+#: includes/Admin/class-admin.php:1046
 msgid "Placements"
 msgstr ""
 
-#: includes/Admin/class-admin.php:167
+#: includes/Admin/class-admin.php:175
 msgid "Ad Status"
 msgstr ""
 
-#: includes/Admin/class-admin.php:181
+#: includes/Admin/class-admin.php:189
 msgid "Ad Performance Comparison"
 msgstr ""
 
-#: includes/Admin/class-admin.php:291
+#: includes/Admin/class-admin.php:299
 msgid "Paragraph Settings"
 msgstr ""
 
-#: includes/Admin/class-admin.php:293
+#: includes/Admin/class-admin.php:301
 msgid "Insert after paragraph:"
 msgstr ""
 
-#: includes/Admin/class-admin.php:299
+#: includes/Admin/class-admin.php:307
 msgid "Repeat after every X paragraphs"
 msgstr ""
 
-#: includes/Admin/class-admin.php:305
+#: includes/Admin/class-admin.php:313
 msgid "Activity Stream Settings"
 msgstr ""
 
-#: includes/Admin/class-admin.php:307
+#: includes/Admin/class-admin.php:315
 msgid "Insert after activity:"
 msgstr ""
 
-#: includes/Admin/class-admin.php:313
+#: includes/Admin/class-admin.php:321
 msgid "Repeat after every X activities"
 msgstr ""
 
-#: includes/Admin/class-admin.php:319
+#: includes/Admin/class-admin.php:327
 msgid "Archive Settings"
 msgstr ""
 
-#: includes/Admin/class-admin.php:321
+#: includes/Admin/class-admin.php:329
 msgid "Insert after post:"
 msgstr ""
 
-#: includes/Admin/class-admin.php:327
+#: includes/Admin/class-admin.php:335
 msgid "Repeat after every X posts"
 msgstr ""
 
-#: includes/Admin/class-admin.php:353 includes/Admin/class-admin.php:788
+#: includes/Admin/class-admin.php:365 includes/Admin/class-admin.php:1131
 msgid "Enabled"
 msgstr ""
 
-#: includes/Admin/class-admin.php:357 includes/Admin/class-admin.php:788
+#: includes/Admin/class-admin.php:369 includes/Admin/class-admin.php:1131
 msgid "Disabled"
 msgstr ""
 
-#: includes/Admin/class-admin.php:362
+#: includes/Admin/class-admin.php:374
 msgid "Priority"
 msgstr ""
 
-#: includes/Admin/class-admin.php:365
+#: includes/Admin/class-admin.php:377
 msgid "Higher priority ads display first."
 msgstr ""
 
-#: includes/Admin/class-admin.php:369
+#: includes/Admin/class-admin.php:381
 msgid "Session Limit"
 msgstr ""
 
-#: includes/Admin/class-admin.php:370
+#: includes/Admin/class-admin.php:382
 msgid "Unlimited"
 msgstr ""
 
-#: includes/Admin/class-admin.php:371
+#: includes/Admin/class-admin.php:383
 msgid "Max views per visitor session. Leave empty for unlimited."
 msgstr ""
 
-#: includes/Admin/class-admin.php:377
-msgid "Responsive ad"
+#: includes/Admin/class-admin.php:388
+msgid "Sizing"
 msgstr ""
 
-#: includes/Admin/class-admin.php:380
-msgid ""
-"Tick if this ad fills any container width (AdSense auto, fluid HTML, "
-"responsive script). Leave unchecked for fixed-size banners (728x90, "
-"300x250, etc.) so the system only renders them in placements that match."
+#: includes/Admin/class-admin.php:389
+msgid "Controls where this ad can render."
 msgstr ""
 
-#: includes/Admin/class-admin.php:416
+#: includes/Admin/class-admin.php:392
+msgid "Ad sizing mode"
+msgstr ""
+
+#: includes/Admin/class-admin.php:395
+msgid "Responsive"
+msgstr ""
+
+#: includes/Admin/class-admin.php:396
+msgid "Fills any slot. Best for AdSense auto and fluid HTML."
+msgstr ""
+
+#: includes/Admin/class-admin.php:400
+msgid "Fixed size"
+msgstr ""
+
+#: includes/Admin/class-admin.php:401
+msgid "Known width and height. Matches only compatible slots."
+msgstr ""
+
+#: includes/Admin/class-admin.php:409
+msgid "Format"
+msgstr ""
+
+#: includes/Admin/class-admin.php:411
+msgid "Auto-detect from image"
+msgstr ""
+
+#: includes/Admin/class-admin.php:421
+msgid "Dimensions"
+msgstr ""
+
+#: includes/Admin/class-admin.php:425
+msgid "px"
+msgstr ""
+
+#: includes/Admin/class-admin.php:430
+msgid "Will render in:"
+msgstr ""
+
+#: includes/Admin/class-admin.php:431
+msgid "Calculating..."
+msgstr ""
+
+#: includes/Admin/class-admin.php:566
 msgid "No placements assigned to this ad."
 msgstr ""
 
-#: includes/Admin/class-admin.php:450
+#: includes/Admin/class-admin.php:600
 msgid ""
 "No other enabled ads are using the same placements. Enable more ads to "
 "compare performance."
 msgstr ""
 
-#: includes/Admin/class-admin.php:535 includes/Core/class-plugin.php:205
+#: includes/Admin/class-admin.php:685 includes/Core/class-plugin.php:210
 msgid "Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:536 includes/Admin/class-admin.php:704
+#: includes/Admin/class-admin.php:686 includes/Admin/class-admin.php:1047
 msgid "Impressions"
 msgstr ""
 
-#: includes/Admin/class-admin.php:537 includes/Admin/class-admin.php:705
+#: includes/Admin/class-admin.php:687 includes/Admin/class-admin.php:1048
 #: includes/Modules/Links/class-links-list-table.php:60
 msgid "Clicks"
 msgstr ""
 
-#: includes/Admin/class-admin.php:538
+#: includes/Admin/class-admin.php:688
 msgid "CTR"
 msgstr ""
 
-#: includes/Admin/class-admin.php:539 includes/Admin/class-settings.php:216
+#: includes/Admin/class-admin.php:689 includes/Admin/class-settings.php:216
 msgid "Performance"
 msgstr ""
 
-#: includes/Admin/class-admin.php:549
+#: includes/Admin/class-admin.php:699
 msgid "This Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:556
+#: includes/Admin/class-admin.php:706
 msgid "Winner"
 msgstr ""
 
-#: includes/Admin/class-admin.php:572
+#: includes/Admin/class-admin.php:722
 msgid "Disable this underperforming ad?"
 msgstr ""
 
-#: includes/Admin/class-admin.php:573
+#: includes/Admin/class-admin.php:723
 msgid "Disable"
 msgstr ""
 
-#: includes/Admin/class-admin.php:585
+#: includes/Admin/class-admin.php:735
 msgid ""
 "No winner yet — ads need at least 100 impressions each for a meaningful "
 "comparison."
 msgstr ""
 
-#: includes/Admin/class-admin.php:587
+#: includes/Admin/class-admin.php:737
 msgid "Winner is the ad with highest CTR among those with 100+ impressions."
 msgstr ""
 
-#: includes/Admin/class-admin.php:702 includes/Admin/class-help-docs.php:291
+#: includes/Admin/class-admin.php:904
+msgid "Auto-detected from your image on save."
+msgstr ""
+
+#: includes/Admin/class-admin.php:905
+msgid "Enter width x height to see matches."
+msgstr ""
+
+#: includes/Admin/class-admin.php:906
+msgid "No placements match this size yet."
+msgstr ""
+
+#: includes/Admin/class-admin.php:907
+msgid "Every placement."
+msgstr ""
+
+#: includes/Admin/class-admin.php:1045 includes/Admin/class-help-docs.php:291
 #: includes/Modules/Links/class-links-list-table.php:59
 #: includes/Modules/Links/class-partnership-admin.php:275
 #: includes/Modules/Links/class-partnership-admin.php:492
 msgid "Type"
 msgstr ""
 
-#: includes/Admin/class-admin.php:706
+#: includes/Admin/class-admin.php:1049
 #: includes/Modules/Links/class-links-admin.php:365
 #: includes/Modules/Links/class-links-list-table.php:61
 #: includes/Modules/Links/class-partnership-admin.php:277
@@ -1298,11 +1355,11 @@ msgstr ""
 msgid "Quick Links"
 msgstr ""
 
-#: includes/Admin/class-settings.php:464 includes/Core/class-plugin.php:192
+#: includes/Admin/class-settings.php:464 includes/Core/class-plugin.php:197
 msgid "All Ads"
 msgstr ""
 
-#: includes/Admin/class-settings.php:465 includes/Core/class-plugin.php:193
+#: includes/Admin/class-settings.php:465 includes/Core/class-plugin.php:198
 msgid "Add New Ad"
 msgstr ""
 
@@ -1406,7 +1463,7 @@ msgstr ""
 msgid "WB Ad Manager Setup"
 msgstr ""
 
-#: includes/Admin/class-setup-wizard.php:198 includes/Core/class-plugin.php:191
+#: includes/Admin/class-setup-wizard.php:198 includes/Core/class-plugin.php:196
 #: includes/Modules/Placements/class-widget-placement.php:67
 msgid "WB Ad Manager"
 msgstr ""
@@ -1932,7 +1989,7 @@ msgstr ""
 msgid "Whether the ad is active."
 msgstr ""
 
-#: includes/Core/class-abilities.php:254 includes/Core/class-plugin.php:197
+#: includes/Core/class-abilities.php:254 includes/Core/class-plugin.php:202
 msgid "Update Ad"
 msgstr ""
 
@@ -2189,39 +2246,87 @@ msgstr ""
 msgid "Link ID is required."
 msgstr ""
 
-#: includes/Core/class-plugin.php:194
-msgid "Add New"
+#: includes/Core/class-ad-formats.php:58
+msgid "Leaderboard (728x90)"
 msgstr ""
 
-#: includes/Core/class-plugin.php:195
-msgid "New Ad"
+#: includes/Core/class-ad-formats.php:64
+msgid "Large Leaderboard (970x90)"
 msgstr ""
 
-#: includes/Core/class-plugin.php:196
-msgid "Edit Ad"
+#: includes/Core/class-ad-formats.php:70
+msgid "Banner (468x60)"
 msgstr ""
 
-#: includes/Core/class-plugin.php:198
-msgid "View Ad"
+#: includes/Core/class-ad-formats.php:76
+msgid "Mobile Banner (320x50)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:82
+msgid "Mobile Large Banner (320x100)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:88
+msgid "Medium Rectangle (300x250)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:94
+msgid "Large Rectangle (336x280)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:100
+msgid "Skyscraper (160x600)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:106
+msgid "Wide Skyscraper / Half-Page (300x600)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:112
+msgid "Square (250x250)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:118
+msgid "Responsive (fills any slot)"
+msgstr ""
+
+#: includes/Core/class-ad-formats.php:124
+msgid "Custom size"
 msgstr ""
 
 #: includes/Core/class-plugin.php:199
-msgid "Search Ads"
+msgid "Add New"
 msgstr ""
 
 #: includes/Core/class-plugin.php:200
-msgid "Not found"
+msgid "New Ad"
 msgstr ""
 
 #: includes/Core/class-plugin.php:201
+msgid "Edit Ad"
+msgstr ""
+
+#: includes/Core/class-plugin.php:203
+msgid "View Ad"
+msgstr ""
+
+#: includes/Core/class-plugin.php:204
+msgid "Search Ads"
+msgstr ""
+
+#: includes/Core/class-plugin.php:205
+msgid "Not found"
+msgstr ""
+
+#: includes/Core/class-plugin.php:206
 msgid "Not found in Trash"
 msgstr ""
 
-#: includes/Core/class-plugin.php:257
+#: includes/Core/class-plugin.php:262
 msgid "BuddyPress is not active. BuddyPress activity placements are disabled."
 msgstr ""
 
-#: includes/Core/class-plugin.php:265
+#: includes/Core/class-plugin.php:270
 #. translators: 1: opening link to Jetonomy store page, 2: closing link tag
 msgid ""
 "Jetonomy support is ready. Install %1$sJetonomy%2$s to unlock seven new "
@@ -4639,12 +4744,12 @@ msgstr ""
 msgid "https://wbcomdesigns.com"
 msgstr ""
 
-#: includes/Core/class-plugin.php:189
+#: includes/Core/class-plugin.php:194
 msgctxt "Post Type General Name"
 msgid "Ads"
 msgstr ""
 
-#: includes/Core/class-plugin.php:190
+#: includes/Core/class-plugin.php:195
 msgctxt "Post Type Singular Name"
 msgid "Ad"
 msgstr ""
