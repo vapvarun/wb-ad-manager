@@ -88,18 +88,28 @@ class Jetonomy_Module {
 
 	/**
 	 * Initialize the module when Jetonomy is active.
+	 *
+	 * Placement registration is deferred to the `init` action so the
+	 * __() calls inside placements() fire after text-domain loading
+	 * (WP 6.7+ warns on early translation loading).
 	 */
 	public function init() {
 		if ( ! self::is_jetonomy_active() ) {
 			return;
 		}
 
+		add_action( 'init', array( $this, 'register_placements' ), 5 );
+		add_action( 'wp_head', array( __CLASS__, 'print_spacing_styles' ) );
+	}
+
+	/**
+	 * Register every Jetonomy placement with the engine. Fires on init.
+	 */
+	public function register_placements() {
 		$engine = Placement_Engine::get_instance();
 		foreach ( self::placements() as $spec ) {
 			$engine->register_placement( new Jetonomy_Placement( $spec ) );
 		}
-
-		add_action( 'wp_head', array( __CLASS__, 'print_spacing_styles' ) );
 	}
 
 	/**

@@ -35,7 +35,9 @@ class BP_Module {
 		$engine = Placement_Engine::get_instance();
 
 		$engine->register_placement( new BP_Activity_Placement() );
-		$engine->register_placement( new BP_Directory_Placement() );
+
+		// Registers six directory positions (before/after/between members + groups).
+		( new BP_Directory_Placement() )->register_all();
 	}
 
 	/**
