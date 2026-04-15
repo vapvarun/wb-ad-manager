@@ -200,6 +200,20 @@ class Help_Docs {
 					<?php esc_html_e( 'Contact Support', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 			</div>
+
+			<?php
+			// Phase K: one-click "Remove demo data" — the button only
+			// renders when tracked demo rows actually exist.
+			if ( class_exists( '\\WBAM\\Admin\\Demo_Data_Cleaner' ) ) {
+				?>
+				<div class="wbam-demo-tools-box" style="margin-top:20px;padding:15px 20px;background:#f6f7f7;border-left:4px solid #646970;">
+					<h3 style="margin-top:0;"><?php esc_html_e( 'Demo Data', 'wb-ads-rotator-with-split-test' ); ?></h3>
+					<p><?php esc_html_e( 'Remove sample ads created by the setup wizard. Only rows created by the wizard are deleted — your own ads are always safe.', 'wb-ads-rotator-with-split-test' ); ?></p>
+					<?php \WBAM\Admin\Demo_Data_Cleaner::render_clear_button(); ?>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 		<?php
 	}

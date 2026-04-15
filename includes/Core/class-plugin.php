@@ -20,6 +20,7 @@ use WBAM\Admin\Admin;
 use WBAM\Admin\Settings;
 use WBAM\Admin\Display_Options;
 use WBAM\Admin\Setup_Wizard;
+use WBAM\Admin\Demo_Data_Cleaner;
 use WBAM\Admin\Help_Docs;
 use WBAM\Admin\Upgrade_Pro;
 use WBAM\Admin\First_Install_Pointers;
@@ -138,6 +139,12 @@ class Plugin {
 			// Setup wizard.
 			$this->setup_wizard = new Setup_Wizard();
 			$this->setup_wizard->init();
+
+			// Demo data cleaner (Phase K) — one-click removal of rows
+			// seeded by the setup wizard, with double-check against
+			// the `_wbam_is_demo` post meta flag.
+			$demo_cleaner = new Demo_Data_Cleaner();
+			$demo_cleaner->register();
 
 			// Help & Documentation.
 			Help_Docs::get_instance();

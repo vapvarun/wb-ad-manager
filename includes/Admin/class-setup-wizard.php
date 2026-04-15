@@ -516,6 +516,15 @@ class Setup_Wizard {
 				update_post_meta( $post_id, '_wbam_priority', 5 );
 				update_post_meta( $post_id, '_wbam_sample_ad', true );
 
+				// Phase K: demo marker meta for safe one-click cleanup.
+				// The Demo_Data_Cleaner double-checks this meta flag before
+				// deletion so we never delete content the admin repurposed.
+				update_post_meta( $post_id, '_wbam_is_demo', 1 );
+
+				// Phase K: track the created ID on the option so the
+				// cleanup action knows exactly which rows it owns.
+				self::track_demo_id( 'ads', (int) $post_id );
+
 				/**
 				 * Fires after a sample ad is created.
 				 *
@@ -526,6 +535,47 @@ class Setup_Wizard {
 				 */
 				do_action( 'wbam_setup_wizard_sample_ad_created', $post_id, $ad_key, $ad );
 			}
+		}
+	}
+
+	/**
+	 * Append a newly-seeded demo row ID to the tracking option.
+	 *
+	 * Idempotent — re-running the wizard won't double-count. Exposed as
+	 * a public static helper so other seeding paths (and the migration
+	 * backfill in Installer) can feed the same registry.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $type Bucket key: 'ads', 'pages', 'links'.
+	 * @param int    $id   ID of the created row.
+	 */
+	public static function track_demo_id( $type, $id ) {
+		$id = (int) $id;
+		if ( $id <= 0 ) {
+			return;
+		}
+
+		$type    = sanitize_key( (string) $type );
+		$allowed = array( 'ads', 'pages', 'links' );
+		if ( ! in_array( $type, $allowed, true ) ) {
+			return;
+		}
+
+		$registry = get_option( 'wbam_demo_data_ids', array() );
+		if ( ! is_array( $registry ) ) {
+			$registry = array();
+		}
+
+		foreach ( $allowed as $bucket ) {
+			if ( ! isset( $registry[ $bucket ] ) || ! is_array( $registry[ $bucket ] ) ) {
+				$registry[ $bucket ] = array();
+			}
+		}
+
+		if ( ! in_array( $id, $registry[ $type ], true ) ) {
+			$registry[ $type ][] = $id;
+			update_option( 'wbam_demo_data_ids', $registry, false );
 		}
 	}
 

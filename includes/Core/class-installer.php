@@ -151,6 +151,97 @@ class Installer {
 		if ( version_compare( $current_version, '1.6.0', '<' ) ) {
 			$this->backfill_ad_formats();
 		}
+
+		// Phase K: backfill the `_wbam_is_demo` meta + `wbam_demo_data_ids`
+		// tracking option so existing installs benefit from the safe
+		// one-click demo cleanup without re-running the wizard. Runs
+		// exactly once, guarded by the `wbam_demo_data_backfilled_v2`
+		// option. Safe if the wizard was never run — it will simply
+		// find zero matches and mark itself done.
+		$this->maybe_backfill_demo_markers();
+	}
+
+	/**
+	 * One-shot migration that marks previously-seeded sample ads with
+	 * `_wbam_is_demo = 1` and populates `wbam_demo_data_ids`.
+	 *
+	 * Matches on BOTH the known sample titles AND the pre-existing
+	 * `_wbam_sample_ad` meta set by older wizard runs — either signal
+	 * is sufficient. This is intentionally tight: we never fuzzy-match
+	 * on content or placement to avoid touching the admin's real ads.
+	 *
+	 * Guarded by the `wbam_demo_data_backfilled_v2` option so it runs
+	 * exactly once per site.
+	 *
+	 * @since 2.8.0
+	 */
+	private function maybe_backfill_demo_markers() {
+		if ( get_option( 'wbam_demo_data_backfilled_v2' ) ) {
+			return;
+		}
+
+		$sample_titles = array(
+			'Sample Header Banner',
+			'Sample Sidebar Ad',
+			'Sample In-Content Promo',
+		);
+
+		// Collect candidate ad IDs by title OR by the legacy sample marker.
+		$candidate_ids = array();
+
+		// 1) By legacy `_wbam_sample_ad` meta — set by every wizard run.
+		$by_meta = get_posts(
+			array(
+				'post_type'      => 'wbam-ad',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'     => array(
+					array(
+						'key'     => '_wbam_sample_ad',
+						'compare' => 'EXISTS',
+					),
+				),
+			)
+		);
+		if ( is_array( $by_meta ) ) {
+			$candidate_ids = array_merge( $candidate_ids, array_map( 'intval', $by_meta ) );
+		}
+
+		// 2) By exact title match against the known sample titles.
+		foreach ( $sample_titles as $title ) {
+			$page = get_page_by_title( $title, OBJECT, 'wbam-ad' );
+			if ( $page instanceof \WP_Post ) {
+				$candidate_ids[] = (int) $page->ID;
+			}
+		}
+
+		$candidate_ids = array_values( array_unique( array_filter( $candidate_ids ) ) );
+
+		if ( ! empty( $candidate_ids ) ) {
+			$registry = get_option( 'wbam_demo_data_ids', array() );
+			if ( ! is_array( $registry ) ) {
+				$registry = array();
+			}
+			foreach ( array( 'ads', 'pages', 'links' ) as $bucket ) {
+				if ( ! isset( $registry[ $bucket ] ) || ! is_array( $registry[ $bucket ] ) ) {
+					$registry[ $bucket ] = array();
+				}
+			}
+
+			foreach ( $candidate_ids as $ad_id ) {
+				update_post_meta( $ad_id, '_wbam_is_demo', 1 );
+				if ( ! in_array( $ad_id, $registry['ads'], true ) ) {
+					$registry['ads'][] = $ad_id;
+				}
+			}
+
+			update_option( 'wbam_demo_data_ids', $registry, false );
+		}
+
+		update_option( 'wbam_demo_data_backfilled_v2', 1, false );
 	}
 
 	/**
