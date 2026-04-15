@@ -344,6 +344,7 @@ class Admin {
 		$priority      = '' === $priority ? 5 : absint( $priority );
 		$session_limit = get_post_meta( $post->ID, '_wbam_session_limit', true );
 		$session_limit = '' === $session_limit ? '' : absint( $session_limit );
+		$is_responsive = get_post_meta( $post->ID, '_wbam_is_responsive', true );
 		?>
 		<div class="wbam-metabox">
 			<div class="wbam-status-options">
@@ -368,6 +369,16 @@ class Admin {
 				<label for="wbam_session_limit"><?php esc_html_e( 'Session Limit', 'wb-ads-rotator-with-split-test' ); ?></label>
 				<input type="number" id="wbam_session_limit" name="wbam_session_limit" min="0" value="<?php echo esc_attr( $session_limit ); ?>" placeholder="<?php esc_attr_e( 'Unlimited', 'wb-ads-rotator-with-split-test' ); ?>" />
 				<p class="description"><?php esc_html_e( 'Max views per visitor session. Leave empty for unlimited.', 'wb-ads-rotator-with-split-test' ); ?></p>
+			</div>
+
+			<div class="wbam-responsive-field">
+				<label for="wbam_is_responsive">
+					<input type="checkbox" id="wbam_is_responsive" name="wbam_is_responsive" value="1" <?php checked( $is_responsive, '1' ); ?> />
+					<?php esc_html_e( 'Responsive ad', 'wb-ads-rotator-with-split-test' ); ?>
+				</label>
+				<p class="description">
+					<?php esc_html_e( 'Tick if this ad fills any container width (AdSense auto, fluid HTML, responsive script). Leave unchecked for fixed-size banners (728x90, 300x250, etc.) so the system only renders them in placements that match.', 'wb-ads-rotator-with-split-test' ); ?>
+				</p>
 			</div>
 
 			<?php
@@ -617,6 +628,12 @@ class Admin {
 			? absint( wp_unslash( $_POST['wbam_session_limit'] ) )
 			: '';
 		update_post_meta( $post_id, '_wbam_session_limit', $session_limit );
+
+		// Save responsive flag. Drives whether the ad is safe to render
+		// in any placement (responsive=1) or should be restricted to
+		// size-compatible slots (responsive=0 or missing).
+		$is_responsive = isset( $_POST['wbam_is_responsive'] ) ? '1' : '0';
+		update_post_meta( $post_id, '_wbam_is_responsive', $is_responsive );
 
 		// Save placements.
 		$placements = isset( $_POST['wbam_placements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) ) : array();

@@ -43,6 +43,17 @@ class Placement_Engine {
 	private $ad_types = array();
 
 	/**
+	 * Ad IDs already rendered on the current request.
+	 *
+	 * Used by render_ad() to prevent the same creative firing in
+	 * multiple placements on a single page load. Scoped to one request;
+	 * resets naturally on the next page view.
+	 *
+	 * @var array<int,bool>
+	 */
+	private $rendered_ad_ids = array();
+
+	/**
 	 * Initialize.
 	 */
 	public function init() {
@@ -270,8 +281,32 @@ class Placement_Engine {
 	 * @return string
 	 */
 	public function render_ad( $ad_id, $options = array() ) {
+		$ad_id = (int) $ad_id;
+
 		$enabled = get_post_meta( $ad_id, '_wbam_enabled', true );
 		if ( ! $enabled ) {
+			return '';
+		}
+
+		/**
+		 * Per-creative page cap: an ad renders at most once per request
+		 * regardless of how many placements it targets. Prevents the
+		 * "same ad 6 times on one page" experience when an advertiser
+		 * enables every compatible placement on a single creative.
+		 *
+		 * Bypass by setting $options['allow_duplicate'] = true (reserved
+		 * for surfaces that legitimately need the same ad twice, e.g.
+		 * preview screens).
+		 *
+		 * The cap is also filterable so site owners can opt out per
+		 * placement (e.g. sticky bar that must always show).
+		 *
+		 * @since 2.8.0
+		 */
+		$allow_duplicate = ! empty( $options['allow_duplicate'] );
+		$enforce_cap     = apply_filters( 'wbam_enforce_page_cap', ! $allow_duplicate, $ad_id, $options );
+
+		if ( $enforce_cap && isset( $this->rendered_ad_ids[ $ad_id ] ) ) {
 			return '';
 		}
 
@@ -285,6 +320,36 @@ class Placement_Engine {
 
 		$output    = $handler->render( $ad_id, $options );
 		$placement = isset( $options['placement'] ) ? $options['placement'] : '';
+
+		// Track only renders that actually produced output — an empty
+		// string (disabled handler, missing image URL) should not count
+		// as "shown" and block the ad from appearing elsewhere.
+		if ( $enforce_cap && '' !== $output ) {
+			$this->rendered_ad_ids[ $ad_id ] = true;
+		}
+
+		// Wrap every rendered ad in a standard .wbam-ad-slot container
+		// so the frontend stylesheet can apply responsive rules
+		// (max-width:100%, aspect-ratio preservation) regardless of
+		// ad type (image, code, AdSense, rich HTML, etc.). Named
+		// differently from the ad-type handlers' inner .wbam-ad
+		// wrappers to avoid collision with existing CSS selectors.
+		if ( '' !== $output ) {
+			$is_responsive = '1' === (string) get_post_meta( $ad_id, '_wbam_is_responsive', true );
+			$classes       = 'wbam-ad-slot';
+			if ( $is_responsive ) {
+				$classes .= ' wbam-ad-slot--responsive';
+			}
+
+			$output = sprintf(
+				'<div class="%1$s" data-ad-id="%2$d" data-responsive="%3$s"%4$s>%5$s</div>',
+				esc_attr( $classes ),
+				$ad_id,
+				$is_responsive ? '1' : '0',
+				$placement ? ' data-placement="' . esc_attr( $placement ) . '"' : '',
+				$output // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rendered upstream by ad type handler.
+			);
+		}
 
 		/**
 		 * Filter the ad output HTML.

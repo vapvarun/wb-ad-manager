@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom Designs - WB Ad Manager 2.7.0\n"
 "Report-Msgid-Bugs-To: https://wbcomdesigns.com/support/\n"
-"POT-Creation-Date: 2026-04-15 07:33:30+00:00\n"
+"POT-Creation-Date: 2026-04-15 08:20:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -157,7 +157,7 @@ msgid "Ad Settings"
 msgstr ""
 
 #: includes/Admin/class-admin.php:158 includes/Admin/class-admin.php:271
-#: includes/Admin/class-admin.php:686
+#: includes/Admin/class-admin.php:703
 msgid "Placements"
 msgstr ""
 
@@ -205,99 +205,110 @@ msgstr ""
 msgid "Repeat after every X posts"
 msgstr ""
 
-#: includes/Admin/class-admin.php:352 includes/Admin/class-admin.php:771
+#: includes/Admin/class-admin.php:353 includes/Admin/class-admin.php:788
 msgid "Enabled"
 msgstr ""
 
-#: includes/Admin/class-admin.php:356 includes/Admin/class-admin.php:771
+#: includes/Admin/class-admin.php:357 includes/Admin/class-admin.php:788
 msgid "Disabled"
 msgstr ""
 
-#: includes/Admin/class-admin.php:361
+#: includes/Admin/class-admin.php:362
 msgid "Priority"
 msgstr ""
 
-#: includes/Admin/class-admin.php:364
+#: includes/Admin/class-admin.php:365
 msgid "Higher priority ads display first."
 msgstr ""
 
-#: includes/Admin/class-admin.php:368
+#: includes/Admin/class-admin.php:369
 msgid "Session Limit"
 msgstr ""
 
-#: includes/Admin/class-admin.php:369
+#: includes/Admin/class-admin.php:370
 msgid "Unlimited"
 msgstr ""
 
-#: includes/Admin/class-admin.php:370
+#: includes/Admin/class-admin.php:371
 msgid "Max views per visitor session. Leave empty for unlimited."
 msgstr ""
 
-#: includes/Admin/class-admin.php:405
+#: includes/Admin/class-admin.php:377
+msgid "Responsive ad"
+msgstr ""
+
+#: includes/Admin/class-admin.php:380
+msgid ""
+"Tick if this ad fills any container width (AdSense auto, fluid HTML, "
+"responsive script). Leave unchecked for fixed-size banners (728x90, "
+"300x250, etc.) so the system only renders them in placements that match."
+msgstr ""
+
+#: includes/Admin/class-admin.php:416
 msgid "No placements assigned to this ad."
 msgstr ""
 
-#: includes/Admin/class-admin.php:439
+#: includes/Admin/class-admin.php:450
 msgid ""
 "No other enabled ads are using the same placements. Enable more ads to "
 "compare performance."
 msgstr ""
 
-#: includes/Admin/class-admin.php:524 includes/Core/class-plugin.php:205
+#: includes/Admin/class-admin.php:535 includes/Core/class-plugin.php:205
 msgid "Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:525 includes/Admin/class-admin.php:687
+#: includes/Admin/class-admin.php:536 includes/Admin/class-admin.php:704
 msgid "Impressions"
 msgstr ""
 
-#: includes/Admin/class-admin.php:526 includes/Admin/class-admin.php:688
+#: includes/Admin/class-admin.php:537 includes/Admin/class-admin.php:705
 #: includes/Modules/Links/class-links-list-table.php:60
 msgid "Clicks"
 msgstr ""
 
-#: includes/Admin/class-admin.php:527
+#: includes/Admin/class-admin.php:538
 msgid "CTR"
 msgstr ""
 
-#: includes/Admin/class-admin.php:528 includes/Admin/class-settings.php:216
+#: includes/Admin/class-admin.php:539 includes/Admin/class-settings.php:216
 msgid "Performance"
 msgstr ""
 
-#: includes/Admin/class-admin.php:538
+#: includes/Admin/class-admin.php:549
 msgid "This Ad"
 msgstr ""
 
-#: includes/Admin/class-admin.php:545
+#: includes/Admin/class-admin.php:556
 msgid "Winner"
 msgstr ""
 
-#: includes/Admin/class-admin.php:561
+#: includes/Admin/class-admin.php:572
 msgid "Disable this underperforming ad?"
 msgstr ""
 
-#: includes/Admin/class-admin.php:562
+#: includes/Admin/class-admin.php:573
 msgid "Disable"
 msgstr ""
 
-#: includes/Admin/class-admin.php:574
+#: includes/Admin/class-admin.php:585
 msgid ""
 "No winner yet — ads need at least 100 impressions each for a meaningful "
 "comparison."
 msgstr ""
 
-#: includes/Admin/class-admin.php:576
+#: includes/Admin/class-admin.php:587
 msgid "Winner is the ad with highest CTR among those with 100+ impressions."
 msgstr ""
 
-#: includes/Admin/class-admin.php:685 includes/Admin/class-help-docs.php:291
+#: includes/Admin/class-admin.php:702 includes/Admin/class-help-docs.php:291
 #: includes/Modules/Links/class-links-list-table.php:59
 #: includes/Modules/Links/class-partnership-admin.php:275
 #: includes/Modules/Links/class-partnership-admin.php:492
 msgid "Type"
 msgstr ""
 
-#: includes/Admin/class-admin.php:689
+#: includes/Admin/class-admin.php:706
 #: includes/Modules/Links/class-links-admin.php:365
 #: includes/Modules/Links/class-links-list-table.php:61
 #: includes/Modules/Links/class-partnership-admin.php:277
@@ -2571,60 +2582,36 @@ msgstr ""
 msgid "Display ads in the BuddyPress activity stream."
 msgstr ""
 
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:38
-msgid "BuddyPress Directories"
-msgstr ""
-
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:47
-msgid "Display ads in member or group directory listings."
-msgstr ""
-
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:239
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:39
 msgid "Before Members List"
 msgstr ""
 
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:240
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:40
+msgid "Display ads above the BuddyPress members directory loop."
+msgstr ""
+
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:45
 msgid "After Members List"
 msgstr ""
 
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:241
-msgid "Between Members"
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:46
+msgid "Display ads below the BuddyPress members directory loop."
 msgstr ""
 
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:242
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:51
 msgid "Before Groups List"
 msgstr ""
 
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:243
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:52
+msgid "Display ads above the BuddyPress groups directory loop."
+msgstr ""
+
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:57
 msgid "After Groups List"
 msgstr ""
 
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:244
-msgid "Between Groups"
-msgstr ""
-
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:248
-#: includes/Modules/Placements/class-comment-placement.php:234
-#: includes/Modules/Placements/class-sticky-placement.php:134
-#: includes/Modules/bbPress/class-bb-press-module.php:298
-msgid "Position"
-msgstr ""
-
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:258
-#: includes/Modules/Jetonomy/class-jetonomy-module.php:243
-#: includes/Modules/Placements/class-comment-placement.php:244
-#: includes/Modules/bbPress/class-bb-press-module.php:308
-msgid "Show after every"
-msgstr ""
-
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:260
-msgid "items"
-msgstr ""
-
-#: includes/Modules/BuddyPress/class-bp-directory-placement.php:263
-#: includes/Modules/Placements/class-comment-placement.php:249
-#: includes/Modules/bbPress/class-bb-press-module.php:313
-msgid "Repeat"
+#: includes/Modules/BuddyPress/class-bp-directory-placement.php:58
+msgid "Display ads below the BuddyPress groups directory loop."
 msgstr ""
 
 #: includes/Modules/BuddyPress/class-bp-widgets.php:50
@@ -3542,12 +3529,18 @@ msgstr ""
 msgid "Display ads below the replies list, above the reply composer."
 msgstr ""
 
-#: includes/Modules/Jetonomy/class-jetonomy-module.php:245
+#: includes/Modules/Jetonomy/class-jetonomy-module.php:253
+#: includes/Modules/Placements/class-comment-placement.php:244
+#: includes/Modules/bbPress/class-bb-press-module.php:308
+msgid "Show after every"
+msgstr ""
+
+#: includes/Modules/Jetonomy/class-jetonomy-module.php:255
 #: includes/Modules/bbPress/class-bb-press-module.php:310
 msgid "replies"
 msgstr ""
 
-#: includes/Modules/Jetonomy/class-jetonomy-module.php:248
+#: includes/Modules/Jetonomy/class-jetonomy-module.php:258
 msgid "Repeat every N replies (instead of only once)"
 msgstr ""
 
@@ -4399,8 +4392,19 @@ msgstr ""
 msgid "Between Comments"
 msgstr ""
 
+#: includes/Modules/Placements/class-comment-placement.php:234
+#: includes/Modules/Placements/class-sticky-placement.php:134
+#: includes/Modules/bbPress/class-bb-press-module.php:298
+msgid "Position"
+msgstr ""
+
 #: includes/Modules/Placements/class-comment-placement.php:246
 msgid "comments"
+msgstr ""
+
+#: includes/Modules/Placements/class-comment-placement.php:249
+#: includes/Modules/bbPress/class-bb-press-module.php:313
+msgid "Repeat"
 msgstr ""
 
 #: includes/Modules/Placements/class-content-placement.php:25

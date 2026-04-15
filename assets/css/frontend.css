@@ -1048,3 +1048,47 @@ body.dark-scheme,
 	border-color: var(--wbam-border-color-darker);
 	color: var(--wbam-text-light);
 }
+
+/* ==========================================================================
+   Universal ad slot wrapper
+   Applied by Placement_Engine::render_ad() around every rendered ad so
+   responsive rules apply uniformly across image, code, AdSense, and
+   rich-content ad types without each handler needing its own CSS.
+   ========================================================================== */
+
+.wbam-ad-slot {
+	display: block;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+/* Images inside any slot: never overflow their container.
+   Works for image ads and also for user-pasted <img> tags in
+   rich-content / code ads. */
+.wbam-ad-slot img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* iframes (AdSense, DFP, third-party tag managers) commonly render
+   inside their own <ins> / <iframe>. Constrain them to the slot. */
+.wbam-ad-slot iframe,
+.wbam-ad-slot ins,
+.wbam-ad-slot .adsbygoogle {
+	max-width: 100%;
+}
+
+/* Responsive ads: fill the available width and let the script/image
+   pick its own height. Most third-party responsive ad scripts
+   (AdSense auto, Amazon OneLink, etc.) need width:100% on the
+   outer container to trigger their own layout. */
+.wbam-ad-slot--responsive {
+	width: 100%;
+}
+
+.wbam-ad-slot--responsive iframe,
+.wbam-ad-slot--responsive ins,
+.wbam-ad-slot--responsive .adsbygoogle {
+	width: 100% !important;
+}
