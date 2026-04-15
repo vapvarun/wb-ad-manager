@@ -20,6 +20,7 @@ use WBAM\Modules\AdTypes\Code_Ad;
 use WBAM\Modules\AdTypes\AdSense_Ad;
 use WBAM\Modules\AdTypes\Email_Capture_Ad;
 use WBAM\Modules\Targeting\Targeting_Engine;
+use WBAM\Modules\Targeting\Frequency_Manager;
 
 /**
  * Placement Engine class.
@@ -234,11 +235,29 @@ class Placement_Engine {
 		$targeting = Targeting_Engine::get_instance();
 		$filtered  = array();
 
+		// Phase D of the format-aware matching plan: drop ads whose
+		// declared format doesn't match this placement's accepted list.
+		// Feature-flagged via the `wbam_format_matching_enabled` option
+		// so sites opt in after they've had a chance to review the
+		// backfilled formats on their existing ads. Filterable for
+		// A/B testing and per-env control.
+		$enforce_format = (bool) apply_filters(
+			'wbam_enforce_format_matching',
+			(bool) get_option( 'wbam_format_matching_enabled', false ),
+			$placement_id
+		);
+
 		foreach ( $ad_ids as $ad_id ) {
 			// Double-check that the placement is actually in the array (prevents false LIKE matches).
 			$placements = get_post_meta( $ad_id, '_wbam_placements', true );
 			if ( ! is_array( $placements ) || ! in_array( $placement_id, $placements, true ) ) {
 				continue;
+			}
+
+			if ( $enforce_format && function_exists( 'wbam_ad_fits_placement' ) ) {
+				if ( ! wbam_ad_fits_placement( $ad_id, $placement_id ) ) {
+					continue;
+				}
 			}
 
 			if ( $targeting->should_display( $ad_id ) ) {
@@ -261,6 +280,26 @@ class Placement_Engine {
 				return $priority_b - $priority_a;
 			}
 		);
+
+		// Slot policy: fixed-inventory placements render AT MOST ONE ad
+		// per hook invocation. When multiple advertisers target the same
+		// slot, we pick a weighted-random winner rather than stacking
+		// every creative (which would give one advertiser visibility and
+		// the other a pixel below them — not what either of them paid
+		// for). Rotation honors the ad priority weight already set on
+		// each creative.
+		//
+		// Placements that legitimately render multiple ads per page
+		// (widget areas, between_replies with frequency counters) can
+		// opt out per-placement via the wbam_placement_render_mode filter
+		// returning 'stack' for their slug.
+		$render_mode = apply_filters( 'wbam_placement_render_mode', 'rotate', $placement_id );
+
+		if ( 'rotate' === $render_mode && count( $filtered ) > 1 ) {
+			$frequency = Frequency_Manager::get_instance();
+			$winner    = $frequency->get_weighted_random( $filtered );
+			$filtered  = null === $winner ? array() : array( (int) $winner );
+		}
 
 		/**
 		 * Filter the ads returned for a placement.
