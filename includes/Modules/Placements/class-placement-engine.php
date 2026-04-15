@@ -297,8 +297,34 @@ class Placement_Engine {
 
 		if ( 'rotate' === $render_mode && count( $filtered ) > 1 ) {
 			$frequency = Frequency_Manager::get_instance();
-			$winner    = $frequency->get_weighted_random( $filtered );
-			$filtered  = null === $winner ? array() : array( (int) $winner );
+
+			// Phase I.1 fill-fallback: keep the slot full when the
+			// weighted winner can't actually render right now (already
+			// shown elsewhere on this page via the per-creative cap,
+			// or filtered out by some other layer that returns empty).
+			// Drop the unrenderable winner from the pool and pick the
+			// next weighted winner. Continue until either an ad clears
+			// or the pool is exhausted (slot empty as last resort,
+			// same as before — but only after every option is tried).
+			$pool   = array_values( array_unique( array_map( 'intval', $filtered ) ) );
+			$winner = null;
+
+			while ( ! empty( $pool ) ) {
+				$candidate = $frequency->get_weighted_random( $pool );
+				if ( null === $candidate ) {
+					break;
+				}
+
+				if ( ! $this->ad_is_renderable( (int) $candidate ) ) {
+					$pool = array_values( array_diff( $pool, array( (int) $candidate ) ) );
+					continue;
+				}
+
+				$winner = (int) $candidate;
+				break;
+			}
+
+			$filtered = null === $winner ? array() : array( $winner );
 		}
 
 		/**
@@ -439,5 +465,38 @@ class Placement_Engine {
 		if ( 'wbam-ad' === get_post_type( $post_id ) ) {
 			$this->clear_placement_cache( $post_id );
 		}
+	}
+
+	/**
+	 * Cheap renderability probe used by Phase I.1 fill-fallback.
+	 *
+	 * Returns false when render_ad() would short-circuit on this
+	 * request — currently that's the per-page dedup case (the ad
+	 * already rendered in another slot during this page load) and
+	 * the disabled-ad case. Format / session / package gates were
+	 * already applied by the caller, so we don't re-check them here.
+	 *
+	 * Pure read; no side effects on the page-cap registry.
+	 *
+	 * @since 2.8.1
+	 * @param int $ad_id Ad post ID.
+	 * @return bool
+	 */
+	public function ad_is_renderable( $ad_id ) {
+		$ad_id = (int) $ad_id;
+		if ( $ad_id <= 0 ) {
+			return false;
+		}
+
+		if ( isset( $this->rendered_ad_ids[ $ad_id ] ) ) {
+			return false;
+		}
+
+		$enabled = get_post_meta( $ad_id, '_wbam_enabled', true );
+		if ( ! $enabled ) {
+			return false;
+		}
+
+		return true;
 	}
 }
