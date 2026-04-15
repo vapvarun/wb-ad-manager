@@ -36,6 +36,10 @@ define( 'WBAM_BASENAME', plugin_basename( __FILE__ ) );
 // Manually load trait (traits need special handling).
 require_once WBAM_PATH . 'includes/Core/trait-singleton.php';
 
+// Global helper functions for format matching. Load early so hooks
+// fired during plugins_loaded (pro plugin, mu-plugins) can call them.
+require_once WBAM_PATH . 'includes/functions-ad-formats.php';
+
 /**
  * Autoloader for plugin classes.
  *
