@@ -23,6 +23,7 @@ use WBAM\Admin\Setup_Wizard;
 use WBAM\Admin\Help_Docs;
 use WBAM\Admin\Upgrade_Pro;
 use WBAM\Admin\First_Install_Pointers;
+use WBAM\Admin\Field_Tooltips;
 use WBAM\Frontend\Frontend;
 use WBAM\API\API_Bootstrap;
 
@@ -147,6 +148,10 @@ class Plugin {
 			// Class is flag-gated internally; safe to always register.
 			$pointers = new First_Install_Pointers();
 			$pointers->init();
+
+			// Field-level tooltip popovers on the Ad edit screen (Phase G.4).
+			$field_tooltips = new Field_Tooltips();
+			$field_tooltips->init();
 		}
 
 		// Frontend.

@@ -371,7 +371,7 @@ class Admin {
 			</div>
 
 			<div class="wbam-priority-field">
-				<label for="wbam_priority"><?php esc_html_e( 'Priority', 'wb-ads-rotator-with-split-test' ); ?></label>
+				<label for="wbam_priority"><?php esc_html_e( 'Priority', 'wb-ads-rotator-with-split-test' ); ?></label><?php echo Field_Tooltips::tip_for( 'priority' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?>
 				<input type="range" id="wbam_priority" name="wbam_priority" min="1" max="10" value="<?php echo esc_attr( $priority ); ?>" />
 				<span class="wbam-priority-value"><?php echo esc_html( $priority ); ?></span>
 				<p class="description"><?php esc_html_e( 'Higher priority = bigger share when multiple ads compete for the same slot. Default is 5.', 'wb-ads-rotator-with-split-test' ); ?></p>
@@ -381,14 +381,14 @@ class Admin {
 			</div>
 
 			<div class="wbam-session-limit-field">
-				<label for="wbam_session_limit"><?php esc_html_e( 'Session Limit', 'wb-ads-rotator-with-split-test' ); ?></label>
+				<label for="wbam_session_limit"><?php esc_html_e( 'Session Limit', 'wb-ads-rotator-with-split-test' ); ?></label><?php echo Field_Tooltips::tip_for( 'session_limit' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?>
 				<input type="number" id="wbam_session_limit" name="wbam_session_limit" min="0" value="<?php echo esc_attr( $session_limit ); ?>" placeholder="<?php esc_attr_e( 'Unlimited', 'wb-ads-rotator-with-split-test' ); ?>" />
 				<p class="description"><?php esc_html_e( 'Max views per visitor session. Leave empty for unlimited.', 'wb-ads-rotator-with-split-test' ); ?></p>
 			</div>
 
 			<div class="wbam-sizing-section">
 				<div class="wbam-sizing-section__head">
-					<h3 class="wbam-sizing-section__title"><?php esc_html_e( 'Sizing', 'wb-ads-rotator-with-split-test' ); ?></h3>
+					<h3 class="wbam-sizing-section__title"><?php esc_html_e( 'Sizing', 'wb-ads-rotator-with-split-test' ); ?><?php echo Field_Tooltips::tip_for( 'sizing_mode' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?></h3>
 					<span class="wbam-sizing-section__hint"><?php esc_html_e( 'Controls where this ad can render.', 'wb-ads-rotator-with-split-test' ); ?></span>
 				</div>
 
@@ -421,7 +421,7 @@ class Admin {
 					</select>
 
 					<div class="wbam-sizing-custom-dims" <?php echo 'custom' === $ad_format ? '' : 'hidden'; ?>>
-						<span class="wbam-inline-label"><?php esc_html_e( 'Dimensions', 'wb-ads-rotator-with-split-test' ); ?></span>
+						<span class="wbam-inline-label"><?php esc_html_e( 'Dimensions', 'wb-ads-rotator-with-split-test' ); ?></span><?php echo Field_Tooltips::tip_for( 'custom_dims' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?>
 						<input type="number" name="wbam_ad_width" min="0" step="1" value="<?php echo esc_attr( $ad_width ? $ad_width : '' ); ?>" placeholder="W" class="small-text" />
 						<span class="wbam-sizing-x">&times;</span>
 						<input type="number" name="wbam_ad_height" min="0" step="1" value="<?php echo esc_attr( $ad_height ? $ad_height : '' ); ?>" placeholder="H" class="small-text" />
