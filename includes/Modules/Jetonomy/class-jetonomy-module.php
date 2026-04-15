@@ -34,6 +34,22 @@ class Jetonomy_Module {
 
 		$engine = Placement_Engine::get_instance();
 		$engine->register_placement( new Jetonomy_Placement() );
+
+		add_action( 'wp_head', array( __CLASS__, 'print_spacing_styles' ) );
+	}
+
+	/**
+	 * Print minimal spacing styles so ad wrappers don't collide with
+	 * Jetonomy cards, reply borders, or sidebar widgets. Kept inline to
+	 * avoid an extra HTTP request — the rules are ~10 lines.
+	 */
+	public static function print_spacing_styles() {
+		echo '<style id="wbam-jetonomy-spacing">'
+			. '.wbam-jetonomy-ad{margin:16px 0;padding:4px;box-sizing:border-box;}'
+			. '.wbam-jetonomy-ad img{max-width:100%;height:auto;display:block;margin:0 auto;}'
+			. '.wbam-jetonomy-sidebar_before,.wbam-jetonomy-sidebar_after_about,.wbam-jetonomy-sidebar_after{margin:0 0 16px 0;}'
+			. '.wbam-jetonomy-between_replies{margin:12px 0;}'
+			. '</style>';
 	}
 
 	/**
