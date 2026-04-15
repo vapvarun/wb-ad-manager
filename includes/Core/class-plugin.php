@@ -22,6 +22,7 @@ use WBAM\Admin\Display_Options;
 use WBAM\Admin\Setup_Wizard;
 use WBAM\Admin\Help_Docs;
 use WBAM\Admin\Upgrade_Pro;
+use WBAM\Admin\First_Install_Pointers;
 use WBAM\Frontend\Frontend;
 use WBAM\API\API_Bootstrap;
 
@@ -141,6 +142,11 @@ class Plugin {
 
 			// Upgrade to PRO (only when PRO is not active).
 			Upgrade_Pro::get_instance();
+
+			// First-install WP-pointer tooltips (Phase G.2).
+			// Class is flag-gated internally; safe to always register.
+			$pointers = new First_Install_Pointers();
+			$pointers->init();
 		}
 
 		// Frontend.

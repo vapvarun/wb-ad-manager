@@ -39,9 +39,37 @@ class Installer {
 	 * Run installer.
 	 */
 	public function install() {
+		// Detect fresh install vs. upgrade BEFORE we touch DB_VERSION.
+		// Fresh install = DB version option has never been set (get_option
+		// returns the default we pass in, not a stored value). Upgrade =
+		// any stored value exists, even '0'.
+		$this->maybe_set_onboarding_pointers_default();
+
 		$this->create_tables();
 		$this->run_migrations();
 		$this->update_db_version();
+	}
+
+	/**
+	 * Set the default for the onboarding-pointers flag exactly once,
+	 * at install time. Fresh installs get pointers enabled; upgrades
+	 * from a previous version leave them off so power users aren't
+	 * re-taught things they already know.
+	 *
+	 * Uses add_option so re-running install() (e.g. via
+	 * maybe_update_database()) never flips the flag back on after
+	 * a user has disabled it.
+	 *
+	 * @since 2.8.1
+	 */
+	private function maybe_set_onboarding_pointers_default() {
+		// Sentinel lets us distinguish "never set" from "set to 0".
+		$stored_db_version = get_option( self::DB_VERSION_OPTION, null );
+		$is_fresh_install  = ( null === $stored_db_version );
+
+		$default = $is_fresh_install ? 1 : 0;
+
+		add_option( 'wbam_onboarding_pointers_enabled', $default );
 	}
 
 	/**
