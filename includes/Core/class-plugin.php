@@ -207,6 +207,23 @@ class Plugin {
 	private function setup_hooks() {
 		add_action( 'admin_init', array( $this, 'activation_redirect' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		add_action( 'wp_ajax_wbam_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
+	}
+
+	/**
+	 * AJAX handler for dismissing admin notices permanently.
+	 */
+	public function ajax_dismiss_notice() {
+		check_ajax_referer( 'wbam_dismiss_notice', 'nonce' );
+
+		$type = isset( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '';
+		$allowed = array( 'bp', 'jetonomy' );
+		if ( ! in_array( $type, $allowed, true ) ) {
+			wp_send_json_error();
+		}
+
+		update_user_meta( get_current_user_id(), 'wbam_dismiss_' . $type . '_notice', 1 );
+		wp_send_json_success();
 	}
 
 	/**
@@ -280,14 +297,16 @@ class Plugin {
 			return;
 		}
 
-		if ( ! class_exists( 'BuddyPress' ) ) {
-			echo '<div class="notice notice-info"><p>';
+		$user_id = get_current_user_id();
+
+		if ( ! class_exists( 'BuddyPress' ) && ! get_user_meta( $user_id, 'wbam_dismiss_bp_notice', true ) ) {
+			echo '<div class="notice notice-info is-dismissible" data-wbam-dismiss="bp"><p>';
 			esc_html_e( 'BuddyPress is not active. BuddyPress activity placements are disabled.', 'wb-ads-rotator-with-split-test' );
 			echo '</p></div>';
 		}
 
-		if ( ! \WBAM\Modules\Jetonomy\Jetonomy_Module::is_jetonomy_active() ) {
-			echo '<div class="notice notice-info"><p>';
+		if ( ! \WBAM\Modules\Jetonomy\Jetonomy_Module::is_jetonomy_active() && ! get_user_meta( $user_id, 'wbam_dismiss_jetonomy_notice', true ) ) {
+			echo '<div class="notice notice-info is-dismissible" data-wbam-dismiss="jetonomy"><p>';
 			printf(
 				/* translators: 1: opening link to Jetonomy store page, 2: closing link tag */
 				esc_html__( 'Jetonomy support is ready. Install %1$sJetonomy%2$s to unlock seven new placement positions (sidebar, topic, and reply injection points).', 'wb-ads-rotator-with-split-test' ),
@@ -296,6 +315,18 @@ class Plugin {
 			);
 			echo '</p></div>';
 		}
+
+		// Inline JS to persist dismissals via AJAX.
+		?>
+		<script>
+		jQuery(function($){
+			$('[data-wbam-dismiss]').on('click', '.notice-dismiss', function(){
+				var type = $(this).closest('[data-wbam-dismiss]').data('wbam-dismiss');
+				$.post(ajaxurl, { action: 'wbam_dismiss_notice', type: type, nonce: '<?php echo esc_js( wp_create_nonce( 'wbam_dismiss_notice' ) ); ?>' });
+			});
+		});
+		</script>
+		<?php
 	}
 
 	/**

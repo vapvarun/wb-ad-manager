@@ -498,11 +498,11 @@ class Installer {
 		$table_rate_limits = $wpdb->prefix . 'wbam_rate_limits';
 		$sql_rate_limits   = "CREATE TABLE {$table_rate_limits} (
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-			`key` varchar(255) NOT NULL,
-			`count` int(11) NOT NULL DEFAULT 0,
+			rate_key varchar(255) NOT NULL,
+			rate_count int(11) NOT NULL DEFAULT 0,
 			expires bigint(20) UNSIGNED NOT NULL,
 			PRIMARY KEY  (id),
-			UNIQUE KEY `key` (`key`),
+			UNIQUE KEY rate_key (rate_key),
 			KEY expires (expires)
 		) {$charset_collate};";
 
