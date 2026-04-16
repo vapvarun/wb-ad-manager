@@ -212,7 +212,19 @@ class Installer {
 
 		// 2) By exact title match against the known sample titles.
 		foreach ( $sample_titles as $title ) {
-			$page = get_page_by_title( $title, OBJECT, 'wbam-ad' );
+			$query = new \WP_Query(
+				array(
+					'post_type'              => 'wbam-ad',
+					'title'                  => $title,
+					'post_status'            => 'all',
+					'posts_per_page'         => 1,
+					'no_found_rows'          => true,
+					'ignore_sticky_posts'    => true,
+					'update_post_term_cache' => false,
+					'update_post_meta_cache' => false,
+				)
+			);
+			$page = $query->have_posts() ? $query->next_post() : null;
 			if ( $page instanceof \WP_Post ) {
 				$candidate_ids[] = (int) $page->ID;
 			}
