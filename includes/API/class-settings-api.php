@@ -187,8 +187,8 @@ class Settings_API {
 	 * @return \WP_REST_Response
 	 */
 	public function get_display_settings( $request ) {
-		$all      = \WBAM\Core\Settings_Helper::get();
-		$display  = array();
+		$all     = \WBAM\Core\Settings_Helper::get();
+		$display = array();
 
 		foreach ( $this->display_keys as $key ) {
 			if ( array_key_exists( $key, $all ) ) {

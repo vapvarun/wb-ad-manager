@@ -116,29 +116,29 @@ class Placement_Format_Map {
 
 		$map = array(
 			// Core placements (free).
-			'header'              => array( 'leaderboard', 'large-leaderboard', 'banner', $r ),
-			'footer'              => array( 'leaderboard', $r ),
-			'before_content'      => array( 'leaderboard', 'medium-rectangle', 'large-rectangle', $r ),
-			'after_content'       => array( 'leaderboard', 'medium-rectangle', 'large-rectangle', $r ),
-			'paragraph'           => array( 'medium-rectangle', 'large-rectangle', $r ),
-			'widget'              => array( 'medium-rectangle', 'skyscraper', 'wide-skyscraper', 'square', $r ),
-			'before_archive'      => array( 'leaderboard', $r ),
-			'after_archive'       => array( 'leaderboard', $r ),
-			'sticky'              => array( 'mobile-banner', 'mobile-large-banner', $r ),
-			'popup'               => array( 'medium-rectangle', 'large-rectangle', $r ),
-			'comment'             => array( 'medium-rectangle', $r ),
-			'comments'            => array( 'medium-rectangle', $r ), // alternate slug used by admin card.
-			'shortcode'           => array( $r ), // inline, author controls the container.
+			'header'                       => array( 'leaderboard', 'large-leaderboard', 'banner', $r ),
+			'footer'                       => array( 'leaderboard', $r ),
+			'before_content'               => array( 'leaderboard', 'medium-rectangle', 'large-rectangle', $r ),
+			'after_content'                => array( 'leaderboard', 'medium-rectangle', 'large-rectangle', $r ),
+			'paragraph'                    => array( 'medium-rectangle', 'large-rectangle', $r ),
+			'widget'                       => array( 'medium-rectangle', 'skyscraper', 'wide-skyscraper', 'square', $r ),
+			'before_archive'               => array( 'leaderboard', $r ),
+			'after_archive'                => array( 'leaderboard', $r ),
+			'sticky'                       => array( 'mobile-banner', 'mobile-large-banner', $r ),
+			'popup'                        => array( 'medium-rectangle', 'large-rectangle', $r ),
+			'comment'                      => array( 'medium-rectangle', $r ),
+			'comments'                     => array( 'medium-rectangle', $r ), // alternate slug used by admin card.
+			'shortcode'                    => array( $r ), // inline, author controls the container.
 
 			// BuddyPress.
-			'bp_activity'         => array( 'medium-rectangle', $r ),
-			'bp_before_members'   => array( 'leaderboard', 'medium-rectangle', $r ),
-			'bp_after_members'    => array( 'leaderboard', 'medium-rectangle', $r ),
-			'bp_before_groups'    => array( 'leaderboard', 'medium-rectangle', $r ),
-			'bp_after_groups'     => array( 'leaderboard', 'medium-rectangle', $r ),
+			'bp_activity'                  => array( 'medium-rectangle', $r ),
+			'bp_before_members'            => array( 'leaderboard', 'medium-rectangle', $r ),
+			'bp_after_members'             => array( 'leaderboard', 'medium-rectangle', $r ),
+			'bp_before_groups'             => array( 'leaderboard', 'medium-rectangle', $r ),
+			'bp_after_groups'              => array( 'leaderboard', 'medium-rectangle', $r ),
 
 			// bbPress.
-			'bbpress'             => array( 'leaderboard', 'medium-rectangle', $r ),
+			'bbpress'                      => array( 'leaderboard', 'medium-rectangle', $r ),
 
 			// Jetonomy.
 			'jetonomy_sidebar_before'      => array( 'medium-rectangle', 'wide-skyscraper', 'skyscraper', $r ),

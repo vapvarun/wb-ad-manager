@@ -224,7 +224,7 @@ class Installer {
 					'update_post_meta_cache' => false,
 				)
 			);
-			$page = $query->have_posts() ? $query->next_post() : null;
+			$page  = $query->have_posts() ? $query->next_post() : null;
 			if ( $page instanceof \WP_Post ) {
 				$candidate_ids[] = (int) $page->ID;
 			}

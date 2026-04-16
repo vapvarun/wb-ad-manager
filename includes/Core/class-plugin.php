@@ -216,7 +216,7 @@ class Plugin {
 	public function ajax_dismiss_notice() {
 		check_ajax_referer( 'wbam_dismiss_notice', 'nonce' );
 
-		$type = isset( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '';
+		$type    = isset( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '';
 		$allowed = array( 'bp', 'jetonomy' );
 		if ( ! in_array( $type, $allowed, true ) ) {
 			wp_send_json_error();

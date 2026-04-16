@@ -413,7 +413,10 @@ class Admin {
 					<select id="wbam_ad_format" name="wbam_ad_format" class="wbam-sizing-fixed-fields__select">
 						<option value=""><?php esc_html_e( 'Auto-detect from image', 'wb-ads-rotator-with-split-test' ); ?></option>
 						<?php foreach ( $format_labels as $slug => $meta ) : ?>
-							<?php if ( 'responsive' === $slug ) { continue; } // Responsive lives in the choice above. ?>
+							<?php
+							if ( 'responsive' === $slug ) {
+								continue; } // Responsive lives in the choice above.
+							?>
 							<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $ad_format, $slug ); ?>>
 								<?php echo esc_html( $meta['label'] ); ?>
 							</option>
@@ -818,14 +821,14 @@ class Admin {
 		update_post_meta( $post_id, '_wbam_is_responsive', $is_responsive );
 
 		// Save ad format + dimensions. Resolution order:
-		//  1. If Responsive ticked: format is 'responsive', dims cleared.
-		//  2. Else if admin picked a named format (non-custom): store slug,
-		//     copy W/H from the taxonomy so downstream consumers have
-		//     dimensions without another lookup.
-		//  3. Else if admin picked 'custom' with W/H: store as-is, detect
-		//     if dims match a named format and upgrade the slug for free.
-		//  4. Else (Auto-detect option): call the detector against the
-		//     ad-type data; fall back to 'responsive' when indeterminate.
+		// 1. If Responsive ticked: format is 'responsive', dims cleared.
+		// 2. Else if admin picked a named format (non-custom): store slug,
+		// copy W/H from the taxonomy so downstream consumers have
+		// dimensions without another lookup.
+		// 3. Else if admin picked 'custom' with W/H: store as-is, detect
+		// if dims match a named format and upgrade the slug for free.
+		// 4. Else (Auto-detect option): call the detector against the
+		// ad-type data; fall back to 'responsive' when indeterminate.
 		$format_input = isset( $_POST['wbam_ad_format'] ) ? sanitize_text_field( wp_unslash( $_POST['wbam_ad_format'] ) ) : '';
 		$width_input  = isset( $_POST['wbam_ad_width'] ) ? absint( wp_unslash( $_POST['wbam_ad_width'] ) ) : 0;
 		$height_input = isset( $_POST['wbam_ad_height'] ) ? absint( wp_unslash( $_POST['wbam_ad_height'] ) ) : 0;

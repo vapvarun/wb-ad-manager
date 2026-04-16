@@ -93,10 +93,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/list-ads',
 			array(
-				'label'            => __( 'List Ads', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'List all ads with optional filters by type, placement, and status. Returns ad IDs, titles, types, and enabled status.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'List Ads', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'List all ads with optional filters by type, placement, and status. Returns ad IDs, titles, types, and enabled status.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'properties' => array(
 						'status'    => array(
@@ -124,7 +124,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'items' => array(
@@ -134,11 +134,11 @@ class Abilities {
 						'total' => array( 'type' => 'integer' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_list_ads' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_list_ads' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -152,10 +152,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/get-ad',
 			array(
-				'label'            => __( 'Get Ad Details', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Get complete details for a single ad including content, targeting rules, placements, and performance stats.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'Get Ad Details', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Get complete details for a single ad including content, targeting rules, placements, and performance stats.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'id' ),
 					'properties' => array(
@@ -165,7 +165,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'id'         => array( 'type' => 'integer' ),
@@ -178,11 +178,11 @@ class Abilities {
 						'stats'      => array( 'type' => 'object' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_get_ad' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_get_ad' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -196,10 +196,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/create-ad',
 			array(
-				'label'            => __( 'Create Ad', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Create a new ad with specified type (image, code, rich_content, email_capture, adsense), content, and placement assignments.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'Create Ad', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Create a new ad with specified type (image, code, rich_content, email_capture, adsense), content, and placement assignments.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'title', 'type', 'content' ),
 					'properties' => array(
@@ -228,7 +228,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'id'       => array( 'type' => 'integer' ),
@@ -236,11 +236,11 @@ class Abilities {
 						'edit_url' => array( 'type' => 'string' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_create_ad' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_create_ad' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array( 'destructive' => true ),
 				),
@@ -251,10 +251,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/update-ad',
 			array(
-				'label'            => __( 'Update Ad', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( "Update an existing ad's title, content, placements, targeting rules, or enabled status.", 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'Update Ad', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( "Update an existing ad's title, content, placements, targeting rules, or enabled status.", 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'id' ),
 					'properties' => array(
@@ -281,18 +281,18 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'id'      => array( 'type' => 'integer' ),
 						'updated' => array( 'type' => 'boolean' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_update_ad' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_update_ad' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array( 'destructive' => true ),
 				),
@@ -303,10 +303,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/delete-ad',
 			array(
-				'label'            => __( 'Delete Ad', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Permanently delete an ad and its associated analytics data.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'Delete Ad', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Permanently delete an ad and its associated analytics data.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'id' ),
 					'properties' => array(
@@ -316,17 +316,17 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'deleted' => array( 'type' => 'boolean' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_delete_ad' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_delete_ad' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array( 'destructive' => true ),
 				),
@@ -337,10 +337,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/serve-ad',
 			array(
-				'label'            => __( 'Serve Ad for Placement', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Get the best ad for a given placement, applying all targeting rules (device, geo, frequency, content analysis). Returns rendered HTML ready for display.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'Serve Ad for Placement', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Get the best ad for a given placement, applying all targeting rules (device, geo, frequency, content analysis). Returns rendered HTML ready for display.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'placement' ),
 					'properties' => array(
@@ -358,7 +358,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'html'      => array( 'type' => 'string' ),
@@ -366,9 +366,9 @@ class Abilities {
 						'placement' => array( 'type' => 'string' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_serve_ad' ),
+				'execute_callback'    => array( $this, 'execute_serve_ad' ),
 				'permission_callback' => '__return_true',
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array( 'readonly' => true ),
 				),
@@ -379,15 +379,15 @@ class Abilities {
 		wp_register_ability(
 			'wbam/list-placements',
 			array(
-				'label'            => __( 'List Ad Placements', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'List all available ad placement types (header, footer, content, sidebar, popup, etc.) with their configuration.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'List Ad Placements', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'List all available ad placement types (header, footer, content, sidebar, popup, etc.) with their configuration.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'        => 'object',
 					'properties'  => array(),
 					'description' => __( 'No input required.', 'wb-ads-rotator-with-split-test' ),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'  => 'array',
 					'items' => array(
 						'type'       => 'object',
@@ -398,9 +398,9 @@ class Abilities {
 						),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_list_placements' ),
+				'execute_callback'    => array( $this, 'execute_list_placements' ),
 				'permission_callback' => '__return_true',
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -414,15 +414,15 @@ class Abilities {
 		wp_register_ability(
 			'wbam/list-ad-types',
 			array(
-				'label'            => __( 'List Ad Types', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'List all available ad format types (image, code, rich content, email capture, adsense) with their supported fields.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-ads',
-				'input_schema'     => array(
+				'label'               => __( 'List Ad Types', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'List all available ad format types (image, code, rich content, email capture, adsense) with their supported fields.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-ads',
+				'input_schema'        => array(
 					'type'        => 'object',
 					'properties'  => array(),
 					'description' => __( 'No input required.', 'wb-ads-rotator-with-split-test' ),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'  => 'array',
 					'items' => array(
 						'type'       => 'object',
@@ -433,9 +433,9 @@ class Abilities {
 						),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_list_ad_types' ),
+				'execute_callback'    => array( $this, 'execute_list_ad_types' ),
 				'permission_callback' => '__return_true',
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -459,10 +459,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/get-analytics-overview',
 			array(
-				'label'            => __( 'Analytics Overview', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Get summary analytics including total impressions, clicks, CTR, and top performing ads for a date range.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-analytics',
-				'input_schema'     => array(
+				'label'               => __( 'Analytics Overview', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Get summary analytics including total impressions, clicks, CTR, and top performing ads for a date range.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-analytics',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'properties' => array(
 						'start_date' => array(
@@ -480,7 +480,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'total_impressions' => array( 'type' => 'integer' ),
@@ -489,11 +489,11 @@ class Abilities {
 						'top_ads'           => array( 'type' => 'array' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_get_analytics_overview' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_get_analytics_overview' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -507,10 +507,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/get-ad-stats',
 			array(
-				'label'            => __( 'Get Ad Performance Stats', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Get detailed performance statistics for a specific ad including impressions, clicks, CTR, and placement breakdown.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-analytics',
-				'input_schema'     => array(
+				'label'               => __( 'Get Ad Performance Stats', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Get detailed performance statistics for a specific ad including impressions, clicks, CTR, and placement breakdown.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-analytics',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'id' ),
 					'properties' => array(
@@ -528,7 +528,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'impressions'  => array( 'type' => 'integer' ),
@@ -537,11 +537,11 @@ class Abilities {
 						'by_placement' => array( 'type' => 'array' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_get_ad_stats' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_get_ad_stats' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -565,10 +565,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/list-links',
 			array(
-				'label'            => __( 'List Links', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'List all managed/tracked links with click statistics.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-links',
-				'input_schema'     => array(
+				'label'               => __( 'List Links', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'List all managed/tracked links with click statistics.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-links',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'properties' => array(
 						'category_id' => array(
@@ -591,18 +591,18 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'items' => array( 'type' => 'array' ),
 						'total' => array( 'type' => 'integer' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_list_links' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_list_links' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -616,10 +616,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/create-link',
 			array(
-				'label'            => __( 'Create Link', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Create a new tracked/cloaked affiliate link with optional category assignment.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-links',
-				'input_schema'     => array(
+				'label'               => __( 'Create Link', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Create a new tracked/cloaked affiliate link with optional category assignment.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-links',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'name', 'url' ),
 					'properties' => array(
@@ -648,7 +648,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'id'          => array( 'type' => 'integer' ),
@@ -656,11 +656,11 @@ class Abilities {
 						'cloaked_url' => array( 'type' => 'string' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_create_link' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_create_link' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array( 'destructive' => true ),
 				),
@@ -671,10 +671,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/update-link',
 			array(
-				'label'            => __( 'Update Link', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( "Update a managed link's URL, name, category, or tracking settings.", 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-links',
-				'input_schema'     => array(
+				'label'               => __( 'Update Link', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( "Update a managed link's URL, name, category, or tracking settings.", 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-links',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'id' ),
 					'properties' => array(
@@ -709,18 +709,18 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'id'      => array( 'type' => 'integer' ),
 						'updated' => array( 'type' => 'boolean' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_update_link' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_update_link' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array( 'destructive' => true ),
 				),
@@ -731,10 +731,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/delete-link',
 			array(
-				'label'            => __( 'Delete Link', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Delete a managed link and its click tracking history.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-links',
-				'input_schema'     => array(
+				'label'               => __( 'Delete Link', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Delete a managed link and its click tracking history.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-links',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'id' ),
 					'properties' => array(
@@ -744,17 +744,17 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'deleted' => array( 'type' => 'boolean' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_delete_link' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_delete_link' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array( 'destructive' => true ),
 				),
@@ -765,10 +765,10 @@ class Abilities {
 		wp_register_ability(
 			'wbam/get-link-stats',
 			array(
-				'label'            => __( 'Get Link Click Stats', 'wb-ads-rotator-with-split-test' ),
-				'description'      => __( 'Get click statistics for a specific link including total clicks, unique clicks, and referrer breakdown.', 'wb-ads-rotator-with-split-test' ),
-				'category'         => 'wbam-links',
-				'input_schema'     => array(
+				'label'               => __( 'Get Link Click Stats', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Get click statistics for a specific link including total clicks, unique clicks, and referrer breakdown.', 'wb-ads-rotator-with-split-test' ),
+				'category'            => 'wbam-links',
+				'input_schema'        => array(
 					'type'       => 'object',
 					'required'   => array( 'id' ),
 					'properties' => array(
@@ -786,7 +786,7 @@ class Abilities {
 						),
 					),
 				),
-				'output_schema'    => array(
+				'output_schema'       => array(
 					'type'       => 'object',
 					'properties' => array(
 						'total_clicks'  => array( 'type' => 'integer' ),
@@ -794,11 +794,11 @@ class Abilities {
 						'by_date'       => array( 'type' => 'array' ),
 					),
 				),
-				'execute_callback' => array( $this, 'execute_get_link_stats' ),
-				'permission_callback' => static function() {
+				'execute_callback'    => array( $this, 'execute_get_link_stats' ),
+				'permission_callback' => static function () {
 					return current_user_can( 'manage_options' );
 				},
-				'meta'             => array(
+				'meta'                => array(
 					'show_in_rest' => true,
 					'annotations'  => array(
 						'readonly'   => true,
@@ -842,7 +842,7 @@ class Abilities {
 
 		// Optional placement filter.
 		if ( ! empty( $input['placement'] ) ) {
-			$placement               = sanitize_text_field( $input['placement'] );
+			$placement                = sanitize_text_field( $input['placement'] );
 			$query_args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				array(
 					'key'     => '_wbam_placements',
@@ -856,8 +856,8 @@ class Abilities {
 		$items = array();
 
 		foreach ( $query->posts as $post ) {
-			$ad_data  = get_post_meta( $post->ID, '_wbam_ad_data', true );
-			$items[]  = array(
+			$ad_data = get_post_meta( $post->ID, '_wbam_ad_data', true );
+			$items[] = array(
 				'id'         => $post->ID,
 				'title'      => $post->post_title,
 				'type'       => isset( $ad_data['type'] ) ? sanitize_text_field( $ad_data['type'] ) : '',
@@ -1078,8 +1078,8 @@ class Abilities {
 			setup_postdata( $GLOBALS['post'] );
 		}
 
-		$engine  = \WBAM\Modules\Placements\Placement_Engine::get_instance();
-		$ad_ids  = $engine->get_ads_for_placement( $placement );
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+		$ad_ids = $engine->get_ads_for_placement( $placement );
 
 		if ( $post_id > 0 ) {
 			wp_reset_postdata();
@@ -1211,9 +1211,9 @@ class Abilities {
 					$values
 				)
 			);
-			$top_values   = array_merge( $values, array( $limit ) );
+			$top_values = array_merge( $values, array( $limit ) );
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$top_ads_raw  = $wpdb->get_results(
+			$top_ads_raw = $wpdb->get_results(
 				$wpdb->prepare(
 					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE {$where_sql} AND type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
@@ -1326,7 +1326,12 @@ class Abilities {
 		foreach ( $by_placement_raw as $row ) {
 			$key = $row->placement ?: 'unknown';
 			if ( ! isset( $placements[ $key ] ) ) {
-				$placements[ $key ] = array( 'placement' => $key, 'impressions' => 0, 'clicks' => 0, 'ctr' => 0.0 );
+				$placements[ $key ] = array(
+					'placement'   => $key,
+					'impressions' => 0,
+					'clicks'      => 0,
+					'ctr'         => 0.0,
+				);
 			}
 			if ( 'impression' === $row->type ) {
 				$placements[ $key ]['impressions'] = (int) $row->count;

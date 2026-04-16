@@ -328,8 +328,13 @@ class Links_API {
 		);
 
 		$optional_fields = array(
-			'slug', 'link_type', 'description', 'status',
-			'payment_type', 'payment_currency', 'payment_status',
+			'slug',
+			'link_type',
+			'description',
+			'status',
+			'payment_type',
+			'payment_currency',
+			'payment_status',
 		);
 		foreach ( $optional_fields as $field ) {
 			if ( isset( $request[ $field ] ) ) {
@@ -471,7 +476,12 @@ class Links_API {
 			);
 		}
 
-		return rest_ensure_response( array( 'deleted' => true, 'id' => $id ) );
+		return rest_ensure_response(
+			array(
+				'deleted' => true,
+				'id'      => $id,
+			)
+		);
 	}
 
 	/**
@@ -761,19 +771,19 @@ class Links_API {
 	 */
 	private function prepare_link_for_response( $link ) {
 		return array(
-			'id'              => (int) $link->id,
-			'name'            => $link->name,
-			'destination_url' => $link->destination_url,
-			'slug'            => $link->slug,
-			'link_type'       => $link->link_type,
-			'status'          => $link->status,
-			'category_id'     => (int) $link->category_id,
-			'click_count'     => (int) $link->click_count,
-			'nofollow'        => (bool) $link->nofollow,
-			'sponsored'       => (bool) $link->sponsored,
-			'new_tab'         => (bool) $link->new_tab,
+			'id'               => (int) $link->id,
+			'name'             => $link->name,
+			'destination_url'  => $link->destination_url,
+			'slug'             => $link->slug,
+			'link_type'        => $link->link_type,
+			'status'           => $link->status,
+			'category_id'      => (int) $link->category_id,
+			'click_count'      => (int) $link->click_count,
+			'nofollow'         => (bool) $link->nofollow,
+			'sponsored'        => (bool) $link->sponsored,
+			'new_tab'          => (bool) $link->new_tab,
 			'cloaking_enabled' => (bool) $link->cloaking_enabled,
-			'created_at'      => $link->created_at,
+			'created_at'       => $link->created_at,
 		);
 	}
 
@@ -806,59 +816,59 @@ class Links_API {
 	 */
 	private function get_link_args( $is_update = false ) {
 		return array(
-			'name'            => array(
+			'name'             => array(
 				'type'              => 'string',
 				'required'          => ! $is_update,
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'destination_url' => array(
+			'destination_url'  => array(
 				'type'              => 'string',
 				'required'          => ! $is_update,
 				'sanitize_callback' => 'esc_url_raw',
 			),
-			'slug'            => array(
+			'slug'             => array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_title',
 			),
-			'link_type'       => array(
+			'link_type'        => array(
 				'type'              => 'string',
 				'enum'              => array( 'affiliate', 'sponsored', 'internal', 'external' ),
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'status'          => array(
+			'status'           => array(
 				'type'              => 'string',
 				'enum'              => array( 'active', 'inactive', 'expired' ),
 				'sanitize_callback' => 'sanitize_text_field',
 			),
-			'category_id'     => array(
+			'category_id'      => array(
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 			),
-			'nofollow'        => array(
+			'nofollow'         => array(
 				'type' => 'boolean',
 			),
-			'sponsored'       => array(
+			'sponsored'        => array(
 				'type' => 'boolean',
 			),
-			'new_tab'         => array(
+			'new_tab'          => array(
 				'type' => 'boolean',
 			),
 			'cloaking_enabled' => array(
 				'type' => 'boolean',
 			),
-			'redirect_type'   => array(
-				'type'    => 'integer',
-				'enum'    => array( 301, 302, 307 ),
+			'redirect_type'    => array(
+				'type' => 'integer',
+				'enum' => array( 301, 302, 307 ),
 			),
-			'description'     => array(
+			'description'      => array(
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_textarea_field',
 			),
-			'payment_amount'  => array(
+			'payment_amount'   => array(
 				'type'    => 'number',
 				'minimum' => 0,
 			),
-			'commission_rate' => array(
+			'commission_rate'  => array(
 				'type'    => 'number',
 				'minimum' => 0,
 				'maximum' => 100,

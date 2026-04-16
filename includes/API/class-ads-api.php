@@ -252,11 +252,11 @@ class Ads_API {
 
 		$response = rest_ensure_response(
 			array(
-				'ads'        => $ads,
-				'total'      => (int) $query->found_posts,
+				'ads'         => $ads,
+				'total'       => (int) $query->found_posts,
 				'total_pages' => (int) $query->max_num_pages,
-				'page'       => $page,
-				'per_page'   => $per_page,
+				'page'        => $page,
+				'per_page'    => $per_page,
 			)
 		);
 
@@ -401,7 +401,12 @@ class Ads_API {
 			);
 		}
 
-		return rest_ensure_response( array( 'deleted' => true, 'id' => $id ) );
+		return rest_ensure_response(
+			array(
+				'deleted' => true,
+				'id'      => $id,
+			)
+		);
 	}
 
 	/**
@@ -431,15 +436,15 @@ class Ads_API {
 			setup_postdata( $GLOBALS['post'] );
 		}
 
-		$engine  = \WBAM\Modules\Placements\Placement_Engine::get_instance();
-		$ad_ids  = $engine->get_ads_for_placement( $placement );
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+		$ad_ids = $engine->get_ads_for_placement( $placement );
 
 		if ( empty( $ad_ids ) ) {
 			return rest_ensure_response(
 				array(
-					'html'    => '',
-					'ads'     => array(),
-					'count'   => 0,
+					'html'  => '',
+					'ads'   => array(),
+					'count' => 0,
 				)
 			);
 		}
@@ -457,7 +462,7 @@ class Ads_API {
 			);
 
 			if ( ! empty( $html ) ) {
-				$html_parts[] = $html;
+				$html_parts[]   = $html;
 				$rendered_ads[] = array(
 					'id'        => $ad_id,
 					'title'     => get_the_title( $ad_id ),
@@ -700,12 +705,12 @@ class Ads_API {
 			'status'  => $post->post_status,
 		);
 
-		$placements = get_post_meta( $post->ID, '_wbam_placements', true );
+		$placements         = get_post_meta( $post->ID, '_wbam_placements', true );
 		$data['placements'] = is_array( $placements ) ? $placements : array();
 
 		if ( $is_admin ) {
-			$ad_data         = get_post_meta( $post->ID, '_wbam_ad_data', true );
-			$data['ad_data'] = is_array( $ad_data ) ? $ad_data : array();
+			$ad_data          = get_post_meta( $post->ID, '_wbam_ad_data', true );
+			$data['ad_data']  = is_array( $ad_data ) ? $ad_data : array();
 			$data['priority'] = (int) get_post_meta( $post->ID, '_wbam_priority', true );
 			$data['modified'] = $post->post_modified;
 		}

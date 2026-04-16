@@ -333,7 +333,11 @@ class Analytics_API {
 		foreach ( $by_placement as $row ) {
 			$key = $row->placement ?: 'unknown';
 			if ( ! isset( $placements[ $key ] ) ) {
-				$placements[ $key ] = array( 'placement' => $key, 'impressions' => 0, 'clicks' => 0 );
+				$placements[ $key ] = array(
+					'placement'   => $key,
+					'impressions' => 0,
+					'clicks'      => 0,
+				);
 			}
 			if ( 'impression' === $row->type ) {
 				$placements[ $key ]['impressions'] = (int) $row->count;
@@ -397,7 +401,12 @@ class Analytics_API {
 		foreach ( $rows as $row ) {
 			$day = $row->day;
 			if ( ! isset( $daily[ $day ] ) ) {
-				$daily[ $day ] = array( 'date' => $day, 'impressions' => 0, 'clicks' => 0, 'ctr' => 0 );
+				$daily[ $day ] = array(
+					'date'        => $day,
+					'impressions' => 0,
+					'clicks'      => 0,
+					'ctr'         => 0,
+				);
 			}
 			if ( 'impression' === $row->type ) {
 				$daily[ $day ]['impressions'] = (int) $row->count;

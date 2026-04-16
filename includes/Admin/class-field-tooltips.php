@@ -128,7 +128,7 @@ class Field_Tooltips {
 			$placement = 'top';
 		}
 
-		self::$uid++;
+		++self::$uid;
 		$pop_id = 'wbam-tip-' . self::$uid;
 
 		$button_label = __( 'More info', 'wb-ads-rotator-with-split-test' );
