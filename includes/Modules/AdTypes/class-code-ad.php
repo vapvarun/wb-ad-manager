@@ -203,7 +203,7 @@ class Code_Ad implements Ad_Type_Interface {
 
 		<div class="wbam-security-notice" style="background: #fff8e5; border-left: 4px solid #ffb900; padding: 12px; margin-top: 15px;">
 			<p style="margin: 0;">
-				<strong><span class="dashicons dashicons-shield" style="color: #ffb900;"></span> <?php esc_html_e( 'Security Notice', 'wb-ads-rotator-with-split-test' ); ?></strong>
+				<strong><?php echo wbam_icon( 'shield', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php esc_html_e( 'Security Notice', 'wb-ads-rotator-with-split-test' ); ?></strong>
 			</p>
 			<p style="margin: 8px 0 0;">
 				<?php esc_html_e( 'Code ads execute JavaScript directly on your site. Only paste code from trusted ad networks. Administrators with "unfiltered_html" capability can save any code.', 'wb-ads-rotator-with-split-test' ); ?>

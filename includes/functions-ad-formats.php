@@ -18,6 +18,101 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use WBAM\Core\Ad_Formats;
 
+if ( ! function_exists( 'wbam_icon' ) ) {
+	/**
+	 * Render a Lucide icon.
+	 *
+	 * Project standard is Lucide everywhere — no emojis, no dashicons. Templates
+	 * in either plugin go through this helper so the markup and CSS hook class
+	 * stay consistent. The `wbam-lucide` script handle is registered and
+	 * enqueued automatically whenever this function is called.
+	 *
+	 * Shipped from the FREE plugin so pages that render without the pro plugin
+	 * active still get consistent icons. The pro plugin's identical helper is
+	 * guarded with function_exists() so free's definition wins at load order.
+	 *
+	 * @since 2.8.1
+	 *
+	 * @param string $name Lucide icon name (kebab-case, e.g. "pencil").
+	 * @param array  $args {
+	 *     Optional. Rendering options.
+	 *
+	 *     @type string $size  Size token: sm (16px), md (20px, default), lg (24px), xl (32px).
+	 *     @type string $class Extra CSS classes appended to the <i>.
+	 *     @type string $label Accessible label; empty string marks the icon decorative.
+	 * }
+	 * @return string HTML markup for the icon (pre-escaped).
+	 */
+	function wbam_icon( $name, $args = array() ) {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'size'  => 'md',
+				'class' => '',
+				'label' => '',
+			)
+		);
+
+		$size_class = 'wbam-icon--' . sanitize_key( $args['size'] );
+		$classes    = trim( 'wbam-icon ' . $size_class . ' ' . $args['class'] );
+
+		$label_attr = ( '' !== $args['label'] )
+			? ' role="img" aria-label="' . esc_attr( $args['label'] ) . '"'
+			: ' aria-hidden="true"';
+
+		// Lucide hydration only runs when the library is loaded. Enqueue here
+		// so any template that calls the helper automatically pulls the lib.
+		if ( ! is_admin() ) {
+			wp_enqueue_script( 'wbam-lucide' );
+		}
+
+		return sprintf(
+			'<i data-lucide="%s" class="%s"%s></i>',
+			esc_attr( sanitize_key( $name ) ),
+			esc_attr( $classes ),
+			$label_attr
+		);
+	}
+}
+
+if ( ! function_exists( 'wbam_register_lucide' ) ) {
+	/**
+	 * Register the wbam-lucide script + its .wbam-icon CSS rules.
+	 *
+	 * Runs on both wp_enqueue_scripts and admin_enqueue_scripts so every page
+	 * that might call wbam_icon() has the handle registered. Idempotent —
+	 * safe to call multiple times across both plugins.
+	 *
+	 * @since 2.8.1
+	 */
+	function wbam_register_lucide() {
+		if ( ! wp_script_is( 'wbam-lucide', 'registered' ) ) {
+			wp_register_script(
+				'wbam-lucide',
+				'https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js',
+				array(),
+				'0.460.0',
+				true
+			);
+			wp_add_inline_script(
+				'wbam-lucide',
+				'document.addEventListener("DOMContentLoaded",function(){if(typeof lucide!=="undefined"){lucide.createIcons();}});'
+			);
+		}
+
+		if ( ! wp_style_is( 'wbam-lucide', 'registered' ) ) {
+			wp_register_style(
+				'wbam-lucide',
+				WBAM_URL . 'assets/css/lucide.css',
+				array(),
+				WBAM_VERSION
+			);
+		}
+	}
+	add_action( 'wp_enqueue_scripts', 'wbam_register_lucide', 5 );
+	add_action( 'admin_enqueue_scripts', 'wbam_register_lucide', 5 );
+}
+
 if ( ! function_exists( 'wbam_ad_fits_placement' ) ) {
 	/**
 	 * Whether the given ad is compatible with the given placement.

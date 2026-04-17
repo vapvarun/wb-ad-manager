@@ -207,7 +207,7 @@ class Email_Capture_Ad implements Ad_Type_Interface {
 			style="--wbam-email-bg: <?php echo esc_attr( $bg_color ); ?>; --wbam-email-text: <?php echo esc_attr( $text_color ); ?>; --wbam-email-btn: <?php echo esc_attr( $button_color ); ?>;">
 
 			<button type="button" class="wbam-email-close" aria-label="<?php esc_attr_e( 'Close', 'wb-ads-rotator-with-split-test' ); ?>">
-				<span class="dashicons dashicons-no-alt"></span>
+				<?php echo wbam_icon( 'x', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</button>
 
 			<div class="wbam-email-content">
@@ -293,7 +293,7 @@ class Email_Capture_Ad implements Ad_Type_Interface {
 
 				<div class="wbam-email-success" style="display: none;">
 					<div class="wbam-email-success-icon">
-						<span class="dashicons dashicons-yes-alt"></span>
+						<?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
 					<p class="wbam-email-success-message"><?php echo esc_html( $success_msg ); ?></p>
 				</div>
