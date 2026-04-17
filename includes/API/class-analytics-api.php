@@ -177,12 +177,12 @@ class Analytics_API {
 		$values = array();
 
 		if ( ! empty( $request['start_date'] ) ) {
-			$where[]  = 'timestamp >= %s';
+			$where[]  = 'created_at >= %s';
 			$values[] = sanitize_text_field( $request['start_date'] ) . ' 00:00:00';
 		}
 
 		if ( ! empty( $request['end_date'] ) ) {
-			$where[]  = 'timestamp <= %s';
+			$where[]  = 'created_at <= %s';
 			$values[] = sanitize_text_field( $request['end_date'] ) . ' 23:59:59';
 		}
 
@@ -194,7 +194,7 @@ class Analytics_API {
 			$impressions = (int) $wpdb->get_var(
 				$wpdb->prepare(
 					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'impression'",
+					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'impression'",
 					$values
 				)
 			);
@@ -203,16 +203,16 @@ class Analytics_API {
 			$clicks = (int) $wpdb->get_var(
 				$wpdb->prepare(
 					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'click'",
+					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'click'",
 					$values
 				)
 			);
 		} else {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$impressions = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE type = 'impression'" );
+			$impressions = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE event_type = 'impression'" );
 
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$clicks = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE type = 'click'" );
+			$clicks = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE event_type = 'click'" );
 		}
 
 		$ctr = $impressions > 0 ? round( ( $clicks / $impressions ) * 100, 2 ) : 0;
@@ -226,7 +226,7 @@ class Analytics_API {
 			$top_ads_raw = $wpdb->get_results(
 				$wpdb->prepare(
 					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE {$where_sql} AND type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
+					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE {$where_sql} AND event_type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
 					$top_ads_values
 				)
 			);
@@ -235,7 +235,7 @@ class Analytics_API {
 			$top_ads_raw = $wpdb->get_results(
 				$wpdb->prepare(
 					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
+					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE event_type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
 					array( $limit )
 				)
 			);
@@ -285,12 +285,12 @@ class Analytics_API {
 		$values = array( $ad_id );
 
 		if ( ! empty( $request['start_date'] ) ) {
-			$where[]  = 'timestamp >= %s';
+			$where[]  = 'created_at >= %s';
 			$values[] = sanitize_text_field( $request['start_date'] ) . ' 00:00:00';
 		}
 
 		if ( ! empty( $request['end_date'] ) ) {
-			$where[]  = 'timestamp <= %s';
+			$where[]  = 'created_at <= %s';
 			$values[] = sanitize_text_field( $request['end_date'] ) . ' 23:59:59';
 		}
 
@@ -303,7 +303,7 @@ class Analytics_API {
 		$impressions = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'impression'",
+				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'impression'",
 				$imp_values
 			)
 		);
@@ -312,7 +312,7 @@ class Analytics_API {
 		$clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'click'",
+				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'click'",
 				$clk_values
 			)
 		);
@@ -324,7 +324,7 @@ class Analytics_API {
 		$by_placement = $wpdb->get_results(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT placement, type, COUNT(*) as count FROM {$table} WHERE {$where_sql} GROUP BY placement, type",
+				"SELECT placement, event_type, COUNT(*) as count FROM {$table} WHERE {$where_sql} GROUP BY placement, event_type",
 				$values
 			)
 		);
@@ -339,9 +339,9 @@ class Analytics_API {
 					'clicks'      => 0,
 				);
 			}
-			if ( 'impression' === $row->type ) {
+			if ( 'impression' === $row->event_type ) {
 				$placements[ $key ]['impressions'] = (int) $row->count;
-			} elseif ( 'click' === $row->type ) {
+			} elseif ( 'click' === $row->event_type ) {
 				$placements[ $key ]['clicks'] = (int) $row->count;
 			}
 		}
@@ -378,7 +378,7 @@ class Analytics_API {
 		$end_date   = sanitize_text_field( $request['end_date'] );
 		$ad_id      = absint( $request['ad_id'] );
 
-		$where  = array( 'timestamp >= %s', 'timestamp <= %s' );
+		$where  = array( 'created_at >= %s', 'created_at <= %s' );
 		$values = array( $start_date . ' 00:00:00', $end_date . ' 23:59:59' );
 
 		if ( $ad_id > 0 ) {
@@ -392,7 +392,7 @@ class Analytics_API {
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT DATE(timestamp) as day, type, COUNT(*) as count FROM {$table} WHERE {$where_sql} GROUP BY day, type ORDER BY day ASC",
+				"SELECT DATE(created_at) as day, event_type, COUNT(*) as count FROM {$table} WHERE {$where_sql} GROUP BY day, event_type ORDER BY day ASC",
 				$values
 			)
 		);
@@ -408,9 +408,9 @@ class Analytics_API {
 					'ctr'         => 0,
 				);
 			}
-			if ( 'impression' === $row->type ) {
+			if ( 'impression' === $row->event_type ) {
 				$daily[ $day ]['impressions'] = (int) $row->count;
-			} elseif ( 'click' === $row->type ) {
+			} elseif ( 'click' === $row->event_type ) {
 				$daily[ $day ]['clicks'] = (int) $row->count;
 			}
 		}
