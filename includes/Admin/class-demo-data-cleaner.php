@@ -249,7 +249,7 @@ class Demo_Data_Cleaner {
 			<input type="hidden" name="action" value="wbam_clear_demo_data" />
 			<?php wp_nonce_field( self::NONCE_ACTION ); ?>
 			<button type="submit" class="button">
-				<span class="dashicons dashicons-trash" style="vertical-align:middle;margin-top:3px;"></span>
+				<?php echo wbam_icon( 'trash-2', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 				<?php echo esc_html( $label ); ?>
 				<span class="wbam-demo-count" style="opacity:.7;margin-left:4px;">(<?php echo esc_html( (string) $total ); ?>)</span>
 			</button>

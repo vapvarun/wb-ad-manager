@@ -349,7 +349,7 @@ class Links_List_Table extends \WP_List_Table {
 	 */
 	public function column_cloaked_url( $item ) {
 		if ( ! $item->cloaking_enabled || empty( $item->slug ) ) {
-			return '<span class="dashicons dashicons-no-alt" title="' . esc_attr__( 'Cloaking disabled', 'wb-ads-rotator-with-split-test' ) . '"></span>';
+			return '<span class="wbam-icon-wrap" title="' . esc_attr__( 'Cloaking disabled', 'wb-ads-rotator-with-split-test' ) . '">' . wbam_icon( 'x', array( 'size' => 'sm' ) ) . '</span>';
 		}
 
 		$cloaked_url = $item->get_url();
@@ -357,12 +357,13 @@ class Links_List_Table extends \WP_List_Table {
 		return sprintf(
 			'<a href="%s" target="_blank">%s</a>
 			<button type="button" class="button button-small wbam-copy-btn" data-clipboard="%s" title="%s">
-				<span class="dashicons dashicons-admin-page"></span>
+				%s
 			</button>',
 			esc_url( $cloaked_url ),
 			esc_html( $item->slug ),
 			esc_attr( $cloaked_url ),
-			esc_attr__( 'Copy URL', 'wb-ads-rotator-with-split-test' )
+			esc_attr__( 'Copy URL', 'wb-ads-rotator-with-split-test' ),
+			wbam_icon( 'file', array( 'size' => 'sm' ) )
 		);
 	}
 

@@ -222,37 +222,37 @@ class Help_Docs {
 
 			<div class="wbam-features-grid">
 				<div class="wbam-feature-card">
-					<span class="dashicons dashicons-format-image"></span>
+					<?php echo wbam_icon( 'image', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<h4><?php esc_html_e( 'Multiple Ad Types', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<p><?php esc_html_e( 'Image, HTML/JS, Rich Text, AdSense, and Video ads.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				</div>
 
 				<div class="wbam-feature-card">
-					<span class="dashicons dashicons-location"></span>
+					<?php echo wbam_icon( 'map-pin', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<h4><?php esc_html_e( 'Flexible Placements', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<p><?php esc_html_e( 'Header, footer, before/after content, sidebar, and custom positions.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				</div>
 
 				<div class="wbam-feature-card">
-					<span class="dashicons dashicons-admin-links"></span>
+					<?php echo wbam_icon( 'link', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<h4><?php esc_html_e( 'Link Cloaking', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<p><?php esc_html_e( 'Clean, branded URLs for affiliate links with click tracking.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				</div>
 
 				<div class="wbam-feature-card">
-					<span class="dashicons dashicons-visibility"></span>
+					<?php echo wbam_icon( 'eye', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<h4><?php esc_html_e( 'Display Rules', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<p><?php esc_html_e( 'Show or hide ads by page, category, post type, or user role.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				</div>
 
 				<div class="wbam-feature-card">
-					<span class="dashicons dashicons-smartphone"></span>
+					<?php echo wbam_icon( 'smartphone', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<h4><?php esc_html_e( 'Device Targeting', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<p><?php esc_html_e( 'Target desktop, tablet, or mobile devices separately.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				</div>
 
 				<div class="wbam-feature-card">
-					<span class="dashicons dashicons-chart-bar"></span>
+					<?php echo wbam_icon( 'bar-chart-3', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<h4><?php esc_html_e( 'Click Tracking', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<p><?php esc_html_e( 'Track clicks on ads and links with basic analytics.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				</div>

@@ -299,7 +299,7 @@ class Partnership_Admin {
 								<td>
 									<a href="<?php echo esc_url( $partnership->website_url ); ?>" target="_blank" rel="noopener">
 										<?php echo esc_html( wp_parse_url( $partnership->website_url, PHP_URL_HOST ) ); ?>
-										<span class="dashicons dashicons-external" style="font-size: 14px;"></span>
+										<?php echo wbam_icon( 'external-link', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 									</a>
 								</td>
 								<td>
@@ -386,41 +386,46 @@ class Partnership_Admin {
 
 		// View.
 		$actions['view'] = sprintf(
-			'<a href="%s" title="%s"><span class="dashicons dashicons-visibility"></span></a>',
+			'<a href="%s" title="%s" class="wbam-icon-link">%s</a>',
 			esc_url( admin_url( 'admin.php?page=wbam-partnerships&view=' . $partnership->id ) ),
-			esc_attr__( 'View Details', 'wb-ads-rotator-with-split-test' )
+			esc_attr__( 'View Details', 'wb-ads-rotator-with-split-test' ),
+			wbam_icon( 'eye', array( 'size' => 'sm' ) )
 		);
 
 		// Accept (if pending).
 		if ( $partnership->is_pending() ) {
 			$actions['accept'] = sprintf(
-				'<a href="%s" title="%s" class="wbam-action-accept"><span class="dashicons dashicons-yes-alt"></span></a>',
+				'<a href="%s" title="%s" class="wbam-icon-link wbam-action-accept">%s</a>',
 				esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=accept&partnership_id=' . $partnership->id ), 'wbam_partnership_accept_' . $partnership->id ) ),
-				esc_attr__( 'Accept', 'wb-ads-rotator-with-split-test' )
+				esc_attr__( 'Accept', 'wb-ads-rotator-with-split-test' ),
+				wbam_icon( 'check-circle', array( 'size' => 'sm' ) )
 			);
 
 			$actions['reject'] = sprintf(
-				'<a href="%s" title="%s" class="wbam-action-reject"><span class="dashicons dashicons-dismiss"></span></a>',
+				'<a href="%s" title="%s" class="wbam-icon-link wbam-action-reject">%s</a>',
 				esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=reject&partnership_id=' . $partnership->id ), 'wbam_partnership_reject_' . $partnership->id ) ),
-				esc_attr__( 'Reject', 'wb-ads-rotator-with-split-test' )
+				esc_attr__( 'Reject', 'wb-ads-rotator-with-split-test' ),
+				wbam_icon( 'x', array( 'size' => 'sm' ) )
 			);
 		}
 
 		// Spam (if not already spam).
 		if ( 'spam' !== $partnership->status ) {
 			$actions['spam'] = sprintf(
-				'<a href="%s" title="%s" class="wbam-action-spam"><span class="dashicons dashicons-flag"></span></a>',
+				'<a href="%s" title="%s" class="wbam-icon-link wbam-action-spam">%s</a>',
 				esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=spam&partnership_id=' . $partnership->id ), 'wbam_partnership_spam_' . $partnership->id ) ),
-				esc_attr__( 'Mark as Spam', 'wb-ads-rotator-with-split-test' )
+				esc_attr__( 'Mark as Spam', 'wb-ads-rotator-with-split-test' ),
+				wbam_icon( 'flag', array( 'size' => 'sm' ) )
 			);
 		}
 
 		// Delete.
 		$actions['delete'] = sprintf(
-			'<a href="%s" title="%s" class="wbam-action-delete" onclick="return confirm(\'%s\');"><span class="dashicons dashicons-trash"></span></a>',
+			'<a href="%s" title="%s" class="wbam-icon-link wbam-action-delete" onclick="return confirm(\'%s\');">%s</a>',
 			esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=delete&partnership_id=' . $partnership->id ), 'wbam_partnership_delete_' . $partnership->id ) ),
 			esc_attr__( 'Delete', 'wb-ads-rotator-with-split-test' ),
-			esc_js( __( 'Are you sure you want to delete this inquiry?', 'wb-ads-rotator-with-split-test' ) )
+			esc_js( __( 'Are you sure you want to delete this inquiry?', 'wb-ads-rotator-with-split-test' ) ),
+			wbam_icon( 'trash-2', array( 'size' => 'sm' ) )
 		);
 
 		echo implode( ' ', $actions ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -441,7 +446,7 @@ class Partnership_Admin {
 		<div class="wrap wbam-partnership-view">
 			<h1>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbam-partnerships' ) ); ?>" class="page-title-action">
-					<span class="dashicons dashicons-arrow-left-alt"></span>
+					<?php echo wbam_icon( 'arrow-left', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<?php esc_html_e( 'Back to List', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 				<?php esc_html_e( 'Partnership Inquiry Details', 'wb-ads-rotator-with-split-test' ); ?>
@@ -470,7 +475,7 @@ class Partnership_Admin {
 								<td>
 									<a href="<?php echo esc_url( $partnership->website_url ); ?>" target="_blank" rel="noopener">
 										<?php echo esc_html( $partnership->website_url ); ?>
-										<span class="dashicons dashicons-external"></span>
+										<?php echo wbam_icon( 'external-link', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 									</a>
 								</td>
 							</tr>
@@ -577,17 +582,17 @@ class Partnership_Admin {
 
 								<?php if ( $partnership->is_pending() ) : ?>
 									<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=accept&partnership_id=' . $partnership->id ), 'wbam_partnership_accept_' . $partnership->id ) ); ?>" class="button button-primary" style="background: #46b450; border-color: #46b450;">
-										<span class="dashicons dashicons-yes-alt"></span>
+										<?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 										<?php esc_html_e( 'Accept', 'wb-ads-rotator-with-split-test' ); ?>
 									</a>
 									<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=reject&partnership_id=' . $partnership->id ), 'wbam_partnership_reject_' . $partnership->id ) ); ?>" class="button" style="color: #a00;">
-										<span class="dashicons dashicons-dismiss"></span>
+										<?php echo wbam_icon( 'x', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 										<?php esc_html_e( 'Reject', 'wb-ads-rotator-with-split-test' ); ?>
 									</a>
 								<?php endif; ?>
 
 								<a href="mailto:<?php echo esc_attr( $partnership->email ); ?>?subject=<?php echo esc_attr( urlencode( __( 'Re: Partnership Inquiry', 'wb-ads-rotator-with-split-test' ) ) ); ?>" class="button">
-									<span class="dashicons dashicons-email"></span>
+									<?php echo wbam_icon( 'mail', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 									<?php esc_html_e( 'Email Requester', 'wb-ads-rotator-with-split-test' ); ?>
 								</a>
 							</div>

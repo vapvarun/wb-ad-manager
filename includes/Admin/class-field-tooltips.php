@@ -135,7 +135,7 @@ class Field_Tooltips {
 
 		$html  = '<span class="wbam-tip" data-placement="' . esc_attr( $placement ) . '">';
 		$html .= '<button type="button" class="wbam-tip__icon" aria-expanded="false" aria-describedby="' . esc_attr( $pop_id ) . '" aria-label="' . esc_attr( $button_label ) . '">';
-		$html .= '<span class="dashicons dashicons-editor-help" aria-hidden="true"></span>';
+		$html .= wbam_icon( 'help-circle', array( 'size' => 'sm' ) );
 		$html .= '</button>';
 		$html .= '<span class="wbam-tip__popover" id="' . esc_attr( $pop_id ) . '" role="tooltip" hidden>';
 		$html .= '<span class="wbam-tip__arrow" aria-hidden="true"></span>';

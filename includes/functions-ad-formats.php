@@ -60,11 +60,11 @@ if ( ! function_exists( 'wbam_icon' ) ) {
 			? ' role="img" aria-label="' . esc_attr( $args['label'] ) . '"'
 			: ' aria-hidden="true"';
 
-		// Lucide hydration only runs when the library is loaded. Enqueue here
-		// so any template that calls the helper automatically pulls the lib.
-		if ( ! is_admin() ) {
-			wp_enqueue_script( 'wbam-lucide' );
-		}
+		// Lucide hydration only runs when the library is loaded. Auto-enqueue
+		// on both frontend and admin so any template that calls the helper
+		// automatically pulls the lib. Safe — wp_enqueue_script is idempotent.
+		wp_enqueue_script( 'wbam-lucide' );
+		wp_enqueue_style( 'wbam-lucide' );
 
 		return sprintf(
 			'<i data-lucide="%s" class="%s"%s></i>',
