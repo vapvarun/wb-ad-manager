@@ -1,0 +1,17 @@
+parameters:
+    level: 7
+    phpVersion: 70400
+    paths:
+        - includes/
+        - wb-ads-rotator-with-split-test.php
+    excludePaths:
+        - tests/*
+        - vendor/*
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+
+includes:
+    - phpstan-baseline.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon

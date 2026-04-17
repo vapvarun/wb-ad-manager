@@ -1,0 +1,30 @@
+# Optional PHPStan config that scans BOTH free and pro plugins.
+# Use locally when working across both:
+#     composer phpstan-combined
+#
+# CI uses the default phpstan.neon which only scans the free plugin,
+# because the pro plugin may not be checked out in the free repo's CI.
+parameters:
+    level: 7
+    phpVersion: 70400
+    paths:
+        - includes/
+        - wb-ads-rotator-with-split-test.php
+        - ../wb-ad-manager-pro/includes/
+        - ../wb-ad-manager-pro/wb-ad-manager-pro.php
+    excludePaths:
+        - tests/*
+        - vendor/*
+        - ../wb-ad-manager-pro/vendor/*
+        - ../wb-ad-manager-pro/node_modules/*
+        - ../wb-ad-manager-pro/dist/*
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    scanDirectories:
+        - ../wb-ad-manager-pro/vendor/wbcom-credits-sdk/src
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+
+includes:
+    - phpstan-baseline.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon

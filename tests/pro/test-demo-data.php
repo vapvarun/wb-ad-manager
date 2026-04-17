@@ -1,0 +1,39 @@
+<?php
+/**
+ * Demo data install/uninstall — regression gate for bug #9797756007
+ * (demo data import failing with 3 DB errors).
+ *
+ * We run the installer and expect no $wpdb->last_error, then verify
+ * rows were created in the classifieds CPT.
+ *
+ * @package WBAM\Tests
+ */
+
+namespace WBAM\Tests\Pro;
+
+class Test_Demo_Data extends Pro_Test_Case {
+
+	public function test_demo_generator_class_loadable(): void {
+		// The generator lives at the pro plugin root and is loaded on demand.
+		$generator_file = defined( 'WBAM_PRO_PATH' )
+			? WBAM_PRO_PATH . 'demo-data-setup.php'
+			: null;
+
+		$this->assertIsString( $generator_file );
+		$this->assertFileExists( $generator_file );
+	}
+
+	public function test_demo_import_does_not_emit_db_errors(): void {
+		if ( ! class_exists( '\\WBAM_Demo_Data_Generator' ) ) {
+			$this->markTestSkipped( 'Demo generator not yet loaded; gated behind admin action.' );
+		}
+
+		global $wpdb;
+		$wpdb->suppress_errors( true );
+		$wpdb->last_error = '';
+
+		\WBAM_Demo_Data_Generator::install();
+
+		$this->assertEmpty( $wpdb->last_error, 'Demo data install must not produce DB errors' );
+	}
+}

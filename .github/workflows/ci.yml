@@ -1,0 +1,67 @@
+name: CI
+
+# Security note: this workflow uses only trusted inputs
+# (matrix values, composer scripts, hashFiles). It intentionally avoids
+# any ${{ github.event.* }} user-controlled fields in `run:` blocks.
+
+on:
+  push:
+    branches: [ main, master, '*.*.*' ]
+  pull_request:
+
+jobs:
+
+  lint:
+    name: PHP Lint (syntax)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.0', '8.1', '8.2', '8.3' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+
+      - name: Syntax check every PHP file
+        run: |
+          set -e
+          find includes wb-ads-rotator-with-split-test.php \
+            -type f -name '*.php' \
+            -not -path '*/vendor/*' \
+            -not -path '*/node_modules/*' \
+            -not -path '*/dist/*' \
+            -print0 | xargs -0 -n1 -P4 php -l
+
+  phpstan:
+    name: PHPStan level 7
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run PHPStan
+        run: composer phpstan

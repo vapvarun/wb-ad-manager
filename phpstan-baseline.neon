@@ -1,0 +1,8 @@
+# PHPStan baseline — intentionally empty.
+#
+# Generate or refresh with:
+#     composer phpstan-baseline
+#
+# Goal: new code must pass level 7 cleanly without expanding this file.
+parameters:
+    ignoreErrors: []

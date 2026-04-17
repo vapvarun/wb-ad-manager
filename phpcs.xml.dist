@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<ruleset name="WB Ad Manager">
+	<description>Coding standards for WB Ad Manager (free + pro). Uniform bar — same rules apply to both plugins.</description>
+
+	<file>./includes/</file>
+	<file>./wb-ads-rotator-with-split-test.php</file>
+	<file>../wb-ad-manager-pro/includes/</file>
+	<file>../wb-ad-manager-pro/wb-ad-manager-pro.php</file>
+
+	<exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/dist/*</exclude-pattern>
+	<exclude-pattern>*/build/*</exclude-pattern>
+	<!-- The credits SDK is vendored and has its own standards. -->
+	<exclude-pattern>*/vendor/wbcom-credits-sdk/*</exclude-pattern>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+	<arg name="parallel" value="8"/>
+
+	<!-- Core WordPress standards (Extra includes Core, Docs, and VIP-minimum). -->
+	<rule ref="WordPress-Extra">
+		<!-- Files with namespaced classes don't need the classname/filename match. -->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<!-- Allow short array syntax []. -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+	</rule>
+	<rule ref="WordPress-Docs"/>
+
+	<!-- Enforce two text domains — wrong domain on output is a frequent bug. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="wb-ads-rotator-with-split-test"/>
+				<element value="wb-ad-manager-pro"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Enforce prefix on globals / hook names. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="wbam"/>
+				<element value="WBAM"/>
+				<element value="wbam_pro"/>
+				<element value="WBAM_Pro"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- PHP version compatibility: declared floor is 7.4. -->
+	<config name="testVersion" value="7.4-"/>
+	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- WP minimum for deprecation checks. -->
+	<config name="minimum_supported_wp_version" value="6.2"/>
+</ruleset>

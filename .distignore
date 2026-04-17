@@ -6,6 +6,9 @@ tests
 vendor
 dist
 docs
+bin
+build
+coverage
 
 # Build files
 .distignore
@@ -22,6 +25,12 @@ phpunit.xml
 phpunit.xml.dist
 phpcs.xml
 phpcs.xml.dist
+phpcbf.xml
+phpcbf.xml.dist
+phpstan.neon
+phpstan.neon.dist
+phpstan-bootstrap.php
+phpstan-baseline.neon
 
 # Documentation
 README.md
