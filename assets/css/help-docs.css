@@ -15,16 +15,16 @@
 }
 
 .wbam-help-content {
-	background: #fff;
+	background: var(--wbam-bg);
 	padding: 25px;
-	border: 1px solid #c3c4c7;
+	border: 1px solid var(--wbam-border-strong);
 	border-top: none;
 }
 
 .wbam-help-section h2 {
 	margin-top: 0;
 	padding-bottom: 12px;
-	border-bottom: 1px solid #c3c4c7;
+	border-bottom: 1px solid var(--wbam-border-strong);
 }
 
 /* Quick Start */
@@ -37,8 +37,8 @@
 	align-items: flex-start;
 	margin-bottom: 20px;
 	padding: 15px;
-	background: #f0f0f1;
-	border-left: 3px solid #2271b1;
+	background: var(--wbam-surface-alt);
+	border-left: 3px solid var(--wbam-accent);
 }
 
 .wbam-step-number {
@@ -47,8 +47,8 @@
 	justify-content: center;
 	width: 32px;
 	height: 32px;
-	background: #2271b1;
-	color: #fff;
+	background: var(--wbam-accent);
+	color: var(--wbam-bg);
 	border-radius: 50%;
 	font-size: 14px;
 	font-weight: 600;
@@ -63,8 +63,8 @@
 
 .wbam-step-content p {
 	margin: 0 0 10px;
-	color: #50575e;
-	font-size: 13px;
+	color: var(--wbam-text-muted);
+	font-size: var(--wbam-font-size-sm);
 }
 
 /* Features Grid */
@@ -77,34 +77,34 @@
 
 .wbam-feature-card {
 	padding: 20px;
-	background: #f0f0f1;
-	border-left: 3px solid #2271b1;
+	background: var(--wbam-surface-alt);
+	border-left: 3px solid var(--wbam-accent);
 }
 
 .wbam-feature-card .dashicons {
-	font-size: 24px;
+	font-size: var(--wbam-font-size-2xl);
 	width: 24px;
 	height: 24px;
-	color: #2271b1;
+	color: var(--wbam-accent);
 	margin-bottom: 10px;
 }
 
 .wbam-feature-card h4 {
 	margin: 0 0 8px;
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }
 
 .wbam-feature-card p {
 	margin: 0;
-	color: #50575e;
-	font-size: 12px;
+	color: var(--wbam-text-muted);
+	font-size: var(--wbam-font-size-xs);
 }
 
 /* Doc Section */
 .wbam-doc-section {
 	margin: 25px 0;
 	padding-bottom: 25px;
-	border-bottom: 1px solid #c3c4c7;
+	border-bottom: 1px solid var(--wbam-border-strong);
 }
 
 .wbam-doc-section:last-child {
@@ -118,15 +118,15 @@
 
 .wbam-doc-section h4 {
 	margin: 15px 0 8px;
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }
 
 .wbam-doc-section code {
 	display: inline-block;
 	padding: 3px 8px;
-	background: #f0f0f1;
-	border: 1px solid #c3c4c7;
-	font-size: 12px;
+	background: var(--wbam-surface-alt);
+	border: 1px solid var(--wbam-border-strong);
+	font-size: var(--wbam-font-size-xs);
 }
 
 .wbam-doc-section ol,
@@ -136,7 +136,7 @@
 
 .wbam-doc-section li {
 	margin-bottom: 6px;
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }
 
 /* Doc Table */
@@ -144,33 +144,33 @@
 	width: 100%;
 	border-collapse: collapse;
 	margin: 15px 0;
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }
 
 .wbam-doc-table th,
 .wbam-doc-table td {
 	padding: 10px 12px;
 	text-align: left;
-	border: 1px solid #c3c4c7;
+	border: 1px solid var(--wbam-border-strong);
 }
 
 .wbam-doc-table th {
-	background: #f0f0f1;
+	background: var(--wbam-surface-alt);
 	font-weight: 600;
 }
 
 /* PRO Section */
 .wbam-pro-section {
-	background: #f0f6fc;
+	background: var(--wbam-accent-light);
 	padding: 15px;
-	border-left: 3px solid #2271b1;
+	border-left: 3px solid var(--wbam-accent);
 }
 
 .wbam-pro-badge {
 	display: inline-block;
 	padding: 2px 6px;
-	background: #2271b1;
-	color: #fff;
+	background: var(--wbam-accent);
+	color: var(--wbam-bg);
 	font-size: 10px;
 	border-radius: 2px;
 	margin-right: 5px;
@@ -181,7 +181,7 @@
 .wbam-faq-item {
 	margin-bottom: 20px;
 	padding-bottom: 20px;
-	border-bottom: 1px solid #c3c4c7;
+	border-bottom: 1px solid var(--wbam-border-strong);
 }
 
 .wbam-faq-item:last-child {
@@ -190,28 +190,28 @@
 
 .wbam-faq-item h4 {
 	margin: 0 0 8px;
-	font-size: 13px;
-	color: #1d2327;
+	font-size: var(--wbam-font-size-sm);
+	color: var(--wbam-text);
 }
 
 .wbam-faq-item p {
 	margin: 0 0 8px;
-	color: #50575e;
-	font-size: 13px;
+	color: var(--wbam-text-muted);
+	font-size: var(--wbam-font-size-sm);
 }
 
 .wbam-faq-item ul {
 	margin: 8px 0 0 20px;
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }
 
 /* Upgrade CTA */
 .wbam-upgrade-cta {
 	margin: 25px 0;
 	padding: 20px;
-	background: #f0f6fc;
-	border: 1px solid #c3c4c7;
-	border-left: 3px solid #2271b1;
+	background: var(--wbam-accent-light);
+	border: 1px solid var(--wbam-border-strong);
+	border-left: 3px solid var(--wbam-accent);
 }
 
 .wbam-upgrade-cta h3 {
@@ -221,16 +221,16 @@
 
 .wbam-upgrade-cta p {
 	margin: 0 0 15px;
-	color: #50575e;
-	font-size: 13px;
+	color: var(--wbam-text-muted);
+	font-size: var(--wbam-font-size-sm);
 }
 
 /* Support Box */
 .wbam-support-box {
 	margin-top: 25px;
 	padding: 15px;
-	background: #f0f0f1;
-	border-left: 3px solid #00a32a;
+	background: var(--wbam-surface-alt);
+	border-left: 3px solid var(--wbam-success);
 }
 
 .wbam-support-box h3 {
@@ -240,5 +240,5 @@
 
 .wbam-support-box p {
 	margin-bottom: 12px;
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }

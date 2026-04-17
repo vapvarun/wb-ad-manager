@@ -6,7 +6,7 @@
 
 /* Reset & Base */
 .wbam-setup {
-	background: #f0f0f1;
+	background: var(--wbam-surface-alt);
 	margin: 0;
 	padding: 0;
 	min-height: 100vh;
@@ -27,9 +27,9 @@
 /* Logo */
 .wbam-setup-logo {
 	text-align: center;
-	font-size: 24px;
+	font-size: var(--wbam-font-size-2xl);
 	font-weight: 600;
-	color: #1d2327;
+	color: var(--wbam-text);
 	margin: 0 0 40px;
 	display: flex;
 	align-items: center;
@@ -41,7 +41,7 @@
 	font-size: 32px;
 	width: 32px;
 	height: 32px;
-	color: #2271b1;
+	color: var(--wbam-accent);
 }
 
 /* Steps Navigation */
@@ -58,7 +58,7 @@
 	position: relative;
 	padding: 0 30px;
 	font-size: 14px;
-	color: #787c82;
+	color: var(--wbam-text-subtle);
 	counter-increment: step;
 }
 
@@ -69,8 +69,8 @@
 	height: 32px;
 	line-height: 32px;
 	text-align: center;
-	background: #dcdcde;
-	color: #50575e;
+	background: var(--wbam-border-subtle);
+	color: var(--wbam-text-muted);
 	border-radius: 50%;
 	margin: 0 auto 8px;
 	font-weight: 600;
@@ -83,7 +83,7 @@
 	left: calc(50% + 20px);
 	width: calc(100% - 40px);
 	height: 2px;
-	background: #dcdcde;
+	background: var(--wbam-border-subtle);
 }
 
 .wbam-setup-steps li:last-child::after {
@@ -91,29 +91,29 @@
 }
 
 .wbam-setup-steps li.active {
-	color: #1d2327;
+	color: var(--wbam-text);
 	font-weight: 500;
 }
 
 .wbam-setup-steps li.active::before {
-	background: #2271b1;
-	color: #fff;
+	background: var(--wbam-accent);
+	color: var(--wbam-bg);
 }
 
 .wbam-setup-steps li.done::before {
 	content: '\f147';
 	font-family: dashicons;
-	background: #00a32a;
-	color: #fff;
+	background: var(--wbam-success);
+	color: var(--wbam-bg);
 }
 
 .wbam-setup-steps li.done::after {
-	background: #00a32a;
+	background: var(--wbam-success);
 }
 
 /* Content Box */
 .wbam-setup-content {
-	background: #fff;
+	background: var(--wbam-bg);
 	border-radius: 8px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	padding: 40px;
@@ -121,14 +121,14 @@
 
 .wbam-setup-step-content h2 {
 	margin: 0 0 16px;
-	font-size: 24px;
+	font-size: var(--wbam-font-size-2xl);
 	font-weight: 600;
-	color: #1d2327;
+	color: var(--wbam-text);
 }
 
 .wbam-setup-step-content > p {
 	font-size: 15px;
-	color: #50575e;
+	color: var(--wbam-text-muted);
 	line-height: 1.6;
 	margin: 0 0 20px;
 }
@@ -146,20 +146,20 @@
 	gap: 10px;
 	padding: 10px 0;
 	font-size: 15px;
-	color: #1d2327;
+	color: var(--wbam-text);
 }
 
 .wbam-setup-features .dashicons {
-	color: #00a32a;
+	color: var(--wbam-success);
 }
 
 /* Note */
 .wbam-setup-note {
-	background: #f6f7f7;
+	background: var(--wbam-surface);
 	padding: 12px 16px;
 	border-radius: 4px;
-	font-size: 13px;
-	color: #646970;
+	font-size: var(--wbam-font-size-sm);
+	color: var(--wbam-text-muted);
 	margin: 20px 0;
 }
 
@@ -167,7 +167,7 @@
 .wbam-setup-actions {
 	margin-top: 30px;
 	padding-top: 20px;
-	border-top: 1px solid #f0f0f1;
+	border-top: 1px solid var(--wbam-surface-alt);
 	display: flex;
 	gap: 12px;
 }
@@ -196,7 +196,7 @@
 	align-items: flex-start;
 	gap: 12px;
 	padding: 16px;
-	background: #f6f7f7;
+	background: var(--wbam-surface);
 	border: 2px solid transparent;
 	border-radius: 6px;
 	cursor: pointer;
@@ -204,8 +204,8 @@
 }
 
 .wbam-sample-ad-option:hover {
-	background: #f0f6fc;
-	border-color: #2271b1;
+	background: var(--wbam-accent-light);
+	border-color: var(--wbam-accent);
 }
 
 .wbam-sample-ad-option input[type="checkbox"] {
@@ -213,7 +213,7 @@
 }
 
 .wbam-sample-ad-option input[type="checkbox"]:checked + .wbam-sample-ad-info strong {
-	color: #2271b1;
+	color: var(--wbam-accent);
 }
 
 .wbam-sample-ad-info {
@@ -224,12 +224,12 @@
 
 .wbam-sample-ad-info strong {
 	font-size: 15px;
-	color: #1d2327;
+	color: var(--wbam-text);
 }
 
 .wbam-sample-ad-info span {
-	font-size: 13px;
-	color: #646970;
+	font-size: var(--wbam-font-size-sm);
+	color: var(--wbam-text-muted);
 }
 
 /* Ready Step */
@@ -241,7 +241,7 @@
 	font-size: 64px;
 	width: 64px;
 	height: 64px;
-	color: #00a32a;
+	color: var(--wbam-success);
 	margin-bottom: 20px;
 }
 
@@ -263,32 +263,32 @@
 	flex-direction: column;
 	gap: 8px;
 	padding: 20px;
-	background: #f6f7f7;
+	background: var(--wbam-surface);
 	border-radius: 6px;
 	text-decoration: none;
 	transition: all 0.2s ease;
 }
 
 .wbam-next-step:hover {
-	background: #f0f6fc;
+	background: var(--wbam-accent-light);
 	transform: translateY(-2px);
 }
 
 .wbam-next-step .dashicons {
-	font-size: 24px;
+	font-size: var(--wbam-font-size-2xl);
 	width: 24px;
 	height: 24px;
-	color: #2271b1;
+	color: var(--wbam-accent);
 }
 
 .wbam-next-step strong {
 	font-size: 14px;
-	color: #1d2327;
+	color: var(--wbam-text);
 }
 
 .wbam-next-step span {
-	font-size: 12px;
-	color: #646970;
+	font-size: var(--wbam-font-size-xs);
+	color: var(--wbam-text-muted);
 }
 
 /* Footer */
@@ -299,13 +299,13 @@
 }
 
 .wbam-setup-footer a {
-	color: #646970;
+	color: var(--wbam-text-muted);
 	text-decoration: none;
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }
 
 .wbam-setup-footer a:hover {
-	color: #2271b1;
+	color: var(--wbam-accent);
 }
 
 /* Responsive */
@@ -320,7 +320,7 @@
 
 	.wbam-setup-steps li {
 		padding: 0 15px;
-		font-size: 12px;
+		font-size: var(--wbam-font-size-xs);
 	}
 
 	.wbam-setup-next-steps {

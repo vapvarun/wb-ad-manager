@@ -73,7 +73,7 @@
 
 .wbam-links-grid .wbam-links-item:hover {
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-	border-color: #ddd;
+	border-color: var(--wbam-border-subtle);
 }
 
 .wbam-links-grid .wbam-link {
@@ -83,7 +83,7 @@
 }
 
 .wbam-link-description {
-	color: #666;
+	color: var(--wbam-text-muted);
 	font-size: 0.9em;
 	line-height: 1.5;
 	margin: 0;

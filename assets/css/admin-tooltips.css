@@ -29,7 +29,7 @@
 	border: 1px solid transparent;
 	border-radius: 50%;
 	background: transparent;
-	color: #646970;
+	color: var(--wbam-text-muted);
 	cursor: pointer;
 	transition: color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 	-webkit-appearance: none;
@@ -38,17 +38,17 @@
 
 .wbam-tip__icon:hover,
 .wbam-tip__icon:focus {
-	color: #2271b1;
+	color: var(--wbam-accent);
 	background: #f0f6fc;
 	outline: none;
 }
 
 .wbam-tip__icon:focus-visible {
-	box-shadow: 0 0 0 2px #2271b1;
+	box-shadow: 0 0 0 2px var(--wbam-accent);
 }
 
 .wbam-tip__icon[aria-expanded="true"] {
-	color: #2271b1;
+	color: var(--wbam-accent);
 	background: #f0f6fc;
 }
 
@@ -66,9 +66,9 @@
 	width: max-content;
 	min-width: 200px;
 	padding: 10px 12px;
-	background: #fff;
-	color: #1d2327;
-	border: 1px solid #c3c4c7;
+	background: var(--wbam-bg);
+	color: var(--wbam-text);
+	border: 1px solid var(--wbam-border-strong);
 	border-radius: 4px;
 	box-shadow: 0 4px 14px rgba( 0, 0, 0, 0.12 );
 	font-size: 12px;
@@ -90,8 +90,8 @@
 	position: absolute;
 	width: 10px;
 	height: 10px;
-	background: #fff;
-	border: 1px solid #c3c4c7;
+	background: var(--wbam-bg);
+	border: 1px solid var(--wbam-border-strong);
 	transform: rotate( 45deg );
 }
 

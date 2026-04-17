@@ -10,6 +10,49 @@
    ========================================================================== */
 
 :root {
+	/* ── Semantic tokens ── */
+	--wbam-bg:            var(--bg, var(--wp--preset--color--base, #ffffff));
+	--wbam-surface:       var(--surface, #f6f7f7);
+	--wbam-surface-alt:   var(--surface-alt, #f0f0f1);
+	--wbam-text:          var(--text-1, var(--wp--preset--color--contrast, #1d2327));
+	--wbam-text-muted:    var(--text-2, #646970);
+	--wbam-text-subtle:   #8c8f94;
+	--wbam-text-inverse:  #ffffff;
+	--wbam-accent:        var(--brand, var(--wp--preset--color--primary, #2271b1));
+	--wbam-accent-hover:  var(--brand-hover, #135e96);
+	--wbam-accent-fg:     #ffffff;
+	--wbam-success:       #00a32a;
+	--wbam-danger:        #d63638;
+	--wbam-danger-bg:     #f8d7da;
+	--wbam-warning:       #dba617;
+	--wbam-border:        #e5e5e5;
+	--wbam-border-strong: #c3c4c7;
+	--wbam-border-subtle: #dcdcde;
+	--wbam-shadow-sm:     0 1px 2px rgba(0, 0, 0, 0.04);
+	--wbam-shadow-md:     0 2px 6px rgba(0, 0, 0, 0.08);
+	--wbam-shadow-lg:     0 4px 12px rgba(0, 0, 0, 0.12);
+	--wbam-r-sm: 4px;
+	--wbam-r-md: 8px;
+	--wbam-r-lg: 12px;
+	--wbam-font-size-xs: 0.75rem;
+	--wbam-font-size-sm: 0.8125rem;
+	--wbam-font-size-md: 1rem;
+	--wbam-font-size-lg: 1.125rem;
+	--wbam-font-size-xl: 1.25rem;
+	/* ── Legacy aliases — deprecated, do not use in new code ── */
+	--wbam-bg-white:      var(--wbam-bg);
+	--wbam-bg-light:      var(--wbam-surface);
+	--wbam-text-body:     var(--wbam-text);
+	--wbam-text-dark:     var(--wbam-text);
+	--wbam-text-light:    var(--wbam-text-inverse);
+	--wbam-text-meta:     var(--wbam-text-subtle);
+	--wbam-label-color:   var(--wbam-text-muted);
+	--wbam-border-color:  var(--wbam-border);
+	--wbam-border-color-dark: var(--wbam-border-subtle);
+	--wbam-success-color: var(--wbam-success);
+	--wbam-error-color:   var(--wbam-danger);
+	--wbam-error-bg:      var(--wbam-danger-bg);
+
 	--wbam-spacing: 20px;
 	--wbam-spacing-sm: 15px;
 	--wbam-border-radius: 4px;
@@ -531,11 +574,11 @@ body.dark-scheme,
 	width: 28px;
 	height: 28px;
 	padding: 0;
-	background: #333;
-	color: #fff;
+	background: var(--wbam-text);
+	color: var(--wbam-bg);
 	border: none;
 	border-radius: 50%;
-	font-size: 18px;
+	font-size: var(--wbam-font-size-lg);
 	line-height: 1;
 	cursor: pointer;
 	display: flex;
@@ -545,8 +588,8 @@ body.dark-scheme,
 }
 
 .wbam-sticky-close:hover {
-	background: #fce8e6;
-	color: #c5221f;
+	background: var(--wbam-danger-bg);
+	color: var(--wbam-danger);
 }
 
 .wbam-sticky-bottom-bar .wbam-sticky-close,
@@ -612,8 +655,8 @@ body.dark-scheme,
 	width: 32px;
 	height: 32px;
 	padding: 0;
-	background: #333;
-	color: #fff;
+	background: var(--wbam-text);
+	color: var(--wbam-bg);
 	border: none;
 	border-radius: 50%;
 	font-size: 22px;
@@ -627,8 +670,8 @@ body.dark-scheme,
 }
 
 .wbam-popup-close:hover {
-	background: #fce8e6;
-	color: #c5221f;
+	background: var(--wbam-danger-bg);
+	color: var(--wbam-danger);
 }
 
 @keyframes wbam-fade-in {
@@ -848,7 +891,7 @@ body.dark-scheme,
 }
 
 .wbam-email-close .dashicons {
-	font-size: 18px;
+	font-size: var(--wbam-font-size-lg);
 	width: 18px;
 	height: 18px;
 	color: inherit;
@@ -914,7 +957,7 @@ body.dark-scheme,
 .wbam-email-button {
 	width: 100%;
 	padding: 14px 20px;
-	font-size: 16px;
+	font-size: var(--wbam-font-size-md);
 	font-weight: 600;
 	color: var(--wbam-text-light, #fff);
 	background: var(--wbam-email-btn, var(--wbam-bg-button, #2271b1));
@@ -939,7 +982,7 @@ body.dark-scheme,
 
 .wbam-email-privacy {
 	margin: 15px 0 0;
-	font-size: 12px;
+	font-size: var(--wbam-font-size-xs);
 	opacity: 0.6;
 	line-height: 1.4;
 }
@@ -963,7 +1006,7 @@ body.dark-scheme,
 
 .wbam-email-success-message {
 	margin: 0;
-	font-size: 16px;
+	font-size: var(--wbam-font-size-md);
 	font-weight: 500;
 }
 
@@ -978,7 +1021,7 @@ body.dark-scheme,
 .wbam-email-error-message {
 	margin: 0;
 	color: var(--wbam-error-color, #d63638);
-	font-size: 13px;
+	font-size: var(--wbam-font-size-sm);
 }
 
 /* Loading State */
@@ -1014,7 +1057,7 @@ body.dark-scheme,
 	}
 
 	.wbam-email-headline {
-		font-size: 18px;
+		font-size: var(--wbam-font-size-lg);
 	}
 
 	.wbam-email-input,
