@@ -1,8 +1,3081 @@
-# PHPStan baseline — intentionally empty.
-#
-# Generate or refresh with:
-#     composer phpstan-baseline
-#
-# Goal: new code must pass level 7 cleanly without expanding this file.
 parameters:
-    ignoreErrors: []
+	ignoreErrors:
+		-
+			message: "#^Method WBAM\\\\API\\\\Ads_API\\:\\:get_ad_args\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-ads-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Ads_API\\:\\:prepare_ad_for_response\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-ads-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Ads_API\\:\\:register_routes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/API/class-ads-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Ads_API\\:\\:sanitize_ad_data\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-ads-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Ads_API\\:\\:sanitize_ad_data\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-ads-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Ads_API\\:\\:save_ad_meta\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/API/class-ads-api.php
+
+		-
+			message: "#^Parameter \\#1 \\$post of method WBAM\\\\API\\\\Ads_API\\:\\:prepare_ad_for_response\\(\\) expects WP_Post, int\\|WP_Post given\\.$#"
+			count: 1
+			path: includes/API/class-ads-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Analytics_API\\:\\:register_routes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/API/class-analytics-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$admin_notes\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$anchor_text\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$created_at\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$email\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$message\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$name\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$partnership_type\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$status\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$website_url\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Links_API\\:\\:get_link_args\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Links_API\\:\\:prepare_link_for_response\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Links_API\\:\\:prepare_partnership_for_response\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Links_API\\:\\:register_routes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/API/class-links-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Settings_API\\:\\:register_routes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/API/class-settings-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Settings_API\\:\\:sanitize_settings_for_output\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-settings-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Settings_API\\:\\:sanitize_settings_for_output\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-settings-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Settings_API\\:\\:sanitize_settings_input\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-settings-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Settings_API\\:\\:sanitize_settings_input\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-settings-api.php
+
+		-
+			message: "#^Property WBAM\\\\API\\\\Settings_API\\:\\:\\$display_keys type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/API/class-settings-api.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:add_columns\\(\\) has parameter \\$columns with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:add_columns\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:add_metaboxes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:collect_format_js_data\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:enqueue_assets\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:handle_disable_ad\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:render_column\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:render_comparison_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:render_placements_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:render_settings_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:render_status_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:save_meta\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, \\(float\\|int\\) given\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 4
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int\\<min, \\-1\\>\\|int\\<1, max\\>\\|string given\\.$#"
+			count: 2
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int\\|string given\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_html expects string, int given\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Property WBAM\\\\Admin\\\\Admin\\:\\:\\$table_cache type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Demo_Data_Cleaner\\:\\:handle_clear_request\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-demo-data-cleaner.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Demo_Data_Cleaner\\:\\:maybe_render_notice\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-demo-data-cleaner.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Demo_Data_Cleaner\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-demo-data-cleaner.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Demo_Data_Cleaner\\:\\:render_clear_button\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-demo-data-cleaner.php
+
+		-
+			message: "#^Argument of an invalid type array\\<WP_Post\\>\\|false supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Argument of an invalid type array\\<int, WP_Term\\>\\|WP_Error supplied for foreach, only iterables are supported\\.$#"
+			count: 2
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:add_metaboxes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:render_display_rules\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:render_geo_targeting\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:render_schedule\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:render_visitor_conditions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_display_rules\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_display_rules\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_geo_targeting\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_geo_targeting\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_schedule\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_schedule\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_visitor_conditions\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:sanitize_visitor_conditions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:save_meta\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 5
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int\\|string given\\.$#"
+			count: 2
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Admin/class-display-options.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Field_Tooltips\\:\\:enqueue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-field-tooltips.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Field_Tooltips\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-field-tooltips.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\First_Install_Pointers\\:\\:ajax_dismiss\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-first-install-pointers.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\First_Install_Pointers\\:\\:enqueue\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-first-install-pointers.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\First_Install_Pointers\\:\\:get_pointer_definitions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-first-install-pointers.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\First_Install_Pointers\\:\\:get_pointers_for_screen\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-first-install-pointers.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\First_Install_Pointers\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-first-install-pointers.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Help_Docs\\:\\:add_menu\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-help-docs.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Help_Docs\\:\\:enqueue_styles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-help-docs.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Help_Docs\\:\\:render_faq_tab\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-help-docs.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Help_Docs\\:\\:render_features_tab\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-help-docs.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Help_Docs\\:\\:render_getting_started_tab\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-help-docs.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Help_Docs\\:\\:render_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-help-docs.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Help_Docs\\:\\:render_pro_features_tab\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-help-docs.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\List_Empty_States\\:\\:enqueue_shared_styles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-list-empty-states.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\List_Empty_States\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-list-empty-states.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\List_Empty_States\\:\\:maybe_print_ads_empty_state_style\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-list-empty-states.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\List_Empty_States\\:\\:maybe_render_ads_empty_state\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-list-empty-states.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\List_Empty_States\\:\\:render_empty_state\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-list-empty-states.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\List_Empty_States\\:\\:render_empty_state\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-list-empty-states.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\List_Empty_States\\:\\:render_links_empty_state\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-list-empty-states.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:add_menu\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:get_settings\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:register_settings\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_adsense_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_advanced_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_checkbox_field\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_checkbox_field\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_display_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_general_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_geo_provider_field\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_geo_provider_field\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_geo_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_number_field\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_number_field\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_performance_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_post_types_field\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_post_types_field\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_privacy_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_select_field\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_select_field\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_text_field\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_text_field\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:sanitize_settings\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:sanitize_settings\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Property WBAM\\\\Admin\\\\Settings\\:\\:\\$defaults type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:add_wizard_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:content\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:create_sample_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:create_sample_ads\\(\\) has parameter \\$ads_to_create with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:dismiss_setup\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:footer\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:header\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:setup_wizard\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:show_setup_notice\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:step_ready\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:step_sample\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:step_sample_save\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:step_welcome\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:steps_nav\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Setup_Wizard\\:\\:track_demo_id\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Property WBAM\\\\Admin\\\\Setup_Wizard\\:\\:\\$step \\(string\\) does not accept int\\|string\\|false\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Property WBAM\\\\Admin\\\\Setup_Wizard\\:\\:\\$steps type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^is_wp_error\\(int\\<1, max\\>\\) will always evaluate to false\\.$#"
+			count: 1
+			path: includes/Admin/class-setup-wizard.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Upgrade_Pro\\:\\:add_menu\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-upgrade-pro.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Upgrade_Pro\\:\\:enqueue_styles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-upgrade-pro.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Upgrade_Pro\\:\\:render_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-upgrade-pro.php
+
+		-
+			message: "#^Cannot access property \\$ID on int\\|WP_Post\\.$#"
+			count: 4
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Cannot access property \\$post_status on int\\|WP_Post\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Cannot access property \\$post_title on int\\|WP_Post\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Cannot call method get_description\\(\\) on class\\-string\\|object\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Cannot call method get_fields\\(\\) on class\\-string\\|object\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_create_ad\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_create_ad\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_create_link\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_create_link\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_delete_ad\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_delete_ad\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_delete_link\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_delete_link\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_ad\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_ad\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_ad_stats\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_ad_stats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_analytics_overview\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_analytics_overview\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_link_stats\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_get_link_stats\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_ad_types\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_ad_types\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_ads\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_ads\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_links\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_links\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_placements\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_list_placements\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_serve_ad\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_serve_ad\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_update_ad\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_update_ad\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_update_link\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:execute_update_link\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:register_abilities\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:register_ad_abilities\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:register_analytics_abilities\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:register_categories\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Abilities\\:\\:register_link_abilities\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-abilities.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Ad_Formats\\:\\:get\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-ad-formats.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Admin_Links\\:\\:action_link\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-admin-links.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Admin_Links\\:\\:ads_list\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-admin-links.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Admin_Links\\:\\:analytics\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-admin-links.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Admin_Links\\:\\:links\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-admin-links.php
+
+		-
+			message: "#^Parameter \\#2 \\$timestamp_with_offset of function date_i18n expects bool\\|int, int\\|string\\|false given\\.$#"
+			count: 2
+			path: includes/Core/class-formatter.php
+
+		-
+			message: "#^Property WBAM\\\\Core\\\\Formatter\\:\\:\\$currency_symbols type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-formatter.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:backfill_ad_formats\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:create_tables\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:drop_tables\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:install\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:maybe_backfill_demo_markers\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:maybe_set_onboarding_pointers_default\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:run_migrations\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Installer\\:\\:update_db_version\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Core/class-installer.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Placement_Format_Map\\:\\:apply\\(\\) has parameter \\$registry with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-placement-format-map.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Placement_Format_Map\\:\\:apply\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-placement-format-map.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Placement_Format_Map\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-placement-format-map.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Placement_Format_Map\\:\\:seed_from_engine\\(\\) has parameter \\$registry with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-placement-format-map.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Placement_Format_Map\\:\\:seed_from_engine\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Core/class-placement-format-map.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:activation_redirect\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:admin_notices\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:ajax_dismiss_notice\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:init_components\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:maybe_update_database\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:register_post_type\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Method WBAM\\\\Core\\\\Plugin\\:\\:setup_hooks\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Core/class-plugin.php
+
+		-
+			message: "#^Call to method get_error_message\\(\\) on an unknown class WBAM\\\\Frontend\\\\WP_Error\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Method WBAM\\\\Frontend\\\\Frontend\\:\\:enqueue_assets\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Method WBAM\\\\Frontend\\\\Frontend\\:\\:handle_click_tracking\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Method WBAM\\\\Frontend\\\\Frontend\\:\\:handle_email_capture\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Method WBAM\\\\Frontend\\\\Frontend\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Method WBAM\\\\Frontend\\\\Frontend\\:\\:maybe_add_adsense_auto_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Method WBAM\\\\Frontend\\\\Frontend\\:\\:record_impression\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Property WBAM\\\\Frontend\\\\Frontend\\:\\:\\$table_cache type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^is_wp_error\\(WBAM\\\\Frontend\\\\WP_Error\\|true\\) will always evaluate to false\\.$#"
+			count: 1
+			path: includes/Frontend/class-frontend.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\AdSense_Ad\\:\\:get_publisher_id\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\AdSense_Ad\\:\\:maybe_enqueue_adsense_script\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\AdSense_Ad\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\AdSense_Ad\\:\\:render_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\AdSense_Ad\\:\\:render_metabox\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\AdSense_Ad\\:\\:save\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\AdSense_Ad\\:\\:save\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-ad-sense-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Code_Ad\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-code-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Code_Ad\\:\\:render_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-code-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Code_Ad\\:\\:render_metabox\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-code-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Code_Ad\\:\\:save\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-code-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Code_Ad\\:\\:save\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-code-ad.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-code-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Email_Capture_Ad\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-email-capture-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Email_Capture_Ad\\:\\:render\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-email-capture-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Email_Capture_Ad\\:\\:render_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-email-capture-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Email_Capture_Ad\\:\\:render_metabox\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-email-capture-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Email_Capture_Ad\\:\\:save\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-email-capture-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Email_Capture_Ad\\:\\:save\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-email-capture-ad.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 4
+			path: includes/Modules/AdTypes/class-email-capture-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Image_Ad\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-image-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Image_Ad\\:\\:render_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-image-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Image_Ad\\:\\:render_metabox\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-image-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Image_Ad\\:\\:save\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-image-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Image_Ad\\:\\:save\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-image-ad.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-image-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Rich_Content_Ad\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-rich-content-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Rich_Content_Ad\\:\\:render_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-rich-content-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Rich_Content_Ad\\:\\:render_metabox\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-rich-content-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Rich_Content_Ad\\:\\:save\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-rich-content-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Rich_Content_Ad\\:\\:save\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-rich-content-ad.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/class-rich-content-ad.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Ad_Type_Interface\\:\\:render\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/interface-ad-type.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Ad_Type_Interface\\:\\:render_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/interface-ad-type.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Ad_Type_Interface\\:\\:render_metabox\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/interface-ad-type.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Ad_Type_Interface\\:\\:save\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/interface-ad-type.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\AdTypes\\\\Ad_Type_Interface\\:\\:save\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/AdTypes/interface-ad-type.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Placement\\:\\:after_activity\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-activity-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-activity-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Placement\\:\\:render_ad\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-activity-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Placement\\:\\:reset_displayed\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-activity-placement.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Placement\\:\\:\\$displayed_ads type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-activity-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Placement\\:\\:do_register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Placement\\:\\:placements\\(\\) should return array\\<int, array\\{id\\: string, name\\: string, description\\: string, hook\\: string, style\\: string, loop\\?\\: string\\}\\> but returns array\\{array\\{id\\: 'bp_before_members', name\\: string, description\\: string, hook\\: 'bp_before_members…'\\}, array\\{id\\: 'bp_after_members', name\\: string, description\\: string, hook\\: 'bp_after_members…'\\}, array\\{id\\: 'bp_before_groups', name\\: string, description\\: string, hook\\: 'bp_before_groups…'\\}, array\\{id\\: 'bp_after_groups', name\\: string, description\\: string, hook\\: 'bp_after_groups_loop'\\}\\}\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Placement\\:\\:register_all\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:__construct\\(\\) has parameter \\$spec with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:render\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:render_options\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:render_options\\(\\) has parameter \\$ad_id with no type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:render_options\\(\\) has parameter \\$data with no type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:save_options\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:save_options\\(\\) has parameter \\$ad_id with no type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:save_options\\(\\) has parameter \\$data with no type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\BuddyPress\\\\BP_Directory_Position\\:\\:\\$spec type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-directory-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Module\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Module\\:\\:register_placements\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Module\\:\\:setup_hooks\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Ad_Widget\\:\\:form\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Ad_Widget\\:\\:update\\(\\) has parameter \\$new_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Ad_Widget\\:\\:update\\(\\) has parameter \\$old_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Ad_Widget\\:\\:update\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Ad_Widget\\:\\:widget\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Ad_Widget\\:\\:widget\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Activity_Ad_Widget\\:\\:widget\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Group_Ad_Widget\\:\\:form\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Group_Ad_Widget\\:\\:update\\(\\) has parameter \\$new_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Group_Ad_Widget\\:\\:update\\(\\) has parameter \\$old_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Group_Ad_Widget\\:\\:update\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Group_Ad_Widget\\:\\:widget\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Group_Ad_Widget\\:\\:widget\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Group_Ad_Widget\\:\\:widget\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Profile_Ad_Widget\\:\\:form\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Profile_Ad_Widget\\:\\:update\\(\\) has parameter \\$new_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Profile_Ad_Widget\\:\\:update\\(\\) has parameter \\$old_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Profile_Ad_Widget\\:\\:update\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Profile_Ad_Widget\\:\\:widget\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Profile_Ad_Widget\\:\\:widget\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Profile_Ad_Widget\\:\\:widget\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Widgets\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\BuddyPress\\\\BP_Widgets\\:\\:register_widgets\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 3
+			path: includes/Modules/BuddyPress/class-bp-widgets.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:clear_cache\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:get_bp_location\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:get_countries_list\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:get_location_by_ip\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:get_provider_order\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:get_providers\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:get_visitor_location\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:query_ip_api\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:query_ipapi_co\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:query_ipinfo\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:query_provider\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:query_provider\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:test_provider\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:\\$current_location type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\GeoTargeting\\\\Geo_Engine\\:\\:\\$providers type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/GeoTargeting/class-geo-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Module\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Module\\:\\:print_spacing_styles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Module\\:\\:register_placements\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:__construct\\(\\) has parameter \\$spec with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:render\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:render_options\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:render_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:save_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:save_options\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\Jetonomy\\\\Jetonomy_Placement\\:\\:\\$spec type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Jetonomy/class-jetonomy-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:add_query_vars\\(\\) has parameter \\$vars with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:add_query_vars\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:add_rewrite_rules\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:flush_rules\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:handle_404\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:handle_inactive_link\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:handle_redirect\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:redirect\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\Links\\\\Link_Cloaker\\:\\:\\$prefix is never read, only written\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-cloaker.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:count_links\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:create\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:create_category\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:get_active_links_for_select\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:get_categories\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:get_categories\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:get_links\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:get_links\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:sanitize_link_data\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:sanitize_link_data\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:update\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:update_category\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Manager\\:\\:update_category_count\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Shortcodes\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Shortcodes\\:\\:maybe_enqueue_assets\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Shortcodes\\:\\:register_assets\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Shortcodes\\:\\:render_link\\(\\) has parameter \\$atts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Shortcodes\\:\\:render_link_url\\(\\) has parameter \\$atts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link_Shortcodes\\:\\:render_links_list\\(\\) has parameter \\$atts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Parameter \\#2 \\$callback of function add_shortcode expects callable\\(array\\<string\\>, string\\|null, string\\)\\: string, array\\{\\$this\\(WBAM\\\\Modules\\\\Links\\\\Link_Shortcodes\\), 'render_link'\\} given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link-shortcodes.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:__construct\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:get_attributes\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:get_link_types\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:get_payment_statuses\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:get_payment_types\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:get_redirect_types\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:get_statuses\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:populate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:populate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Link\\:\\:to_array\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-link.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$description\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$name\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$slug\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:add_submenu\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:delete_category\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:delete_link\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:enqueue_scripts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:handle_actions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:render_categories_list\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:render_categories_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:render_category_form\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:render_edit_form\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:render_links_list\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:render_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:save_category\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:save_link\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:show_notices\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 3
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Parameter \\#2 \\$timestamp of function gmdate expects int, int\\|false given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:\\$parent_slug is never read, only written\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:extra_tablenav\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:get_bulk_actions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:get_columns\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:get_sortable_columns\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:get_views\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:no_items\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:prepare_items\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_List_Table\\:\\:process_bulk_action\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Parameter \\#1 \\$args of method WP_List_Table\\:\\:set_pagination_args\\(\\) expects array\\{total_items\\?\\: int, total_pages\\?\\: int, per_page\\?\\: int\\}, array\\{total_items\\: int, per_page\\: 20, total_pages\\: float\\} given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Parameter \\#1 \\$from of function human_time_diff expects int, int\\|false given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-list-table.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_fields\\(\\) has parameter \\$fields with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_fields\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_tab\\(\\) has parameter \\$tabs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_tab\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:ajax_track_click\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:enqueue_frontend_scripts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-links-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:add_admin_menu\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:add_pending_count_bubble\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:enqueue_scripts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:handle_actions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:render_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:render_row_actions\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:render_single_view\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Admin\\:\\:show_notices\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_html expects string, float given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_html expects string, int\\<1, max\\> given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_html expects string, string\\|false\\|null given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Parameter \\#1 \\$url of function esc_url expects string, string\\|false given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Emails\\:\\:get_email_headers\\(\\) has parameter \\$headers with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-emails.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Emails\\:\\:get_email_headers\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-emails.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Emails\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-emails.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Emails\\:\\:notify_admin_new_inquiry\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-emails.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Emails\\:\\:notify_requester_accepted\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-emails.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Emails\\:\\:notify_requester_rejected\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-emails.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-emails.php
+
+		-
+			message: "#^Argument of an invalid type array\\<WP_Post\\>\\|false supplied for foreach, only iterables are supported\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Call to method get_error_message\\(\\) on an unknown class WBAM\\\\Modules\\\\Links\\\\WP_Error\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Form\\:\\:enqueue_scripts\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Form\\:\\:get_i18n_strings\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Form\\:\\:handle_ajax_submission\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Form\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Form\\:\\:render_form\\(\\) has parameter \\$atts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Form\\:\\:render_form\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Form\\:\\:render_styles\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Unable to resolve the template type TUrl in call to function wp_http_validate_url$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^is_wp_error\\(WBAM\\\\Modules\\\\Links\\\\WP_Error\\|true\\) will always evaluate to false\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-form.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:count_partnerships\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:create\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:get_partnerships\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:get_partnerships\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:get_status_counts\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:sanitize_data\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:sanitize_data\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership_Manager\\:\\:update\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership\\:\\:__construct\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership\\:\\:get_partnership_types\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership\\:\\:get_statuses\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership\\:\\:populate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership\\:\\:populate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership\\:\\:to_array\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership.php
+
+		-
+			message: "#^Parameter \\#1 \\$from of function human_time_diff expects int, int\\|false given\\.$#"
+			count: 1
+			path: includes/Modules/Links/class-partnership.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\After_Archive_Placement\\:\\:display_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-after-archive-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\After_Archive_Placement\\:\\:display_ads_loop\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-after-archive-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\After_Archive_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-after-archive-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Before_Archive_Placement\\:\\:display_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-before-archive-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Before_Archive_Placement\\:\\:display_ads_loop\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-before-archive-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Before_Archive_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-before-archive-placement.php
+
+		-
+			message: "#^Access to property \\$comment_parent on an unknown class WBAM\\\\Modules\\\\Placements\\\\WP_Comment\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:render_after_form\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:render_before_form\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:render_comment_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:render_options\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:render_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:reset_counter\\(\\) has parameter \\$comments with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:reset_counter\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:save_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:save_options\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Parameter \\$comment of method WBAM\\\\Modules\\\\Placements\\\\Comment_Placement\\:\\:render_between_comments\\(\\) has invalid type WBAM\\\\Modules\\\\Placements\\\\WP_Comment\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-comment-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Content_Placement\\:\\:filter_content\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-content-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Content_Placement\\:\\:filter_content\\(\\) has parameter \\$content with no type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-content-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Content_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-content-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Footer_Placement\\:\\:display\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-footer-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Footer_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-footer-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Header_Placement\\:\\:display\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-header-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Header_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-header-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Paragraph_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-paragraph-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:clear_placement_cache\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:get_ad_types\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:get_ads_for_placement\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:get_placements\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:get_placements_grouped\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:maybe_clear_cache_on_delete\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:register_ad_type\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:register_ad_types\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:register_placement\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:register_placements\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:render_ad\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:\\$ad_types type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\Placements\\\\Placement_Engine\\:\\:\\$placements type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-placement-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Popup_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-popup-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Popup_Placement\\:\\:render_options\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-popup-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Popup_Placement\\:\\:render_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-popup-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Popup_Placement\\:\\:render_popup_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-popup-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Popup_Placement\\:\\:save_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-popup-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Popup_Placement\\:\\:save_options\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-popup-placement.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 4
+			path: includes/Modules/Placements/class-popup-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Shortcode_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-shortcode-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Shortcode_Placement\\:\\:shortcode_multiple\\(\\) has parameter \\$atts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-shortcode-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Shortcode_Placement\\:\\:shortcode_single\\(\\) has parameter \\$atts with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-shortcode-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Sticky_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-sticky-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Sticky_Placement\\:\\:render_options\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-sticky-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Sticky_Placement\\:\\:render_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-sticky-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Sticky_Placement\\:\\:render_sticky_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-sticky-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Sticky_Placement\\:\\:save_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-sticky-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Sticky_Placement\\:\\:save_options\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-sticky-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\WBAM_Ad_Widget\\:\\:form\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\WBAM_Ad_Widget\\:\\:update\\(\\) has parameter \\$new_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\WBAM_Ad_Widget\\:\\:update\\(\\) has parameter \\$old_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\WBAM_Ad_Widget\\:\\:update\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\WBAM_Ad_Widget\\:\\:widget\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\WBAM_Ad_Widget\\:\\:widget\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\WBAM_Ad_Widget\\:\\:widget\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Widget_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Widget_Placement\\:\\:register_widget\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 1
+			path: includes/Modules/Placements/class-widget-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Placements\\\\Placement_Interface\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Placements/interface-placement.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Content_Analyzer\\:\\:analyze\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Content_Analyzer\\:\\:clear_cache\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Content_Analyzer\\:\\:get_heading_count\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Content_Analyzer\\:\\:get_reading_time\\(\\) should return int but returns float\\|int\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Content_Analyzer\\:\\:get_suggested_positions\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Content_Analyzer\\:\\:meets_requirements\\(\\) has parameter \\$min_reqs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\Targeting\\\\Content_Analyzer\\:\\:\\$cache type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-content-analyzer.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:filter_by_frequency\\(\\) has parameter \\$ad_ids with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:filter_by_frequency\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:get_cookie_data\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:get_weighted_random\\(\\) has parameter \\$ad_ids with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:set_view_cookie\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:sort_by_priority\\(\\) has parameter \\$ad_ids with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:sort_by_priority\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:track_impression\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_js expects string, string\\|false given\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\Targeting\\\\Frequency_Manager\\:\\:\\$page_ads type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-frequency-manager.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Engine\\:\\:check_exclusions\\(\\) has parameter \\$rules with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-targeting-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Engine\\:\\:check_inclusions\\(\\) has parameter \\$rules with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-targeting-engine.php
+
+		-
+			message: "#^Parameter \\#1 \\$post_id of function wp_get_post_categories expects int, int\\|false given\\.$#"
+			count: 2
+			path: includes/Modules/Targeting/class-targeting-engine.php
+
+		-
+			message: "#^Parameter \\#1 \\$post_id of function wp_get_post_tags expects int, int\\|false given\\.$#"
+			count: 2
+			path: includes/Modules/Targeting/class-targeting-engine.php
+
+		-
+			message: "#^Parameter \\#2 \\$arr2 of function array_intersect expects array, array\\<int, WP_Term\\>\\|WP_Error given\\.$#"
+			count: 2
+			path: includes/Modules/Targeting/class-targeting-engine.php
+
+		-
+			message: "#^Parameter \\#2 \\$arr2 of function array_intersect expects array, array\\<int, int\\>\\|WP_Error given\\.$#"
+			count: 2
+			path: includes/Modules/Targeting/class-targeting-engine.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/class-targeting-engine.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Rule_Interface\\:\\:check\\(\\) has parameter \\$conditions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/interface-targeting-rule.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Rule_Interface\\:\\:check\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/interface-targeting-rule.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Rule_Interface\\:\\:render_settings\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/interface-targeting-rule.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Rule_Interface\\:\\:render_settings\\(\\) has parameter \\$conditions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/interface-targeting-rule.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Rule_Interface\\:\\:sanitize\\(\\) has parameter \\$conditions with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/interface-targeting-rule.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\Targeting\\\\Targeting_Rule_Interface\\:\\:sanitize\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/Targeting/interface-targeting-rule.php
+
+		-
+			message: "#^Function bbp_is_single_forum not found\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Function bbp_is_single_topic not found\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Forum_Ad_Widget\\:\\:form\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Forum_Ad_Widget\\:\\:update\\(\\) has parameter \\$new_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Forum_Ad_Widget\\:\\:update\\(\\) has parameter \\$old_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Forum_Ad_Widget\\:\\:update\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Forum_Ad_Widget\\:\\:widget\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Forum_Ad_Widget\\:\\:widget\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Forum_Ad_Widget\\:\\:widget\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Module\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Module\\:\\:register_placements\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Module\\:\\:setup_hooks\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:register\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_after_forums\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_after_single_topic\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_after_topics\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_bbpress_ads\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_before_forums\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_before_single_topic\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_before_topics\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_between_items\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_between_replies\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_options\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:render_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:reset_reply_counter\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:save_options\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:save_options\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Topic_Ad_Widget\\:\\:form\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Topic_Ad_Widget\\:\\:update\\(\\) has parameter \\$new_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Topic_Ad_Widget\\:\\:update\\(\\) has parameter \\$old_instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Topic_Ad_Widget\\:\\:update\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Topic_Ad_Widget\\:\\:widget\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Topic_Ad_Widget\\:\\:widget\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Topic_Ad_Widget\\:\\:widget\\(\\) has parameter \\$instance with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Widgets\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Method WBAM\\\\Modules\\\\bbPress\\\\bbPress_Widgets\\:\\:register_widgets\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
+			count: 3
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Property WBAM\\\\Modules\\\\bbPress\\\\bbPress_Placement\\:\\:\\$topic_count is never read, only written\\.$#"
+			count: 1
+			path: includes/Modules/bbPress/class-bb-press-module.php
+
+		-
+			message: "#^Function wbam_icon\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/functions-ad-formats.php
+
+		-
+			message: "#^Function wbam_register_lucide\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/functions-ad-formats.php
+
+		-
+			message: "#^Function wbam_activate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: wb-ads-rotator-with-split-test.php
+
+		-
+			message: "#^Function wbam_deactivate\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: wb-ads-rotator-with-split-test.php
+
+		-
+			message: "#^Function wbam_display_ad\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: wb-ads-rotator-with-split-test.php
+
+		-
+			message: "#^Function wbam_get_ads\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: wb-ads-rotator-with-split-test.php
+
+		-
+			message: "#^Function wbam_init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: wb-ads-rotator-with-split-test.php
