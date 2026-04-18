@@ -160,6 +160,8 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 * New: Jetonomy integration module with 7 placement positions: sidebar (top / after About card / bottom), after topic body, before / between / after replies. Requires Jetonomy v1.3.0+.
 * New: Admin notice suggesting Jetonomy installation when not detected, with direct link to https://store.wbcomdesigns.com/jetonomy/
 * New: REST API (30 routes) and WordPress Abilities API (15 abilities)
+* New: Full Lucide icon migration across admin and frontend — replaces dashicons with a consistent icon set that renders at any size without pixelation
+* New: Semantic CSS token layer with theme.json inheritance and prefers-color-scheme dark-mode override across 9 stylesheets — plugin now re-skins automatically to the active theme's palette
 
 = 2.7.0 =
 * Improvement: Updated translation strings
