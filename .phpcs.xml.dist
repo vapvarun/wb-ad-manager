@@ -21,11 +21,23 @@
 	<!-- WordPress standards -->
 	<rule ref="WordPress"/>
 
+	<!-- Register wbam_icon as a trusted auto-escaped helper (returns pre-escaped markup). -->
+	<config name="customAutoEscapedFunctions" value="wbam_icon"/>
+
 	<!-- Plugin text domain -->
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
 				<element value="wb-ads-rotator-with-split-test"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Mark wbam_icon as a trusted escape helper (returns pre-escaped markup). -->
+	<rule ref="WordPress.Security.EscapeOutput">
+		<properties>
+			<property name="customAutoEscapedFunctions" type="array">
+				<element value="wbam_icon"/>
 			</property>
 		</properties>
 	</rule>

@@ -194,7 +194,7 @@ class Setup_Wizard {
 		<body class="wbam-setup wp-core-ui">
 			<div class="wbam-setup-wrapper">
 				<h1 class="wbam-setup-logo">
-					<?php echo wbam_icon( 'megaphone', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+					<?php echo wbam_icon( 'megaphone', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 					<?php esc_html_e( 'WB Ad Manager', 'wb-ads-rotator-with-split-test' ); ?>
 				</h1>
 		<?php
@@ -280,9 +280,9 @@ class Setup_Wizard {
 			<h2><?php esc_html_e( 'Welcome to WB Ad Manager!', 'wb-ads-rotator-with-split-test' ); ?></h2>
 			<p><?php esc_html_e( 'Thank you for installing WB Ad Manager. This quick setup wizard will help you get started by:', 'wb-ads-rotator-with-split-test' ); ?></p>
 			<ul class="wbam-setup-features">
-				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?> <?php esc_html_e( 'Creating sample ads to demonstrate features', 'wb-ads-rotator-with-split-test' ); ?></li>
-				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?> <?php esc_html_e( 'Setting up different ad placements', 'wb-ads-rotator-with-split-test' ); ?></li>
-				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?> <?php esc_html_e( 'Getting you ready to manage your own ads', 'wb-ads-rotator-with-split-test' ); ?></li>
+				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?> <?php esc_html_e( 'Creating sample ads to demonstrate features', 'wb-ads-rotator-with-split-test' ); ?></li>
+				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?> <?php esc_html_e( 'Setting up different ad placements', 'wb-ads-rotator-with-split-test' ); ?></li>
+				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?> <?php esc_html_e( 'Getting you ready to manage your own ads', 'wb-ads-rotator-with-split-test' ); ?></li>
 			</ul>
 			<p class="wbam-setup-note">
 				<?php esc_html_e( 'This wizard is optional. You can skip it and create ads manually anytime.', 'wb-ads-rotator-with-split-test' ); ?>
@@ -630,14 +630,14 @@ class Setup_Wizard {
 		do_action( 'wbam_setup_wizard_ready_before' );
 		?>
 		<div class="wbam-setup-step-content wbam-setup-ready">
-			<?php echo wbam_icon( 'check-circle', array( 'size' => 'xl' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+			<?php echo wbam_icon( 'check-circle', array( 'size' => 'xl' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 			<h2><?php esc_html_e( "You're All Set!", 'wb-ads-rotator-with-split-test' ); ?></h2>
 			<p><?php esc_html_e( 'WB Ad Manager is ready to use. Here are some next steps:', 'wb-ads-rotator-with-split-test' ); ?></p>
 
 			<div class="wbam-setup-next-steps">
 				<?php foreach ( $next_steps as $step ) : ?>
 					<a href="<?php echo esc_url( $step['url'] ); ?>" class="wbam-next-step">
-						<?php echo wbam_icon( $step['icon'], array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+						<?php echo wbam_icon( $step['icon'], array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 						<strong><?php echo esc_html( $step['title'] ); ?></strong>
 						<span><?php echo esc_html( $step['description'] ); ?></span>
 					</a>

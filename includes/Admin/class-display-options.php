@@ -339,17 +339,17 @@ class Display_Options {
 				<div class="wbam-device-options">
 					<label class="wbam-device-option">
 						<input type="checkbox" name="wbam_visitor_conditions[devices][]" value="desktop" <?php checked( in_array( 'desktop', $devices, true ) ); ?> />
-						<?php echo wbam_icon( 'monitor', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+						<?php echo wbam_icon( 'monitor', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 						<span><?php esc_html_e( 'Desktop', 'wb-ads-rotator-with-split-test' ); ?></span>
 					</label>
 					<label class="wbam-device-option">
 						<input type="checkbox" name="wbam_visitor_conditions[devices][]" value="tablet" <?php checked( in_array( 'tablet', $devices, true ) ); ?> />
-						<?php echo wbam_icon( 'tablet', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+						<?php echo wbam_icon( 'tablet', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 						<span><?php esc_html_e( 'Tablet', 'wb-ads-rotator-with-split-test' ); ?></span>
 					</label>
 					<label class="wbam-device-option">
 						<input type="checkbox" name="wbam_visitor_conditions[devices][]" value="mobile" <?php checked( in_array( 'mobile', $devices, true ) ); ?> />
-						<?php echo wbam_icon( 'smartphone', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+						<?php echo wbam_icon( 'smartphone', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 						<span><?php esc_html_e( 'Mobile', 'wb-ads-rotator-with-split-test' ); ?></span>
 					</label>
 				</div>

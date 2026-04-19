@@ -16,6 +16,11 @@ coverage
 .gitattributes
 .gitignore
 .phpunit.result.cache
+.phpcs.xml.dist
+.eslintignore
+.eslintrc.json
+.stylelintrc.json
+.pa11yci
 composer.json
 composer.lock
 package.json
@@ -31,6 +36,11 @@ phpstan.neon
 phpstan.neon.dist
 phpstan-bootstrap.php
 phpstan-baseline.neon
+phpstan-combined.neon.dist
+
+# Marketing (don't ship to WP.org)
+sales-page.html
+marketing
 
 # Documentation
 README.md

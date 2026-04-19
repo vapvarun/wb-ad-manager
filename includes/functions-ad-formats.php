@@ -89,7 +89,7 @@ if ( ! function_exists( 'wbam_register_lucide' ) ) {
 		if ( ! wp_script_is( 'wbam-lucide', 'registered' ) ) {
 			wp_register_script(
 				'wbam-lucide',
-				'https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js',
+				WBAM_URL . 'assets/vendor/lucide.min.js',
 				array(),
 				'0.460.0',
 				true

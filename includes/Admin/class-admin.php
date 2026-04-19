@@ -458,7 +458,10 @@ class Admin {
 			// copies, so the win share in a tie of N ads at priorities
 			// p1..pN is p_i / sum(p). We illustrate the most common tie
 			// scenario (3 ads, two at the default priority of 5).
-			var priorityHintTpl = <?php echo wp_json_encode( __( 'In a 3-way tie with two default-priority (5) ads, this ad would win about %d%% of impressions.', 'wb-ads-rotator-with-split-test' ) ); ?>;
+			var priorityHintTpl = <?php
+				/* translators: %d: this ad's share of impressions (percent) in a 3-way priority tie */
+				echo wp_json_encode( __( 'In a 3-way tie with two default-priority (5) ads, this ad would win about %d%% of impressions.', 'wb-ads-rotator-with-split-test' ) );
+			?>;
 
 			function updatePriorityHint( value ) {
 				var p     = parseInt( value, 10 ) || 5;
