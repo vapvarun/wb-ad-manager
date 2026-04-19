@@ -151,25 +151,57 @@ function main() {
 	run('unzip', ['-q', rawZip, '-d', extractRoot]);
 	const pluginDir = resolve(extractRoot, slug);
 	let stripped = 0;
-	for (const file of walk(pluginDir)) {
-		const rel = relative(pluginDir, file);
-		if (isExcluded(rel, patterns)) {
-			rmSync(file, { force: true });
+
+	// Pass 1: delete directories and files that match patterns, using a
+	// recursive walk that handles directories explicitly. This is how
+	// WP-CLI dist-archive works — we cannot just delete files and hope
+	// empty parent dirs vanish because zip keeps empty dirs as entries.
+	function walkAll(dir) {
+		// Returns [{ path, rel, isDir }] — depth-first, so dir entries
+		// come after their children. This lets us rmSync a dir after
+		// its contents are gone (if we want).
+		const out = [];
+		function visit(current) {
+			if (!existsSync(current)) return;
+			for (const entry of readdirSync(current)) {
+				const full = join(current, entry);
+				const s = statSync(full);
+				const rel = relative(pluginDir, full);
+				if (s.isDirectory()) {
+					out.push({ path: full, rel, isDir: true });
+					visit(full);
+				} else {
+					out.push({ path: full, rel, isDir: false });
+				}
+			}
+		}
+		visit(dir);
+		return out;
+	}
+
+	const entries = walkAll(pluginDir);
+	// Delete directories first (with recursive), then individual files.
+	// If a directory matches, we skip its children since they're already gone.
+	const deletedDirs = [];
+	for (const e of entries) {
+		if (!e.isDir) continue;
+		if (deletedDirs.some((d) => e.rel === d || e.rel.startsWith(d + '/'))) continue;
+		if (isExcluded(e.rel, patterns)) {
+			rmSync(e.path, { recursive: true, force: true });
+			deletedDirs.push(e.rel);
 			stripped++;
 		}
 	}
-	// Sweep empty directories a few times.
-	for (let i = 0; i < 3; i++) {
-		const dirs = new Set();
-		for (const f of walk(pluginDir)) dirs.add(dirname(f));
-		for (const d of readdirSync(pluginDir)) {
-			const full = resolve(pluginDir, d);
-			if (existsSync(full) && statSync(full).isDirectory() && readdirSync(full).length === 0) {
-				rmSync(full, { recursive: true });
-			}
+	for (const e of entries) {
+		if (e.isDir) continue;
+		if (deletedDirs.some((d) => e.rel.startsWith(d + '/'))) continue;
+		if (!existsSync(e.path)) continue;
+		if (isExcluded(e.rel, patterns)) {
+			rmSync(e.path, { force: true });
+			stripped++;
 		}
 	}
-	console.log(DIM(`  distignore  -> stripped ${stripped} file(s)`));
+	console.log(DIM(`  distignore  -> stripped ${stripped} entries (dirs + files)`));
 
 	// 3. Completeness checks.
 	const errors = [];
