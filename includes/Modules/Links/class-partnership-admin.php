@@ -582,7 +582,7 @@ class Partnership_Admin {
 							<div class="wbam-form-field">
 								<label for="status"><?php esc_html_e( 'Update Status', 'wb-ads-rotator-with-split-test' ); ?></label>
 								<select id="status" name="status">
-									<option value=""><?php esc_html_e( '— No Change —', 'wb-ads-rotator-with-split-test' ); ?></option>
+									<option value=""><?php esc_html_e( 'No Change', 'wb-ads-rotator-with-split-test' ); ?></option>
 									<?php foreach ( Partnership::get_statuses() as $value => $label ) : ?>
 										<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $partnership->status, $value ); ?>>
 											<?php echo esc_html( $label ); ?>

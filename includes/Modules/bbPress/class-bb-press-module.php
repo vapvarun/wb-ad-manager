@@ -471,7 +471,7 @@ class bbPress_Forum_Ad_Widget extends \WP_Widget {
 				<?php esc_html_e( 'Select Ad:', 'wb-ads-rotator-with-split-test' ); ?>
 			</label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'ad_id' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'ad_id' ) ); ?>">
-				<option value=""><?php esc_html_e( '— Select Ad —', 'wb-ads-rotator-with-split-test' ); ?></option>
+				<option value=""><?php esc_html_e( 'Select Ad', 'wb-ads-rotator-with-split-test' ); ?></option>
 				<?php foreach ( $ads as $ad ) : ?>
 					<option value="<?php echo esc_attr( $ad->ID ); ?>" <?php selected( $ad_id, $ad->ID ); ?>>
 						<?php echo esc_html( $ad->post_title ); ?>
@@ -594,7 +594,7 @@ class bbPress_Topic_Ad_Widget extends \WP_Widget {
 				<?php esc_html_e( 'Select Ad:', 'wb-ads-rotator-with-split-test' ); ?>
 			</label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'ad_id' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'ad_id' ) ); ?>">
-				<option value=""><?php esc_html_e( '— Select Ad —', 'wb-ads-rotator-with-split-test' ); ?></option>
+				<option value=""><?php esc_html_e( 'Select Ad', 'wb-ads-rotator-with-split-test' ); ?></option>
 				<?php foreach ( $ads as $ad ) : ?>
 					<option value="<?php echo esc_attr( $ad->ID ); ?>" <?php selected( $ad_id, $ad->ID ); ?>>
 						<?php echo esc_html( $ad->post_title ); ?>

@@ -292,7 +292,7 @@ class Partnership_Form {
 					<div class="wbam-form-field">
 						<label for="wbam_target_page"><?php esc_html_e( 'Target Page (Optional)', 'wb-ads-rotator-with-split-test' ); ?></label>
 						<select id="wbam_target_page" name="target_post_id">
-							<option value=""><?php esc_html_e( '— Any page —', 'wb-ads-rotator-with-split-test' ); ?></option>
+							<option value=""><?php esc_html_e( 'Any page', 'wb-ads-rotator-with-split-test' ); ?></option>
 							<?php
 							$pages = get_pages( array( 'post_status' => 'publish' ) );
 							// get_pages() returns false on DB error; default to empty list.

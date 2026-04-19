@@ -188,6 +188,27 @@ class Links_Admin {
 			$list_table->display();
 			?>
 		</form>
+		<script>
+		document.addEventListener( 'click', function ( e ) {
+			var link = e.target.closest( '.wbam-copy-row' );
+			if ( ! link ) {
+				return;
+			}
+			e.preventDefault();
+			var text     = link.getAttribute( 'data-copy' );
+			var done     = link.getAttribute( 'data-done' ) || 'Copied';
+			var original = link.textContent;
+			var finish   = function () {
+				link.textContent = done;
+				setTimeout( function () { link.textContent = original; }, 1500 );
+			};
+			if ( navigator.clipboard && navigator.clipboard.writeText ) {
+				navigator.clipboard.writeText( text ).then( finish, finish );
+			} else {
+				finish();
+			}
+		} );
+		</script>
 		<?php
 	}
 
@@ -225,6 +246,64 @@ class Links_Admin {
 
 		<?php $this->show_notices(); ?>
 
+		<?php if ( ! $is_edit ) : ?>
+		<div class="notice notice-info wbam-link-intro" style="padding:14px 16px;border-left-width:4px;">
+			<h3 style="margin:0 0 6px;"><?php esc_html_e( 'What a cloaked link does', 'wb-ads-rotator-with-split-test' ); ?></h3>
+			<p style="margin:0 0 8px;">
+				<?php esc_html_e( 'Turn a long or ugly destination URL into a clean, branded one on your domain. Visitors click the short URL on your site and are redirected to the destination. You see every click in the stats column.', 'wb-ads-rotator-with-split-test' ); ?>
+			</p>
+			<p style="margin:0;font-size:13px;color:#50575e;">
+				<?php
+				printf(
+					/* translators: 1: raw affiliate URL example, 2: cloaked URL example */
+					esc_html__( 'Typical use: turn %1$s into %2$s.', 'wb-ads-rotator-with-split-test' ),
+					'<code>amazon.com/gp/product/B07XYZ?ref=affiliate_123</code>',
+					'<code>' . esc_html( home_url( '/' . Link_Cloaker::get_instance()->get_cloak_prefix() . '/book' ) ) . '</code>'
+				);
+				?>
+			</p>
+		</div>
+		<?php endif; ?>
+
+		<?php if ( $is_edit && $link ) : ?>
+			<?php
+			$cloak_prefix = Link_Cloaker::get_instance()->get_cloak_prefix();
+			$cloaked_url  = home_url( '/' . $cloak_prefix . '/' . $link->slug );
+			$shortcode    = '[wbam_link id="' . (int) $link->id . '"]' . $link->name . '[/wbam_link]';
+			?>
+			<div class="notice notice-success wbam-link-ready" style="padding:14px 16px;border-left-width:4px;">
+				<h3 style="margin:0 0 10px;">
+					<?php esc_html_e( 'Your link is ready to use', 'wb-ads-rotator-with-split-test' ); ?>
+				</h3>
+				<p style="margin:0 0 10px;font-size:13px;color:#50575e;">
+					<?php esc_html_e( 'Pick one of these two ways to put the link in your content.', 'wb-ads-rotator-with-split-test' ); ?>
+				</p>
+
+				<p style="margin:0 0 6px;"><strong><?php esc_html_e( '1. Cloaked URL', 'wb-ads-rotator-with-split-test' ); ?></strong>
+					. <?php esc_html_e( 'Paste this anywhere a link is accepted (posts, menus, widgets). Redirects to your destination URL.', 'wb-ads-rotator-with-split-test' ); ?>
+				</p>
+				<p style="margin:0 0 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+					<input type="text" readonly value="<?php echo esc_attr( $cloaked_url ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
+					<button type="button" class="button wbam-copy-btn" data-copy="<?php echo esc_attr( $cloaked_url ); ?>">
+						<?php esc_html_e( 'Copy URL', 'wb-ads-rotator-with-split-test' ); ?>
+					</button>
+					<a href="<?php echo esc_url( $cloaked_url ); ?>" class="button" target="_blank" rel="noopener">
+						<?php esc_html_e( 'Test Link', 'wb-ads-rotator-with-split-test' ); ?>
+					</a>
+				</p>
+
+				<p style="margin:0 0 6px;"><strong><?php esc_html_e( '2. Shortcode with custom anchor text', 'wb-ads-rotator-with-split-test' ); ?></strong>
+					. <?php esc_html_e( 'Use this in post content when you want specific anchor text and full rel-attribute control.', 'wb-ads-rotator-with-split-test' ); ?>
+				</p>
+				<p style="margin:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+					<input type="text" readonly value="<?php echo esc_attr( $shortcode ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
+					<button type="button" class="button wbam-copy-btn" data-copy="<?php echo esc_attr( $shortcode ); ?>">
+						<?php esc_html_e( 'Copy Shortcode', 'wb-ads-rotator-with-split-test' ); ?>
+					</button>
+				</p>
+			</div>
+		<?php endif; ?>
+
 		<form method="post" action="">
 			<?php wp_nonce_field( 'wbam_save_link' ); ?>
 			<input type="hidden" name="link_id" value="<?php echo esc_attr( $link_id ); ?>">
@@ -248,7 +327,7 @@ class Links_Admin {
 					<td>
 						<input type="text" name="name" id="name" class="regular-text" required
 							value="<?php echo esc_attr( $link ? $link->name : '' ); ?>">
-						<p class="description"><?php esc_html_e( 'Internal name for this link.', 'wb-ads-rotator-with-split-test' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Private label shown only in this admin list (e.g. "Amazon Book of the Month"). Visitors never see it.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</td>
 				</tr>
 
@@ -259,7 +338,7 @@ class Links_Admin {
 					<td>
 						<input type="url" name="destination_url" id="destination_url" class="large-text" required
 							value="<?php echo esc_url( $link ? $link->destination_url : '' ); ?>">
-						<p class="description"><?php esc_html_e( 'The target URL where visitors will be redirected.', 'wb-ads-rotator-with-split-test' ); ?></p>
+						<p class="description"><?php esc_html_e( 'The real URL visitors end up on after clicking. Include any affiliate / tracking parameters here. They are invisible to your audience.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</td>
 				</tr>
 
@@ -295,6 +374,7 @@ class Links_Admin {
 								</option>
 							<?php endforeach; ?>
 						</select>
+						<p class="description"><?php esc_html_e( 'Labels the link in the admin list so you can filter and report by type. Does not change how the redirect works.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</td>
 				</tr>
 
@@ -304,7 +384,7 @@ class Links_Admin {
 					</th>
 					<td>
 						<select name="category_id" id="category_id">
-							<option value="0"><?php esc_html_e( '— No Category —', 'wb-ads-rotator-with-split-test' ); ?></option>
+							<option value="0"><?php esc_html_e( 'No Category', 'wb-ads-rotator-with-split-test' ); ?></option>
 							<?php
 							$link_manager = Link_Manager::get_instance();
 							$categories   = $link_manager->get_categories();
@@ -315,6 +395,17 @@ class Links_Admin {
 								</option>
 							<?php endforeach; ?>
 						</select>
+						<p class="description">
+							<?php
+							printf(
+								/* translators: %s: link to the categories page */
+								esc_html__( 'Optional. Group related links (e.g. "Amazon Books", "Software Deals") so you can filter the list and show them with %s.', 'wb-ads-rotator-with-split-test' ),
+								'<code>[wbam_links category="slug"]</code>'
+							);
+							?>
+							<br>
+							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories' ) ); ?>"><?php esc_html_e( 'Manage categories →', 'wb-ads-rotator-with-split-test' ); ?></a>
+						</p>
 					</td>
 				</tr>
 
@@ -327,24 +418,36 @@ class Links_Admin {
 									<?php checked( $link ? $link->cloaking_enabled : true ); ?>>
 								<?php esc_html_e( 'Enable cloaking', 'wb-ads-rotator-with-split-test' ); ?>
 							</label>
-							<br>
+							<p class="description" style="margin:4px 0 10px 24px;">
+								<?php esc_html_e( 'When on, the short URL stays in the address bar while the browser is sent to the destination. Visitors see your domain, not the target. Turn off only if you want the raw destination URL in place.', 'wb-ads-rotator-with-split-test' ); ?>
+							</p>
+
 							<label>
 								<input type="checkbox" name="nofollow" value="1"
 									<?php checked( $link ? $link->nofollow : true ); ?>>
-								<?php esc_html_e( 'Add nofollow attribute', 'wb-ads-rotator-with-split-test' ); ?>
+								<?php esc_html_e( 'Add rel="nofollow"', 'wb-ads-rotator-with-split-test' ); ?>
 							</label>
-							<br>
+							<p class="description" style="margin:4px 0 10px 24px;">
+								<?php esc_html_e( 'Tells search engines not to pass link authority to the destination. Recommended for affiliate and untrusted links.', 'wb-ads-rotator-with-split-test' ); ?>
+							</p>
+
 							<label>
 								<input type="checkbox" name="sponsored" value="1"
 									<?php checked( $link ? $link->sponsored : false ); ?>>
-								<?php esc_html_e( 'Add sponsored attribute', 'wb-ads-rotator-with-split-test' ); ?>
+								<?php esc_html_e( 'Add rel="sponsored"', 'wb-ads-rotator-with-split-test' ); ?>
 							</label>
-							<br>
+							<p class="description" style="margin:4px 0 10px 24px;">
+								<?php esc_html_e( 'Google now prefers rel="sponsored" (not just nofollow) for paid or affiliate links. Enable this for any link where you receive compensation.', 'wb-ads-rotator-with-split-test' ); ?>
+							</p>
+
 							<label>
 								<input type="checkbox" name="new_tab" value="1"
 									<?php checked( $link ? $link->new_tab : true ); ?>>
 								<?php esc_html_e( 'Open in new tab', 'wb-ads-rotator-with-split-test' ); ?>
 							</label>
+							<p class="description" style="margin:4px 0 0 24px;">
+								<?php esc_html_e( 'Adds target="_blank" so visitors stay on your site. Only applies when you use the [wbam_link] shortcode. A raw cloaked URL opens in the same tab unless you add target yourself.', 'wb-ads-rotator-with-split-test' ); ?>
+							</p>
 						</fieldset>
 					</td>
 				</tr>
@@ -361,6 +464,15 @@ class Links_Admin {
 								</option>
 							<?php endforeach; ?>
 						</select>
+						<p class="description">
+							<?php esc_html_e( 'Which HTTP redirect the browser sees when someone clicks the cloaked URL.', 'wb-ads-rotator-with-split-test' ); ?>
+							<br>
+							<strong><?php esc_html_e( '307 Temporary', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'Safest default. Browsers and bots always re-check the link, so you stay in control of where it points.', 'wb-ads-rotator-with-split-test' ); ?>
+							<br>
+							<strong><?php esc_html_e( '302 Found', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'Also temporary; older equivalent of 307. Use if a specific destination rejects 307.', 'wb-ads-rotator-with-split-test' ); ?>
+							<br>
+							<strong><?php esc_html_e( '301 Permanent', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'Search engines treat the destination as the canonical URL and browsers may cache the redirect aggressively. Only pick this for permanent moves, never for affiliate links.', 'wb-ads-rotator-with-split-test' ); ?>
+						</p>
 					</td>
 				</tr>
 
@@ -376,11 +488,16 @@ class Links_Admin {
 								</option>
 							<?php endforeach; ?>
 						</select>
+						<p class="description">
+							<strong><?php esc_html_e( 'Active', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'The cloaked URL redirects to the destination and clicks are counted.', 'wb-ads-rotator-with-split-test' ); ?>
+							<br>
+							<strong><?php esc_html_e( 'Inactive', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'The cloaked URL returns 404 (or redirects to a fallback if you set one in Settings). Use to temporarily disable a link without deleting its click history.', 'wb-ads-rotator-with-split-test' ); ?>
+						</p>
 					</td>
 				</tr>
 
 				<?php
-				// strtotime() returns false on malformed input — PHP 8.1+ deprecates
+				// strtotime() returns false on malformed input. PHP 8.1+ deprecates
 				// passing false to gmdate(). Guard so the form renders blank for
 				// corrupted stored values instead of throwing a deprecation notice.
 				$expires_ts    = ( $link && $link->expires_at ) ? strtotime( $link->expires_at ) : false;
@@ -441,6 +558,30 @@ class Links_Admin {
 			</p>
 		</form>
 
+		<script>
+		document.addEventListener( 'click', function ( e ) {
+			var btn = e.target.closest( '.wbam-copy-btn' );
+			if ( ! btn ) {
+				return;
+			}
+			e.preventDefault();
+			var text = btn.getAttribute( 'data-copy' );
+			var original = btn.textContent;
+			var finish = function ( label ) {
+				btn.textContent = label;
+				setTimeout( function () { btn.textContent = original; }, 1500 );
+			};
+			if ( navigator.clipboard && navigator.clipboard.writeText ) {
+				navigator.clipboard.writeText( text ).then(
+					function () { finish( <?php echo wp_json_encode( __( 'Copied!', 'wb-ads-rotator-with-split-test' ) ); ?> ); },
+					function () { finish( <?php echo wp_json_encode( __( 'Press Ctrl+C', 'wb-ads-rotator-with-split-test' ) ); ?> ); }
+				);
+			} else {
+				finish( <?php echo wp_json_encode( __( 'Press Ctrl+C', 'wb-ads-rotator-with-split-test' ) ); ?> );
+			}
+		} );
+		</script>
+
 		<?php
 		/**
 		 * Fires after the link form.
@@ -498,7 +639,7 @@ class Links_Admin {
 	 * Nonce verification: the caller `handle_admin_actions()` validates the
 	 * `wbam_save_link` nonce via `check_admin_referer()` BEFORE invoking this
 	 * method, so the `$_POST` reads below are guarded. phpcs:disable
-	 * WordPress.Security.NonceVerification.Missing — verified by caller.
+	 * WordPress.Security.NonceVerification.Missing. Verified by caller.
 	 */
 	private function save_link() {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Caller handle_admin_actions() verifies the wbam_save_link nonce.

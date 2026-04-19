@@ -22,7 +22,7 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 * **16+ Placements** - Header, Footer, Content, Paragraph, Sticky, Popup, Comments, Archive, Shortcode, Widget, BuddyPress, bbPress, Jetonomy
 * **Google AdSense** - Native AdSense support with automatic script management and Auto Ads
 * **Email Capture** - Inline newsletter/subscribe form with customizable colours, optional name field, hooks for Mailchimp / ConvertKit / webhook integrations
-* **Link Management & Cloaked URLs** - Managed links with categories, cloaking, click tracking, redirect types, and rel=nofollow/sponsored
+* **Link Management & Cloaked URLs** - Turn long, messy URLs like `amazon.com/gp/product/B07XYZ?ref=affiliate_123` into clean, branded links on your own domain (e.g. `yoursite.com/go/book`). Every click is tracked, and you can group links into categories, set expiration dates for time-limited offers, and add SEO-correct `rel=nofollow` / `rel=sponsored` attributes. Use the cloaked URL directly in your content or drop `[wbam_link id="123"]Anchor text[/wbam_link]` in any post.
 * **Link Partnerships** - Shortcode-driven inquiry form (paid link / exchange / sponsored post) with accept / reject admin workflow and auto emails
 * **BuddyPress Integration** - Activity stream + 6 directory positions (members + groups)
 * **bbPress Integration** - 7 positions (forums, topics, between replies with configurable frequency)
@@ -70,47 +70,70 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 * Geographic location (country)
 * Custom scheduling
 
-= WB Ad Manager Pro =
+= Turn your site into a revenue engine with WB Ad Manager Pro =
 
-Take your ad management to the next level with [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/). The Pro version includes everything in the free plugin plus:
+Free gets your ads on the page. [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) turns your site into an ad marketplace. Let advertisers sign up, pick a package, pay with their own wallet, and manage their own campaigns. You review, approve, and collect the revenue. Everything in the free plugin keeps working, with a full monetization layer added on top.
 
-**Advertiser Portal & Self-Service:**
+**Who Pro is for:**
 
-* Complete advertiser dashboard with analytics
-* Self-service ad submission and management
-* Wallet system with Stripe payments
-* Campaign management with budgets and goals
-* Advertiser performance tracking
+* **Niche publishers and bloggers** who want to sell banner space to 3-5 regular sponsors without emailing back and forth every month.
+* **Community sites** (BuddyPress, bbPress, Jetonomy) that want to sell classified listings, featured placements, or sponsored activity posts to members.
+* **Agencies** managing ad inventory across multiple client sites that need reporting, audit logs, and per-advertiser share-of-voice.
+* **Directory and marketplace operators** who want a full classifieds system with paid upgrades, seller profiles, and buyer-seller messaging built in.
+
+**Advertiser Portal:**
+
+Let advertisers sign up, submit ads, track performance, and manage billing themselves. You stay in control with a built-in review queue. Fourteen-tab self-service dashboard covering:
+
+* Overview, My Ads, Campaigns, Classifieds, Inquiries
+* Favorites, Following, Messages, Link Partnerships
+* Wallet (credit balance and transaction history)
+* Membership plans, Analytics, Share of Voice, Profile
+
+**Wallet, Credits, and Payments:**
+
+* Prepaid credit wallet for every advertiser with a hold -> deduct -> refund lifecycle (failed ads refund automatically)
+* WooCommerce, Stripe, PayPal, and manual top-up integrations
+* Full transaction ledger with audit trail and CSV export
+* CPM, CPC, and flat-rate billing models
+
+**Campaigns and Packages:**
+
+* Publish ad packages (price, duration, impression cap) that advertisers buy in one click
+* Campaigns with start/end dates, budget caps, and budget-aware pacing
+* Per-advertiser session caps so one big spender cannot dominate every slot
+* Subscription membership plans (monthly, quarterly, yearly) with listing limits and auto-renewal
 
 **Classifieds Marketplace:**
 
-* Full classified listings system
-* Category and location taxonomies
-* Featured listings and upgrades
-* Seller profiles and following system
-* Inquiry management
+* Full classified listings system with image galleries and custom fields
+* Category and location taxonomies with sidebar filters and search
+* Paid upgrades: Featured, Highlighted, Urgent, Bump to top
+* Three price types: fixed, negotiable, free
+* Buyer inquiry system, favorites and saved listings, seller profiles with reviews and ratings
+
+**Advanced Analytics and A/B Testing:**
+
+* Daily impression and click aggregation with time-series reports
+* CTR and revenue reports with geo and device breakdowns, CSV export
+* A/B testing with statistical significance and traffic splitting
+* Slot inventory view (AdSense-style capacity overview across your whole site)
+* Share of Voice analysis per advertiser
 
 **Advanced Link Management:**
 
-* Affiliate link cloaking and tracking
-* Link scanner to find monetization opportunities
-* Partnership management system
-* Click tracking and analytics
+* Keyword auto-linking: the plugin turns mentions of your keywords into affiliate links automatically
+* Link Scanner: finds monetization opportunities in your existing content
+* Broken-link detection and redirect management
+* CSV bulk import for links and keywords
+* Advanced link analytics (referrer, device, country)
 
-**Revenue & Analytics:**
+**Community and Developer Extras:**
 
-* Revenue dashboard with earnings reports
-* CPM, CPC, and flat-rate billing
-* A/B testing with statistical analysis
-* Share of Voice reporting
-* Detailed impression and click analytics
-
-**Community Integrations:**
-
-* Enhanced BuddyPress integration
-* Seller profiles in member directories
-* Activity stream for listings
-* Following/favorites system
+* Enhanced BuddyPress integration: seller profiles in the member directory, activity stream for listings, following/favorites system
+* Admin audit logs of every ad, credit, and campaign action
+* Ad review queue with approval workflow
+* Priority support from Wbcom Designs
 
 [Learn more about WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/)
 
@@ -152,13 +175,13 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 
 == Screenshots ==
 
-1. All Ads list — impressions, clicks, placement, and status for every ad at a glance.
-2. Ad editor — five ad types (Image, Rich Content, HTML/JS Code, Google AdSense, Email Capture) with a weighted-priority slider, session-limit cap, and responsive/fixed sizing.
-3. Settings page — general, display, performance, geo, AdSense, privacy, and advanced options in one place.
-4. Setup Wizard — three-step first-run flow that seeds sample ads so you see the plugin in action in under a minute.
-5. Help & Docs, Features tab — full inventory of what the free plugin ships (5 ad types, 16+ placements, community integrations, A/B comparison, link partnerships, email capture, and more).
-6. Help & Docs, "What's in PRO" — clear breakdown of Pro-only additions (advertiser portal, wallet, campaigns, classifieds marketplace, advanced analytics, link scanner).
-7. Free vs PRO comparison — row-by-row feature table so you know exactly what you're getting at each tier.
+1. All Ads list. Impressions, clicks, placement, and status for every ad at a glance.
+2. Ad editor. Five ad types (Image, Rich Content, HTML/JS Code, Google AdSense, Email Capture) with a weighted-priority slider, session-limit cap, and responsive/fixed sizing.
+3. Settings page. General, display, performance, geo, AdSense, privacy, and advanced options in one place.
+4. Setup Wizard. Three-step first-run flow that seeds sample ads so you see the plugin in action in under a minute.
+5. Help & Docs, Features tab. Full inventory of what the free plugin ships (5 ad types, 16+ placements, community integrations, A/B comparison, link partnerships, email capture, and more).
+6. Help & Docs, "What's in PRO". Clear breakdown of Pro-only additions (advertiser portal, wallet, campaigns, classifieds marketplace, advanced analytics, link scanner).
+7. Free vs PRO comparison. Row-by-row feature table so you know exactly what you're getting at each tier.
 
 == Changelog ==
 
@@ -166,15 +189,15 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 * New: Jetonomy integration module with 7 placement positions: sidebar (top / after About card / bottom), after topic body, before / between / after replies. Requires Jetonomy v1.3.0+.
 * New: Admin notice suggesting Jetonomy installation when not detected, with direct link to https://store.wbcomdesigns.com/jetonomy/
 * New: REST API (21 routes across ads, analytics, links, partnerships) and WordPress Abilities API (15 abilities)
-* New: Full Lucide icon migration across admin and frontend — replaces dashicons with a consistent icon set that renders at any size without pixelation
-* New: Semantic CSS token layer with theme.json inheritance and prefers-color-scheme dark-mode override across 9 stylesheets — plugin now re-skins automatically to the active theme's palette
-* New: Email Capture ad type documented and surfaced — inline newsletter subscribe form with customisable colours, optional name field, and wbam_email_captured action for Mailchimp / ConvertKit / webhook integrations
-* New: Link Partnerships admin module — [wbam_partnership_inquiry] shortcode, admin list with accept/reject workflow, automatic email notifications, 24-hour duplicate-submission window
+* New: Full Lucide icon migration across admin and frontend. Replaces dashicons with a consistent icon set that renders at any size without pixelation
+* New: Semantic CSS token layer with theme.json inheritance and prefers-color-scheme dark-mode override across 9 stylesheets. Plugin now re-skins automatically to the active theme's palette
+* New: Email Capture ad type documented and surfaced. Inline newsletter subscribe form with customisable colours, optional name field, and wbam_email_captured action for Mailchimp / ConvertKit / webhook integrations
+* New: Link Partnerships admin module. [wbam_partnership_inquiry] shortcode, admin list with accept/reject workflow, automatic email notifications, 24-hour duplicate-submission window
 * New: Before Archive / After Archive placements (loop_start / loop_end)
-* New: Six BuddyPress directory placements — before / between / after members and before / between / after groups
+* New: Six BuddyPress directory placements. Before / between / after members and before / between / after groups
 * Improvement: Third-party admin notices are now suppressed on WB Ad Manager screens only (keeps your own notices intact, other admin pages unaffected)
-* Improvement: Setup wizard is now fully self-contained — renders correctly regardless of the active theme or admin-chrome state
-* Fix: WordPress.org hardening pass — zero PCP errors on clean dist, all admin $_POST / $_GET reads wrapped in wp_unslash() before sanitization
+* Improvement: Setup wizard is now fully self-contained. Renders correctly regardless of the active theme or admin-chrome state
+* Fix: WordPress.org hardening pass. Zero PCP errors on clean dist, all admin $_POST / $_GET reads wrapped in wp_unslash() before sanitization
 
 = 2.7.0 =
 * Improvement: Updated translation strings
