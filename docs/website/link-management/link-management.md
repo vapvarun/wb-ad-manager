@@ -341,7 +341,7 @@ Use filters in **WB Ad Manager → Links**:
 ## Next Steps
 
 - [View shortcode reference](../shortcode-reference/link-shortcodes.md)
-- [Ad management guide](01-managing-ads.md)
+- [Ad management guide](../ad-management/managing-ads.md)
 - [Troubleshooting](../troubleshooting/common-issues.md)
 
 ---

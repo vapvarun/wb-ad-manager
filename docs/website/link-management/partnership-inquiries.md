@@ -127,7 +127,7 @@ A typical flow:
 2. You review, mark **Accepted** → automatic acceptance email sent
 3. You reply to their email to negotiate price / date / final anchor text
 4. Once settled, create the managed link at **WB Ad Manager → Links** (see
-   [Link Management](02-link-management.md)) or edit the target post and
+   [Link Management](../link-management/link-management.md)) or edit the target post and
    paste the anchor manually
 5. Record the agreed terms in the admin notes field for your own reference
 
@@ -149,7 +149,7 @@ Three notification emails are built in:
 Marking an inquiry as **Spam** does not email the partner.
 
 All three notification sends are filterable — see the
-[Developer Guide → Link Partnerships hooks](../DEVELOPER-GUIDE.md#link-partnerships)
+[Developer Guide → Link Partnerships hooks](../../DEVELOPER-GUIDE.md#link-partnerships)
 if you want to disable any of them, change headers, or modify the body.
 
 ---
@@ -203,6 +203,6 @@ address.
 
 ## Related Guides
 
-- [Link Management](02-link-management.md) — manage the links you publish
-- [Settings](06-settings.md) — global plugin settings including data retention
-- [Developer Guide → Link Partnerships](../DEVELOPER-GUIDE.md#link-partnerships) — hooks, database schema, REST endpoint
+- [Link Management](link-management.md) — manage the links you publish
+- [Settings](../ad-management/settings.md) — global plugin settings including data retention
+- [Developer Guide → Link Partnerships](../../DEVELOPER-GUIDE.md#link-partnerships) — hooks, database schema, REST endpoint
