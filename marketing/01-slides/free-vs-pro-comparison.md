@@ -42,7 +42,7 @@
 - See detailed analytics (impressions, clicks, revenue)
 - Let advertisers submit and manage their own ads
 - Run a classified listings marketplace
-- Accept payments (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
+- Accept payments through WooCommerce, Paid Memberships Pro, or MemberPress — credits flow in automatically via the bundled Wbcom Credits SDK adapters
 - Create ad packages with different pricing
 - Let advertisers prepay with wallet credits
 - Run A/B tests to optimize ad performance
@@ -92,12 +92,13 @@
 | Self-service ad creation | - | ✓ |
 | Wallet/prepaid credits | - | ✓ |
 | Advertiser analytics | - | ✓ |
-| **Payments** | | |
-| Stripe integration | - | ✓ |
-| PayPal integration | - | ✓ |
-| Razorpay integration | - | ✓ |
-| WooCommerce integration | - | ✓ |
-| Manual/Bank Transfer | - | ✓ |
+| **Payments (via Wbcom Credits SDK)** | | |
+| WooCommerce Products adapter | - | ✓ |
+| WooCommerce Subscriptions adapter | - | ✓ |
+| WooCommerce Memberships adapter | - | ✓ |
+| Paid Memberships Pro adapter | - | ✓ |
+| MemberPress adapter | - | ✓ |
+| Manual/Bank Transfer top-ups | - | ✓ |
 | **Testing** | | |
 | A/B testing ads | - | ✓ |
 | Statistical winner detection | - | ✓ |

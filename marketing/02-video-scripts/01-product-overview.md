@@ -102,7 +102,7 @@ Targeting options checklist
 **[ON SCREEN]**
 - Text: "WB Ad Manager Pro"
 
-"Let advertisers submit and manage their own ads. Accept payments through Stripe, PayPal, Razorpay, WooCommerce, or bank transfer. Run a full classified listings marketplace. And get detailed analytics on everything."
+"Let advertisers submit and manage their own ads. Credits flow into their wallet through your existing WooCommerce, Paid Memberships Pro, or MemberPress setup — no separate payment config needed. Run a full classified listings marketplace. And get detailed analytics on everything."
 
 **[SHOW]**
 Quick clips:

@@ -13,6 +13,8 @@
 
 **Headline:** "Put Ads Exactly Where They Convert"
 
+![Ad editor — Image ad type with placement options](../../docs/website/images/free/ad-editor-image.png)
+
 **Subheadline:** "14+ placement options give you complete control over where your ads appear - without touching a line of code."
 
 **CTA:** "Download Free Plugin"
@@ -104,6 +106,8 @@ Not every ad belongs everywhere. WB Ad Manager lets you control placement with p
 ### Hero Section
 
 **Headline:** "Professional Affiliate Links in Seconds"
+
+![Links list — tracked affiliate links dashboard](../../docs/website/images/free/links-list.png)
 
 **Subheadline:** "Cloak ugly affiliate URLs, track every click, and never lose a commission to broken links."
 
@@ -198,6 +202,8 @@ No manual recreation needed.
 
 **Headline:** "Monetize Your WordPress Community"
 
+![Frontend — first ad live in a WordPress site](../../docs/website/images/free/frontend-first-ad.png)
+
 **Subheadline:** "Native ad placements for BuddyPress social networks and bbPress forums - no code required."
 
 **CTA:** "Download Free Plugin"
@@ -267,6 +273,8 @@ No conflicts. No broken layouts. No extra configuration.
 ### Hero Section
 
 **Headline:** "AdSense Management Made Simple"
+
+![Ad editor — AdSense ad type configuration](../../docs/website/images/free/ad-editor-adsense.png)
 
 **Subheadline:** "Configure your AdSense ads once and display them anywhere - with all the same targeting and placement options as custom ads."
 
@@ -342,6 +350,8 @@ Prefer Google's automatic placement? Enable Auto Ads globally and let Google opt
 ### Hero Section
 
 **Headline:** "Turn Your Site Into a Classified Listings Business"
+
+![Classifieds browse page — public marketplace view](../../docs/website/images/pro/classifieds-browse.png)
 
 **Subheadline:** "Let users post listings, charge for premium placements, and earn passive income - all within WordPress."
 
@@ -419,6 +429,8 @@ And that's just featured placements. Add highlighted listings, urgent badges, lo
 
 **Headline:** "Let Advertisers Manage Themselves"
 
+![Advertiser Portal — overview dashboard](../../docs/website/images/pro/portal-overview.png)
+
 **Subheadline:** "Advertisers create accounts, add funds, submit ads, and track performance - while you approve and collect revenue."
 
 **PRO Badge**
@@ -451,7 +463,7 @@ With the Advertiser Portal, advertisers handle everything themselves:
 Either automatically on signup or by request
 
 **They add funds to their wallet**
-Stripe, PayPal, Razorpay, WooCommerce, or Manual/Bank Transfer integration
+Credits flow in through your WooCommerce, Paid Memberships Pro, or MemberPress setup via the bundled Wbcom Credits SDK adapter — any payment method you already accept through those plugins works here. Manual/bank-transfer top-ups are also supported.
 
 **They create their own ads**
 Upload images, write copy, choose placements
@@ -507,6 +519,8 @@ Price by CPM (cost per thousand impressions), CPC (cost per click), or flat mont
 ### Hero Section
 
 **Headline:** "Know Exactly What's Working"
+
+![Analytics dashboard — charts and performance metrics](../../docs/website/images/pro/analytics-dashboard.png)
 
 **Subheadline:** "Comprehensive analytics for every ad, link, and placement - so you can make data-driven monetization decisions."
 

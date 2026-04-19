@@ -315,7 +315,7 @@ This gives you more control than using AdSense codes directly.
 
 **Advertiser Portal**
 - Advertiser self-registration
-- Wallet system (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
+- Wallet system — credits flow in via the bundled Wbcom Credits SDK through adapters for WooCommerce Products, WooCommerce Subscriptions, WooCommerce Memberships, Paid Memberships Pro, and MemberPress; manual/bank-transfer top-ups also included
 - Advertiser ad submission
 - Approval workflow
 - Advertiser analytics

@@ -282,7 +282,7 @@ The alternative: Self-service advertiser portal.
 
 How it works:
 1. Advertiser creates account
-2. Adds funds to wallet (Stripe, PayPal, Razorpay, WooCommerce, or bank transfer)
+2. Adds funds to wallet through your WooCommerce, Paid Memberships Pro, or MemberPress checkout
 3. Creates their own ad
 4. Submits for approval
 5. You click "Approve"

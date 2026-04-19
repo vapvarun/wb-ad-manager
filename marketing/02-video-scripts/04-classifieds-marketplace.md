@@ -106,7 +106,7 @@ Form submission
 **[SHOW]**
 Upgrade options
 
-"They pay with their wallet balance - which they've loaded via Stripe, PayPal, Razorpay, WooCommerce, or bank transfer - and the listing goes live."
+"They pay with their wallet balance - which they've loaded through your WooCommerce or membership plugin checkout - and the listing goes live."
 
 ---
 
