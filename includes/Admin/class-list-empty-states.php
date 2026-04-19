@@ -109,7 +109,7 @@ class List_Empty_States {
 				'title'     => __( 'No links yet', 'wb-ads-rotator-with-split-test' ),
 				'body'      => __( 'Cloaked links let you track clicks, shorten destinations, and manage affiliate URLs. Create your first link to start tracking.', 'wb-ads-rotator-with-split-test' ),
 				'cta_label' => __( 'Create your first link', 'wb-ads-rotator-with-split-test' ),
-				'cta_url'   => admin_url( 'admin.php?page=wbam-links&action=new' ),
+				'cta_url'   => admin_url( 'admin.php?page=wbam-links&action=add' ),
 				'inline'    => true,
 			)
 		);
