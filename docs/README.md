@@ -1,6 +1,6 @@
 # WB Ad Manager Documentation
 
-**Version:** 2.7.0
+**Version:** 2.8.0
 **Requires WordPress:** 5.8+
 **Requires PHP:** 7.4+
 **Tested up to WordPress:** 6.9.1
@@ -39,9 +39,10 @@ Welcome to WB Ad Manager, a powerful ad management plugin for WordPress. Display
 | [Managing Ads](for-site-owners/01-managing-ads.md) | Create, edit, and organize your ads |
 | [Link Management](for-site-owners/02-link-management.md) | Create tracked affiliate links |
 | [Ad Types](for-site-owners/03-ad-types.md) | Image, rich content, code, AdSense, and email capture ads |
-| [Placements](for-site-owners/04-placements.md) | Where ads appear on your site |
-| [Targeting](for-site-owners/05-targeting.md) | Schedule ads, target by device, user role |
+| [Placements](for-site-owners/04-placements.md) | Where ads appear on your site — page, community (BuddyPress / bbPress / Jetonomy), popup, sticky |
+| [Targeting](for-site-owners/05-targeting.md) | Schedule ads, target by device, user role, geo |
 | [Settings](for-site-owners/06-settings.md) | Configure plugin settings |
+| [Link Partnerships](for-site-owners/07-partnership-inquiries.md) | Accept inbound partnership inquiries from advertisers |
 
 ### Reference
 
@@ -76,12 +77,15 @@ Welcome to WB Ad Manager, a powerful ad management plugin for WordPress. Display
 Display ads in 14+ locations without writing code:
 
 - **Page Positions:** Header, Footer, Before/After Content
-- **In-Content:** After Paragraph X, Between Posts
-- **Widgets:** Sidebar, Widget Areas
-- **Overlays:** Popup, Sticky Bar
-- **Manual:** Shortcode, PHP Function
+- **In-Content:** After Paragraph X
+- **Archive / Loop:** Before/After Archive
+- **Widgets:** Sidebar, bbPress Forum Widget, bbPress Topic Widget
+- **Overlays:** Popup (delay / scroll / exit-intent), Sticky Bar (4 positions)
+- **Manual:** Shortcode `[wbam_ad]`
 - **Comments:** Before/After Comments
-- **Community:** BuddyPress Activity, bbPress Forums
+- **BuddyPress:** Activity stream + 6 directory positions (members & groups)
+- **bbPress:** 7 positions (forums, topics, between replies)
+- **Jetonomy:** 7 positions (sidebar, topic, between replies)
 
 Ads assigned to the same placement rotate automatically based on priority (1–10 slider set per ad).
 
@@ -124,4 +128,4 @@ Want to let advertisers buy ad space on your site?
 
 ---
 
-*Last updated: March 2026*
+*Last updated: April 2026*
