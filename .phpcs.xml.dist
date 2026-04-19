@@ -9,10 +9,12 @@
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
 	<exclude-pattern>/dist/*</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
 	<exclude-pattern>/docs/*</exclude-pattern>
 	<exclude-pattern>/plan/*</exclude-pattern>
 	<exclude-pattern>/plans/*</exclude-pattern>
 	<exclude-pattern>/marketing/*</exclude-pattern>
+	<exclude-pattern>/coverage/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/bin/*</exclude-pattern>
 	<exclude-pattern>/.wordpress-org/*</exclude-pattern>

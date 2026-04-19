@@ -87,8 +87,8 @@ class Admin {
 			return $redirect;
 		}
 
-		$value  = 'wbam_enable' === $action ? '1' : '0';
-		$count  = 0;
+		$value = 'wbam_enable' === $action ? '1' : '0';
+		$count = 0;
 		foreach ( (array) $post_ids as $post_id ) {
 			$post_id = absint( $post_id );
 			if ( ! $post_id || ! current_user_can( 'edit_post', $post_id ) ) {
@@ -182,12 +182,12 @@ class Admin {
 			),
 			'wbam_toggle_enabled_' . $post->ID
 		);
-		$label = $is_on
+		$label   = $is_on
 			? __( 'Disable', 'wb-ads-rotator-with-split-test' )
 			: __( 'Enable', 'wb-ads-rotator-with-split-test' );
-		$class = $is_on ? 'wbam-row-action-disable' : 'wbam-row-action-enable';
+		$class   = $is_on ? 'wbam-row-action-disable' : 'wbam-row-action-enable';
 
-		$actions[ 'wbam_toggle' ] = sprintf(
+		$actions['wbam_toggle'] = sprintf(
 			'<a href="%s" class="%s">%s</a>',
 			esc_url( $url ),
 			esc_attr( $class ),
