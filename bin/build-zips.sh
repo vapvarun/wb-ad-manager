@@ -53,7 +53,13 @@ build_exclude_args() {
 FREE_TARGET="$BUILD_DIR/free/wb-ads-rotator-with-split-test"
 mkdir -p "$FREE_TARGET"
 
-mapfile -t FREE_EXCLUDES < <(build_exclude_args "$FREE_DIR/.distignore")
+# Read exclude list into an array. Using a while-read loop instead of
+# `mapfile -t` so the script also works on bash 3.2 (macOS default).
+FREE_EXCLUDES=()
+while IFS= read -r line; do
+	FREE_EXCLUDES+=("$line")
+done < <(build_exclude_args "$FREE_DIR/.distignore")
+
 rsync -a "${FREE_EXCLUDES[@]}" "$FREE_DIR/" "$FREE_TARGET/"
 
 FREE_ZIP="$DIST_DIR/wb-ads-rotator-with-split-test-${FREE_VERSION}.zip"
