@@ -323,7 +323,15 @@ class Partnership_Admin {
 								</td>
 								<td>
 									<span title="<?php echo esc_attr( $partnership->created_at ); ?>">
-										<?php echo esc_html( $partnership->get_time_ago() ); ?> <?php esc_html_e( 'ago', 'wb-ads-rotator-with-split-test' ); ?>
+										<?php
+										$time_ago = $partnership->get_time_ago();
+										if ( '' !== $time_ago ) {
+											/* translators: %s: human-readable time diff, e.g. "3 hours" */
+											printf( esc_html__( '%s ago', 'wb-ads-rotator-with-split-test' ), esc_html( $time_ago ) );
+										} else {
+											echo esc_html( $partnership->created_at );
+										}
+										?>
 									</span>
 								</td>
 								<td class="wbam-actions-cell">
