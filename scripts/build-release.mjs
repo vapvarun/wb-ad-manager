@@ -9,10 +9,13 @@
  *   4. Verifies every CSS file under assets/css/ is in the zip tree.
  *   5. Verifies every JS file under assets/js/ is in the zip tree.
  *   6. Verifies every PHP file under includes/ is in the zip tree.
- *   7. Parses require / require_once / include / include_once in the main
- *      plugin file + includes/Core/class-plugin.php and asserts each target
- *      file exists in the zip tree (catches "forgot to ship this class").
- *   8. Writes dist/{slug}-{version}.zip and prints a summary.
+ *   7. Parses require / require_once / include / include_once across EVERY
+ *      PHP file under includes/ + the main plugin file, resolves __DIR__
+ *      relative paths, skips WP core paths, and asserts every remaining
+ *      target exists in the zip. Catches "forgot to ship this class" and
+ *      bundled-dep bugs (e.g. vendor/wbcom-credits-sdk stripped by
+ *      .distignore).
+ *   8. Writes dist/{releaseName}-{version}.zip and prints a summary.
  *
  * Exit codes:
  *   0 = zip built, all checks passed
@@ -103,6 +106,9 @@ function parseRequires(phpPath) {
 	if (!existsSync(phpPath)) return [];
 	const src = readFileSync(phpPath, 'utf8');
 	const out = new Set();
+	// Track the source file's directory (relative to ROOT) so __DIR__
+	// requires resolve to the right plugin-relative path.
+	const srcDirRel = relative(ROOT, dirname(phpPath)).replace(/\\/g, '/');
 	const re = /\b(?:require|require_once|include|include_once)\s*\(?\s*([^;]+?)\s*\)?\s*;/g;
 	let m;
 	while ((m = re.exec(src)) !== null) {
@@ -112,6 +118,28 @@ function parseRequires(phpPath) {
 		let rel = pathMatch[1];
 		if (rel.startsWith('/')) rel = rel.slice(1);
 		rel = rel.replace(/^\.\//, '');
+
+		// Skip WordPress core paths (always present at runtime).
+		if (/^wp-(admin|includes|content)\//.test(rel)) continue;
+
+		const usesDir = /__DIR__/.test(raw);
+		const usesFile = /__FILE__|plugin_dir_path\s*\(/.test(raw);
+		// Check __DIR__ FIRST. __DIR__ contains "_DIR" as substring so it
+		// would false-match any naive plugin-constant check below.
+		const usesConstant = !usesDir && /\b(WBAM_\w+|[A-Z]+_(?:PATH|DIR|PLUGIN_DIR))\b/.test(raw);
+
+		// __DIR__ relative — prepend the source file's directory.
+		if (usesDir && srcDirRel) {
+			out.add(`${srcDirRel}/${rel}`);
+			continue;
+		}
+		// Plugin-root-relative if the expression used a plugin constant
+		// or plugin_dir_path(__FILE__). Keep rel as-is.
+		if (usesConstant || usesFile) {
+			out.add(rel);
+			continue;
+		}
+		// Fall back to plugin-root-relative.
 		out.add(rel);
 	}
 	return [...out];
@@ -152,14 +180,7 @@ function main() {
 	const pluginDir = resolve(extractRoot, slug);
 	let stripped = 0;
 
-	// Pass 1: delete directories and files that match patterns, using a
-	// recursive walk that handles directories explicitly. This is how
-	// WP-CLI dist-archive works — we cannot just delete files and hope
-	// empty parent dirs vanish because zip keeps empty dirs as entries.
 	function walkAll(dir) {
-		// Returns [{ path, rel, isDir }] — depth-first, so dir entries
-		// come after their children. This lets us rmSync a dir after
-		// its contents are gone (if we want).
 		const out = [];
 		function visit(current) {
 			if (!existsSync(current)) return;
@@ -180,8 +201,6 @@ function main() {
 	}
 
 	const entries = walkAll(pluginDir);
-	// Delete directories first (with recursive), then individual files.
-	// If a directory matches, we skip its children since they're already gone.
 	const deletedDirs = [];
 	for (const e of entries) {
 		if (!e.isDir) continue;
@@ -229,8 +248,13 @@ function main() {
 		if (isExcluded(rel, patterns)) continue;
 		requireInZip(rel, 'PHP');
 	}
-	// 3d. require / require_once targets resolvable from the main file.
-	const requireSources = [mainFile, 'includes/Core/class-plugin.php'].filter(existsSync);
+	// 3d. require / require_once / include targets across the whole tree.
+	// Scans the main plugin file plus EVERY PHP file under includes/ so the
+	// check catches deep require paths like vendor/wbcom-credits-sdk loaded
+	// from includes/Core/class-credits-bridge.php. Without this Pro 1.5.0
+	// shipped with a fatal on activation because vendor/wbcom-credits-sdk
+	// was stripped by .distignore and only that one deep file referenced it.
+	const requireSources = [mainFile, ...walk('includes', ['.php'])];
 	const requiredPaths = new Set();
 	for (const src of requireSources) {
 		for (const r of parseRequires(src)) requiredPaths.add(r);
