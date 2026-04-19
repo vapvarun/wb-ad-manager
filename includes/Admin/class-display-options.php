@@ -123,6 +123,8 @@ class Display_Options {
 								'post_status' => 'publish',
 							)
 						);
+						// get_pages() returns false on DB error; default to empty list.
+						$all_pages = is_array( $all_pages ) ? $all_pages : array();
 						foreach ( $all_pages as $page_item ) :
 							?>
 							<option value="<?php echo esc_attr( $page_item->ID ); ?>" <?php selected( in_array( $page_item->ID, $specific_posts, true ) ); ?>>
@@ -181,6 +183,8 @@ class Display_Options {
 					<select name="wbam_display_rules[categories][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select categories...', 'wb-ads-rotator-with-split-test' ); ?>">
 						<?php
 						$all_categories = get_categories( array( 'hide_empty' => false ) );
+						// get_categories() returns WP_Error if taxonomy missing.
+						$all_categories = is_array( $all_categories ) ? $all_categories : array();
 						foreach ( $all_categories as $cat ) :
 							?>
 							<option value="<?php echo esc_attr( $cat->term_id ); ?>" <?php selected( in_array( $cat->term_id, $categories, true ) ); ?>>
@@ -196,6 +200,8 @@ class Display_Options {
 					<select name="wbam_display_rules[tags][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select tags...', 'wb-ads-rotator-with-split-test' ); ?>">
 						<?php
 						$all_tags = get_tags( array( 'hide_empty' => false ) );
+						// get_tags() returns WP_Error if taxonomy missing.
+						$all_tags = is_array( $all_tags ) ? $all_tags : array();
 						foreach ( $all_tags as $tag ) :
 							?>
 							<option value="<?php echo esc_attr( $tag->term_id ); ?>" <?php selected( in_array( $tag->term_id, $tags, true ) ); ?>>

@@ -49,6 +49,12 @@ class Link_Manager {
 	 */
 	protected function __construct() {
 		global $wpdb;
+		// Table names are derived from $wpdb->prefix (controlled, not user
+		// input). Interpolating $this->table / $this->categories_table /
+		// $this->clicks_table into $wpdb->prepare() strings throughout this
+		// class is therefore safe; the InterpolatedNotPrepared sniff is
+		// suppressed inline on each query with a reference back to this
+		// constructor.
 		$this->table            = $wpdb->prefix . 'wbam_links';
 		$this->categories_table = $wpdb->prefix . 'wbam_link_categories';
 		$this->clicks_table     = $wpdb->prefix . 'wbam_link_clicks';
@@ -151,13 +157,15 @@ class Link_Manager {
 	public function get( $id ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// $this->table from $wpdb->prefix (ctor).
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$this->table} WHERE id = %d",
 				$id
 			)
 		);
+		// phpcs:enable
 
 		if ( ! $row ) {
 			return null;
@@ -175,13 +183,15 @@ class Link_Manager {
 	public function get_by_slug( $slug ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// $this->table from $wpdb->prefix (ctor).
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$this->table} WHERE slug = %s",
 				$slug
 			)
 		);
+		// phpcs:enable
 
 		if ( ! $row ) {
 			return null;
@@ -445,14 +455,15 @@ class Link_Manager {
 	public function increment_clicks( $id ) {
 		global $wpdb;
 
-		// Update click count on link.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// Update click count on link. $this->table from $wpdb->prefix (ctor).
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$result = $wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$this->table} SET click_count = click_count + 1 WHERE id = %d",
 				$id
 			)
 		);
+		// phpcs:enable
 
 		// Record click.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -672,13 +683,16 @@ class Link_Manager {
 	public function get_category( $id ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-		return $wpdb->get_row(
+		// $this->categories_table from $wpdb->prefix (ctor).
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$row = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$this->categories_table} WHERE id = %d",
 				$id
 			)
 		);
+		// phpcs:enable
+		return $row;
 	}
 
 	/**
@@ -830,13 +844,15 @@ class Link_Manager {
 	private function update_category_count( $category_id ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// $this->table from $wpdb->prefix (ctor).
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$count = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$this->table} WHERE category_id = %d",
 				$category_id
 			)
 		);
+		// phpcs:enable
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update(
@@ -873,13 +889,17 @@ class Link_Manager {
 				break;
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+		// $this->clicks_table from $wpdb->prefix (ctor); $where built from
+		// hardcoded placeholder fragments + date SQL expressions, $values
+		// is the parallel placeholder array. Safe.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 		return (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$this->clicks_table} WHERE {$where}",
 				$values
 			)
 		);
+		// phpcs:enable
 	}
 
 	/**
@@ -890,10 +910,12 @@ class Link_Manager {
 	public function get_active_links_for_select() {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// $this->table from $wpdb->prefix (ctor); literal SQL, no user input.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$rows = $wpdb->get_results(
 			"SELECT id, name, destination_url FROM {$this->table} WHERE status = 'active' ORDER BY name ASC"
 		);
+		// phpcs:enable
 
 		$options = array();
 		foreach ( $rows as $row ) {

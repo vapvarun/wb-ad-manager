@@ -97,15 +97,13 @@ class BP_Activity_Placement implements Placement_Interface {
 			// Check if we should show ad at this position.
 			if ( $repeat ) {
 				// Repeating: show every N activities.
-				if ( $activity_count >= $after_activity && ( $activity_count % $after_activity ) === 0 ) {
+				if ( $activity_count >= $after_activity && 0 === $activity_count % $after_activity ) {
 					$this->render_ad( $ad_id, $engine );
 				}
-			} else {
+			} elseif ( $activity_count === $after_activity ) {
 				// Non-repeating: show only once at position N.
-				if ( $activity_count === $after_activity ) {
-					$this->render_ad( $ad_id, $engine );
-					$this->displayed_ads[] = $ad_id;
-				}
+				$this->render_ad( $ad_id, $engine );
+				$this->displayed_ads[] = $ad_id;
 			}
 		}
 	}

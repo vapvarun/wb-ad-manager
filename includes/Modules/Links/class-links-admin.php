@@ -146,6 +146,7 @@ class Links_Admin {
 	 * Render main links page.
 	 */
 	public function render_page() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only router between list / edit views; mutations are nonce-checked in their own handlers.
 		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'list';
 
 		echo '<div class="wrap">';
@@ -194,6 +195,7 @@ class Links_Admin {
 	 * Render edit/add form.
 	 */
 	private function render_edit_form() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read of edit-target ID for form prefill; save_link() verifies the wbam_save_link nonce.
 		$link_id = isset( $_GET['link_id'] ) ? (int) $_GET['link_id'] : 0;
 		$link    = null;
 
@@ -617,6 +619,7 @@ class Links_Admin {
 	 * Render categories page.
 	 */
 	public function render_categories_page() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only view router; mutations are nonce-checked in their own handlers.
 		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'list';
 
 		echo '<div class="wrap">';
@@ -689,6 +692,7 @@ class Links_Admin {
 	 * Render category form.
 	 */
 	private function render_category_form() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read of edit-target ID for form prefill; save_category() verifies the wbam_save_category nonce.
 		$category_id = isset( $_GET['category_id'] ) ? (int) $_GET['category_id'] : 0;
 		$category    = null;
 
@@ -902,6 +906,8 @@ class Links_Admin {
 	 * Show admin notices.
 	 */
 	private function show_notices() {
+		// Read-only post-redirect message lookup; no state mutation.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read of message key from redirect query to display a notice.
 		if ( ! isset( $_GET['message'] ) ) {
 			return;
 		}
@@ -918,6 +924,7 @@ class Links_Admin {
 		);
 
 		$message_key = sanitize_text_field( wp_unslash( $_GET['message'] ) );
+		// phpcs:enable
 
 		if ( isset( $messages[ $message_key ] ) ) {
 			$type = $messages[ $message_key ][0];

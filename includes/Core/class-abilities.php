@@ -856,13 +856,14 @@ class Abilities {
 		$items = array();
 
 		foreach ( $query->posts as $post ) {
-			$ad_data = get_post_meta( $post->ID, '_wbam_ad_data', true );
-			$items[] = array(
+			$ad_data    = get_post_meta( $post->ID, '_wbam_ad_data', true );
+			$placements = get_post_meta( $post->ID, '_wbam_placements', true );
+			$items[]    = array(
 				'id'         => $post->ID,
 				'title'      => $post->post_title,
 				'type'       => isset( $ad_data['type'] ) ? sanitize_text_field( $ad_data['type'] ) : '',
 				'enabled'    => (bool) get_post_meta( $post->ID, '_wbam_enabled', true ),
-				'placements' => get_post_meta( $post->ID, '_wbam_placements', true ) ?: array(),
+				'placements' => is_array( $placements ) ? $placements : array(),
 				'status'     => $post->post_status,
 			);
 		}
@@ -1115,9 +1116,10 @@ class Abilities {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param array $input Ability input parameters (unused).
+	 * @param array $input Ability input parameters (unused; required by Abilities contract).
 	 * @return array
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by Abilities contract.
 	public function execute_list_placements( $input ) {
 		$engine     = \WBAM\Modules\Placements\Placement_Engine::get_instance();
 		$placements = $engine->get_placements();
@@ -1139,9 +1141,10 @@ class Abilities {
 	 *
 	 * @since 2.8.0
 	 *
-	 * @param array $input Ability input parameters (unused).
+	 * @param array $input Ability input parameters (unused; required by Abilities contract).
 	 * @return array
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by Abilities contract.
 	public function execute_list_ad_types( $input ) {
 		$engine   = \WBAM\Modules\Placements\Placement_Engine::get_instance();
 		$ad_types = $engine->get_ad_types();
@@ -1198,7 +1201,7 @@ class Abilities {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$impressions = (int) $wpdb->get_var(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'impression'",
 					$values
 				)
@@ -1206,7 +1209,7 @@ class Abilities {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$clicks = (int) $wpdb->get_var(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'click'",
 					$values
 				)
@@ -1215,7 +1218,7 @@ class Abilities {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$top_ads_raw = $wpdb->get_results(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE {$where_sql} AND type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
 					$top_values
 				)
@@ -1228,7 +1231,7 @@ class Abilities {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$top_ads_raw = $wpdb->get_results(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
 					array( $limit )
 				)
@@ -1296,7 +1299,7 @@ class Abilities {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$impressions = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'impression'",
 				$values
 			)
@@ -1305,7 +1308,7 @@ class Abilities {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND type = 'click'",
 				$values
 			)
@@ -1316,7 +1319,7 @@ class Abilities {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$by_placement_raw = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT placement, type, COUNT(*) as count FROM {$table} WHERE {$where_sql} GROUP BY placement, type",
 				$values
 			)
@@ -1324,7 +1327,7 @@ class Abilities {
 
 		$placements = array();
 		foreach ( $by_placement_raw as $row ) {
-			$key = $row->placement ?: 'unknown';
+			$key = ! empty( $row->placement ) ? $row->placement : 'unknown';
 			if ( ! isset( $placements[ $key ] ) ) {
 				$placements[ $key ] = array(
 					'placement'   => $key,
@@ -1585,7 +1588,7 @@ class Abilities {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$total_clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$clicks_table} WHERE {$where_sql}",
 				$values
 			)
@@ -1594,7 +1597,7 @@ class Abilities {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$unique_clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(DISTINCT visitor_hash) FROM {$clicks_table} WHERE {$where_sql}",
 				$values
 			)
@@ -1604,7 +1607,7 @@ class Abilities {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$by_date_raw = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT DATE(clicked_at) as day, COUNT(*) as clicks, COUNT(DISTINCT visitor_hash) as unique_clicks FROM {$clicks_table} WHERE {$where_sql} GROUP BY day ORDER BY day ASC",
 				$values
 			)

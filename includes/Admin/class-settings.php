@@ -374,15 +374,15 @@ class Settings {
 	 * Get single setting.
 	 *
 	 * @param string $key     Setting key.
-	 * @param mixed  $default Default value.
+	 * @param mixed  $default_value Default value.
 	 * @return mixed
 	 */
-	public function get( $key, $default = null ) {
+	public function get( $key, $default_value = null ) {
 		$settings = $this->get_settings();
 		if ( isset( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
-		return $default !== null ? $default : ( isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null );
+		return null !== $default_value ? $default_value : ( isset( $this->defaults[ $key ] ) ? $this->defaults[ $key ] : null );
 	}
 
 	/**

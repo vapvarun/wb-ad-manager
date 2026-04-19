@@ -43,45 +43,47 @@ require_once WBAM_PATH . 'includes/functions-ad-formats.php';
 /**
  * Autoloader for plugin classes.
  *
- * @param string $class Class name.
+ * @param string $class_fqn Fully-qualified class name.
  */
-spl_autoload_register( function ( $class ) {
-	$prefix = 'WBAM\\';
-	$len    = strlen( $prefix );
+spl_autoload_register(
+	function ( $class_fqn ) {
+		$prefix = 'WBAM\\';
+		$len    = strlen( $prefix );
 
-	if ( strncmp( $prefix, $class, $len ) !== 0 ) {
-		return;
+		if ( strncmp( $prefix, $class_fqn, $len ) !== 0 ) {
+				return;
+		}
+
+		$relative_class = substr( $class_fqn, $len );
+
+		// Split into namespace parts and class name.
+		$parts      = explode( '\\', $relative_class );
+		$class_name = array_pop( $parts );
+		$namespace  = implode( '/', $parts );
+
+		// Convert class name: Underscores to hyphens, CamelCase to hyphen-separated.
+		$file_name = str_replace( '_', '-', $class_name );
+		$file_name = preg_replace( '/([a-z])([A-Z])/', '$1-$2', $file_name );
+		$file_name = strtolower( $file_name );
+
+		// Determine file type prefix.
+		$file_prefix = 'class-';
+		if ( strpos( $class_name, 'Interface' ) !== false || substr( $class_name, -9 ) === 'Interface' ) {
+			$file_prefix = 'interface-';
+			$file_name   = str_replace( '-interface', '', $file_name );
+		} elseif ( strpos( $class_name, 'Trait' ) !== false || substr( $class_name, 0, 5 ) === 'Trait' ) {
+			$file_prefix = 'trait-';
+			$file_name   = str_replace( 'trait-', '', $file_name );
+		}
+
+		// Build file path.
+		$file = WBAM_PATH . 'includes/' . $namespace . '/' . $file_prefix . $file_name . '.php';
+
+		if ( file_exists( $file ) ) {
+				require_once $file;
+		}
 	}
-
-	$relative_class = substr( $class, $len );
-
-	// Split into namespace parts and class name.
-	$parts      = explode( '\\', $relative_class );
-	$class_name = array_pop( $parts );
-	$namespace  = implode( '/', $parts );
-
-	// Convert class name: Underscores to hyphens, CamelCase to hyphen-separated.
-	$file_name = str_replace( '_', '-', $class_name );
-	$file_name = preg_replace( '/([a-z])([A-Z])/', '$1-$2', $file_name );
-	$file_name = strtolower( $file_name );
-
-	// Determine file type prefix.
-	$file_prefix = 'class-';
-	if ( strpos( $class_name, 'Interface' ) !== false || substr( $class_name, -9 ) === 'Interface' ) {
-		$file_prefix = 'interface-';
-		$file_name   = str_replace( '-interface', '', $file_name );
-	} elseif ( strpos( $class_name, 'Trait' ) !== false || substr( $class_name, 0, 5 ) === 'Trait' ) {
-		$file_prefix = 'trait-';
-		$file_name   = str_replace( 'trait-', '', $file_name );
-	}
-
-	// Build file path.
-	$file = WBAM_PATH . 'includes/' . $namespace . '/' . $file_prefix . $file_name . '.php';
-
-	if ( file_exists( $file ) ) {
-		require_once $file;
-	}
-} );
+);
 
 /**
  * Plugin activation.

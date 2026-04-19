@@ -10,10 +10,6 @@ jobs:
   phpcs:
     name: PHPCS (WordPress Standards)
     runs-on: ubuntu-latest
-    # Advisory only: PHPCS annotates pre-existing style issues in legacy
-    # modules. The actual ship blockers (PCP + PHPStan + PHP Compat) are
-    # enforced elsewhere in this workflow and must stay green.
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -28,8 +24,8 @@ jobs:
           COMPOSER_HOME=$(composer global config home)
           phpcs --config-set installed_paths \
             "$COMPOSER_HOME/vendor/wp-coding-standards/wpcs,$COMPOSER_HOME/vendor/phpcsstandards/phpcsutils,$COMPOSER_HOME/vendor/phpcsstandards/phpcsextra"
-      - name: PHPCS (errors-only, advisory)
-        run: phpcs -n --report=checkstyle | cs2pr || true
+      - name: PHPCS (blocking — errors and warnings)
+        run: phpcs --report=checkstyle | cs2pr
 
   phpstan:
     name: PHPStan (Static Analysis)

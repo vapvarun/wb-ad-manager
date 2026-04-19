@@ -193,7 +193,7 @@ class Analytics_API {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$impressions = (int) $wpdb->get_var(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'impression'",
 					$values
 				)
@@ -202,7 +202,7 @@ class Analytics_API {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$clicks = (int) $wpdb->get_var(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'click'",
 					$values
 				)
@@ -225,7 +225,7 @@ class Analytics_API {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$top_ads_raw = $wpdb->get_results(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE {$where_sql} AND event_type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
 					$top_ads_values
 				)
@@ -234,7 +234,7 @@ class Analytics_API {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$top_ads_raw = $wpdb->get_results(
 				$wpdb->prepare(
-					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 					"SELECT ad_id, COUNT(*) as impressions FROM {$table} WHERE event_type = 'impression' GROUP BY ad_id ORDER BY impressions DESC LIMIT %d",
 					array( $limit )
 				)
@@ -302,7 +302,7 @@ class Analytics_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$impressions = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'impression'",
 				$imp_values
 			)
@@ -311,7 +311,7 @@ class Analytics_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$table} WHERE {$where_sql} AND event_type = 'click'",
 				$clk_values
 			)
@@ -323,7 +323,7 @@ class Analytics_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$by_placement = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT placement, event_type, COUNT(*) as count FROM {$table} WHERE {$where_sql} GROUP BY placement, event_type",
 				$values
 			)
@@ -331,7 +331,7 @@ class Analytics_API {
 
 		$placements = array();
 		foreach ( $by_placement as $row ) {
-			$key = $row->placement ?: 'unknown';
+			$key = ! empty( $row->placement ) ? $row->placement : 'unknown';
 			if ( ! isset( $placements[ $key ] ) ) {
 				$placements[ $key ] = array(
 					'placement'   => $key,
@@ -391,7 +391,7 @@ class Analytics_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT DATE(created_at) as day, event_type, COUNT(*) as count FROM {$table} WHERE {$where_sql} GROUP BY day, event_type ORDER BY day ASC",
 				$values
 			)
@@ -425,7 +425,7 @@ class Analytics_API {
 			array(
 				'start_date' => $start_date,
 				'end_date'   => $end_date,
-				'ad_id'      => $ad_id ?: null,
+				'ad_id'      => ! empty( $ad_id ) ? $ad_id : null,
 				'daily'      => array_values( $daily ),
 			)
 		);

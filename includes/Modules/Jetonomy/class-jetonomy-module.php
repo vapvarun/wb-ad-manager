@@ -7,6 +7,11 @@
  * placement per template hook exposed by Jetonomy v1.3.0+ so each
  * position is independently selectable on the ad edit screen.
  *
+ * Module + its placement class share this file because they share the
+ * "is Jetonomy active" dependency and are small.
+ *
+ * phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound -- Module + placement cohesive pair.
+ *
  * @package WB_Ad_Manager
  * @since   2.8.0
  */

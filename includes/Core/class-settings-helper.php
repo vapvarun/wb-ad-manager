@@ -27,18 +27,18 @@ class Settings_Helper {
 	/**
 	 * Get settings value.
 	 *
-	 * @param string $key     Optional. Specific setting key to retrieve.
-	 * @param mixed  $default Optional. Default value if key not found.
+	 * @param string $key           Optional. Specific setting key to retrieve.
+	 * @param mixed  $default_value Optional. Default value if key not found.
 	 * @return mixed Settings array or specific value.
 	 */
-	public static function get( $key = null, $default = null ) {
+	public static function get( $key = null, $default_value = null ) {
 		$settings = get_option( 'wbam_settings', array() );
 
 		if ( null === $key ) {
 			return $settings;
 		}
 
-		return isset( $settings[ $key ] ) ? $settings[ $key ] : $default;
+		return isset( $settings[ $key ] ) ? $settings[ $key ] : $default_value;
 	}
 
 	/**

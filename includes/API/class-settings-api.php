@@ -122,9 +122,10 @@ class Settings_API {
 	/**
 	 * GET /settings — Get all settings (admin).
 	 *
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object (unused; required by REST callback contract).
 	 * @return \WP_REST_Response
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by REST callback contract.
 	public function get_settings( $request ) {
 		$settings = \WBAM\Core\Settings_Helper::get();
 
@@ -183,9 +184,10 @@ class Settings_API {
 	/**
 	 * GET /settings/display — Get display options (admin).
 	 *
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object (unused; required by REST callback contract).
 	 * @return \WP_REST_Response
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by REST callback contract.
 	public function get_display_settings( $request ) {
 		$all     = \WBAM\Core\Settings_Helper::get();
 		$display = array();

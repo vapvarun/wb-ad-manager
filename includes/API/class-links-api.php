@@ -524,7 +524,7 @@ class Links_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$total_clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$clicks_table} WHERE {$where_sql}",
 				$values
 			)
@@ -534,7 +534,7 @@ class Links_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$unique_clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(DISTINCT visitor_hash) FROM {$clicks_table} WHERE {$where_sql}",
 				$values
 			)
@@ -607,9 +607,10 @@ class Links_API {
 	/**
 	 * GET /links/categories — List link categories (admin).
 	 *
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object (unused; required by REST callback contract).
 	 * @return \WP_REST_Response
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by REST callback contract.
 	public function get_categories( $request ) {
 		global $wpdb;
 		$table = $wpdb->prefix . 'wbam_link_categories';

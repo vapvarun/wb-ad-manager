@@ -96,6 +96,10 @@ class Links_List_Table extends \WP_List_Table {
 	 * @return array
 	 */
 	protected function get_views() {
+		// Read-only filter state from the admin list URL. WP_List_Table filters
+		// are GET-based by convention and do not carry nonces — nothing is
+		// mutated here, only rendered.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter state.
 		$current = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'all';
 		$views   = array();
 
@@ -149,8 +153,11 @@ class Links_List_Table extends \WP_List_Table {
 			return;
 		}
 
+		// Read-only filter state from the list-table URL; no state mutation.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter state.
 		$link_type   = isset( $_GET['link_type'] ) ? sanitize_text_field( wp_unslash( $_GET['link_type'] ) ) : '';
 		$category_id = isset( $_GET['category_id'] ) ? (int) $_GET['category_id'] : 0;
+		// phpcs:enable
 
 		?>
 		<div class="alignleft actions">
@@ -194,7 +201,10 @@ class Links_List_Table extends \WP_List_Table {
 		// Process bulk actions.
 		$this->process_bulk_action();
 
-		// Build query args.
+		// Build query args from read-only filter/sort/search URL params.
+		// WP_List_Table filters are GET-based by convention and carry no
+		// nonce; nothing below is a state mutation.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter / sort / search state.
 		$args = array(
 			'limit'   => $per_page,
 			'offset'  => ( $this->get_pagenum() - 1 ) * $per_page,
@@ -217,6 +227,7 @@ class Links_List_Table extends \WP_List_Table {
 		if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
 			$args['search'] = sanitize_text_field( wp_unslash( $_GET['s'] ) );
 		}
+		// phpcs:enable
 
 		$this->items = $this->link_manager->get_links( $args );
 

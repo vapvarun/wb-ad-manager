@@ -88,6 +88,7 @@ class Help_Docs {
 	 * Render page.
 	 */
 	public function render_page() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only tab switcher; no state mutation.
 		$active_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'getting-started';
 		?>
 		<div class="wrap wbam-help-wrap">
@@ -104,7 +105,8 @@ class Help_Docs {
 				</a>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=pro-features' ) ); ?>"
 					class="nav-tab <?php echo 'pro-features' === $active_tab ? 'nav-tab-active' : ''; ?>">
-					<?php echo $this->is_pro_active
+					<?php
+					echo $this->is_pro_active
 						? esc_html__( 'PRO Features', 'wb-ads-rotator-with-split-test' )
 						: esc_html__( 'What\'s in PRO', 'wb-ads-rotator-with-split-test' );
 					?>

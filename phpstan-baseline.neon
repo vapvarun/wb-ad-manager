@@ -261,16 +261,6 @@ parameters:
 			path: includes/Admin/class-demo-data-cleaner.php
 
 		-
-			message: "#^Argument of an invalid type array\\<WP_Post\\>\\|false supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: includes/Admin/class-display-options.php
-
-		-
-			message: "#^Argument of an invalid type array\\<int, WP_Term\\>\\|WP_Error supplied for foreach, only iterables are supported\\.$#"
-			count: 2
-			path: includes/Admin/class-display-options.php
-
-		-
 			message: "#^Method WBAM\\\\Admin\\\\Display_Options\\:\\:add_metaboxes\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-display-options.php
@@ -939,11 +929,6 @@ parameters:
 			message: "#^Method WBAM\\\\Core\\\\Admin_Links\\:\\:links\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: includes/Core/class-admin-links.php
-
-		-
-			message: "#^Parameter \\#2 \\$timestamp_with_offset of function date_i18n expects bool\\|int, int\\|string\\|false given\\.$#"
-			count: 2
-			path: includes/Core/class-formatter.php
 
 		-
 			message: "#^Property WBAM\\\\Core\\\\Formatter\\:\\:\\$currency_symbols type has no value type specified in iterable type array\\.$#"
@@ -1961,16 +1946,6 @@ parameters:
 			path: includes/Modules/Links/class-links-admin.php
 
 		-
-			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:save_category\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-links-admin.php
-
-		-
-			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:save_link\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-links-admin.php
-
-		-
 			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Admin\\:\\:show_notices\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Modules/Links/class-links-admin.php
@@ -2032,11 +2007,6 @@ parameters:
 
 		-
 			message: "#^Parameter \\#1 \\$args of method WP_List_Table\\:\\:set_pagination_args\\(\\) expects array\\{total_items\\?\\: int, total_pages\\?\\: int, per_page\\?\\: int\\}, array\\{total_items\\: int, per_page\\: 20, total_pages\\: float\\} given\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-links-list-table.php
-
-		-
-			message: "#^Parameter \\#1 \\$from of function human_time_diff expects int, int\\|false given\\.$#"
 			count: 1
 			path: includes/Modules/Links/class-links-list-table.php
 
@@ -2196,11 +2166,6 @@ parameters:
 			path: includes/Modules/Links/class-partnership-emails.php
 
 		-
-			message: "#^Argument of an invalid type array\\<WP_Post\\>\\|false supplied for foreach, only iterables are supported\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-partnership-form.php
-
-		-
 			message: "#^Call to method get_error_message\\(\\) on an unknown class WBAM\\\\Modules\\\\Links\\\\WP_Error\\.$#"
 			count: 1
 			path: includes/Modules/Links/class-partnership-form.php
@@ -2332,11 +2297,6 @@ parameters:
 
 		-
 			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Partnership\\:\\:to_array\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-partnership.php
-
-		-
-			message: "#^Parameter \\#1 \\$from of function human_time_diff expects int, int\\|false given\\.$#"
 			count: 1
 			path: includes/Modules/Links/class-partnership.php
 

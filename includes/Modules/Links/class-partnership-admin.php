@@ -74,6 +74,9 @@ class Partnership_Admin {
 		if ( $pending_count > 0 && isset( $submenu['wbam-links'] ) ) {
 			foreach ( $submenu['wbam-links'] as $key => $item ) {
 				if ( isset( $item[2] ) && 'wbam-partnerships' === $item[2] ) {
+					// Mutating $submenu is the standard WP pattern for injecting
+					// a pending-count badge onto a submenu item (e.g. Posts → "3").
+					// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Intentional $submenu[label][0] edit to add pending-count badge.
 					$submenu['wbam-links'][ $key ][0] .= sprintf(
 						' <span class="awaiting-mod count-%d"><span class="pending-count">%d</span></span>',
 						$pending_count,
@@ -189,6 +192,10 @@ class Partnership_Admin {
 	 * Render admin page.
 	 */
 	public function render_page() {
+		// Read-only admin list view: filter / pagination / single-row view
+		// all dispatched from GET; mutation endpoints (accept / reject /
+		// spam / delete) are nonce-checked in their own handlers.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter / view state.
 		// Show single view if viewing details.
 		if ( isset( $_GET['view'] ) && absint( $_GET['view'] ) ) {
 			$this->render_single_view( absint( $_GET['view'] ) );
@@ -200,6 +207,7 @@ class Partnership_Admin {
 		$search         = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
 		$paged          = isset( $_GET['paged'] ) ? max( 1, absint( $_GET['paged'] ) ) : 1;
 		$per_page       = 20;
+		// phpcs:enable
 
 		// Get data.
 		$args = array(
@@ -481,7 +489,7 @@ class Partnership_Admin {
 							</tr>
 							<tr>
 								<th><?php esc_html_e( 'IP Address', 'wb-ads-rotator-with-split-test' ); ?></th>
-								<td><?php echo esc_html( $partnership->ip_address ?: '-' ); ?></td>
+								<td><?php echo esc_html( ! empty( $partnership->ip_address ) ? $partnership->ip_address : '-' ); ?></td>
 							</tr>
 						</table>
 					</div>
@@ -515,7 +523,7 @@ class Partnership_Admin {
 							</tr>
 							<tr>
 								<th><?php esc_html_e( 'Anchor Text', 'wb-ads-rotator-with-split-test' ); ?></th>
-								<td><?php echo esc_html( $partnership->anchor_text ?: '-' ); ?></td>
+								<td><?php echo esc_html( ! empty( $partnership->anchor_text ) ? $partnership->anchor_text : '-' ); ?></td>
 							</tr>
 							<tr>
 								<th><?php esc_html_e( 'Budget Range', 'wb-ads-rotator-with-split-test' ); ?></th>
@@ -591,7 +599,7 @@ class Partnership_Admin {
 									</a>
 								<?php endif; ?>
 
-								<a href="mailto:<?php echo esc_attr( $partnership->email ); ?>?subject=<?php echo esc_attr( urlencode( __( 'Re: Partnership Inquiry', 'wb-ads-rotator-with-split-test' ) ) ); ?>" class="button">
+								<a href="mailto:<?php echo esc_attr( $partnership->email ); ?>?subject=<?php echo esc_attr( rawurlencode( __( 'Re: Partnership Inquiry', 'wb-ads-rotator-with-split-test' ) ) ); ?>" class="button">
 									<?php echo wbam_icon( 'mail', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 									<?php esc_html_e( 'Email Requester', 'wb-ads-rotator-with-split-test' ); ?>
 								</a>
@@ -608,6 +616,8 @@ class Partnership_Admin {
 	 * Show admin notices.
 	 */
 	private function show_notices() {
+		// Read-only post-redirect message lookup; no state mutation.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read of message key from redirect query to display a notice.
 		if ( ! isset( $_GET['message'] ) ) {
 			return;
 		}
@@ -621,6 +631,7 @@ class Partnership_Admin {
 		);
 
 		$message_key = sanitize_text_field( wp_unslash( $_GET['message'] ) );
+		// phpcs:enable
 
 		if ( isset( $messages[ $message_key ] ) ) {
 			printf(

@@ -119,13 +119,15 @@ class Partnership_Manager {
 	public function get( $id ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// $this->table from $wpdb->prefix (ctor).
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$this->table} WHERE id = %d",
 				$id
 			)
 		);
+		// phpcs:enable
 
 		if ( ! $row ) {
 			return null;
@@ -255,10 +257,12 @@ class Partnership_Manager {
 	public function get_status_counts() {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// $this->table from $wpdb->prefix (ctor). Literal SQL.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$results = $wpdb->get_results(
 			"SELECT status, COUNT(*) as count FROM {$this->table} GROUP BY status"
 		);
+		// phpcs:enable
 
 		$counts = array(
 			'all'      => 0,
@@ -475,11 +479,11 @@ class Partnership_Manager {
 		}
 
 		if ( isset( $data['budget_min'] ) ) {
-			$data['budget_min'] = $data['budget_min'] !== '' ? max( 0, (float) $data['budget_min'] ) : null;
+			$data['budget_min'] = '' !== $data['budget_min'] ? max( 0, (float) $data['budget_min'] ) : null;
 		}
 
 		if ( isset( $data['budget_max'] ) ) {
-			$data['budget_max'] = $data['budget_max'] !== '' ? max( 0, (float) $data['budget_max'] ) : null;
+			$data['budget_max'] = '' !== $data['budget_max'] ? max( 0, (float) $data['budget_max'] ) : null;
 		}
 
 		if ( isset( $data['status'] ) ) {
@@ -517,7 +521,8 @@ class Partnership_Manager {
 	public function has_recent_submission( $email, $website, $hours_back = 24 ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// $this->table from $wpdb->prefix (ctor).
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$this->table}
@@ -528,6 +533,7 @@ class Partnership_Manager {
 				$hours_back
 			)
 		);
+		// phpcs:enable
 
 		return (int) $count > 0;
 	}
