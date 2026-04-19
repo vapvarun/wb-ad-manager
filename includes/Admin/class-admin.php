@@ -39,6 +39,145 @@ class Admin {
 		add_filter( 'manage_wbam-ad_posts_columns', array( $this, 'add_columns' ) );
 		add_action( 'manage_wbam-ad_posts_custom_column', array( $this, 'render_column' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'handle_disable_ad' ) );
+		add_action( 'admin_init', array( $this, 'handle_row_toggle' ) );
+
+		// Bulk-action pipeline on the Ads list table — enable/disable
+		// selected ads in one click instead of opening each edit screen.
+		add_filter( 'bulk_actions-edit-wbam-ad', array( $this, 'register_bulk_actions' ) );
+		add_filter( 'handle_bulk_actions-edit-wbam-ad', array( $this, 'handle_bulk_actions' ), 10, 3 );
+		add_action( 'admin_notices', array( $this, 'render_bulk_action_notice' ) );
+
+		// Inline row-action link so a single "Disable" or "Enable"
+		// click on a row does not require opening the edit screen.
+		add_filter( 'post_row_actions', array( $this, 'add_row_action_toggle' ), 10, 2 );
+	}
+
+	/**
+	 * Register bulk-action options on the Ads list table.
+	 *
+	 * @param array<string, string> $actions Existing bulk actions keyed by slug.
+	 * @return array<string, string>
+	 */
+	public function register_bulk_actions( $actions ) {
+		$actions['wbam_enable']  = __( 'Enable ads', 'wb-ads-rotator-with-split-test' );
+		$actions['wbam_disable'] = __( 'Disable ads', 'wb-ads-rotator-with-split-test' );
+		return $actions;
+	}
+
+	/**
+	 * Execute one of our bulk actions. WP handles the nonce and capability
+	 * check before this runs, so we only need to apply the meta change.
+	 *
+	 * @param string $redirect   URL to redirect to after handling.
+	 * @param string $action     Action slug chosen from the dropdown.
+	 * @param int[]  $post_ids   Selected post IDs.
+	 * @return string Redirect URL with a counter query arg appended.
+	 */
+	public function handle_bulk_actions( $redirect, $action, $post_ids ) {
+		if ( 'wbam_enable' !== $action && 'wbam_disable' !== $action ) {
+			return $redirect;
+		}
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return $redirect;
+		}
+
+		$value  = 'wbam_enable' === $action ? '1' : '0';
+		$count  = 0;
+		foreach ( (array) $post_ids as $post_id ) {
+			$post_id = absint( $post_id );
+			if ( ! $post_id || ! current_user_can( 'edit_post', $post_id ) ) {
+				continue;
+			}
+			$post = get_post( $post_id );
+			if ( ! $post || 'wbam-ad' !== $post->post_type ) {
+				continue;
+			}
+			update_post_meta( $post_id, '_wbam_enabled', $value );
+			++$count;
+		}
+
+		return add_query_arg(
+			array(
+				'wbam_bulk_action' => $action,
+				'wbam_bulk_count'  => $count,
+			),
+			$redirect
+		);
+	}
+
+	/**
+	 * Render the result notice after a bulk action. Hooks admin_notices
+	 * instead of admin_init because the notice needs the query args the
+	 * bulk handler put on the redirect URL.
+	 */
+	public function render_bulk_action_notice() {
+		if ( empty( $_GET['wbam_bulk_action'] ) || empty( $_GET['wbam_bulk_count'] ) ) {
+			return;
+		}
+		$screen = get_current_screen();
+		if ( ! $screen || 'edit-wbam-ad' !== $screen->id ) {
+			return;
+		}
+
+		$action = sanitize_key( wp_unslash( $_GET['wbam_bulk_action'] ) );
+		$count  = absint( wp_unslash( $_GET['wbam_bulk_count'] ) );
+		if ( 0 === $count ) {
+			return;
+		}
+
+		$message = 'wbam_enable' === $action
+			/* translators: %d: number of ads */
+			? sprintf( _n( '%d ad enabled.', '%d ads enabled.', $count, 'wb-ads-rotator-with-split-test' ), $count )
+			/* translators: %d: number of ads */
+			: sprintf( _n( '%d ad disabled.', '%d ads disabled.', $count, 'wb-ads-rotator-with-split-test' ), $count );
+
+		printf(
+			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+			esc_html( $message )
+		);
+	}
+
+	/**
+	 * Add an inline "Enable"/"Disable" toggle to each ad row so admins
+	 * can flip a single ad without opening the edit screen.
+	 *
+	 * @param array<string, string> $actions Existing row actions.
+	 * @param \WP_Post              $post    Current row post.
+	 * @return array<string, string>
+	 */
+	public function add_row_action_toggle( $actions, $post ) {
+		if ( ! $post || 'wbam-ad' !== $post->post_type ) {
+			return $actions;
+		}
+		if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+			return $actions;
+		}
+
+		$enabled  = (string) get_post_meta( $post->ID, '_wbam_enabled', true );
+		$is_on    = '1' === $enabled;
+		$next     = $is_on ? '0' : '1';
+		$url      = wp_nonce_url(
+			add_query_arg(
+				array(
+					'wbam_toggle_enabled' => $next,
+					'post'                => $post->ID,
+				),
+				admin_url( 'edit.php?post_type=wbam-ad' )
+			),
+			'wbam_toggle_enabled_' . $post->ID
+		);
+		$label    = $is_on
+			? __( 'Disable', 'wb-ads-rotator-with-split-test' )
+			: __( 'Enable', 'wb-ads-rotator-with-split-test' );
+		$class    = $is_on ? 'wbam-row-action-disable' : 'wbam-row-action-enable';
+
+		$actions[ 'wbam_toggle' ] = sprintf(
+			'<a href="%s" class="%s">%s</a>',
+			esc_url( $url ),
+			esc_attr( $class ),
+			esc_html( $label )
+		);
+		return $actions;
 	}
 
 	/**
@@ -86,6 +225,49 @@ class Admin {
 				);
 			}
 		);
+	}
+
+	/**
+	 * Flip the enabled/disabled flag from the inline row action link.
+	 * Back-end for the "Enable"/"Disable" entry added to each ad row.
+	 */
+	public function handle_row_toggle() {
+		if ( ! isset( $_GET['wbam_toggle_enabled'], $_GET['post'] ) ) {
+			return;
+		}
+
+		$post_id = absint( $_GET['post'] );
+		if ( ! $post_id ) {
+			return;
+		}
+
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'wbam_toggle_enabled_' . $post_id ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'wb-ads-rotator-with-split-test' ) );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$post = get_post( $post_id );
+		if ( ! $post || 'wbam-ad' !== $post->post_type ) {
+			return;
+		}
+
+		$next = '1' === (string) $_GET['wbam_toggle_enabled'] ? '1' : '0';
+		update_post_meta( $post_id, '_wbam_enabled', $next );
+
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'post_type'        => 'wbam-ad',
+					'wbam_bulk_action' => '1' === $next ? 'wbam_enable' : 'wbam_disable',
+					'wbam_bulk_count'  => 1,
+				),
+				admin_url( 'edit.php' )
+			)
+		);
+		exit;
 	}
 
 	/**
