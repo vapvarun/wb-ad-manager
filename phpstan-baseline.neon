@@ -1982,7 +1982,7 @@ parameters:
 
 		-
 			message: "#^Parameter \\#2 \\$timestamp of function gmdate expects int, int\\|false given\\.$#"
-			count: 1
+			count: 2
 			path: includes/Modules/Links/class-links-admin.php
 
 		-

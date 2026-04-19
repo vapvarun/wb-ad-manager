@@ -25,6 +25,8 @@ class Notice_Suppressor {
 
 	/**
 	 * Register hooks.
+	 *
+	 * @return void
 	 */
 	public function init() {
 		add_action( 'in_admin_header', array( $this, 'suppress_foreign_notices' ), 1 );
@@ -32,6 +34,8 @@ class Notice_Suppressor {
 
 	/**
 	 * Strip foreign callbacks from the notice hooks on our screens.
+	 *
+	 * @return void
 	 */
 	public function suppress_foreign_notices() {
 		if ( ! $this->is_our_screen() ) {
@@ -66,7 +70,7 @@ class Notice_Suppressor {
 		}
 
 		// The wbam-ad CPT edit list, add-new, and single-post edit screens.
-		if ( isset( $screen->post_type ) && 'wbam-ad' === $screen->post_type ) {
+		if ( 'wbam-ad' === $screen->post_type ) {
 			return true;
 		}
 
@@ -100,6 +104,7 @@ class Notice_Suppressor {
 	 * Everything else (third-party plugins, themes, rogue closures) is pulled.
 	 *
 	 * @param string $hook Hook name.
+	 * @return void
 	 */
 	private function strip_hook( $hook ) {
 		global $wp_filter;

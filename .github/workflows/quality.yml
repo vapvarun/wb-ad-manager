@@ -18,8 +18,12 @@ jobs:
           tools: composer, cs2pr
       - name: Allow phpcodesniffer-composer-installer plugin
         run: composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-      - run: composer global require squizlabs/php_codesniffer wp-coding-standards/wpcs phpcsstandards/phpcsutils
-      - run: phpcs --config-set installed_paths $(composer global config home)/vendor/wp-coding-standards/wpcs
+      - run: composer global require squizlabs/php_codesniffer wp-coding-standards/wpcs phpcsstandards/phpcsutils phpcsstandards/phpcsextra
+      - name: Register sniff paths
+        run: |
+          COMPOSER_HOME=$(composer global config home)
+          phpcs --config-set installed_paths \
+            "$COMPOSER_HOME/vendor/wp-coding-standards/wpcs,$COMPOSER_HOME/vendor/phpcsstandards/phpcsutils,$COMPOSER_HOME/vendor/phpcsstandards/phpcsextra"
       - run: phpcs --report=checkstyle | cs2pr
 
   phpstan:
@@ -68,8 +72,12 @@ jobs:
       - name: Allow phpcodesniffer-composer-installer plugin
         run: composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
       - run: composer global require phpcompatibility/phpcompatibility-wp phpcsstandards/phpcsutils squizlabs/php_codesniffer wp-coding-standards/wpcs
-      - run: phpcs --config-set installed_paths $(composer global config home)/vendor/phpcompatibility/php-compatibility,$(composer global config home)/vendor/phpcompatibility/phpcompatibility-wp,$(composer global config home)/vendor/wp-coding-standards/wpcs
-      - run: phpcs --standard=PHPCompatibilityWP --extensions=php --ignore=vendor,node_modules --runtime-set testVersion 7.4-8.4 -n .
+      - name: Register sniff paths
+        run: |
+          COMPOSER_HOME=$(composer global config home)
+          phpcs --config-set installed_paths \
+            "$COMPOSER_HOME/vendor/phpcompatibility/php-compatibility,$COMPOSER_HOME/vendor/phpcompatibility/phpcompatibility-paragonie,$COMPOSER_HOME/vendor/phpcompatibility/phpcompatibility-wp,$COMPOSER_HOME/vendor/wp-coding-standards/wpcs,$COMPOSER_HOME/vendor/phpcsstandards/phpcsutils"
+      - run: phpcs --standard=PHPCompatibilityWP --extensions=php --ignore=vendor,node_modules,.wordpress-org --runtime-set testVersion 7.4-8.4 -n .
 
   security:
     name: Composer Security Audit
