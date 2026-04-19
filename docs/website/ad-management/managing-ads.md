@@ -169,7 +169,7 @@ To display a specific ad manually using a shortcode:
 [wbam_ad id="123"]
 ```
 
-See [Shortcode Reference](../shortcode-reference/01-ad-shortcodes.md) for all shortcode options.
+See [Shortcode Reference](../shortcode-reference/ad-shortcodes.md) for all shortcode options.
 
 ### Via PHP (Theme)
 
@@ -270,8 +270,8 @@ Create categories to organize ads:
 ## Next Steps
 
 - [Set up link management](02-link-management.md)
-- [View all shortcodes](../shortcode-reference/01-ad-shortcodes.md)
-- [Troubleshooting](../troubleshooting/01-common-issues.md)
+- [View all shortcodes](../shortcode-reference/ad-shortcodes.md)
+- [Troubleshooting](../troubleshooting/common-issues.md)
 
 ---
 

@@ -43,7 +43,7 @@ Navigate to: **Pro Settings → Modules**
 
 Enable or disable Pro feature modules. Disabling a module hides it from all admin menus and frontend shortcodes. Module dependencies are enforced automatically — if you disable a required module, dependent modules disable too.
 
-> **Note:** The **Advertisers** module is a core module and is always active. It does not appear in this toggle list and cannot be disabled.
+The Advertisers module is core and always active; it does not appear in this toggle list and cannot be disabled.
 
 | Module | Default | Depends On | Description |
 |--------|---------|------------|-------------|
@@ -66,45 +66,48 @@ Enable or disable Pro feature modules. Disabling a module hides it from all admi
 
 ---
 
-## Tab 3: Payments
+## Tab 3: Credits
 
-Navigate to: **Pro Settings → Payments**
+Navigate to: **Pro Settings → Credits**
 
-This tab has two separate forms: **Stripe** and **Wallet Settings**.
+Pro uses the **Wbcom Credits SDK** to accept credit top-ups rather than shipping its own payment-gateway integrations. Every adapter whose source plugin is active on the site auto-appears in this tab; you enable the adapters you want to use and map each one's products / levels to a credit amount.
 
-> **Note:** PayPal and Razorpay payment handler classes exist in the plugin code but admin settings fields for these gateways (Client ID, Secret, Key ID, etc.) are not yet available in this tab. To use PayPal or Razorpay, configure their credentials directly via the `wbam_pro_settings` database option or the `wbam_pro_settings` filter. Admin UI for these gateways is coming in a future release.
+### Available adapters
 
-> **WooCommerce Integration:** A WooCommerce payment method section also appears in this tab when WooCommerce is active. Enable it to allow advertisers to top up their wallet via WooCommerce checkout using your existing WooCommerce payment gateways.
+| Adapter | Appears when this plugin is active | Typical purchase UX |
+|---------|-----------------------------------|---------------------|
+| WooCommerce Products | WooCommerce | Advertiser buys a "Credit Pack" Simple Product at your WC checkout |
+| WooCommerce Subscriptions | WooCommerce Subscriptions | Advertiser subscribes, renewal tops up credits automatically |
+| WooCommerce Memberships | WooCommerce Memberships | Credits bundled into membership activation + renewal |
+| Paid Memberships Pro | PMPro | Credits granted when the advertiser joins a PMPro level |
+| MemberPress | MemberPress | Credits granted on MemberPress product purchase |
 
-### Stripe Payment Gateway
+Each adapter delegates payment collection to its source plugin, so you configure Stripe, PayPal, Razorpay, or any other gateway in that plugin — not in Pro.
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| Enable Stripe | Off | Allow advertisers to add wallet funds via Stripe |
-| Test Mode | Off | Use test API keys (disable before going live) |
-| Test Publishable Key | — | Stripe test publishable key (`pk_test_...`) |
-| Test Secret Key | — | Stripe test secret key (`sk_test_...`) |
-| Live Publishable Key | — | Stripe live publishable key (`pk_live_...`) |
-| Live Secret Key | — | Stripe live secret key (`sk_live_...`) |
-| Webhook Secret | — | Stripe webhook signing secret (`whsec_...`) |
-| Currency | USD | Currency for Stripe transactions |
-| Minimum Amount | $5.00 | Minimum single wallet top-up amount |
-| Maximum Amount | $10,000.00 | Maximum single wallet top-up amount |
+### Configuring an adapter mapping
 
-**Webhook URL:** `https://yoursite.com/wp-json/wbam-pro/v1/stripe/webhook`
+1. Enable the adapter checkbox next to the one you want to use.
+2. Click **Add Mapping**. A dropdown lists the products / levels from that plugin.
+3. Pick the product, enter the credit amount the advertiser should receive, save.
+4. Repeat for each credit pack or tier.
 
-Configure this URL in your Stripe Dashboard. Required events: `payment_intent.succeeded`, `checkout.session.completed`, `charge.refunded`.
+The active mappings table below shows every mapping you've created across adapters. You can delete or edit each row in place.
 
-### Wallet Settings
+### Wallet settings
 
 | Setting | Default | Description |
 |---------|---------|-------------|
 | Currency | USD | Currency code used for all wallet balances and transactions |
 | Currency Symbol | $ | Symbol displayed with amounts (e.g., `$`, `€`, `£`) |
-| Offline Payment | Off | Enable manual/bank transfer payments — admin must approve each request |
-| Payment Instructions | — | Bank details and instructions shown to advertisers when they choose offline payment |
+| Minimum Deposit | $5.00 | Minimum single top-up amount (filterable via `wbam_pro_minimum_deposit`) |
 | Low Balance Threshold | $10.00 | Send a notification when an advertiser's balance falls below this amount (0 to disable) |
-| Billing Threshold | $0.01 | Minimum unbilled amount before deducting from wallet for CPM/CPC campaigns |
+| Billing Threshold | $0.01 | Minimum unbilled amount before deducting from the wallet for CPM/CPC campaigns |
+
+### Offline / bank-transfer top-ups
+
+Enable the "Manual / Bank Transfer" option to let advertisers request a top-up against an offline payment. The advertiser enters a reference note; you approve or cancel the request from **WB Ads → Transactions → Pending Approval** once funds clear. Approvals fire the `wbam_fund_request_approved` action and email the advertiser.
+
+See [Wallet and Payments](../payments/wallet-and-payments.md) for the full end-to-end walkthrough of each adapter path.
 
 ---
 

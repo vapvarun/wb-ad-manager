@@ -2,121 +2,126 @@
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
-Every advertiser has a wallet that stores funds used to pay for ad packages and campaigns. This guide explains how the wallet system works, how advertisers add funds, and how you manage payments as an admin.
+Every advertiser on a Pro-enabled site has a wallet that tracks how many credits they have available to spend on ads, campaigns, classified listings, and package purchases. This guide explains how credits enter the wallet, how spending works, and how you (the site owner) configure which payment paths your advertisers can use.
 
-## How the Wallet Works
+## How credits reach a wallet
 
-Each advertiser account has a wallet that tracks:
+Pro does not ship its own Stripe, PayPal, or Razorpay integration. Instead it uses the **Wbcom Credits SDK**, which is bundled with Pro under `vendor/wbcom-credits-sdk/`. The SDK exposes a plug-in adapter pattern. Pro registers itself with the SDK as a credit consumer; the SDK then accepts credit grants from any adapter that is also registered and active on the site.
 
-- **Balance** - Funds available to spend
-- **Pending Credits** - Payments awaiting confirmation
-- **Pending Debits** - Reserved funds not yet settled
-- **Available Balance** - Balance minus pending debits
+Five adapters ship out of the box, and every one of them auto-appears in **Settings → Credits** when the adapter's source plugin is active:
 
-When an advertiser purchases a package or activates a CPM/CPC campaign, the cost is deducted from their wallet. If the balance is insufficient, the purchase or activation is blocked.
+| Adapter | Source plugin | What it does |
+|---------|---------------|--------------|
+| **WooCommerce Products** | WooCommerce | Sell credit-pack products. The advertiser checks out through WooCommerce; any WC-supported gateway (Stripe, PayPal, Razorpay, Square, bank transfer, …) handles the payment. When the order reaches `completed` or `processing`, the adapter grants credits. |
+| **WooCommerce Subscriptions** | WooCommerce Subscriptions | Sell recurring credit packs. Each renewal tops up the wallet automatically. |
+| **WooCommerce Memberships** | WooCommerce Memberships | Bundle credits into membership plans. Credits are granted on membership activation and renewal. |
+| **Paid Memberships Pro** | Paid Memberships Pro | Map PMPro levels to credit grants. Purchasing a level credits the advertiser. |
+| **MemberPress** | MemberPress | Map MemberPress products to credit grants. |
 
-## Payment Gateways
+### What this means for site owners
 
-Five payment methods are available. Enable each one under **WB Ads > Pro Settings > Payments**.
+Any payment method you could already accept through your existing WooCommerce or membership-plugin setup will work for credit top-ups. You do **not** configure Stripe or PayPal inside Pro — you configure them inside WooCommerce (or the membership plugin you chose), and Pro picks up the credit on order completion.
 
-| Gateway | How It Works | Configuration Required |
-|---------|-------------|----------------------|
-| **Stripe** | Advertiser enters card details on your site. Funds credit instantly on payment success. | Publishable key + Secret key |
-| **PayPal** *(Admin UI coming soon — currently requires manual configuration via `wbam_pro_settings` option)* | Advertiser approves payment via PayPal checkout. Funds credit after capture completes. | Client ID + Client secret. **Note:** No admin settings UI is available yet. Configure via database (`wbam_pro_settings` option) or the `wbam_pro_settings` filter. |
-| **Razorpay** *(Admin UI coming soon — currently requires manual configuration via `wbam_pro_settings` option)* | Advertiser pays via Razorpay checkout (supports cards, UPI, netbanking). Funds credit after signature verification. | Key ID + Key secret. **Note:** No admin settings UI is available yet. Configure via database (`wbam_pro_settings` option) or the `wbam_pro_settings` filter. |
-| **WooCommerce** | Creates a WooCommerce order. Funds credit when the order reaches "completed" or "processing" status. Requires WooCommerce to be active. | Enable in settings; uses your existing WooCommerce payment gateways |
-| **Manual / Bank Transfer** | Advertiser submits a fund request. You receive an email notification and manually approve or cancel it from the admin panel. | No API keys needed |
+### What advertisers see
 
-## How Advertisers Add Funds
+Advertisers log in to the Advertiser Portal, open the **Wallet** tab, and click **Buy Credits**. The button routes to the purchase URL you configured in **Settings → Credits**. From that point on, the checkout experience is whatever your WooCommerce shop or membership checkout looks like. When payment succeeds, Pro grants credits immediately and the Wallet tab shows the updated balance.
 
-1. Advertiser opens the Advertiser Dashboard and clicks **Add Funds**
-2. They enter an amount (minimum $5 by default) and select a payment method
-3. A pending transaction is created in the database
-4. The advertiser completes payment through the chosen gateway
-5. On payment success, the pending transaction is confirmed and the wallet balance is credited
+## Three ways to configure credit top-ups
 
-The minimum deposit amount is $5 by default. You can change this with the `wbam_pro_minimum_deposit` filter.
+### Path A — WooCommerce credit-pack products (most common)
 
-## Manual / Bank Transfer Payment Flow
+Use this when you want one-off credit purchases with a single price per pack.
 
-This method is for offline payments such as bank transfers or cheques.
+1. Install and activate **WooCommerce**. Configure at least one payment gateway you already trust (Stripe, PayPal, bank transfer — any WC plugin works).
+2. In WooCommerce, create Simple Products that represent credit packs. For example: "100 Credits — $10", "500 Credits — $45".
+3. In the Pro admin, open **Settings → Credits**. The WooCommerce adapter appears automatically. Enable it and map each credit-pack product to its credit amount.
+4. Set the Advertiser Portal's "Buy Credits" button to link to your WooCommerce shop (or a dedicated credit-packs category page).
+5. Test: from an advertiser account, click **Buy Credits**, complete checkout, and confirm the Wallet tab shows the new balance.
 
-**Advertiser steps:**
+### Path B — WooCommerce Subscriptions (recurring credits)
 
-1. Select **Bank Transfer** in the Add Funds dialog
-2. Optionally enter notes (e.g., reference number)
-3. Submit the request. A pending transaction is created and you receive an email notification
+Use this when you want advertisers to pay monthly or yearly for a rolling credit allowance.
 
-**Admin steps:**
+1. On top of WooCommerce, install **WooCommerce Subscriptions**.
+2. Create Subscription Products (e.g., "50 Credits every month — $5/mo").
+3. In **Settings → Credits**, enable the WooCommerce Subscriptions adapter and map each subscription product to its credit allowance.
+4. Each successful renewal fires the adapter callback, which tops up the wallet.
 
-1. Go to **WB Ads > Transactions**
-2. Click the **Pending Approval** filter tab to see all pending manual payments
-3. Review the transaction — advertiser name, amount, and any notes are shown
-4. Click **Approve** to credit the advertiser's wallet, or **Cancel** to decline the request
+### Path C — Membership tier grants credit (best for tiered pricing)
 
-Only transactions with `pending` status and type `payment` or `credit` can be approved. Approving fires the `wbam_fund_request_approved` action hook, which triggers an email notification to the advertiser.
+Use this when you want an advertiser's credit allowance to be part of their membership package rather than a separate purchase.
 
-## Admin Transactions Page
+1. Install **Paid Memberships Pro** or **MemberPress** (not both — pick one).
+2. Create membership levels / products.
+3. In **Settings → Credits**, enable the matching adapter (PMPro or MemberPress). Map each level/product to its credit grant amount.
+4. When an advertiser joins the membership, the adapter grants credits immediately. Renewals grant again.
 
-Navigate to **WB Ads > Transactions** to see all wallet activity across all advertisers.
+Advertisers can always add credits outside their membership using a WooCommerce credit pack in parallel.
 
-**Available filter tabs:**
+## Spending — how credits leave the wallet
 
-- All Transactions
-- Pending Approval (manual payments awaiting your action)
-- Filter by type, status, or advertiser
+Credits leave the wallet through four entry points. Every spend is recorded in the advertiser's ledger with a transaction type so you can see what happened and when.
 
-**Admin actions per transaction:**
+| Event | Transaction type | When it fires |
+|-------|------------------|---------------|
+| Package purchase | `package` | Advertiser buys an ad package from **Advertiser Portal → Packages**. Full package cost is charged at purchase time. |
+| CPM/CPC campaign activation | `campaign_reserve` | Advertiser activates a CPM or CPC campaign with a set budget. The full budget is pre-charged against the wallet. |
+| Unlimited campaign hourly billing | `campaign` | For campaigns with no budget cap, the `wbam_calculate_hourly_billing` cron charges the advertiser every hour for the prior hour's impressions/clicks. |
+| Classified listing fee or upgrade | `classified` | Advertiser submits a paid classified, or buys a Featured / Highlighted / Urgent / Bump upgrade. |
 
-| Action | When Available |
-|--------|---------------|
-| Approve | Transaction is pending, type is payment or credit |
-| Cancel | Transaction is pending |
-| Refund | Transaction is completed and of a debit type |
+### Campaign budget pre-charge and refund
 
-## Transaction Types
+When an advertiser activates a CPM or CPC campaign with a budget > 0, Pro charges the full budget to the wallet as a `campaign_reserve` ledger entry. This is a genuine charge (not a hold) so it is atomic with the activation and cannot get lost if the site crashes mid-flow.
 
-Every wallet movement is recorded with a specific type so you can identify what triggered it.
+The `Campaign_Manager` then tracks how much of the budget actually gets spent on served impressions/clicks. When the campaign completes, expires, or is cancelled, any unspent portion is credited back as a `campaign_refund` ledger entry. Pausing a campaign does **not** refund — the reservation stays held so that un-pausing does not risk activation failing due to the advertiser spending the money elsewhere in the meantime.
+
+If the advertiser's balance is too low to cover a budget at activation time, the activation fails with a clear error. They top up and try again.
+
+### All transaction types
+
+Everything that moves a wallet balance gets one of these types. Use the `WB Ads → Transactions` admin page's type filter to audit any specific flow.
 
 | Type | Direction | Description |
 |------|-----------|-------------|
-| `payment` | Credit | Funds received via payment gateway |
-| `credit` | Credit | General credit added to wallet |
-| `refund` | Credit | Refund returned to advertiser |
-| `campaign_refund` | Credit | Unused campaign budget returned on cancel or completion |
-| `adjustment` | Credit or Debit | Manual admin adjustment (positive or negative) |
-| `campaign_adjust` | Credit or Debit | Budget adjustment for an active campaign change |
-| `debit` | Debit | General debit from wallet |
-| `campaign` | Debit | Hourly charge for unlimited-budget CPM/CPC campaign spend |
-| `package` | Debit | Flat-rate package purchase charge |
-| `campaign_reserve` | Debit | Budget reserved when a CPM/CPC campaign activates |
-| `classified` | Debit | Classified listing fees (featured, premium, upgrades) |
+| `topup` | Credit | Credits added by an adapter (WooCommerce order / subscription renewal / membership purchase). |
+| `credit` | Credit | General credit added to the wallet. |
+| `adjustment` | Credit or Debit | Manual admin adjustment with a reason. |
+| `campaign_refund` | Credit | Unused campaign budget returned on completion or cancellation. |
+| `campaign_adjust` | Credit or Debit | Budget change on an active campaign edit. |
+| `package` | Debit | Flat-rate package purchase. |
+| `campaign_reserve` | Debit | Full budget pre-charged when a CPM/CPC campaign activates. |
+| `campaign` | Debit | Hourly spend on an unlimited-budget campaign. |
+| `classified` | Debit | Classified listing fee or paid upgrade. |
 
-## Budget Reservation for CPM/CPC Campaigns
+## Offline payments — manual / bank transfer
 
-CPM and CPC campaigns with a set budget use a **pre-funded reservation** system to guarantee the advertiser has sufficient funds before ads start running.
+When you would rather accept bank transfers, cheques, or any other out-of-band method, you can approve top-ups yourself.
 
-**How it works:**
+**What the advertiser does:**
+1. Opens the Wallet tab and selects **Bank Transfer** (or whichever label you configured).
+2. Enters a reference note (invoice number, transaction ID, etc.).
+3. Submits. A pending ledger entry is created and you get an email.
 
-1. When a CPM/CPC campaign with a budget greater than zero is activated, the full budget amount is debited from the wallet as a `campaign_reserve` transaction
-2. The reserved funds are held while the campaign runs
-3. If you pause a campaign, the reservation is held — it is not released on pause
-4. When the campaign completes, expires, or is cancelled, the unspent portion is returned as a `campaign_refund` transaction
-5. If the budget reservation fails (insufficient balance), the campaign activation is blocked and an error is shown
+**What you do as admin:**
+1. Go to **WB Ads → Transactions** and open the **Pending Approval** filter.
+2. Review the request — contact the advertiser if needed.
+3. Click **Approve** once the funds have cleared in your bank account, or **Cancel** to decline.
 
-Campaigns with no budget set (unlimited budget) use **hourly billing** instead: actual spend is charged from the wallet every hour via the `wbam_calculate_hourly_billing` cron job. If the wallet balance is insufficient at billing time, the campaign is automatically paused.
+Approving fires the `wbam_fund_request_approved` action and emails the advertiser that their wallet has been topped up. Only transactions with `pending` status and type `payment` or `credit` can be approved from this screen.
 
-## Data Safety
+## Admin adjustments
 
-The wallet system uses database transactions (`START TRANSACTION` + `SELECT ... FOR UPDATE`) for all balance changes to prevent race conditions. Every credit and debit operation supports an **idempotency key** — if the same operation is attempted twice (e.g., a webhook fires twice), the duplicate is silently ignored and the balance is only changed once.
+You can credit or debit any advertiser's wallet directly.
 
-## Admin Balance Adjustments
+1. **WB Ads → Advertisers** → click the advertiser name.
+2. **Adjust Balance**.
+3. Choose Credit or Debit, enter an amount, type a reason.
+4. Save.
 
-You can manually credit or debit any advertiser's wallet.
+Every adjustment lands in the ledger as an `adjustment` transaction with your reason text. The minimum deposit amount enforced on advertiser-initiated top-ups is $5 by default and is filterable via `wbam_pro_minimum_deposit`.
 
-1. Go to **WB Ads > Advertisers** and click the advertiser's name
-2. Click **Adjust Balance**
-3. Select Credit or Debit, enter the amount, and provide a reason
-4. Click **Save**
+## What's next
 
-The adjustment is recorded as an `adjustment` transaction with your reason as the description.
+- [Creating Ad Packages](../settings/creating-ad-packages.md) — how to price what advertisers spend their credits on.
+- [Campaign Management](../advertiser-portal/campaign-management.md) — the budget reservation lifecycle from the advertiser's side.
+- [Pro Settings Configuration](../settings/pro-settings-configuration.md) — the Credits settings tab with adapter mappings.

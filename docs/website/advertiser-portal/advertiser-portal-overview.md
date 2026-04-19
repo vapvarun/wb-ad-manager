@@ -2,7 +2,7 @@
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
-The Advertiser Portal gives each advertiser a self-service frontend dashboard to manage their ads, classifieds, wallet, campaigns, analytics, and profile — without needing access to the WordPress admin.
+The Advertiser Portal is a frontend page where each advertiser manages their own ads, classifieds, wallet, campaigns, analytics, and profile. Advertisers never need WordPress admin access.
 
 The portal is embedded on any page using a single shortcode:
 

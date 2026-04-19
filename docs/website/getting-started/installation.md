@@ -118,8 +118,8 @@ Want more features? WB Ad Manager Pro adds:
 
 ## Next Steps
 
-- [Quick Setup Guide](02-quick-setup-guide.md) - Complete setup in 10 minutes
-- [Shortcode Reference](../shortcode-reference/01-ad-shortcodes.md) - Display ads anywhere
+- [Quick Setup Guide](quick-setup-guide.md) — configure the plugin and publish your first ad
+- [Shortcode Reference](../shortcode-reference/ad-shortcodes.md) - Display ads anywhere
 
 ---
 

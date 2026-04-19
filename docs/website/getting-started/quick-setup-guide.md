@@ -1,4 +1,4 @@
-# Quick Setup Guide - Get Ads Running in 10 Minutes
+# Quick Setup Guide
 
 ## What You'll Learn
 
@@ -171,9 +171,9 @@ Yes. Use the dedicated AdSense ad type, or paste AdSense code into a Code/HTML/J
 
 ## Next Steps
 
-- [Create tracked links](../shortcode-reference/02-link-shortcodes.md)
-- [Set up link partnerships](../for-site-owners/02-link-management.md)
-- [View all shortcode options](../shortcode-reference/01-ad-shortcodes.md)
+- [Create tracked links](../shortcode-reference/link-shortcodes.md)
+- [Set up link partnerships](../link-management/link-management.md)
+- [View all shortcode options](../shortcode-reference/ad-shortcodes.md)
 
 ---
 
@@ -190,4 +190,4 @@ Ready for more? WB Ad Manager Pro includes:
 
 ---
 
-*Questions? Check our [Troubleshooting Guide](../troubleshooting/01-common-issues.md)*
+*Questions? Check our [Troubleshooting Guide](../troubleshooting/common-issues.md)*
