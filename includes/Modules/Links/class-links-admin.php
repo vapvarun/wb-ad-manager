@@ -123,8 +123,9 @@ class Links_Admin {
 		}
 
 		if ( isset( $_GET['action'] ) && 'delete' === $_GET['action'] && isset( $_GET['link_id'] ) ) {
-			if ( check_admin_referer( 'wbam_delete_link_' . $_GET['link_id'] ) ) {
-				$this->delete_link( (int) $_GET['link_id'] );
+			$link_id = absint( wp_unslash( $_GET['link_id'] ) );
+			if ( check_admin_referer( 'wbam_delete_link_' . $link_id ) ) {
+				$this->delete_link( $link_id );
 			}
 		}
 
@@ -134,8 +135,9 @@ class Links_Admin {
 		}
 
 		if ( isset( $_GET['action'] ) && 'delete_category' === $_GET['action'] && isset( $_GET['category_id'] ) ) {
-			if ( check_admin_referer( 'wbam_delete_category_' . $_GET['category_id'] ) ) {
-				$this->delete_category( (int) $_GET['category_id'] );
+			$category_id = absint( wp_unslash( $_GET['category_id'] ) );
+			if ( check_admin_referer( 'wbam_delete_category_' . $category_id ) ) {
+				$this->delete_category( $category_id );
 			}
 		}
 	}
@@ -144,7 +146,7 @@ class Links_Admin {
 	 * Render main links page.
 	 */
 	public function render_page() {
-		$action = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : 'list';
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'list';
 
 		echo '<div class="wrap">';
 
@@ -481,27 +483,35 @@ class Links_Admin {
 
 	/**
 	 * Save link from form.
+	 *
+	 * @return void
+	 *
+	 * Nonce verification: the caller `handle_admin_actions()` validates the
+	 * `wbam_save_link` nonce via `check_admin_referer()` BEFORE invoking this
+	 * method, so the `$_POST` reads below are guarded. phpcs:disable
+	 * WordPress.Security.NonceVerification.Missing — verified by caller.
 	 */
 	private function save_link() {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Caller handle_admin_actions() verifies the wbam_save_link nonce.
 		$link_id = isset( $_POST['link_id'] ) ? (int) $_POST['link_id'] : 0;
 		$is_edit = (bool) $link_id;
 
 		$data = array(
-			'name'             => isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : '',
-			'destination_url'  => isset( $_POST['destination_url'] ) ? esc_url_raw( $_POST['destination_url'] ) : '',
-			'slug'             => isset( $_POST['slug'] ) ? sanitize_title( $_POST['slug'] ) : '',
-			'link_type'        => isset( $_POST['link_type'] ) ? sanitize_text_field( $_POST['link_type'] ) : 'affiliate',
+			'name'             => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
+			'destination_url'  => isset( $_POST['destination_url'] ) ? esc_url_raw( wp_unslash( $_POST['destination_url'] ) ) : '',
+			'slug'             => isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '',
+			'link_type'        => isset( $_POST['link_type'] ) ? sanitize_text_field( wp_unslash( $_POST['link_type'] ) ) : 'affiliate',
 			'category_id'      => isset( $_POST['category_id'] ) ? (int) $_POST['category_id'] : 0,
 			'cloaking_enabled' => isset( $_POST['cloaking_enabled'] ) ? 1 : 0,
 			'nofollow'         => isset( $_POST['nofollow'] ) ? 1 : 0,
 			'sponsored'        => isset( $_POST['sponsored'] ) ? 1 : 0,
 			'new_tab'          => isset( $_POST['new_tab'] ) ? 1 : 0,
 			'redirect_type'    => isset( $_POST['redirect_type'] ) ? (int) $_POST['redirect_type'] : 307,
-			'status'           => isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : 'active',
+			'status'           => isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 'active',
 			'expires_at'       => isset( $_POST['expires_at'] ) && ! empty( $_POST['expires_at'] )
-				? gmdate( 'Y-m-d H:i:s', strtotime( $_POST['expires_at'] ) )
+				? gmdate( 'Y-m-d H:i:s', strtotime( sanitize_text_field( wp_unslash( $_POST['expires_at'] ) ) ) )
 				: null,
-			'description'      => isset( $_POST['description'] ) ? sanitize_textarea_field( $_POST['description'] ) : '',
+			'description'      => isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '',
 		);
 
 		/**
@@ -510,9 +520,9 @@ class Links_Admin {
 		 * @since 2.3.0
 		 * @param array $data    Link data to save.
 		 * @param int   $link_id Link ID (0 for new links).
-		 * @param array $_POST   Raw POST data.
+		 * @param array $raw_post Raw POST data (unslashed).
 		 */
-		$data = apply_filters( 'wbam_link_save_data', $data, $link_id, $_POST );
+		$data = apply_filters( 'wbam_link_save_data', $data, $link_id, wp_unslash( $_POST ) );
 
 		/**
 		 * Fires before saving a link.
@@ -562,6 +572,7 @@ class Links_Admin {
 			)
 		);
 		exit;
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
 	/**
@@ -589,7 +600,7 @@ class Links_Admin {
 	 * Render categories page.
 	 */
 	public function render_categories_page() {
-		$action = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : 'list';
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'list';
 
 		echo '<div class="wrap">';
 
@@ -772,15 +783,22 @@ class Links_Admin {
 
 	/**
 	 * Save category from form.
+	 *
+	 * @return void
+	 *
+	 * Nonce verification: the caller `handle_admin_actions()` validates the
+	 * `wbam_save_category` nonce via `check_admin_referer()` BEFORE invoking
+	 * this method, so the `$_POST` reads below are guarded.
 	 */
 	private function save_category() {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Caller handle_admin_actions() verifies the wbam_save_category nonce.
 		$category_id = isset( $_POST['category_id'] ) ? (int) $_POST['category_id'] : 0;
 		$is_edit     = (bool) $category_id;
 
 		$data = array(
-			'name'        => isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : '',
-			'slug'        => isset( $_POST['slug'] ) ? sanitize_title( $_POST['slug'] ) : '',
-			'description' => isset( $_POST['description'] ) ? sanitize_textarea_field( $_POST['description'] ) : '',
+			'name'        => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
+			'slug'        => isset( $_POST['slug'] ) ? sanitize_title( wp_unslash( $_POST['slug'] ) ) : '',
+			'description' => isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '',
 		);
 
 		/**
@@ -789,9 +807,9 @@ class Links_Admin {
 		 * @since 2.3.0
 		 * @param array $data        Category data to save.
 		 * @param int   $category_id Category ID (0 for new categories).
-		 * @param array $_POST       Raw POST data.
+		 * @param array $raw_post    Raw POST data (unslashed).
 		 */
-		$data = apply_filters( 'wbam_link_category_save_data', $data, $category_id, $_POST );
+		$data = apply_filters( 'wbam_link_category_save_data', $data, $category_id, wp_unslash( $_POST ) );
 
 		/**
 		 * Fires before saving a link category.
@@ -839,6 +857,7 @@ class Links_Admin {
 			)
 		);
 		exit;
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 
 	/**
@@ -881,7 +900,7 @@ class Links_Admin {
 			'category_error'   => array( 'error', __( 'An error occurred. Please try again.', 'wb-ads-rotator-with-split-test' ) ),
 		);
 
-		$message_key = sanitize_text_field( $_GET['message'] );
+		$message_key = sanitize_text_field( wp_unslash( $_GET['message'] ) );
 
 		if ( isset( $messages[ $message_key ] ) ) {
 			$type = $messages[ $message_key ][0];
