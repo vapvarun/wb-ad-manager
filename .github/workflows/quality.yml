@@ -25,7 +25,7 @@ jobs:
           phpcs --config-set installed_paths \
             "$COMPOSER_HOME/vendor/wp-coding-standards/wpcs,$COMPOSER_HOME/vendor/phpcsstandards/phpcsutils,$COMPOSER_HOME/vendor/phpcsstandards/phpcsextra"
       - name: PHPCS (blocking — errors and warnings)
-        run: phpcs --report=checkstyle | cs2pr
+        run: phpcs -q --report=checkstyle | cs2pr
 
   phpstan:
     name: PHPStan (Static Analysis)
