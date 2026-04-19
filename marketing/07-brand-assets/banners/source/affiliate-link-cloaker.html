@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>WB Ad Manager — Affiliate links that look like yours</title>
+	<link rel="stylesheet" href="_shared.css">
+	<style>
+		.url-demo {
+			font-family: 'JetBrains Mono', ui-monospace, monospace;
+			font-size: 18px;
+			line-height: 1.6;
+			color: var(--slate);
+			background: transparent;
+			margin: 0 0 36px;
+			max-width: 820px;
+		}
+		.url-demo .before {
+			color: #94A3B8;
+			text-decoration: line-through;
+			text-decoration-color: #CBD5E1;
+		}
+		.url-demo .after {
+			color: var(--terracotta);
+			font-weight: 700;
+		}
+		.url-demo .arrow { color: var(--ink); font-weight: 700; margin: 0 10px; }
+		@media (max-aspect-ratio: 11/10) { .url-demo { font-size: 22px; max-width: 100%; } }
+		@media (min-aspect-ratio: 9/4)   { .url-demo { font-size: 16px; margin-bottom: 20px; } }
+	</style>
+</head>
+<body>
+	<div class="stage">
+		<span class="numeral">&rarr;</span>
+		<div class="content">
+			<div class="kicker">Link cloaker</div>
+			<h1>Links that<br><em>look like yours.</em></h1>
+			<div class="url-demo">
+				<div class="before">amazon.com/gp/product/B07X?ref=affiliate_123</div>
+				<div><span class="arrow">&rarr;</span><span class="after">yoursite.com/go/book</span></div>
+			</div>
+			<div class="pills">
+				<span class="pill on">Cloak</span>
+				<span class="pill on">Track</span>
+				<span class="pill">Health check</span>
+			</div>
+		</div>
+		<div class="footer">
+			<span class="brand">WB Ad Manager</span>
+			<span class="url">wbcomdesigns.com</span>
+		</div>
+	</div>
+</body>
+</html>

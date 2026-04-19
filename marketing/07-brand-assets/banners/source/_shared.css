@@ -1,0 +1,213 @@
+/*
+ * Shared styles for the 2.8.0 banner set.
+ *
+ * Palette is intentionally warm (terracotta / amber / cream) to sit
+ * distinct from the navy-blue screenshots used elsewhere in the
+ * product's marketing; the banners get their own visual shelf so they
+ * read as "editorial" rather than "SaaS landing page".
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,800;1,9..144,500;1,9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+	--ink:        #1A1A1A;  /* primary text */
+	--paper:      #FAF6EE;  /* warm cream background */
+	--slate:      #475569;  /* secondary text */
+	--terracotta: #C65A3E;  /* primary accent (headlines emphasis, kicker) */
+	--amber:      #D97706;  /* highlight numeral */
+	--olive:      #4B5B3A;  /* rare secondary accent */
+	--rule:       #1A1A1A;
+
+	--font-display: 'Fraunces', 'Times New Roman', serif;
+	--font-body:    'Manrope', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+body {
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--font-body);
+	font-size: 16px;
+	line-height: 1.35;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+.stage {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	padding: 80px 100px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.stage::before {
+	/* Thin rule frame */
+	content: '';
+	position: absolute;
+	inset: 28px;
+	border: 1.5px solid var(--ink);
+	pointer-events: none;
+	z-index: 1;
+}
+
+.numeral {
+	/* Oversized decorative character; each template picks its own glyph */
+	position: absolute;
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-style: italic;
+	color: var(--amber);
+	opacity: 0.10;
+	line-height: 0.8;
+	font-size: 580px;
+	pointer-events: none;
+	user-select: none;
+	right: -20px;
+	top: -80px;
+	z-index: 0;
+}
+
+.content {
+	position: relative;
+	z-index: 2;
+	max-width: 900px;
+}
+
+.kicker {
+	font-family: var(--font-body);
+	font-size: 14px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.20em;
+	color: var(--terracotta);
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.kicker::before {
+	content: '';
+	width: 32px;
+	height: 2px;
+	background: var(--terracotta);
+	display: inline-block;
+}
+
+h1 {
+	font-family: var(--font-display);
+	font-weight: 500;
+	font-optical-sizing: auto;
+	color: var(--ink);
+	line-height: 0.98;
+	letter-spacing: -0.025em;
+	font-size: 96px;
+	margin-bottom: 28px;
+}
+h1 em {
+	font-style: italic;
+	color: var(--terracotta);
+	font-weight: 500;
+}
+
+.lede {
+	font-family: var(--font-body);
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 1.35;
+	color: var(--slate);
+	max-width: 720px;
+	margin-bottom: 36px;
+}
+
+.pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 0;
+}
+.pill {
+	font-family: var(--font-body);
+	font-size: 13px;
+	font-weight: 700;
+	padding: 8px 16px;
+	border: 1.5px solid var(--ink);
+	border-radius: 999px;
+	color: var(--ink);
+	background: transparent;
+	text-transform: uppercase;
+	letter-spacing: 0.10em;
+}
+.pill.on {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-top: auto;
+	padding-top: 40px;
+	position: relative;
+	z-index: 2;
+}
+
+.brand {
+	font-family: var(--font-body);
+	font-size: 14px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--ink);
+}
+
+.url {
+	font-family: var(--font-body);
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--slate);
+	letter-spacing: 0.04em;
+}
+
+/*
+ * Aspect-ratio overrides.
+ * OG (1200×630, aspect 1.904) uses the default rules above.
+ * Square (1080×1080) = 1:1 — stack with tighter body column.
+ * Wide (1920×600, aspect 3.2) = letterbox — horizontal two-column.
+ */
+
+@media (max-aspect-ratio: 11/10) {
+	/* Square */
+	.stage { padding: 110px 100px; }
+	.content { max-width: 100%; }
+	.numeral { font-size: 700px; right: -60px; top: -120px; }
+	h1 { font-size: 108px; margin-bottom: 32px; }
+	.lede { font-size: 30px; max-width: 100%; margin-bottom: 40px; }
+}
+
+@media (min-aspect-ratio: 9/4) {
+	/* Wide letterbox — horizontal layout */
+	.stage {
+		flex-direction: row;
+		align-items: center;
+		padding: 60px 100px;
+		gap: 80px;
+	}
+	.content { flex: 1; max-width: 1100px; }
+	.footer { flex-direction: column; gap: 16px; align-items: flex-end; margin-top: 0; padding-top: 0; }
+	.numeral { font-size: 520px; right: -40px; top: -30px; }
+	h1 { font-size: 84px; margin-bottom: 20px; }
+	.lede { font-size: 22px; margin-bottom: 24px; max-width: 900px; }
+	.kicker { margin-bottom: 14px; }
+}
