@@ -185,7 +185,7 @@ on mobile.
 **Close behavior:** a close button (`.wbam-popup-close`) dismisses the
 popup for the current page view. Reloading the page shows the popup
 again unless you're also using a per-ad session limit (see
-[Targeting → Frequency Capping](05-targeting.md#frequency-capping)).
+[Targeting → Frequency Capping](targeting.md#frequency-capping)).
 
 ### Sticky Bar Settings
 
@@ -252,6 +252,6 @@ Higher priority ads are shown more often. No zone configuration is needed — si
 
 ## Related Guides
 
-- [Ad Types](03-ad-types.md) - What kind of ads to create
-- [Targeting](05-targeting.md) - Control when ads show
+- [Ad Types](ad-types.md) - What kind of ads to create
+- [Targeting](targeting.md) - Control when ads show
 - [Shortcodes](../shortcode-reference/ad-shortcodes.md) - Display options

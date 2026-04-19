@@ -415,4 +415,4 @@ Or set it per-link in the admin.
 
 ---
 
-*See also: [Ad Shortcodes](01-ad-shortcodes.md)*
+*See also: [Ad Shortcodes](ad-shortcodes.md)*

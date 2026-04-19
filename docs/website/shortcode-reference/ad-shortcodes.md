@@ -193,4 +193,4 @@ To display a specific ad regardless of rotation, use `[wbam_ad id="123"]` with t
 
 ---
 
-*See also: [Link Shortcodes](02-link-shortcodes.md)*
+*See also: [Link Shortcodes](link-shortcodes.md)*

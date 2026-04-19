@@ -85,7 +85,7 @@ Best for: Google AdSense integration with responsive sizing
 
 Best for: Newsletter signups, lead generation
 
-See [Ad Types](03-ad-types.md) for full Email Capture documentation.
+See [Ad Types](ad-types.md) for full Email Capture documentation.
 
 ---
 
@@ -269,7 +269,7 @@ Create categories to organize ads:
 
 ## Next Steps
 
-- [Set up link management](02-link-management.md)
+- [Set up link management](../link-management/link-management.md)
 - [View all shortcodes](../shortcode-reference/ad-shortcodes.md)
 - [Troubleshooting](../troubleshooting/common-issues.md)
 

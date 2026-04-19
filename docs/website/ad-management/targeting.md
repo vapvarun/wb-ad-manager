@@ -209,5 +209,5 @@ Placements:
 
 ## Related Guides
 
-- [Placements](04-placements.md) - Where ads appear
-- [Settings](06-settings.md) - Global plugin settings
+- [Placements](placements.md) - Where ads appear
+- [Settings](settings.md) - Global plugin settings

@@ -194,5 +194,5 @@ When enabled, uninstalling the plugin will permanently delete:
 
 ## Related Guides
 
-- [Targeting](05-targeting.md) - Per-ad targeting options
-- [Placements](04-placements.md) - Available placement locations
+- [Targeting](targeting.md) - Per-ad targeting options
+- [Placements](placements.md) - Available placement locations

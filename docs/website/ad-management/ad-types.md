@@ -205,6 +205,6 @@ add_action( 'wbam_email_captured', function( $email, $name, $ad_id ) {
 
 ## Related Guides
 
-- [Managing Ads](01-managing-ads.md) - Create and edit ads
-- [Placements](04-placements.md) - Where to display ads
-- [Targeting](05-targeting.md) - When and to whom
+- [Managing Ads](managing-ads.md) - Create and edit ads
+- [Placements](placements.md) - Where to display ads
+- [Targeting](targeting.md) - When and to whom
