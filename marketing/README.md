@@ -52,3 +52,14 @@ This folder holds all marketing content for WB Ad Manager (Free) and WB Ad Manag
 Screenshots are stored at `docs/website/images/` and referenced from marketing files via relative path `../docs/website/images/...`. Do not copy images into `marketing/images/` — keep one source of truth.
 
 Sub-folders: `free/`, `pro/`, `flows/`.
+
+---
+
+## Sharing banners
+
+`07-brand-assets/banners/` holds 15 banners (5 angles × 3 sizes) for blog OG, social feed, and email header use. Don't sprinkle banner references across every post file — the mapping of "which banner goes with which post / email / landing" lives in one place:
+
+- [`07-brand-assets/banners/USAGE-MAP.md`](07-brand-assets/banners/USAGE-MAP.md) — which banner to use where.
+- [`07-brand-assets/banners/briefs.md`](07-brand-assets/banners/briefs.md) — palette + per-angle copy + regeneration notes.
+
+Banners use their own warm editorial palette (terracotta / amber / cream) — deliberately distinct from the navy / blue of the product's screenshots, so a blog post using a banner doesn't look like a reskinned admin UI.
