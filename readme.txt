@@ -17,18 +17,23 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 
 **Key Features:**
 
-* **Ad Rotation & Split Testing** - Multiple ads rotate in same placement with weighted priority
-* **4 Ad Types** - Image, Rich Content, HTML/JS Code, and Google AdSense
-* **14+ Placements** - Header, Footer, Content, Paragraph, Sticky, Popup, Comments, Archive, Shortcode, Widget, BuddyPress, bbPress, Jetonomy
+* **Ad Rotation & A/B Comparison** - Multiple ads rotate in same placement with weighted priority; side-by-side CTR comparison metabox with "winner" badge
+* **5 Ad Types** - Image, Rich Content, HTML/JS Code, Google AdSense, and Email Capture
+* **16+ Placements** - Header, Footer, Content, Paragraph, Sticky, Popup, Comments, Archive, Shortcode, Widget, BuddyPress, bbPress, Jetonomy
 * **Google AdSense** - Native AdSense support with automatic script management and Auto Ads
-* **BuddyPress Integration** - Activity stream, member/group directories, profile widgets
-* **bbPress Integration** - Forum, topic, and reply ad placements
-* **Jetonomy Integration** - Sidebar (top / after About / bottom), after topic body, before/between/after replies (requires [Jetonomy](https://store.wbcomdesigns.com/jetonomy/) v1.3.0+)
-* **Geo-Targeting** - Target ads by country using IP geolocation
+* **Email Capture** - Inline newsletter/subscribe form with customizable colours, optional name field, hooks for Mailchimp / ConvertKit / webhook integrations
+* **Link Management & Cloaked URLs** - Managed links with categories, cloaking, click tracking, redirect types, and rel=nofollow/sponsored
+* **Link Partnerships** - Shortcode-driven inquiry form (paid link / exchange / sponsored post) with accept / reject admin workflow and auto emails
+* **BuddyPress Integration** - Activity stream + 6 directory positions (members + groups)
+* **bbPress Integration** - 7 positions (forums, topics, between replies with configurable frequency)
+* **Jetonomy Integration** - 7 positions: sidebar (top / after About / bottom), after topic body, before/between/after replies (requires [Jetonomy](https://store.wbcomdesigns.com/jetonomy/) v1.3.0+)
+* **Geo-Targeting** - Target ads by country using IP geolocation (ip-api.com, ipinfo.io, ipapi.co)
 * **Device Targeting** - Desktop, tablet, or mobile specific ads
 * **Scheduling** - Start/end dates, day-of-week, and time-of-day targeting
-* **Frequency Control** - Limit ad impressions per session
-* **Setup Wizard** - Easy first-time configuration with sample ads
+* **Frequency Control** - Limit ad impressions per session (cookie-based)
+* **Setup Wizard** - Easy first-time configuration with sample ads + one-click demo-data cleanup
+* **REST API** - 21 endpoints for ads, analytics, links, and partnerships
+* **Privacy & GDPR** - IP anonymization, consent-gated AdSense, opt-in delete on uninstall
 
 **Ad Types:**
 
@@ -36,6 +41,7 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 2. **Rich Content** - WYSIWYG editor for HTML content
 3. **HTML/JS Code** - Paste ad network code (custom scripts)
 4. **Google AdSense** - Native integration with auto script management
+5. **Email Capture** - Inline newsletter subscribe form as an ad type
 
 **Placements:**
 
@@ -159,9 +165,16 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 = 2.8.0 =
 * New: Jetonomy integration module with 7 placement positions: sidebar (top / after About card / bottom), after topic body, before / between / after replies. Requires Jetonomy v1.3.0+.
 * New: Admin notice suggesting Jetonomy installation when not detected, with direct link to https://store.wbcomdesigns.com/jetonomy/
-* New: REST API (30 routes) and WordPress Abilities API (15 abilities)
+* New: REST API (21 routes across ads, analytics, links, partnerships) and WordPress Abilities API (15 abilities)
 * New: Full Lucide icon migration across admin and frontend — replaces dashicons with a consistent icon set that renders at any size without pixelation
 * New: Semantic CSS token layer with theme.json inheritance and prefers-color-scheme dark-mode override across 9 stylesheets — plugin now re-skins automatically to the active theme's palette
+* New: Email Capture ad type documented and surfaced — inline newsletter subscribe form with customisable colours, optional name field, and wbam_email_captured action for Mailchimp / ConvertKit / webhook integrations
+* New: Link Partnerships admin module — [wbam_partnership_inquiry] shortcode, admin list with accept/reject workflow, automatic email notifications, 24-hour duplicate-submission window
+* New: Before Archive / After Archive placements (loop_start / loop_end)
+* New: Six BuddyPress directory placements — before / between / after members and before / between / after groups
+* Improvement: Third-party admin notices are now suppressed on WB Ad Manager screens only (keeps your own notices intact, other admin pages unaffected)
+* Improvement: Setup wizard is now fully self-contained — renders correctly regardless of the active theme or admin-chrome state
+* Fix: WordPress.org hardening pass — zero PCP errors on clean dist, all admin $_POST / $_GET reads wrapped in wp_unslash() before sanitization
 
 = 2.7.0 =
 * Improvement: Updated translation strings

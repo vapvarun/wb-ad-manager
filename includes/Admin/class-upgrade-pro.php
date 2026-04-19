@@ -121,12 +121,12 @@ class Upgrade_Pro {
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( '14+ Placements (Header, Footer, Content, Sidebar, etc.)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( '16+ Placements (Header, Footer, Content, Paragraph, Archive, Popup, Sticky, Widget, Comments, Shortcode)', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'BuddyPress & bbPress Integration', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td><?php esc_html_e( 'BuddyPress, bbPress, & Jetonomy Integration', 'wb-ads-rotator-with-split-test' ); ?></td>
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 						</tr>
@@ -201,8 +201,8 @@ class Upgrade_Pro {
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 						</tr>
 						<tr>
-							<td><?php esc_html_e( 'Partnership Management', 'wb-ads-rotator-with-split-test' ); ?></td>
-							<td class="wbam-cross"><?php echo wbam_icon( 'minus', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
+							<td><?php esc_html_e( 'Partnership Inquiries ([wbam_partnership_inquiry] form + accept/reject)', 'wb-ads-rotator-with-split-test' ); ?></td>
+							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 						</tr>
 						<tr>
@@ -282,7 +282,7 @@ class Upgrade_Pro {
 						</tr>
 						<tr>
 							<td><?php esc_html_e( 'Impressions & Click Tracking', 'wb-ads-rotator-with-split-test' ); ?></td>
-							<td class="wbam-cross"><?php echo wbam_icon( 'minus', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
+							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 						</tr>
 						<tr>
@@ -362,7 +362,7 @@ class Upgrade_Pro {
 						</tr>
 						<tr>
 							<td><?php esc_html_e( 'REST API Access', 'wb-ads-rotator-with-split-test' ); ?></td>
-							<td class="wbam-cross"><?php echo wbam_icon( 'minus', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
+							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 							<td class="wbam-check"><?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?></td>
 						</tr>
 						<tr>
