@@ -660,7 +660,7 @@ class Admin {
 	/**
 	 * Image ad preview.
 	 *
-	 * @param array $data Ad data.
+	 * @param array<string,mixed> $data Ad data.
 	 * @return void
 	 */
 	private function render_preview_image( $data ) {
@@ -693,7 +693,7 @@ class Admin {
 	/**
 	 * Rich-content ad preview.
 	 *
-	 * @param array $data Ad data.
+	 * @param array<string,mixed> $data Ad data.
 	 * @return void
 	 */
 	private function render_preview_rich_content( $data ) {
@@ -710,7 +710,7 @@ class Admin {
 	 * cannot read admin cookies, modify the edit screen, or phone home
 	 * on behalf of the logged-in admin.
 	 *
-	 * @param array $data Ad data.
+	 * @param array<string,mixed> $data Ad data.
 	 * @return void
 	 */
 	private function render_preview_code( $data ) {
@@ -734,7 +734,7 @@ class Admin {
 	 * AdSense preview. Real AdSense only loads on approved public pages,
 	 * so show a labeled placeholder with the configured unit IDs.
 	 *
-	 * @param array $data Ad data.
+	 * @param array<string,mixed> $data Ad data.
 	 * @return void
 	 */
 	private function render_preview_adsense( $data ) {
@@ -768,7 +768,7 @@ class Admin {
 	/**
 	 * Email Capture ad preview.
 	 *
-	 * @param array $data    Ad data.
+	 * @param array<string,mixed> $data    Ad data.
 	 * @param int   $post_id Ad post ID (for CSS isolation hints).
 	 * @return void
 	 */
