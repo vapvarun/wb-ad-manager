@@ -26,6 +26,7 @@ use WBAM\Admin\Upgrade_Pro;
 use WBAM\Admin\First_Install_Pointers;
 use WBAM\Admin\Field_Tooltips;
 use WBAM\Admin\List_Empty_States;
+use WBAM\Admin\Notice_Suppressor;
 use WBAM\Frontend\Frontend;
 use WBAM\API\API_Bootstrap;
 
@@ -164,6 +165,10 @@ class Plugin {
 			// Friendly empty states for admin list screens (Phase G.5).
 			$empty_states = new List_Empty_States();
 			$empty_states->init();
+
+			// Third-party admin-notice suppressor for WB Ad Manager screens.
+			$notice_suppressor = new Notice_Suppressor();
+			$notice_suppressor->init();
 		}
 
 		// Frontend.
