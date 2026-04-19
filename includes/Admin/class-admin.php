@@ -121,8 +121,11 @@ class Admin {
 	 * Render the result notice after a bulk action. Hooks admin_notices
 	 * instead of admin_init because the notice needs the query args the
 	 * bulk handler put on the redirect URL.
+	 *
+	 * @return void
 	 */
 	public function render_bulk_action_notice() {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only display of bulk-action result; nonce is already verified in handle_bulk_actions() before the redirect.
 		if ( empty( $_GET['wbam_bulk_action'] ) || empty( $_GET['wbam_bulk_count'] ) ) {
 			return;
 		}
@@ -133,6 +136,7 @@ class Admin {
 
 		$action = sanitize_key( wp_unslash( $_GET['wbam_bulk_action'] ) );
 		$count  = absint( wp_unslash( $_GET['wbam_bulk_count'] ) );
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		if ( 0 === $count ) {
 			return;
 		}
@@ -165,10 +169,10 @@ class Admin {
 			return $actions;
 		}
 
-		$enabled  = (string) get_post_meta( $post->ID, '_wbam_enabled', true );
-		$is_on    = '1' === $enabled;
-		$next     = $is_on ? '0' : '1';
-		$url      = wp_nonce_url(
+		$enabled = (string) get_post_meta( $post->ID, '_wbam_enabled', true );
+		$is_on   = '1' === $enabled;
+		$next    = $is_on ? '0' : '1';
+		$url     = wp_nonce_url(
 			add_query_arg(
 				array(
 					'wbam_toggle_enabled' => $next,
@@ -178,10 +182,10 @@ class Admin {
 			),
 			'wbam_toggle_enabled_' . $post->ID
 		);
-		$label    = $is_on
+		$label = $is_on
 			? __( 'Disable', 'wb-ads-rotator-with-split-test' )
 			: __( 'Enable', 'wb-ads-rotator-with-split-test' );
-		$class    = $is_on ? 'wbam-row-action-disable' : 'wbam-row-action-enable';
+		$class = $is_on ? 'wbam-row-action-disable' : 'wbam-row-action-enable';
 
 		$actions[ 'wbam_toggle' ] = sprintf(
 			'<a href="%s" class="%s">%s</a>',
@@ -196,12 +200,14 @@ class Admin {
 	 * Render the Status filter dropdown in the list table toolbar.
 	 *
 	 * @param string $post_type Current admin screen post type.
+	 * @return void
 	 */
 	public function render_status_filter( $post_type ) {
 		if ( 'wbam-ad' !== $post_type ) {
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter. Nonce-less GET is the standard WP pattern for admin list filters (see core's manage_edit-{post_type}_columns handlers).
 		$current = isset( $_GET['wbam_enabled_filter'] ) ? sanitize_key( wp_unslash( $_GET['wbam_enabled_filter'] ) ) : '';
 		?>
 		<label for="wbam_enabled_filter" class="screen-reader-text">
@@ -219,6 +225,7 @@ class Admin {
 	 * Apply the Status filter to the list table's main query.
 	 *
 	 * @param \WP_Query $query Current query object.
+	 * @return void
 	 */
 	public function apply_status_filter( $query ) {
 		if ( ! is_admin() || ! $query->is_main_query() ) {
@@ -227,11 +234,13 @@ class Admin {
 		if ( 'wbam-ad' !== $query->get( 'post_type' ) ) {
 			return;
 		}
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter. Standard WP admin GET pattern (no nonce on pre_get_posts filters).
 		if ( empty( $_GET['wbam_enabled_filter'] ) ) {
 			return;
 		}
 
 		$mode = sanitize_key( wp_unslash( $_GET['wbam_enabled_filter'] ) );
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		if ( 'enabled' === $mode ) {
 			$query->set(
 				'meta_query',
@@ -319,6 +328,8 @@ class Admin {
 	/**
 	 * Flip the enabled/disabled flag from the inline row action link.
 	 * Back-end for the "Enable"/"Disable" entry added to each ad row.
+	 *
+	 * @return void
 	 */
 	public function handle_row_toggle() {
 		if ( ! isset( $_GET['wbam_toggle_enabled'], $_GET['post'] ) ) {
