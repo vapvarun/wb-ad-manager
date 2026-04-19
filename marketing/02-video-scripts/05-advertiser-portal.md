@@ -45,7 +45,7 @@
 Registration form
 
 **Step 2: Add Funds**
-"They add funds to their wallet via Stripe, PayPal, Razorpay, WooCommerce, or bank transfer."
+"They add funds to their wallet through your WooCommerce shop or membership plugin checkout — using whatever payment gateway you already have configured."
 
 **[SHOW]**
 Add funds interface

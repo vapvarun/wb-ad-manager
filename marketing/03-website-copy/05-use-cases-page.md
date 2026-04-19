@@ -21,6 +21,8 @@
 ### Headline
 "Monetize Your Blog Without Ruining the Reader Experience"
 
+![Frontend — first ad live on a WordPress site](../../docs/website/images/free/frontend-first-ad.png)
+
 ### The Challenge
 You've built an audience and you want to earn from your content. But you don't want your site to look like a NASCAR vehicle covered in banners. You need ads that convert without annoying readers.
 
@@ -51,6 +53,8 @@ A professional-looking blog that earns revenue without compromising the reading 
 
 ### Headline
 "Manage Hundreds of Affiliate Links Without Losing Your Mind"
+
+![Links list — affiliate link management dashboard](../../docs/website/images/free/links-list.png)
 
 ### The Challenge
 You've got affiliate links scattered across hundreds of posts. Different networks, different products, no central tracking. When Amazon changes a link structure, you spend hours hunting down broken URLs.
@@ -157,6 +161,8 @@ Forum monetization that works with your community, not against it. Revenue grows
 ### Headline
 "Build a Classified Listings Business in Your Niche"
 
+![Classifieds browse page — public listings view](../../docs/website/images/pro/classifieds-browse.png)
+
 ### The Challenge
 You want to create a local marketplace - job listings, apartment rentals, buy/sell, or services. But building a custom solution is expensive, and existing plugins are bloated.
 
@@ -166,7 +172,7 @@ You want to create a local marketplace - job listings, apartment rentals, buy/se
 Frontend submission forms, categories, locations, images, contact forms - everything you need out of the box.
 
 **Revenue from Day One**
-Charge for featured listings, highlighted placements, and urgency badges. Users pay from their wallet balance (Stripe, PayPal, Razorpay, WooCommerce, or bank transfer).
+Charge for featured listings, highlighted placements, and urgency badges. Users pay from their wallet balance — credits flow in through your WooCommerce, Paid Memberships Pro, or MemberPress setup, with manual/bank-transfer top-ups also available.
 
 **Automatic Management**
 Listings expire automatically. Renewal reminders go out via email. You focus on marketing while the system runs itself.
@@ -192,6 +198,8 @@ A professional classified directory that generates passive income. Users post an
 
 ### Headline
 "Let Advertisers Manage Themselves"
+
+![Advertiser Portal — campaigns tab showing active campaigns](../../docs/website/images/pro/portal-campaigns.png)
 
 ### The Challenge
 You sell ad space directly to businesses. But the manual process is killing you - emails, negotiations, invoices, setup, reporting. Every sale takes hours of work.

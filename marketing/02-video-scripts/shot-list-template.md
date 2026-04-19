@@ -168,7 +168,7 @@
 | ADV-01 | Advertiser dashboard | Overview tab |
 | ADV-02 | Wallet balance | Amount shown |
 | ADV-03 | Add funds button | Click action |
-| ADV-04 | Payment form (Stripe) | Card input |
+| ADV-04 | WooCommerce checkout (credit pack purchase) | Cart/checkout |
 | ADV-05 | My Ads tab | Ads listed |
 | ADV-06 | Create ad form | Advertiser view |
 | ADV-07 | Package selection | Options shown |
@@ -183,8 +183,8 @@
 |---------|-------------|----------|
 | WALLET-01 | Wallet overview | Balance shown |
 | WALLET-02 | Add funds amounts | Preset options |
-| WALLET-03 | Stripe checkout | Card form |
-| WALLET-04 | PayPal button | Payment option |
+| WALLET-03 | WooCommerce credit-pack checkout | Cart/checkout |
+| WALLET-04 | Manual top-up request form | Reference field |
 | WALLET-05 | Transaction list | History table |
 | WALLET-06 | Receipt download | PDF/view |
 

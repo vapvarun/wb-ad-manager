@@ -297,27 +297,31 @@
 - Approval workflow
 - Advertiser roles
 
-### 8.2 Wallet System
+### 8.2 Wallet System (Wbcom Credits SDK)
 - Enabling wallet
-- Payment gateway setup
+- Adapter overview — credits flow from WooCommerce, PMPro, or MemberPress into Pro
 - Minimum deposit amounts
-- Transaction fees
+- Transaction types and ledger
 
-### 8.3 Stripe Integration
-- API key configuration
-- Test mode setup
-- Webhook configuration
-- Currency settings
+### 8.3 WooCommerce Products Adapter
+- Creating credit-pack products
+- Mapping products to credit amounts
+- How any WC gateway (Stripe, PayPal, etc.) handles payment
 
-### 8.4 PayPal Integration
-- Client ID configuration
-- Sandbox testing
-- Currency settings
+### 8.4 WooCommerce Subscriptions Adapter
+- Recurring credit top-ups
+- Renewal handling
 
-### 8.5 WooCommerce Integration
-- Wallet top-up products
-- Checkout integration
-- Order handling
+### 8.5 Paid Memberships Pro / MemberPress Adapters
+- Mapping membership levels to credit grants
+- Activation and renewal flow
+
+### 8.5a WooCommerce Memberships Adapter
+- Bundling credits into membership plans
+
+### 8.5b Manual / Bank Transfer Top-ups
+- Advertiser reference note flow
+- Admin approval from Transactions screen
 
 ### 8.6 Package Management
 - Creating ad packages

@@ -96,7 +96,7 @@ Need more? WB Ad Manager Pro adds:
 
 * **Classified Marketplace** - Let users post paid listings
 * **Advertiser Portal** - Self-service ad management
-* **Wallet System** - Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer
+* **Wallet System** - Credits flow in through WooCommerce, Paid Memberships Pro, or MemberPress via the bundled Wbcom Credits SDK adapters; manual/bank-transfer top-ups included
 * **A/B Testing** - Optimize ad performance
 * **Advanced Analytics** - Charts, revenue tracking, exports
 * **Link Partnerships** - Track mutual link arrangements

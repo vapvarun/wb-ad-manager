@@ -79,7 +79,7 @@
 | **Pro-Only** |
 | Classifieds | ✓ | ✗ |
 | Advertiser portal | ✓ | ✗ |
-| Wallet system (Stripe, PayPal, Razorpay, WooCommerce, Manual/Bank Transfer) | ✓ | ✗ |
+| Wallet system with Wbcom Credits SDK adapters (WooCommerce, PMPro, MemberPress) | ✓ | ✗ |
 
 **Key Differentiator:** Advanced Ads requires multiple paid add-ons to match WB Ad Manager's free features.
 

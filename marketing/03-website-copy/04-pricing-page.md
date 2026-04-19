@@ -14,6 +14,9 @@
 ### Subheadline
 "Start free with everything you need. Upgrade when you want more."
 
+### Hero Image
+![Advertiser Portal — membership and wallet overview](../../docs/website/images/pro/portal-membership.png)
+
 ---
 
 ## Pricing Tiers
@@ -54,7 +57,7 @@
 **Includes everything in Free, plus:**
 - Classified marketplace module
 - Advertiser portal
-- Wallet system (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
+- Wallet system — credits flow in via WooCommerce, Paid Memberships Pro, or MemberPress using the bundled Wbcom Credits SDK adapters; manual/bank-transfer top-ups also included
 - A/B testing
 - Advanced analytics & reporting
 - Revenue tracking
@@ -82,7 +85,7 @@
 - Unlimited site activations
 - Agency-friendly licensing
 - Priority support queue
-- White-label options (coming soon)
+- Agency-friendly multi-site deployment
 
 **Best For:** Web agencies, site networks, developers building client sites
 
@@ -125,12 +128,13 @@
 | Frontend submissions | - | ✓ | ✓ |
 | Paid listing upgrades | - | ✓ | ✓ |
 | Advertiser portal | - | ✓ | ✓ |
-| Wallet system | - | ✓ | ✓ |
-| Stripe integration | - | ✓ | ✓ |
-| PayPal integration | - | ✓ | ✓ |
-| Razorpay integration | - | ✓ | ✓ |
-| WooCommerce integration | - | ✓ | ✓ |
-| Manual/Bank Transfer | - | ✓ | ✓ |
+| Wallet system with Wbcom Credits SDK | - | ✓ | ✓ |
+| WooCommerce Products adapter | - | ✓ | ✓ |
+| WooCommerce Subscriptions adapter | - | ✓ | ✓ |
+| WooCommerce Memberships adapter | - | ✓ | ✓ |
+| Paid Memberships Pro adapter | - | ✓ | ✓ |
+| MemberPress adapter | - | ✓ | ✓ |
+| Manual/Bank Transfer top-ups | - | ✓ | ✓ |
 | **Analytics** |
 | Basic stats | ✓ | ✓ | ✓ |
 | Charts & graphs | - | ✓ | ✓ |
@@ -205,6 +209,10 @@ Contact us for lifetime license pricing and availability.
 ### Headline
 "Start Monetizing Your WordPress Site Today"
 
+### Revenue Dashboard
+![Revenue dashboard — what Pro site owners earn across advertisers and placements](../../docs/website/images/pro/revenue-dashboard.png)
+*Pro gives you full visibility into what your monetization is actually earning.*
+
 ### Copy
 Whether you're just getting started with the free version or ready to build an advertising business with Pro, WB Ad Manager has you covered.
 
@@ -216,7 +224,7 @@ Whether you're just getting started with the free version or ready to build an a
 
 ## Trust Elements (Footer)
 
-- Secure checkout with Stripe
+- Secure checkout
 - 14-day money-back guarantee
 - One year of updates included
 - Priority support for Pro users

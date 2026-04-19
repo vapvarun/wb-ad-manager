@@ -223,7 +223,7 @@ If you're like most users, you've got ads running, links tracking, and a basic m
 **What Pro adds:**
 
 ✓ **Classified Marketplace** - Users post listings, pay for featured placements
-✓ **Advertiser Portal** - Self-service ad submission with wallet payments (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
+✓ **Advertiser Portal** - Self-service ad submission with wallet payments via your existing WooCommerce, Paid Memberships Pro, or MemberPress setup
 ✓ **A/B Testing** - Scientifically determine winning creatives
 ✓ **Advanced Analytics** - Charts, revenue tracking, device breakdown, exports
 ✓ **Geographic Targeting** - Show ads by country

@@ -11,6 +11,9 @@
 ### Logo
 [WB Ad Manager Logo]
 
+### Hero Image
+![WB Ad Manager Pro — Advertiser Portal overview](../../docs/website/images/pro/portal-overview.png)
+
 ### Tagline
 **Complete Ad Management for WordPress**
 
@@ -58,7 +61,7 @@ WordPress site owners struggle with:
 Everything in Free, plus:
 - Classified marketplace
 - Advertiser self-service portal
-- Wallet system (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
+- Wallet system — credits via WooCommerce, Paid Memberships Pro, or MemberPress adapters (bundled Wbcom Credits SDK)
 - A/B testing
 - Advanced analytics & reporting
 - Geographic targeting

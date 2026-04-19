@@ -218,21 +218,22 @@ Not all visitors are the same. Show mobile-specific ads to phone users. Show pre
 
 ## Slide 13: Feature - Payment Integration (PRO)
 
-**Visual:** Payment gateway logos (Stripe, PayPal, Razorpay, WooCommerce, Manual/Bank Transfer)
+**Visual:** Wbcom Credits SDK adapter diagram
 
-**Headline:** Accept Payments Seamlessly
+**Headline:** Accept Payments Through Your Existing Setup
 
 **Body:**
-- **Stripe** - cards, Apple Pay, Google Pay
-- **PayPal** - worldwide acceptance
-- **Razorpay** - preferred for India and South Asia
-- **WooCommerce** - use any WC gateway
-- **Manual/Bank Transfer** - offline payments, invoicing
-- **Wallet system** - advertisers prepay and spend
-- Automatic receipts and invoices
+- Pro ships the **Wbcom Credits SDK** with 5 adapter plugins
+- **WooCommerce Products** — sell credit packs; any WC gateway (Stripe, PayPal, etc.) handles payment
+- **WooCommerce Subscriptions** — recurring credit top-ups
+- **WooCommerce Memberships** — credits bundled into membership plans
+- **Paid Memberships Pro** — map PMPro levels to credit grants
+- **MemberPress** — map MemberPress products to credit grants
+- **Manual/Bank Transfer** — offline top-ups approved by admin
+- **Wallet system** - advertisers prepay and spend credits
 
 **Speaker Notes:**
-Getting paid should be easy. WB Ad Manager Pro integrates with the payment systems you already use. Advertisers add funds to their wallet, and costs are deducted automatically.
+Pro doesn't ship its own Stripe or PayPal integration. Instead, it piggybacks on the payment setup you already trust — WooCommerce, PMPro, or MemberPress. Advertisers add funds through your existing checkout; Pro picks up the credit on order completion.
 
 ---
 

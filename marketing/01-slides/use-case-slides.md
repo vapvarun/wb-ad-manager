@@ -212,7 +212,7 @@
 
 **Payment System:**
 - Employers create accounts
-- Add funds via Stripe, PayPal, Razorpay, WooCommerce, or bank transfer
+- Add funds through your WooCommerce, Paid Memberships Pro, or MemberPress checkout — the Wbcom Credits SDK adapter picks up the credit automatically. Manual/bank-transfer top-ups also supported.
 - Credits deducted automatically
 - Receipts sent by email
 

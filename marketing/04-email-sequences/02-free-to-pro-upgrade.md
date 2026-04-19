@@ -33,7 +33,7 @@ Turn your site into a classified marketplace. Users post listings, pay for featu
 Stop guessing which ad creative works. Run scientific tests, get statistical confidence, and automatically promote winners. The difference between 1% and 2% CTR doubles your revenue.
 
 **If feature = Advertiser Portal:**
-Let businesses manage their own ads. They sign up, add funds via Stripe, PayPal, Razorpay, WooCommerce, or bank transfer, create campaigns, and track their own stats. You just approve and collect.
+Let businesses manage their own ads. They sign up, add funds through your WooCommerce shop or membership plugin checkout, create campaigns, and track their own stats. You just approve and collect.
 
 **If feature = Advanced Analytics:**
 Charts, revenue tracking, device breakdown, geographic data. Make data-driven decisions about your monetization strategy.

@@ -13,12 +13,15 @@
 
 **Subheadline:** "The complete ad management solution that turns your traffic into revenue - whether you're a blogger, affiliate marketer, or running a community platform."
 
+### Hero Image
+![WB Ad Manager Pro — Advertiser Portal overview](../../docs/website/images/pro/portal-overview.png)
+
 ### Hero CTA
 - Primary Button: "Download Free Plugin"
 - Secondary Link: "See What's Included →"
 
 ### Trust Indicators (Below CTA)
-- "10,000+ Active Installations"
+- "New plugin gaining traction on WordPress.org"
 - "Works with any WordPress theme"
 - "5-minute setup"
 
@@ -143,6 +146,8 @@ The free version handles 90% of what most sites need. But if you're serious abou
 
 **Headline:** "Let Users Pay to Post"
 
+![Classifieds browse page — public listings view](../../docs/website/images/pro/classifieds-browse.png)
+
 **Copy:**
 Turn your site into a classified listings platform. Users submit their own listings, pay for featured placements, and you collect the revenue.
 
@@ -160,22 +165,28 @@ Perfect for: local directories, job boards, buy/sell communities, niche marketpl
 
 **Headline:** "Advertisers Serve Themselves. You Approve and Collect."
 
+![Advertiser Portal — Ads tab showing active campaigns](../../docs/website/images/pro/portal-ads.png)
+
 **Copy:**
 Stop managing ads manually. With the Advertiser Portal, businesses can:
 
 - Create advertiser accounts
-- Add funds to their wallet (Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer)
+- Add funds to their wallet — credits flow in through your existing WooCommerce, Paid Memberships Pro, or MemberPress setup via the bundled Wbcom Credits SDK adapter
 - Design and submit their own ads
 - Track their own performance metrics
 - Manage their campaigns independently
 
 You simply review submissions, approve quality ads, and watch the revenue flow. The entire billing, deployment, and tracking process is automated.
 
+![Pro Settings — Credits tab showing Wbcom Credits SDK adapter configuration](../../docs/website/images/pro/settings-credits.png)
+
 ---
 
 ### PRO Feature 3: Advanced Analytics
 
 **Headline:** "Know Exactly What's Working"
+
+![Revenue dashboard — income overview across advertisers and placements](../../docs/website/images/pro/revenue-dashboard.png)
 
 **Copy:**
 Free version shows basic stats. Pro shows everything:
@@ -271,7 +282,7 @@ A: The free version has no limits. Create as many ads as you need.
 A: Most ad plugins do one thing. WB Ad Manager combines ad management, affiliate link tracking, community monetization, and (with Pro) classified listings and advertiser portals - all in one unified system. No plugin conflicts, no fragmented data.
 
 ### Q: What payment methods does Pro support?
-A: The advertiser wallet system integrates with Stripe, PayPal, Razorpay, WooCommerce, and Manual/Bank Transfer. Users can add funds using any method you enable.
+A: Pro ships the Wbcom Credits SDK with adapters for WooCommerce Products, WooCommerce Subscriptions, WooCommerce Memberships, Paid Memberships Pro, and MemberPress. Advertisers top up their wallet through whichever payment gateway you already have configured inside those plugins — Stripe, PayPal, bank transfer, or anything else WooCommerce supports. Manual / bank-transfer top-ups are also available for offline payments.
 
 ### Q: Can I try Pro before buying?
 A: Yes, we offer a 14-day money-back guarantee. If Pro doesn't meet your needs, get a full refund, no questions asked.
@@ -291,7 +302,7 @@ Every day without proper monetization is money left on the table. Download WB Ad
 - **Secondary:** "View Pro Features"
 
 ### Urgency/Scarcity (Optional)
-"Join 10,000+ site owners who've taken control of their monetization"
+"Join a growing community of site owners who've taken control of their monetization"
 
 ---
 

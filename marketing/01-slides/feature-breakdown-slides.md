@@ -378,16 +378,17 @@ Draft → Pending → Active → Expired
 
 # MODULE 9: PAYMENTS (PRO)
 
-## Slide 9.1: Payment Gateways
+## Slide 9.1: Wbcom Credits SDK Adapters
 
-**Headline:** Accept Payments Your Way
+**Headline:** Credits Flow Through Your Existing Setup
 
-**Supported:**
-- Stripe (cards, Apple Pay, Google Pay)
-- PayPal
-- Razorpay
-- WooCommerce (any WC gateway)
-- Manual/Bank Transfer
+**Pro ships 5 adapters — no separate payment config inside Pro:**
+- **WooCommerce Products** — sell credit packs; Stripe, PayPal, or any WC gateway handles checkout
+- **WooCommerce Subscriptions** — recurring credit top-ups on each renewal
+- **WooCommerce Memberships** — credits bundled into membership plan activation
+- **Paid Memberships Pro** — map PMPro levels to credit grants
+- **MemberPress** — map MemberPress products to credit grants
+- **Manual/Bank Transfer** — advertiser submits reference; admin approves after funds clear
 
 **Wallet System:**
 - Advertisers prepay

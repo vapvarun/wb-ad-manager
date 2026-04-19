@@ -32,6 +32,8 @@ Before installing, make sure you have:
 
 ### Method A: Install from WordPress.org (Recommended)
 
+![Plugin install search — 'wb ad manager' keyword result](../images/free/install-search.png)
+
 1. Log in to your WordPress dashboard
 2. Go to **Plugins → Add New**
 3. Search for "WB Ad Manager"
