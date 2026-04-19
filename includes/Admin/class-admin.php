@@ -50,6 +50,12 @@ class Admin {
 		// Inline row-action link so a single "Disable" or "Enable"
 		// click on a row does not require opening the edit screen.
 		add_filter( 'post_row_actions', array( $this, 'add_row_action_toggle' ), 10, 2 );
+
+		// Status filter dropdown (All / Enabled / Disabled) on the
+		// Ads list table top toolbar, wired to a meta_query on the
+		// main query so the filter persists through pagination.
+		add_action( 'restrict_manage_posts', array( $this, 'render_status_filter' ) );
+		add_action( 'pre_get_posts', array( $this, 'apply_status_filter' ) );
 	}
 
 	/**
@@ -93,6 +99,12 @@ class Admin {
 				continue;
 			}
 			update_post_meta( $post_id, '_wbam_enabled', $value );
+
+			// Placement_Engine caches per-placement ad lists for 5 minutes;
+			// fire the same hook the save_post path fires so the cache
+			// clears and disabled ads stop serving on the next request.
+			do_action( 'wbam_save_ad_meta', $post_id );
+
 			++$count;
 		}
 
@@ -181,6 +193,79 @@ class Admin {
 	}
 
 	/**
+	 * Render the Status filter dropdown in the list table toolbar.
+	 *
+	 * @param string $post_type Current admin screen post type.
+	 */
+	public function render_status_filter( $post_type ) {
+		if ( 'wbam-ad' !== $post_type ) {
+			return;
+		}
+
+		$current = isset( $_GET['wbam_enabled_filter'] ) ? sanitize_key( wp_unslash( $_GET['wbam_enabled_filter'] ) ) : '';
+		?>
+		<label for="wbam_enabled_filter" class="screen-reader-text">
+			<?php esc_html_e( 'Filter by enabled status', 'wb-ads-rotator-with-split-test' ); ?>
+		</label>
+		<select name="wbam_enabled_filter" id="wbam_enabled_filter">
+			<option value=""><?php esc_html_e( 'All statuses', 'wb-ads-rotator-with-split-test' ); ?></option>
+			<option value="enabled" <?php selected( $current, 'enabled' ); ?>><?php esc_html_e( 'Enabled', 'wb-ads-rotator-with-split-test' ); ?></option>
+			<option value="disabled" <?php selected( $current, 'disabled' ); ?>><?php esc_html_e( 'Disabled', 'wb-ads-rotator-with-split-test' ); ?></option>
+		</select>
+		<?php
+	}
+
+	/**
+	 * Apply the Status filter to the list table's main query.
+	 *
+	 * @param \WP_Query $query Current query object.
+	 */
+	public function apply_status_filter( $query ) {
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+		if ( 'wbam-ad' !== $query->get( 'post_type' ) ) {
+			return;
+		}
+		if ( empty( $_GET['wbam_enabled_filter'] ) ) {
+			return;
+		}
+
+		$mode = sanitize_key( wp_unslash( $_GET['wbam_enabled_filter'] ) );
+		if ( 'enabled' === $mode ) {
+			$query->set(
+				'meta_query',
+				array(
+					array(
+						'key'     => '_wbam_enabled',
+						'value'   => '1',
+						'compare' => '=',
+					),
+				)
+			);
+			return;
+		}
+		if ( 'disabled' === $mode ) {
+			// "Disabled" = meta exists and != '1', OR meta is missing entirely.
+			$query->set(
+				'meta_query',
+				array(
+					'relation' => 'OR',
+					array(
+						'key'     => '_wbam_enabled',
+						'compare' => 'NOT EXISTS',
+					),
+					array(
+						'key'     => '_wbam_enabled',
+						'value'   => '1',
+						'compare' => '!=',
+					),
+				)
+			);
+		}
+	}
+
+	/**
 	 * Handle disable ad from comparison view.
 	 */
 	public function handle_disable_ad() {
@@ -210,6 +295,10 @@ class Admin {
 
 		// Disable the ad.
 		update_post_meta( $post_id, '_wbam_enabled', '0' );
+
+		// Invalidate the placement cache so the ad stops serving now,
+		// not five minutes from now.
+		do_action( 'wbam_save_ad_meta', $post_id );
 
 		// Add admin notice.
 		add_action(
@@ -256,6 +345,10 @@ class Admin {
 
 		$next = '1' === (string) $_GET['wbam_toggle_enabled'] ? '1' : '0';
 		update_post_meta( $post_id, '_wbam_enabled', $next );
+
+		// Invalidate the placement cache; otherwise the frontend keeps
+		// serving the ad for up to 5 minutes after the toggle.
+		do_action( 'wbam_save_ad_meta', $post_id );
 
 		wp_safe_redirect(
 			add_query_arg(
