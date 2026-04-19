@@ -16,6 +16,8 @@ jobs:
         with:
           php-version: '8.2'
           tools: composer, cs2pr
+      - name: Allow phpcodesniffer-composer-installer plugin
+        run: composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
       - run: composer global require squizlabs/php_codesniffer wp-coding-standards/wpcs phpcsstandards/phpcsutils
       - run: phpcs --config-set installed_paths $(composer global config home)/vendor/wp-coding-standards/wpcs
       - run: phpcs --report=checkstyle | cs2pr
@@ -29,7 +31,7 @@ jobs:
         with:
           php-version: '8.2'
       - run: composer install --no-interaction
-      - run: ./vendor/bin/phpstan analyse --error-format=github --memory-limit=1G
+      - run: ./vendor/bin/phpstan analyse --error-format=github --memory-limit=2G
 
   php-lint:
     name: PHP Syntax Check
@@ -63,6 +65,8 @@ jobs:
         with:
           php-version: '8.2'
           tools: composer
+      - name: Allow phpcodesniffer-composer-installer plugin
+        run: composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
       - run: composer global require phpcompatibility/phpcompatibility-wp phpcsstandards/phpcsutils squizlabs/php_codesniffer wp-coding-standards/wpcs
       - run: phpcs --config-set installed_paths $(composer global config home)/vendor/phpcompatibility/php-compatibility,$(composer global config home)/vendor/phpcompatibility/phpcompatibility-wp,$(composer global config home)/vendor/wp-coding-standards/wpcs
       - run: phpcs --standard=PHPCompatibilityWP --extensions=php --ignore=vendor,node_modules --runtime-set testVersion 7.4-8.4 -n .

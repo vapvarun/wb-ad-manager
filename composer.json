@@ -34,9 +34,9 @@
 		"test-pro": "WBAM_RUN_PRO_TESTS=1 phpunit --testsuite=pro",
 		"lint": "phpcs",
 		"lint-fix": "phpcbf",
-		"phpstan": "phpstan analyse --memory-limit=1G",
-		"phpstan-combined": "phpstan analyse --configuration=phpstan-combined.neon.dist --memory-limit=1G",
-		"phpstan-baseline": "phpstan analyse --generate-baseline=phpstan-baseline.neon --allow-empty-baseline --memory-limit=1G",
+		"phpstan": "phpstan analyse --memory-limit=2G",
+		"phpstan-combined": "phpstan analyse --configuration=phpstan-combined.neon.dist --memory-limit=2G",
+		"phpstan-baseline": "phpstan analyse --generate-baseline=phpstan-baseline.neon --allow-empty-baseline --memory-limit=2G",
 		"plugincheck": "bash bin/run-plugin-check.sh",
 		"verify-flow": "bash bin/verify-data-flow.sh",
 		"verify": [
