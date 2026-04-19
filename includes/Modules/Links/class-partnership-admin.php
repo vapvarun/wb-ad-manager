@@ -299,7 +299,7 @@ class Partnership_Admin {
 								<td>
 									<a href="<?php echo esc_url( $partnership->website_url ); ?>" target="_blank" rel="noopener">
 										<?php echo esc_html( wp_parse_url( $partnership->website_url, PHP_URL_HOST ) ); ?>
-										<?php echo wbam_icon( 'external-link', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+										<?php echo wbam_icon( 'external-link', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 									</a>
 								</td>
 								<td>
@@ -446,7 +446,7 @@ class Partnership_Admin {
 		<div class="wrap wbam-partnership-view">
 			<h1>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbam-partnerships' ) ); ?>" class="page-title-action">
-					<?php echo wbam_icon( 'arrow-left', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+					<?php echo wbam_icon( 'arrow-left', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 					<?php esc_html_e( 'Back to List', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 				<?php esc_html_e( 'Partnership Inquiry Details', 'wb-ads-rotator-with-split-test' ); ?>
@@ -475,7 +475,7 @@ class Partnership_Admin {
 								<td>
 									<a href="<?php echo esc_url( $partnership->website_url ); ?>" target="_blank" rel="noopener">
 										<?php echo esc_html( $partnership->website_url ); ?>
-										<?php echo wbam_icon( 'external-link', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+										<?php echo wbam_icon( 'external-link', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 									</a>
 								</td>
 							</tr>
@@ -582,17 +582,17 @@ class Partnership_Admin {
 
 								<?php if ( $partnership->is_pending() ) : ?>
 									<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=accept&partnership_id=' . $partnership->id ), 'wbam_partnership_accept_' . $partnership->id ) ); ?>" class="button button-primary" style="background: #46b450; border-color: #46b450;">
-										<?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+										<?php echo wbam_icon( 'check-circle', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 										<?php esc_html_e( 'Accept', 'wb-ads-rotator-with-split-test' ); ?>
 									</a>
 									<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=reject&partnership_id=' . $partnership->id ), 'wbam_partnership_reject_' . $partnership->id ) ); ?>" class="button" style="color: #a00;">
-										<?php echo wbam_icon( 'x', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+										<?php echo wbam_icon( 'x', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 										<?php esc_html_e( 'Reject', 'wb-ads-rotator-with-split-test' ); ?>
 									</a>
 								<?php endif; ?>
 
 								<a href="mailto:<?php echo esc_attr( $partnership->email ); ?>?subject=<?php echo esc_attr( urlencode( __( 'Re: Partnership Inquiry', 'wb-ads-rotator-with-split-test' ) ) ); ?>" class="button">
-									<?php echo wbam_icon( 'mail', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
+									<?php echo wbam_icon( 'mail', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 									<?php esc_html_e( 'Email Requester', 'wb-ads-rotator-with-split-test' ); ?>
 								</a>
 							</div>

@@ -96,7 +96,7 @@ class Links_List_Table extends \WP_List_Table {
 	 * @return array
 	 */
 	protected function get_views() {
-		$current = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : 'all';
+		$current = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'all';
 		$views   = array();
 
 		$all_count      = $this->link_manager->count_links();
@@ -149,7 +149,7 @@ class Links_List_Table extends \WP_List_Table {
 			return;
 		}
 
-		$link_type   = isset( $_GET['link_type'] ) ? sanitize_text_field( $_GET['link_type'] ) : '';
+		$link_type   = isset( $_GET['link_type'] ) ? sanitize_text_field( wp_unslash( $_GET['link_type'] ) ) : '';
 		$category_id = isset( $_GET['category_id'] ) ? (int) $_GET['category_id'] : 0;
 
 		?>
@@ -198,16 +198,16 @@ class Links_List_Table extends \WP_List_Table {
 		$args = array(
 			'limit'   => $per_page,
 			'offset'  => ( $this->get_pagenum() - 1 ) * $per_page,
-			'orderby' => isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'created_at',
-			'order'   => isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'DESC',
+			'orderby' => isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'created_at',
+			'order'   => isset( $_GET['order'] ) ? sanitize_text_field( wp_unslash( $_GET['order'] ) ) : 'DESC',
 		);
 
 		if ( isset( $_GET['status'] ) && ! empty( $_GET['status'] ) ) {
-			$args['status'] = sanitize_text_field( $_GET['status'] );
+			$args['status'] = sanitize_text_field( wp_unslash( $_GET['status'] ) );
 		}
 
 		if ( isset( $_GET['link_type'] ) && ! empty( $_GET['link_type'] ) ) {
-			$args['link_type'] = sanitize_text_field( $_GET['link_type'] );
+			$args['link_type'] = sanitize_text_field( wp_unslash( $_GET['link_type'] ) );
 		}
 
 		if ( isset( $_GET['category_id'] ) && ! empty( $_GET['category_id'] ) ) {
@@ -215,7 +215,7 @@ class Links_List_Table extends \WP_List_Table {
 		}
 
 		if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
-			$args['search'] = sanitize_text_field( $_GET['s'] );
+			$args['search'] = sanitize_text_field( wp_unslash( $_GET['s'] ) );
 		}
 
 		$this->items = $this->link_manager->get_links( $args );
@@ -242,11 +242,11 @@ class Links_List_Table extends \WP_List_Table {
 			return;
 		}
 
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'], 'bulk-links' ) ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'bulk-links' ) ) {
 			return;
 		}
 
-		$link_ids = isset( $_GET['link'] ) ? array_map( 'intval', $_GET['link'] ) : array();
+		$link_ids = isset( $_GET['link'] ) ? array_map( 'absint', wp_unslash( (array) $_GET['link'] ) ) : array();
 
 		if ( empty( $link_ids ) ) {
 			return;
