@@ -2,7 +2,9 @@
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
-WB Ad Manager Pro v1.4.0 is a premium addon that extends WB Ad Manager with an advertiser portal, classifieds marketplace, wallet and payment system, campaign management, detailed analytics, A/B testing, ad rotation, link tracking, and BuddyPress integration.
+WB Ad Manager Pro adds a monetization layer on top of the free plugin. You get an advertiser portal, a classifieds marketplace, a credit wallet, and the campaign / analytics / A/B testing / link-tracking modules that let you run a real ad platform on your site. Everything in the free plugin keeps working; Pro is strictly additive.
+
+Install it on top of the free plugin once you're ready to let other people (advertisers, classified sellers, community members) pay you to appear in your ad slots or listings.
 
 ---
 
@@ -75,19 +77,22 @@ If you plan to use classifieds, also create pages for:
 [wbam_my_classifieds]
 ```
 
-### 2. Configure Payment Method
+### 2. Configure at least one credit top-up adapter
 
-Go to **WB Ads → Pro Settings → Payments** and configure at least one payment method for wallet top-ups.
+Pro uses the Wbcom Credits SDK rather than shipping its own Stripe, PayPal, or Razorpay integration. Credits reach an advertiser's wallet through an **adapter** that connects the SDK to a plugin you already use for payments. Open **WB Ads → Pro Settings → Credits** and enable whichever adapter matches the plugin(s) active on your site.
 
-| Payment Method | Setup Needed |
-|----------------|-------------|
-| Stripe | API keys from your Stripe dashboard |
-| PayPal | Client ID and secret from PayPal Developer — **Admin settings UI not yet available; configure via the `wbam_pro_settings` database option or filter** |
-| Razorpay | Key ID and Key Secret from Razorpay dashboard — **Admin settings UI not yet available; configure via the `wbam_pro_settings` database option or filter** |
-| WooCommerce | WooCommerce installed and configured with at least one payment gateway |
-| Manual / Bank Transfer | Payment instructions text (funds approved manually by admin) |
+| Adapter | Requires | Accepts payment via |
+|---------|----------|---------------------|
+| WooCommerce Products | WooCommerce | Any WC-supported gateway — Stripe, PayPal, Razorpay, Square, bank transfer, etc. |
+| WooCommerce Subscriptions | WooCommerce Subscriptions | Any WC-supported gateway, billed on each renewal |
+| WooCommerce Memberships | WooCommerce Memberships | Any WC-supported gateway, credit bundled into the membership |
+| Paid Memberships Pro | PMPro | Gateways supported by PMPro (Stripe, PayPal, Braintree, etc.) |
+| MemberPress | MemberPress | Gateways supported by MemberPress |
+| Manual / Bank Transfer | — | Offline payment approved manually from the admin Transactions page |
 
-You can enable multiple payment methods simultaneously. Advertisers choose at checkout.
+Advertisers can also request manual/bank-transfer top-ups directly from their Wallet tab; you approve them from **WB Ads → Transactions → Pending Approval** once funds have cleared.
+
+See [Wallet and Payments](../payments/wallet-and-payments.md) for the full setup walkthroughs for each adapter path.
 
 ### 3. Enable Modules
 
@@ -146,7 +151,7 @@ Flat-rate campaigns do not use budget reservation — the package price is debit
 | Advertiser Portal | 12-tab self-service frontend dashboard |
 | Classifieds System | Full listings marketplace with categories, locations, upgrades, inquiries, reports, favorites, and seller following |
 | Wallet System | Prepaid credit wallet with full transaction history |
-| Payment Methods | Stripe, PayPal, Razorpay, WooCommerce, Manual/Bank Transfer |
+| Credit Top-up Adapters | WooCommerce Products, WooCommerce Subscriptions, WooCommerce Memberships, Paid Memberships Pro, MemberPress, plus manual / bank transfer |
 | Campaign Management | Draft, active, paused, completed statuses; CPM/CPC/flat pricing; budget reservation |
 | Analytics Dashboard | Impressions, clicks, CTR with date-range charts |
 | A/B Testing | Split-test ad variants to find top performers |

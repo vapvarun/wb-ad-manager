@@ -254,4 +254,4 @@ Higher priority ads are shown more often. No zone configuration is needed — si
 
 - [Ad Types](03-ad-types.md) - What kind of ads to create
 - [Targeting](05-targeting.md) - Control when ads show
-- [Shortcodes](../shortcode-reference/01-ad-shortcodes.md) - Display options
+- [Shortcodes](../shortcode-reference/ad-shortcodes.md) - Display options
