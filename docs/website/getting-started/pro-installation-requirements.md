@@ -166,7 +166,7 @@ Flat-rate campaigns do not use budget reservation — the package price is debit
 
 ## Database
 
-On activation, the installer creates all required tables and sets DB version `2.8.0`. The installer runs automatic upgrade routines on plugin updates — no manual database work is needed.
+On activation, the installer creates all required tables and stores the current schema version in the `wbam_pro_db_version` option (currently `3.8.0`). The installer runs automatic upgrade routines on plugin updates — no manual database work is needed.
 
 Key tables created:
 
