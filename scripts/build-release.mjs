@@ -146,12 +146,45 @@ function parseRequires(phpPath) {
 }
 
 function isExcluded(relPath, patterns) {
+	// Patterns are ALWAYS plugin-root-relative. A bare "vendor" means
+	// only "/vendor" and "/vendor/..." — NOT "assets/vendor" anywhere.
+	// This matches what the user's mental model is for .distignore in
+	// a WordPress plugin context (we want explicit control, not
+	// gitignore's walk-everywhere semantics).
+	//
+	// Semantics supported:
+	//   vendor        -> top-level dir/file only
+	//   /vendor       -> same as above (leading slash allowed)
+	//   vendor/bin    -> top-level vendor/bin subtree
+	//   *.log         -> any file ending in .log, anywhere
+	//   .DS_Store     -> any file named .DS_Store, anywhere
 	const name = relPath.split('/').pop();
-	for (const pat of patterns) {
-		if (pat === name || pat === relPath) return true;
-		if (pat.startsWith('/') && (relPath === pat.slice(1) || relPath.startsWith(pat.slice(1) + '/'))) return true;
-		if (pat.endsWith('/*') && relPath.startsWith(pat.slice(0, -1))) return true;
-		if (pat.startsWith('*') && name.endsWith(pat.slice(1))) return true;
+	for (const raw of patterns) {
+		let pat = raw;
+		if (pat.startsWith('/')) pat = pat.slice(1);
+		if (pat.endsWith('/*')) pat = pat.slice(0, -2);
+		// Wildcard extension patterns ("*.log") match any file by suffix.
+		if (pat.startsWith('*')) {
+			if (name.endsWith(pat.slice(1))) return true;
+			continue;
+		}
+		// Bare dot-prefixed names or filenames with no slash match
+		// anywhere (they're "file-name" patterns, not path patterns):
+		// .DS_Store, Thumbs.db, .editorconfig, etc.
+		if (!pat.includes('/')) {
+			// If the pattern is a file-name with an extension (has a dot
+			// after the first char), match basename anywhere.
+			// Otherwise it's a bare dir/file name — match plugin root only.
+			const looksLikeFilename = /\.[a-z0-9]+$/i.test(pat);
+			if (looksLikeFilename) {
+				if (name === pat) return true;
+				continue;
+			}
+			// Bare name: plugin-root-relative only.
+			if (relPath === pat || relPath.startsWith(pat + '/')) return true;
+			continue;
+		}
+		// Path pattern (contains slash) — exact match or prefix.
 		if (relPath === pat || relPath.startsWith(pat + '/')) return true;
 	}
 	return false;
@@ -230,17 +263,14 @@ function main() {
 		if (!existsSync(inZip)) errors.push({ kind, path: srcRel });
 	}
 
-	// 3a. CSS files under assets/css/.
-	for (const cssFile of walk('assets/css', ['.css'])) {
-		const rel = relative(ROOT, cssFile);
+	// 3a. CSS + JS across ALL of assets/ (not just assets/css and
+	// assets/js). Plugins commonly stash vendored libs at
+	// assets/vendor/ (lucide, chart.js, etc.) and those must ship too.
+	for (const f of walk('assets', ['.css', '.js'])) {
+		const rel = relative(ROOT, f);
 		if (isExcluded(rel, patterns)) continue;
-		requireInZip(rel, 'CSS');
-	}
-	// 3b. JS files under assets/js/.
-	for (const jsFile of walk('assets/js', ['.js'])) {
-		const rel = relative(ROOT, jsFile);
-		if (isExcluded(rel, patterns)) continue;
-		requireInZip(rel, 'JS');
+		const kind = f.endsWith('.css') ? 'CSS' : 'JS';
+		requireInZip(rel, kind);
 	}
 	// 3c. Every PHP file under includes/.
 	for (const phpFile of walk('includes', ['.php'])) {
