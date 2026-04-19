@@ -1,4 +1,15 @@
+---
+title: Campaign Management
+persona: Operator — Pro
+tier: pro
+one_job: Document the campaign lifecycle, status transitions, and budget reservation rules so admins can manage campaigns with confidence.
+outcome: Reader knows every campaign status, which transitions are permitted, and how budget reservation and refunds work for flat, CPM, and CPC campaigns.
+assumes: WB Ad Manager Pro installed and activated, at least one campaign or package configured.
+---
+
 # Campaign Management
+
+![Campaigns tab with active campaigns, budget progress bars, and per-campaign actions](../images/pro/portal-campaigns.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 

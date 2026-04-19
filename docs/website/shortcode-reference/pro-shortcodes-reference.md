@@ -1,3 +1,12 @@
+---
+title: Pro Shortcodes Reference
+persona: Operator — Pro
+tier: pro
+one_job: Provide a complete reference for all 12 Pro shortcodes and the module each one requires.
+outcome: Reader can identify, place, and attribute-configure every Pro shortcode (advertiser portal, classifieds, wallet, submissions, etc.).
+assumes: WB Ad Manager Pro installed and activated, relevant Pro modules enabled for each shortcode.
+---
+
 # Pro Shortcodes Reference
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.

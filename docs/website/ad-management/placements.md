@@ -1,3 +1,12 @@
+---
+title: Placements
+persona: Operator — Free
+tier: free
+one_job: Explain every placement location available in the free plugin so a site owner can decide where ads should render.
+outcome: Reader knows every built-in placement (page, in-content, archive, widget, overlay, comments, BuddyPress) and when each fires.
+assumes: WordPress admin access, the free plugin activated.
+---
+
 # Placements
 
 Placements control where ads appear on your site. Assign multiple placements per ad.

@@ -1,3 +1,12 @@
+---
+title: Pro Troubleshooting
+persona: Operator — Pro
+tier: pro
+one_job: Help an admin diagnose and resolve the common Pro issues — payments, wallet credits, submissions, campaigns, analytics, classifieds.
+outcome: Reader can walk the checklists for each failure mode (Stripe, manual payments, wallet sync, approval flow) and isolate the root cause.
+assumes: WB Ad Manager Pro installed and activated, access to WP-admin and any configured payment gateway dashboard.
+---
+
 # Pro Troubleshooting
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.

@@ -1,3 +1,12 @@
+---
+title: Managing Ads - Site Owner Guide
+persona: Operator — Free
+tier: free
+one_job: Walk a site owner through creating, placing, and prioritising ads in the free plugin.
+outcome: Reader can create an ad of any supported type, assign placements, set priority and session limits, and publish it.
+assumes: WordPress admin access, the free plugin activated.
+---
+
 # Managing Ads - Site Owner Guide
 
 ## What You'll Learn
@@ -183,7 +192,7 @@ See [Shortcode Reference](../shortcode-reference/ad-shortcodes.md) for all short
 
 ### Viewing Stats
 
-![Analytics Dashboard](../images/for-site-owners/analytics-dashboard.png)
+![Analytics dashboard with impressions, clicks, CTR and top-performing ads](../images/pro/analytics-dashboard.png)
 *The ads list showing impressions, clicks, and status columns per ad*
 
 The Ads list shows impressions and clicks directly in the table columns. For per-ad details:

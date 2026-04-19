@@ -1,4 +1,15 @@
+---
+title: Creating Ad Packages
+persona: Operator — Pro
+tier: pro
+one_job: Document every package field and pricing model so admins can build the ad packages their advertisers buy.
+outcome: Reader can create Flat, CPM, CPC, and combined CPM+CPC packages, set durations and limits, and understand budget reservation behaviour.
+assumes: WB Ad Manager Pro installed and activated, wallet top-up path configured.
+---
+
 # Creating Ad Packages
+
+![Ad Packages admin list showing pricing tiers with limits and status](../images/pro/packages-list.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 

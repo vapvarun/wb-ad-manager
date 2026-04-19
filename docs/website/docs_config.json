@@ -32,10 +32,65 @@
             ]
         },
         {
+            "name": "Flows",
+            "folder": "flows",
+            "slug": "flows-wam",
+            "order": 2,
+            "docs": [
+                {
+                    "file": "publish-first-ad.md",
+                    "title": "Publish Your First Ad",
+                    "slug": "publish-first-ad-wam",
+                    "order": 1
+                },
+                {
+                    "file": "monetize-affiliate-links.md",
+                    "title": "Monetize Affiliate Links",
+                    "slug": "monetize-affiliate-links-wam",
+                    "order": 2
+                },
+                {
+                    "file": "accept-paid-ads.md",
+                    "title": "Accept Paid Ads",
+                    "slug": "accept-paid-ads-wam",
+                    "order": 3,
+                    "tier": "pro"
+                },
+                {
+                    "file": "launch-classifieds-marketplace.md",
+                    "title": "Launch a Classifieds Marketplace",
+                    "slug": "launch-classifieds-marketplace-wam",
+                    "order": 4,
+                    "tier": "pro"
+                },
+                {
+                    "file": "extend-via-hooks.md",
+                    "title": "Extend via Hooks",
+                    "slug": "extend-via-hooks-wam",
+                    "order": 5,
+                    "tier": "pro"
+                }
+            ]
+        },
+        {
+            "name": "Feature Matrix",
+            "folder": ".",
+            "slug": "feature-matrix-category-wam",
+            "order": 3,
+            "docs": [
+                {
+                    "file": "feature-matrix.md",
+                    "title": "Feature Matrix — Free vs. Pro",
+                    "slug": "feature-matrix-wam",
+                    "order": 1
+                }
+            ]
+        },
+        {
             "name": "Ad Management",
             "folder": "ad-management",
             "slug": "ad-management-wam",
-            "order": 2,
+            "order": 4,
             "docs": [
                 {
                     "file": "managing-ads.md",
@@ -73,7 +128,7 @@
             "name": "Link Management",
             "folder": "link-management",
             "slug": "link-management-wam",
-            "order": 3,
+            "order": 5,
             "docs": [
                 {
                     "file": "link-management.md",
@@ -93,7 +148,7 @@
             "name": "Advertiser Portal",
             "folder": "advertiser-portal",
             "slug": "advertiser-portal-wam",
-            "order": 4,
+            "order": 6,
             "tier": "pro",
             "docs": [
                 {
@@ -130,7 +185,7 @@
             "name": "Analytics",
             "folder": "analytics",
             "slug": "analytics-wam",
-            "order": 5,
+            "order": 7,
             "tier": "pro",
             "docs": [
                 {
@@ -146,7 +201,7 @@
             "name": "Classifieds",
             "folder": "classifieds",
             "slug": "classifieds-wam",
-            "order": 6,
+            "order": 8,
             "tier": "pro",
             "docs": [
                 {
@@ -162,7 +217,7 @@
             "name": "Payments & Wallet",
             "folder": "payments",
             "slug": "payments-wam",
-            "order": 7,
+            "order": 9,
             "tier": "pro",
             "docs": [
                 {
@@ -178,7 +233,7 @@
             "name": "Settings (Pro)",
             "folder": "settings",
             "slug": "settings-pro-wam",
-            "order": 8,
+            "order": 10,
             "tier": "pro",
             "docs": [
                 {
@@ -201,7 +256,7 @@
             "name": "Shortcode Reference",
             "folder": "shortcode-reference",
             "slug": "shortcode-reference-wam",
-            "order": 9,
+            "order": 11,
             "docs": [
                 {
                     "file": "ad-shortcodes.md",
@@ -228,7 +283,7 @@
             "name": "Troubleshooting",
             "folder": "troubleshooting",
             "slug": "troubleshooting-wam",
-            "order": 10,
+            "order": 12,
             "docs": [
                 {
                     "file": "common-issues.md",

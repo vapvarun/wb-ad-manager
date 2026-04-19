@@ -1,3 +1,12 @@
+---
+title: Link Management - Site Owner Guide
+persona: Operator — Free
+tier: free
+one_job: Show a site owner how to create, organise, track, and display managed outbound links using the free plugin's Links module.
+outcome: Reader can add managed links with cloaking and SEO attributes, display them via shortcode, and see click counts.
+assumes: Free plugin installed and activated, WordPress admin access.
+---
+
 # Link Management - Site Owner Guide
 
 ## What You'll Learn
@@ -23,7 +32,7 @@ Instead of pasting raw URLs throughout your site, managed links offer:
 
 ## Creating Managed Links
 
-![Link Add Form](../images/for-site-owners/link-add-form.png)
+![Add Link form — name, destination URL, slug, link options](../images/free/link-add.png)
 *The Add New Link form showing URL configuration, cloaking options, and SEO attributes*
 
 ### Step-by-Step
@@ -143,7 +152,7 @@ Allow visitors to request link placements on your site.
 
 ### Managing Partnership Requests
 
-![Link Partnerships](../images/for-site-owners/link-partnerships.png)
+![Link management admin list with cloaked URLs, type, click counts, and status](../images/free/links-list.png)
 *The Partnership Inquiries page with status filters, search, and inquiry management*
 
 1. Go to **WB Ad Manager → Partnerships**
@@ -167,7 +176,7 @@ If approved: Link created → Guest notified
 
 ## Tracking Link Performance
 
-![Link Analytics](../images/for-site-owners/link-analytics.png)
+![Link analytics — click counts per link on the Links list page](../images/free/links-list.png)
 *The Link Analytics dashboard showing click trends, link types distribution, and top performers*
 
 ### Viewing Click Data

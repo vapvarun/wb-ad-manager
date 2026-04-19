@@ -1,3 +1,12 @@
+---
+title: Link Management Shortcodes
+persona: Operator — Free
+tier: free
+one_job: Document the free plugin's link shortcodes so site owners can display tracked links and render the partnership inquiry form.
+outcome: Reader can use [wbam_link], [wbam_links], [wbam_link_url], and [wbam_partnership_inquiry] with every supported attribute.
+assumes: Free plugin installed and activated, at least one managed link created.
+---
+
 # Link Management Shortcodes
 
 ## What You'll Learn

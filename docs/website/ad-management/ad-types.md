@@ -1,3 +1,12 @@
+---
+title: Ad Types
+persona: Operator — Free
+tier: free
+one_job: Help site owners pick the right ad type for what they want to display.
+outcome: Reader can choose between Image, Rich Content, Code/HTML/JS, AdSense, and Email Capture ad types and fill the required fields for each.
+assumes: WordPress admin access, the free plugin activated.
+---
+
 # Ad Types
 
 WB Ad Manager supports five ad types. Choose based on what you're displaying.
@@ -20,7 +29,7 @@ WB Ad Manager supports five ad types. Choose based on what you're displaying.
 
 Display banner images with click tracking.
 
-![Image Ad Editor](../images/for-site-owners/ad-editor-image-type.png)
+![Image ad editor with preview + placements](../images/free/ad-editor-image.png)
 *The Image Ad editor showing image upload, destination URL, and alt text fields*
 
 ### Settings
@@ -44,6 +53,8 @@ Display banner images with click tracking.
 ## Rich Content Ad
 
 Create ads using the WordPress block editor.
+
+![Rich Content ad editor with HTML input](../images/free/ad-editor-rich.png)
 
 ### Settings
 
@@ -70,7 +81,7 @@ Create ads using the WordPress block editor.
 
 Insert HTML, JavaScript, or third-party ad network code.
 
-![Code Ad Editor](../images/for-site-owners/ad-editor-html-type.png)
+![Code/HTML ad editor with sandbox toggle](../images/free/ad-editor-code.png)
 *The Code Ad editor showing the syntax-highlighted code input area*
 
 ### Settings
@@ -96,6 +107,8 @@ Only use code from trusted sources. Malicious scripts can compromise your site a
 ## Google AdSense Ad
 
 Dedicated Google AdSense integration with responsive sizing.
+
+![AdSense ad editor — Ad Slot ID, Publisher ID, Ad Format](../images/free/ad-editor-adsense.png)
 
 ### Settings
 
@@ -125,6 +138,8 @@ Dedicated Google AdSense integration with responsive sizing.
 
 Collect email addresses with a subscription form displayed inline anywhere on your site.
 
+![Email Capture ad editor — headline, description, button text, success message](../images/free/ad-editor-email.png)
+
 ### Settings
 
 | Field | Description |
@@ -144,13 +159,13 @@ Collect email addresses with a subscription form displayed inline anywhere on yo
 ### How It Works
 
 1. A visitor sees the form and submits their email address
-2. The plugin stores the submission and fires the `wbam_email_captured` action
+2. The plugin stores the submission and fires the [`wbam_email_captured`](../../DEVELOPER-GUIDE.md#email-capture) action
 3. A success message (or redirect) is shown
 4. A cookie is set so the form hides for the configured number of days
 
 ### Integrating with Your Email Service
 
-Use the `wbam_email_captured` action hook to pass captured emails to Mailchimp, ConvertKit, or any other service:
+Use the [`wbam_email_captured`](../../DEVELOPER-GUIDE.md#email-capture) action hook to pass captured emails to Mailchimp, ConvertKit, or any other service:
 
 ```php
 add_action( 'wbam_email_captured', function( $email, $name, $ad_id ) {

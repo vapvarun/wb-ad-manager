@@ -1,3 +1,12 @@
+---
+title: Quick Setup Guide
+persona: Evaluator — Free
+tier: free
+one_job: Get a new user from a fresh install to a first live ad, with placement, priority, and performance tracking in place.
+outcome: Reader can create their first ad, assign placements, display it via shortcode or placement checkboxes, and see impression/click data.
+assumes: Free plugin installed and activated, WordPress admin access.
+---
+
 # Quick Setup Guide
 
 ## What You'll Learn
@@ -21,7 +30,7 @@ Ads assigned to the same placement rotate automatically based on priority. No zo
 
 ## Step 1: Create Your First Ad (5 minutes)
 
-![Ads List](../images/getting-started/ads-list.png)
+![Ads admin list showing 23 ads with status, type, placements, impressions and clicks](../images/free/ads-list.png)
 *The ads list showing all your ads with status, placements, and performance metrics*
 
 ### For Image Ads

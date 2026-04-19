@@ -1,4 +1,15 @@
+---
+title: Advertiser Portal Overview
+persona: Operator — Pro
+tier: pro
+one_job: Give a site owner a full tour of the frontend advertiser portal — what it is, how advertisers register, and every tab it exposes.
+outcome: Reader can set up the portal page with the shortcode, understand advertiser registration and account statuses, and identify every portal tab.
+assumes: WB Ad Manager Pro installed and activated, a page where the portal shortcode can be placed.
+---
+
 # Advertiser Portal Overview
+
+![Advertiser portal overview — stats, quick actions, active campaigns, recent activity](../images/pro/portal-overview.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
@@ -13,6 +24,8 @@ The portal is embedded on any page using a single shortcode:
 ---
 
 ## How the Portal Works
+
+![Advertiser portal Ads tab with creative cards and action buttons](../images/pro/portal-ads.png)
 
 When a logged-in user visits the dashboard page, the plugin checks whether they have an advertiser account. If auto-registration is enabled in settings, an account is created automatically. Otherwise, users register via the dashboard page and wait for admin approval.
 
