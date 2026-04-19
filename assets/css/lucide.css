@@ -1,0 +1,40 @@
+/**
+ * WB Ad Manager — Lucide icon base rules.
+ *
+ * Lucide renders inline SVGs via JS (lucide.createIcons()). These rules give
+ * every icon a predictable size + color anchor regardless of surrounding
+ * text styling, across both free and pro plugins and at both frontend and
+ * admin surfaces. Size modifiers match the wbam_icon() helper's size arg.
+ * Stroke inherits from currentColor so icons adopt the button / link /
+ * heading color automatically.
+ *
+ * @package WB_Ad_Manager
+ * @since   2.8.1
+ */
+
+.wbam-icon {
+	display: inline-flex;
+	flex-shrink: 0;
+	width: var(--wbam-icon-size, 20px);
+	height: var(--wbam-icon-size, 20px);
+	color: currentColor;
+	stroke-width: 2;
+	vertical-align: middle;
+}
+
+.wbam-icon svg {
+	width: 100%;
+	height: 100%;
+	stroke: currentColor;
+}
+
+.wbam-icon--sm { --wbam-icon-size: 16px; }
+.wbam-icon--md { --wbam-icon-size: 20px; }
+.wbam-icon--lg { --wbam-icon-size: 24px; }
+.wbam-icon--xl { --wbam-icon-size: 32px; }
+
+/* Reserved box before Lucide hydrates the <i data-lucide> tag, so buttons
+   don't reflow when icons swap in. */
+.wbam-icon:empty {
+	display: inline-block;
+}

@@ -194,7 +194,7 @@ class Setup_Wizard {
 		<body class="wbam-setup wp-core-ui">
 			<div class="wbam-setup-wrapper">
 				<h1 class="wbam-setup-logo">
-					<span class="dashicons dashicons-megaphone"></span>
+					<?php echo wbam_icon( 'megaphone', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 					<?php esc_html_e( 'WB Ad Manager', 'wb-ads-rotator-with-split-test' ); ?>
 				</h1>
 		<?php
@@ -280,9 +280,9 @@ class Setup_Wizard {
 			<h2><?php esc_html_e( 'Welcome to WB Ad Manager!', 'wb-ads-rotator-with-split-test' ); ?></h2>
 			<p><?php esc_html_e( 'Thank you for installing WB Ad Manager. This quick setup wizard will help you get started by:', 'wb-ads-rotator-with-split-test' ); ?></p>
 			<ul class="wbam-setup-features">
-				<li><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Creating sample ads to demonstrate features', 'wb-ads-rotator-with-split-test' ); ?></li>
-				<li><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Setting up different ad placements', 'wb-ads-rotator-with-split-test' ); ?></li>
-				<li><span class="dashicons dashicons-yes"></span> <?php esc_html_e( 'Getting you ready to manage your own ads', 'wb-ads-rotator-with-split-test' ); ?></li>
+				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?> <?php esc_html_e( 'Creating sample ads to demonstrate features', 'wb-ads-rotator-with-split-test' ); ?></li>
+				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?> <?php esc_html_e( 'Setting up different ad placements', 'wb-ads-rotator-with-split-test' ); ?></li>
+				<li><?php echo wbam_icon( 'check', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?> <?php esc_html_e( 'Getting you ready to manage your own ads', 'wb-ads-rotator-with-split-test' ); ?></li>
 			</ul>
 			<p class="wbam-setup-note">
 				<?php esc_html_e( 'This wizard is optional. You can skip it and create ads manually anytime.', 'wb-ads-rotator-with-split-test' ); ?>
@@ -516,6 +516,15 @@ class Setup_Wizard {
 				update_post_meta( $post_id, '_wbam_priority', 5 );
 				update_post_meta( $post_id, '_wbam_sample_ad', true );
 
+				// Phase K: demo marker meta for safe one-click cleanup.
+				// The Demo_Data_Cleaner double-checks this meta flag before
+				// deletion so we never delete content the admin repurposed.
+				update_post_meta( $post_id, '_wbam_is_demo', 1 );
+
+				// Phase K: track the created ID on the option so the
+				// cleanup action knows exactly which rows it owns.
+				self::track_demo_id( 'ads', (int) $post_id );
+
 				/**
 				 * Fires after a sample ad is created.
 				 *
@@ -526,6 +535,47 @@ class Setup_Wizard {
 				 */
 				do_action( 'wbam_setup_wizard_sample_ad_created', $post_id, $ad_key, $ad );
 			}
+		}
+	}
+
+	/**
+	 * Append a newly-seeded demo row ID to the tracking option.
+	 *
+	 * Idempotent — re-running the wizard won't double-count. Exposed as
+	 * a public static helper so other seeding paths (and the migration
+	 * backfill in Installer) can feed the same registry.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $type Bucket key: 'ads', 'pages', 'links'.
+	 * @param int    $id   ID of the created row.
+	 */
+	public static function track_demo_id( $type, $id ) {
+		$id = (int) $id;
+		if ( $id <= 0 ) {
+			return;
+		}
+
+		$type    = sanitize_key( (string) $type );
+		$allowed = array( 'ads', 'pages', 'links' );
+		if ( ! in_array( $type, $allowed, true ) ) {
+			return;
+		}
+
+		$registry = get_option( 'wbam_demo_data_ids', array() );
+		if ( ! is_array( $registry ) ) {
+			$registry = array();
+		}
+
+		foreach ( $allowed as $bucket ) {
+			if ( ! isset( $registry[ $bucket ] ) || ! is_array( $registry[ $bucket ] ) ) {
+				$registry[ $bucket ] = array();
+			}
+		}
+
+		if ( ! in_array( $id, $registry[ $type ], true ) ) {
+			$registry[ $type ][] = $id;
+			update_option( 'wbam_demo_data_ids', $registry, false );
 		}
 	}
 
@@ -553,19 +603,19 @@ class Setup_Wizard {
 			array(
 				'view_ads' => array(
 					'url'         => admin_url( 'edit.php?post_type=wbam-ad' ),
-					'icon'        => 'dashicons-admin-post',
+					'icon'        => 'file-text',
 					'title'       => __( 'View Your Ads', 'wb-ads-rotator-with-split-test' ),
 					'description' => __( 'See and manage all your ads', 'wb-ads-rotator-with-split-test' ),
 				),
 				'create'   => array(
 					'url'         => admin_url( 'post-new.php?post_type=wbam-ad' ),
-					'icon'        => 'dashicons-plus-alt',
+					'icon'        => 'plus-circle',
 					'title'       => __( 'Create New Ad', 'wb-ads-rotator-with-split-test' ),
 					'description' => __( 'Add your own custom ads', 'wb-ads-rotator-with-split-test' ),
 				),
 				'settings' => array(
 					'url'         => admin_url( 'edit.php?post_type=wbam-ad&page=wbam-settings' ),
-					'icon'        => 'dashicons-admin-settings',
+					'icon'        => 'settings-2',
 					'title'       => __( 'Settings', 'wb-ads-rotator-with-split-test' ),
 					'description' => __( 'Configure plugin options', 'wb-ads-rotator-with-split-test' ),
 				),
@@ -580,14 +630,14 @@ class Setup_Wizard {
 		do_action( 'wbam_setup_wizard_ready_before' );
 		?>
 		<div class="wbam-setup-step-content wbam-setup-ready">
-			<span class="dashicons dashicons-yes-alt"></span>
+			<?php echo wbam_icon( 'check-circle', array( 'size' => 'xl' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 			<h2><?php esc_html_e( "You're All Set!", 'wb-ads-rotator-with-split-test' ); ?></h2>
 			<p><?php esc_html_e( 'WB Ad Manager is ready to use. Here are some next steps:', 'wb-ads-rotator-with-split-test' ); ?></p>
 
 			<div class="wbam-setup-next-steps">
 				<?php foreach ( $next_steps as $step ) : ?>
 					<a href="<?php echo esc_url( $step['url'] ); ?>" class="wbam-next-step">
-						<span class="dashicons <?php echo esc_attr( $step['icon'] ); ?>"></span>
+						<?php echo wbam_icon( $step['icon'], array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — helper returns pre-escaped markup. ?>
 						<strong><?php echo esc_html( $step['title'] ); ?></strong>
 						<span><?php echo esc_html( $step['description'] ); ?></span>
 					</a>

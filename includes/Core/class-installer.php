@@ -26,7 +26,7 @@ class Installer {
 	 *
 	 * @var string
 	 */
-	const DB_VERSION = '1.5.0';
+	const DB_VERSION = '1.6.0';
 
 	/**
 	 * Option name for database version.
@@ -39,9 +39,37 @@ class Installer {
 	 * Run installer.
 	 */
 	public function install() {
+		// Detect fresh install vs. upgrade BEFORE we touch DB_VERSION.
+		// Fresh install = DB version option has never been set (get_option
+		// returns the default we pass in, not a stored value). Upgrade =
+		// any stored value exists, even '0'.
+		$this->maybe_set_onboarding_pointers_default();
+
 		$this->create_tables();
 		$this->run_migrations();
 		$this->update_db_version();
+	}
+
+	/**
+	 * Set the default for the onboarding-pointers flag exactly once,
+	 * at install time. Fresh installs get pointers enabled; upgrades
+	 * from a previous version leave them off so power users aren't
+	 * re-taught things they already know.
+	 *
+	 * Uses add_option so re-running install() (e.g. via
+	 * maybe_update_database()) never flips the flag back on after
+	 * a user has disabled it.
+	 *
+	 * @since 2.8.1
+	 */
+	private function maybe_set_onboarding_pointers_default() {
+		// Sentinel lets us distinguish "never set" from "set to 0".
+		$stored_db_version = get_option( self::DB_VERSION_OPTION, null );
+		$is_fresh_install  = ( null === $stored_db_version );
+
+		$default = $is_fresh_install ? 1 : 0;
+
+		add_option( 'wbam_onboarding_pointers_enabled', $default );
 	}
 
 	/**
@@ -113,6 +141,194 @@ class Installer {
 			// Re-run create_tables to ensure rate limits table exists.
 			// dbDelta is safe to run multiple times - it will only create missing tables.
 			$this->create_tables();
+		}
+
+		// Migration to 1.6.0: Backfill ad format metadata so the
+		// format-aware placement matching layer has something to work
+		// with on existing installs. See Phase C of the format-matching
+		// plan. Safe to run multiple times — skips ads that already
+		// have _wbam_ad_format set.
+		if ( version_compare( $current_version, '1.6.0', '<' ) ) {
+			$this->backfill_ad_formats();
+		}
+
+		// Phase K: backfill the `_wbam_is_demo` meta + `wbam_demo_data_ids`
+		// tracking option so existing installs benefit from the safe
+		// one-click demo cleanup without re-running the wizard. Runs
+		// exactly once, guarded by the `wbam_demo_data_backfilled_v2`
+		// option. Safe if the wizard was never run — it will simply
+		// find zero matches and mark itself done.
+		$this->maybe_backfill_demo_markers();
+	}
+
+	/**
+	 * One-shot migration that marks previously-seeded sample ads with
+	 * `_wbam_is_demo = 1` and populates `wbam_demo_data_ids`.
+	 *
+	 * Matches on BOTH the known sample titles AND the pre-existing
+	 * `_wbam_sample_ad` meta set by older wizard runs — either signal
+	 * is sufficient. This is intentionally tight: we never fuzzy-match
+	 * on content or placement to avoid touching the admin's real ads.
+	 *
+	 * Guarded by the `wbam_demo_data_backfilled_v2` option so it runs
+	 * exactly once per site.
+	 *
+	 * @since 2.8.0
+	 */
+	private function maybe_backfill_demo_markers() {
+		if ( get_option( 'wbam_demo_data_backfilled_v2' ) ) {
+			return;
+		}
+
+		$sample_titles = array(
+			'Sample Header Banner',
+			'Sample Sidebar Ad',
+			'Sample In-Content Promo',
+		);
+
+		// Collect candidate ad IDs by title OR by the legacy sample marker.
+		$candidate_ids = array();
+
+		// 1) By legacy `_wbam_sample_ad` meta — set by every wizard run.
+		$by_meta = get_posts(
+			array(
+				'post_type'      => 'wbam-ad',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'     => array(
+					array(
+						'key'     => '_wbam_sample_ad',
+						'compare' => 'EXISTS',
+					),
+				),
+			)
+		);
+		if ( is_array( $by_meta ) ) {
+			$candidate_ids = array_merge( $candidate_ids, array_map( 'intval', $by_meta ) );
+		}
+
+		// 2) By exact title match against the known sample titles.
+		foreach ( $sample_titles as $title ) {
+			$query = new \WP_Query(
+				array(
+					'post_type'              => 'wbam-ad',
+					'title'                  => $title,
+					'post_status'            => 'all',
+					'posts_per_page'         => 1,
+					'no_found_rows'          => true,
+					'ignore_sticky_posts'    => true,
+					'update_post_term_cache' => false,
+					'update_post_meta_cache' => false,
+				)
+			);
+			$page  = $query->have_posts() ? $query->next_post() : null;
+			if ( $page instanceof \WP_Post ) {
+				$candidate_ids[] = (int) $page->ID;
+			}
+		}
+
+		$candidate_ids = array_values( array_unique( array_filter( $candidate_ids ) ) );
+
+		if ( ! empty( $candidate_ids ) ) {
+			$registry = get_option( 'wbam_demo_data_ids', array() );
+			if ( ! is_array( $registry ) ) {
+				$registry = array();
+			}
+			foreach ( array( 'ads', 'pages', 'links' ) as $bucket ) {
+				if ( ! isset( $registry[ $bucket ] ) || ! is_array( $registry[ $bucket ] ) ) {
+					$registry[ $bucket ] = array();
+				}
+			}
+
+			foreach ( $candidate_ids as $ad_id ) {
+				update_post_meta( $ad_id, '_wbam_is_demo', 1 );
+				if ( ! in_array( $ad_id, $registry['ads'], true ) ) {
+					$registry['ads'][] = $ad_id;
+				}
+			}
+
+			update_option( 'wbam_demo_data_ids', $registry, false );
+		}
+
+		update_option( 'wbam_demo_data_backfilled_v2', 1, false );
+	}
+
+	/**
+	 * Populate _wbam_ad_format / _wbam_ad_width / _wbam_ad_height on
+	 * every existing ad that doesn't already have them.
+	 *
+	 * Resolution rules (preserves current rendering behavior):
+	 *  - Image ad + local attachment: detect W x H, match to taxonomy.
+	 *  - Image ad + external URL:     responsive (we don't fetch remote).
+	 *  - Code / AdSense / Rich / Email Capture: responsive.
+	 *
+	 * Runs in-line during plugin upgrade. Installs typically have a few
+	 * dozen ads at most; if a site has thousands we can convert this
+	 * to an async batch via wp-cron — for now keep it simple and
+	 * synchronous so everything is consistent right after upgrade.
+	 *
+	 * @since 2.8.1
+	 */
+	private function backfill_ad_formats() {
+		$ads = get_posts(
+			array(
+				'post_type'      => 'wbam-ad',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				// Only touch ads that don't already have a format set.
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+				'meta_query'     => array(
+					array(
+						'key'     => '_wbam_ad_format',
+						'compare' => 'NOT EXISTS',
+					),
+				),
+			)
+		);
+
+		if ( empty( $ads ) ) {
+			return;
+		}
+
+		foreach ( $ads as $ad_id ) {
+			$data = get_post_meta( $ad_id, '_wbam_ad_data', true );
+			$type = is_array( $data ) && ! empty( $data['type'] ) ? (string) $data['type'] : '';
+
+			$format = 'responsive';
+			$width  = 0;
+			$height = 0;
+
+			if ( 'image' === $type && ! empty( $data['image_url'] ) ) {
+				$attachment_id = attachment_url_to_postid( (string) $data['image_url'] );
+				if ( $attachment_id > 0 ) {
+					$src = wp_get_attachment_image_src( $attachment_id, 'full' );
+					if ( is_array( $src ) && ! empty( $src[1] ) && ! empty( $src[2] ) ) {
+						$width  = (int) $src[1];
+						$height = (int) $src[2];
+
+						if ( class_exists( '\\WBAM\\Core\\Ad_Formats' ) ) {
+							$format = \WBAM\Core\Ad_Formats::detect_by_dimensions( $width, $height );
+						}
+					}
+				}
+			}
+
+			update_post_meta( $ad_id, '_wbam_ad_format', $format );
+			update_post_meta( $ad_id, '_wbam_ad_width', $width );
+			update_post_meta( $ad_id, '_wbam_ad_height', $height );
+
+			// Keep _wbam_is_responsive in sync with the resolved format
+			// so existing admin UI toggles stay coherent.
+			if ( 'responsive' === $format ) {
+				update_post_meta( $ad_id, '_wbam_is_responsive', '1' );
+			} elseif ( '' === (string) get_post_meta( $ad_id, '_wbam_is_responsive', true ) ) {
+				update_post_meta( $ad_id, '_wbam_is_responsive', '0' );
+			}
 		}
 	}
 
@@ -282,11 +498,11 @@ class Installer {
 		$table_rate_limits = $wpdb->prefix . 'wbam_rate_limits';
 		$sql_rate_limits   = "CREATE TABLE {$table_rate_limits} (
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-			`key` varchar(255) NOT NULL,
-			`count` int(11) NOT NULL DEFAULT 0,
+			rate_key varchar(255) NOT NULL,
+			rate_count int(11) NOT NULL DEFAULT 0,
 			expires bigint(20) UNSIGNED NOT NULL,
 			PRIMARY KEY  (id),
-			UNIQUE KEY `key` (`key`),
+			UNIQUE KEY rate_key (rate_key),
 			KEY expires (expires)
 		) {$charset_collate};";
 

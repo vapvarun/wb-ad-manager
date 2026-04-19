@@ -20,6 +20,7 @@ use WBAM\Modules\AdTypes\Code_Ad;
 use WBAM\Modules\AdTypes\AdSense_Ad;
 use WBAM\Modules\AdTypes\Email_Capture_Ad;
 use WBAM\Modules\Targeting\Targeting_Engine;
+use WBAM\Modules\Targeting\Frequency_Manager;
 
 /**
  * Placement Engine class.
@@ -41,6 +42,17 @@ class Placement_Engine {
 	 * @var array
 	 */
 	private $ad_types = array();
+
+	/**
+	 * Ad IDs already rendered on the current request.
+	 *
+	 * Used by render_ad() to prevent the same creative firing in
+	 * multiple placements on a single page load. Scoped to one request;
+	 * resets naturally on the next page view.
+	 *
+	 * @var array<int,bool>
+	 */
+	private $rendered_ad_ids = array();
 
 	/**
 	 * Initialize.
@@ -223,11 +235,29 @@ class Placement_Engine {
 		$targeting = Targeting_Engine::get_instance();
 		$filtered  = array();
 
+		// Phase D of the format-aware matching plan: drop ads whose
+		// declared format doesn't match this placement's accepted list.
+		// Feature-flagged via the `wbam_format_matching_enabled` option
+		// so sites opt in after they've had a chance to review the
+		// backfilled formats on their existing ads. Filterable for
+		// A/B testing and per-env control.
+		$enforce_format = (bool) apply_filters(
+			'wbam_enforce_format_matching',
+			(bool) get_option( 'wbam_format_matching_enabled', false ),
+			$placement_id
+		);
+
 		foreach ( $ad_ids as $ad_id ) {
 			// Double-check that the placement is actually in the array (prevents false LIKE matches).
 			$placements = get_post_meta( $ad_id, '_wbam_placements', true );
 			if ( ! is_array( $placements ) || ! in_array( $placement_id, $placements, true ) ) {
 				continue;
+			}
+
+			if ( $enforce_format && function_exists( 'wbam_ad_fits_placement' ) ) {
+				if ( ! wbam_ad_fits_placement( $ad_id, $placement_id ) ) {
+					continue;
+				}
 			}
 
 			if ( $targeting->should_display( $ad_id ) ) {
@@ -251,6 +281,52 @@ class Placement_Engine {
 			}
 		);
 
+		// Slot policy: fixed-inventory placements render AT MOST ONE ad
+		// per hook invocation. When multiple advertisers target the same
+		// slot, we pick a weighted-random winner rather than stacking
+		// every creative (which would give one advertiser visibility and
+		// the other a pixel below them — not what either of them paid
+		// for). Rotation honors the ad priority weight already set on
+		// each creative.
+		//
+		// Placements that legitimately render multiple ads per page
+		// (widget areas, between_replies with frequency counters) can
+		// opt out per-placement via the wbam_placement_render_mode filter
+		// returning 'stack' for their slug.
+		$render_mode = apply_filters( 'wbam_placement_render_mode', 'rotate', $placement_id );
+
+		if ( 'rotate' === $render_mode && count( $filtered ) > 1 ) {
+			$frequency = Frequency_Manager::get_instance();
+
+			// Phase I.1 fill-fallback: keep the slot full when the
+			// weighted winner can't actually render right now (already
+			// shown elsewhere on this page via the per-creative cap,
+			// or filtered out by some other layer that returns empty).
+			// Drop the unrenderable winner from the pool and pick the
+			// next weighted winner. Continue until either an ad clears
+			// or the pool is exhausted (slot empty as last resort,
+			// same as before — but only after every option is tried).
+			$pool   = array_values( array_unique( array_map( 'intval', $filtered ) ) );
+			$winner = null;
+
+			while ( ! empty( $pool ) ) {
+				$candidate = $frequency->get_weighted_random( $pool );
+				if ( null === $candidate ) {
+					break;
+				}
+
+				if ( ! $this->ad_is_renderable( (int) $candidate ) ) {
+					$pool = array_values( array_diff( $pool, array( (int) $candidate ) ) );
+					continue;
+				}
+
+				$winner = (int) $candidate;
+				break;
+			}
+
+			$filtered = null === $winner ? array() : array( $winner );
+		}
+
 		/**
 		 * Filter the ads returned for a placement.
 		 *
@@ -270,8 +346,32 @@ class Placement_Engine {
 	 * @return string
 	 */
 	public function render_ad( $ad_id, $options = array() ) {
+		$ad_id = (int) $ad_id;
+
 		$enabled = get_post_meta( $ad_id, '_wbam_enabled', true );
 		if ( ! $enabled ) {
+			return '';
+		}
+
+		/**
+		 * Per-creative page cap: an ad renders at most once per request
+		 * regardless of how many placements it targets. Prevents the
+		 * "same ad 6 times on one page" experience when an advertiser
+		 * enables every compatible placement on a single creative.
+		 *
+		 * Bypass by setting $options['allow_duplicate'] = true (reserved
+		 * for surfaces that legitimately need the same ad twice, e.g.
+		 * preview screens).
+		 *
+		 * The cap is also filterable so site owners can opt out per
+		 * placement (e.g. sticky bar that must always show).
+		 *
+		 * @since 2.8.0
+		 */
+		$allow_duplicate = ! empty( $options['allow_duplicate'] );
+		$enforce_cap     = apply_filters( 'wbam_enforce_page_cap', ! $allow_duplicate, $ad_id, $options );
+
+		if ( $enforce_cap && isset( $this->rendered_ad_ids[ $ad_id ] ) ) {
 			return '';
 		}
 
@@ -285,6 +385,36 @@ class Placement_Engine {
 
 		$output    = $handler->render( $ad_id, $options );
 		$placement = isset( $options['placement'] ) ? $options['placement'] : '';
+
+		// Track only renders that actually produced output — an empty
+		// string (disabled handler, missing image URL) should not count
+		// as "shown" and block the ad from appearing elsewhere.
+		if ( $enforce_cap && '' !== $output ) {
+			$this->rendered_ad_ids[ $ad_id ] = true;
+		}
+
+		// Wrap every rendered ad in a standard .wbam-ad-slot container
+		// so the frontend stylesheet can apply responsive rules
+		// (max-width:100%, aspect-ratio preservation) regardless of
+		// ad type (image, code, AdSense, rich HTML, etc.). Named
+		// differently from the ad-type handlers' inner .wbam-ad
+		// wrappers to avoid collision with existing CSS selectors.
+		if ( '' !== $output ) {
+			$is_responsive = '1' === (string) get_post_meta( $ad_id, '_wbam_is_responsive', true );
+			$classes       = 'wbam-ad-slot';
+			if ( $is_responsive ) {
+				$classes .= ' wbam-ad-slot--responsive';
+			}
+
+			$output = sprintf(
+				'<div class="%1$s" data-ad-id="%2$d" data-responsive="%3$s"%4$s>%5$s</div>',
+				esc_attr( $classes ),
+				$ad_id,
+				$is_responsive ? '1' : '0',
+				$placement ? ' data-placement="' . esc_attr( $placement ) . '"' : '',
+				$output // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rendered upstream by ad type handler.
+			);
+		}
 
 		/**
 		 * Filter the ad output HTML.
@@ -335,5 +465,38 @@ class Placement_Engine {
 		if ( 'wbam-ad' === get_post_type( $post_id ) ) {
 			$this->clear_placement_cache( $post_id );
 		}
+	}
+
+	/**
+	 * Cheap renderability probe used by Phase I.1 fill-fallback.
+	 *
+	 * Returns false when render_ad() would short-circuit on this
+	 * request — currently that's the per-page dedup case (the ad
+	 * already rendered in another slot during this page load) and
+	 * the disabled-ad case. Format / session / package gates were
+	 * already applied by the caller, so we don't re-check them here.
+	 *
+	 * Pure read; no side effects on the page-cap registry.
+	 *
+	 * @since 2.8.1
+	 * @param int $ad_id Ad post ID.
+	 * @return bool
+	 */
+	public function ad_is_renderable( $ad_id ) {
+		$ad_id = (int) $ad_id;
+		if ( $ad_id <= 0 ) {
+			return false;
+		}
+
+		if ( isset( $this->rendered_ad_ids[ $ad_id ] ) ) {
+			return false;
+		}
+
+		$enabled = get_post_meta( $ad_id, '_wbam_enabled', true );
+		if ( ! $enabled ) {
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -496,11 +496,11 @@ class Frontend {
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name validated by table_exists().
 		$wpdb->query(
 			$wpdb->prepare(
-				"INSERT INTO {$table_name} (`key`, `count`, `expires`)
+				"INSERT INTO {$table_name} (rate_key, rate_count, expires)
 				VALUES (%s, 1, %d)
 				ON DUPLICATE KEY UPDATE
-					`count` = LAST_INSERT_ID(IF(expires < %d, 1, `count` + 1)),
-					`expires` = IF(expires < %d, %d, `expires`)",
+					rate_count = LAST_INSERT_ID(IF(expires < %d, 1, rate_count + 1)),
+					expires = IF(expires < %d, %d, expires)",
 				$key,
 				$expiration,
 				time(),
@@ -527,7 +527,7 @@ class Frontend {
 				// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name validated by table_exists().
 				$count = (int) $wpdb->get_var(
 					$wpdb->prepare(
-						"SELECT `count` FROM {$table_name} WHERE `key` = %s",
+						"SELECT rate_count FROM {$table_name} WHERE rate_key = %s",
 						$key
 					)
 				);

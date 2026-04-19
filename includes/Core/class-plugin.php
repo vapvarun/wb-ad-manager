@@ -20,9 +20,14 @@ use WBAM\Admin\Admin;
 use WBAM\Admin\Settings;
 use WBAM\Admin\Display_Options;
 use WBAM\Admin\Setup_Wizard;
+use WBAM\Admin\Demo_Data_Cleaner;
 use WBAM\Admin\Help_Docs;
 use WBAM\Admin\Upgrade_Pro;
+use WBAM\Admin\First_Install_Pointers;
+use WBAM\Admin\Field_Tooltips;
+use WBAM\Admin\List_Empty_States;
 use WBAM\Frontend\Frontend;
+use WBAM\API\API_Bootstrap;
 
 /**
  * Plugin class.
@@ -107,6 +112,11 @@ class Plugin {
 	 * Initialize components.
 	 */
 	private function init_components() {
+		// Placement -> accepted-formats map. Register the filter before
+		// the Placement_Engine boots so every surface that reads the
+		// wbam_get_placements registry sees the format metadata.
+		Placement_Format_Map::register();
+
 		// Placements engine.
 		$this->placements = Placement_Engine::get_instance();
 		$this->placements->init();
@@ -130,11 +140,30 @@ class Plugin {
 			$this->setup_wizard = new Setup_Wizard();
 			$this->setup_wizard->init();
 
+			// Demo data cleaner (Phase K) — one-click removal of rows
+			// seeded by the setup wizard, with double-check against
+			// the `_wbam_is_demo` post meta flag.
+			$demo_cleaner = new Demo_Data_Cleaner();
+			$demo_cleaner->register();
+
 			// Help & Documentation.
 			Help_Docs::get_instance();
 
 			// Upgrade to PRO (only when PRO is not active).
 			Upgrade_Pro::get_instance();
+
+			// First-install WP-pointer tooltips (Phase G.2).
+			// Class is flag-gated internally; safe to always register.
+			$pointers = new First_Install_Pointers();
+			$pointers->init();
+
+			// Field-level tooltip popovers on the Ad edit screen (Phase G.4).
+			$field_tooltips = new Field_Tooltips();
+			$field_tooltips->init();
+
+			// Friendly empty states for admin list screens (Phase G.5).
+			$empty_states = new List_Empty_States();
+			$empty_states->init();
 		}
 
 		// Frontend.
@@ -153,9 +182,23 @@ class Plugin {
 			$bbpress->init();
 		}
 
+		// Jetonomy module.
+		if ( \WBAM\Modules\Jetonomy\Jetonomy_Module::is_jetonomy_active() ) {
+			$jetonomy = new \WBAM\Modules\Jetonomy\Jetonomy_Module();
+			$jetonomy->init();
+		}
+
 		// Links module.
 		$this->links = Links_Module::get_instance();
 		$this->links->init();
+
+		// REST API — must load on both frontend and admin for rest_api_init to fire.
+		new API_Bootstrap();
+
+		// Abilities API (WP 6.9+) — registers categories and abilities on dedicated hooks.
+		if ( function_exists( 'wp_register_ability' ) ) {
+			new Abilities();
+		}
 	}
 
 	/**
@@ -164,6 +207,23 @@ class Plugin {
 	private function setup_hooks() {
 		add_action( 'admin_init', array( $this, 'activation_redirect' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		add_action( 'wp_ajax_wbam_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
+	}
+
+	/**
+	 * AJAX handler for dismissing admin notices permanently.
+	 */
+	public function ajax_dismiss_notice() {
+		check_ajax_referer( 'wbam_dismiss_notice', 'nonce' );
+
+		$type    = isset( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '';
+		$allowed = array( 'bp', 'jetonomy' );
+		if ( ! in_array( $type, $allowed, true ) ) {
+			wp_send_json_error();
+		}
+
+		update_user_meta( get_current_user_id(), 'wbam_dismiss_' . $type . '_notice', 1 );
+		wp_send_json_success();
 	}
 
 	/**
@@ -237,11 +297,36 @@ class Plugin {
 			return;
 		}
 
-		if ( ! class_exists( 'BuddyPress' ) ) {
-			echo '<div class="notice notice-info"><p>';
+		$user_id = get_current_user_id();
+
+		if ( ! class_exists( 'BuddyPress' ) && ! get_user_meta( $user_id, 'wbam_dismiss_bp_notice', true ) ) {
+			echo '<div class="notice notice-info is-dismissible" data-wbam-dismiss="bp"><p>';
 			esc_html_e( 'BuddyPress is not active. BuddyPress activity placements are disabled.', 'wb-ads-rotator-with-split-test' );
 			echo '</p></div>';
 		}
+
+		if ( ! \WBAM\Modules\Jetonomy\Jetonomy_Module::is_jetonomy_active() && ! get_user_meta( $user_id, 'wbam_dismiss_jetonomy_notice', true ) ) {
+			echo '<div class="notice notice-info is-dismissible" data-wbam-dismiss="jetonomy"><p>';
+			printf(
+				/* translators: 1: opening link to Jetonomy store page, 2: closing link tag */
+				esc_html__( 'Jetonomy support is ready. Install %1$sJetonomy%2$s to unlock seven new placement positions (sidebar, topic, and reply injection points).', 'wb-ads-rotator-with-split-test' ),
+				'<a href="https://store.wbcomdesigns.com/jetonomy/" target="_blank" rel="noopener noreferrer">',
+				'</a>'
+			);
+			echo '</p></div>';
+		}
+
+		// Inline JS to persist dismissals via AJAX.
+		?>
+		<script>
+		jQuery(function($){
+			$('[data-wbam-dismiss]').on('click', '.notice-dismiss', function(){
+				var type = $(this).closest('[data-wbam-dismiss]').data('wbam-dismiss');
+				$.post(ajaxurl, { action: 'wbam_dismiss_notice', type: type, nonce: '<?php echo esc_js( wp_create_nonce( 'wbam_dismiss_notice' ) ); ?>' });
+			});
+		});
+		</script>
+		<?php
 	}
 
 	/**

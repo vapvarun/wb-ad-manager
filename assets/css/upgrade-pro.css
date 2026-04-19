@@ -9,55 +9,55 @@
 
 /* Header */
 .wbam-upgrade-header {
-	background: #fff;
+	background: var(--wbam-bg);
 	padding: 30px;
-	border: 1px solid #c3c4c7;
-	border-left: 4px solid #2271b1;
+	border: 1px solid var(--wbam-border-strong);
+	border-left: 4px solid var(--wbam-accent);
 	margin-bottom: 20px;
 }
 
 .wbam-upgrade-header h1 {
 	margin: 0 0 10px;
-	font-size: 24px;
-	color: #1d2327;
+	font-size: var(--wbam-font-size-2xl);
+	color: var(--wbam-text);
 }
 
 .wbam-tagline {
 	margin: 0;
 	font-size: 14px;
-	color: #50575e;
+	color: var(--wbam-text-muted);
 }
 
 /* Comparison Section */
 .wbam-comparison-section {
-	background: #fff;
+	background: var(--wbam-bg);
 	padding: 20px;
-	border: 1px solid #c3c4c7;
+	border: 1px solid var(--wbam-border-strong);
 	margin-bottom: 20px;
 }
 
 .wbam-comparison-section h2 {
 	margin: 0 0 20px;
 	padding-bottom: 10px;
-	border-bottom: 1px solid #c3c4c7;
+	border-bottom: 1px solid var(--wbam-border-strong);
 }
 
 /* Comparison Table */
 .wbam-comparison-table {
 	width: 100%;
 	border-collapse: collapse;
-	border: 1px solid #c3c4c7;
+	border: 1px solid var(--wbam-border-strong);
 }
 
 .wbam-comparison-table th,
 .wbam-comparison-table td {
 	padding: 12px 15px;
 	text-align: left;
-	border-bottom: 1px solid #c3c4c7;
+	border-bottom: 1px solid var(--wbam-border-strong);
 }
 
 .wbam-comparison-table thead th {
-	background: #f0f0f1;
+	background: var(--wbam-surface-alt);
 	font-weight: 600;
 }
 
@@ -68,29 +68,29 @@
 }
 
 .wbam-comparison-table thead .wbam-pro-col {
-	background: #2271b1;
-	color: #fff;
+	background: var(--wbam-accent);
+	color: var(--wbam-bg);
 }
 
 .wbam-comparison-table tbody tr:nth-child(even) td {
-	background: #f9f9f9;
+	background: var(--wbam-surface);
 }
 
 .wbam-section-header td {
-	background: #1d2327 !important;
-	color: #fff;
+	background: var(--wbam-text) !important;
+	color: var(--wbam-bg);
 	font-weight: 600;
-	font-size: 12px;
+	font-size: var(--wbam-font-size-xs);
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
 }
 
 .wbam-check .dashicons {
-	color: #00a32a;
+	color: var(--wbam-success);
 }
 
 .wbam-cross .dashicons {
-	color: #c3c4c7;
+	color: var(--wbam-border-strong);
 }
 
 /* Highlights Section */
@@ -109,16 +109,16 @@
 }
 
 .wbam-highlight-card {
-	background: #fff;
+	background: var(--wbam-bg);
 	padding: 20px;
-	border: 1px solid #c3c4c7;
+	border: 1px solid var(--wbam-border-strong);
 }
 
 .wbam-highlight-card .dashicons {
 	font-size: 32px;
 	width: 32px;
 	height: 32px;
-	color: #2271b1;
+	color: var(--wbam-accent);
 	margin-bottom: 10px;
 }
 
@@ -129,27 +129,27 @@
 
 .wbam-highlight-card p {
 	margin: 0;
-	color: #50575e;
-	font-size: 13px;
+	color: var(--wbam-text-muted);
+	font-size: var(--wbam-font-size-sm);
 }
 
 /* CTA Section */
 .wbam-cta-section {
-	background: #fff;
+	background: var(--wbam-bg);
 	padding: 30px;
-	border: 1px solid #c3c4c7;
-	border-left: 4px solid #00a32a;
+	border: 1px solid var(--wbam-border-strong);
+	border-left: 4px solid var(--wbam-success);
 	text-align: center;
 }
 
 .wbam-cta-section h2 {
 	margin: 0 0 10px;
-	font-size: 18px;
+	font-size: var(--wbam-font-size-lg);
 }
 
 .wbam-cta-section > p {
 	margin: 0 0 20px;
-	color: #50575e;
+	color: var(--wbam-text-muted);
 }
 
 .wbam-cta-buttons {
@@ -167,8 +167,8 @@
 
 .wbam-guarantee {
 	margin-top: 15px;
-	font-size: 12px;
-	color: #50575e;
+	font-size: var(--wbam-font-size-xs);
+	color: var(--wbam-text-muted);
 }
 
 /* Responsive */
@@ -176,7 +176,7 @@
 	.wbam-comparison-table th,
 	.wbam-comparison-table td {
 		padding: 8px 10px;
-		font-size: 12px;
+		font-size: var(--wbam-font-size-xs);
 	}
 
 	.wbam-comparison-table .wbam-free-col,

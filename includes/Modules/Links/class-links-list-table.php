@@ -349,7 +349,7 @@ class Links_List_Table extends \WP_List_Table {
 	 */
 	public function column_cloaked_url( $item ) {
 		if ( ! $item->cloaking_enabled || empty( $item->slug ) ) {
-			return '<span class="dashicons dashicons-no-alt" title="' . esc_attr__( 'Cloaking disabled', 'wb-ads-rotator-with-split-test' ) . '"></span>';
+			return '<span class="wbam-icon-wrap" title="' . esc_attr__( 'Cloaking disabled', 'wb-ads-rotator-with-split-test' ) . '">' . wbam_icon( 'x', array( 'size' => 'sm' ) ) . '</span>';
 		}
 
 		$cloaked_url = $item->get_url();
@@ -357,12 +357,13 @@ class Links_List_Table extends \WP_List_Table {
 		return sprintf(
 			'<a href="%s" target="_blank">%s</a>
 			<button type="button" class="button button-small wbam-copy-btn" data-clipboard="%s" title="%s">
-				<span class="dashicons dashicons-admin-page"></span>
+				%s
 			</button>',
 			esc_url( $cloaked_url ),
 			esc_html( $item->slug ),
 			esc_attr( $cloaked_url ),
-			esc_attr__( 'Copy URL', 'wb-ads-rotator-with-split-test' )
+			esc_attr__( 'Copy URL', 'wb-ads-rotator-with-split-test' ),
+			wbam_icon( 'file', array( 'size' => 'sm' ) )
 		);
 	}
 
@@ -441,8 +442,17 @@ class Links_List_Table extends \WP_List_Table {
 
 	/**
 	 * Message for no items.
+	 *
+	 * Delegates to the shared empty-state renderer (Phase G.5) so
+	 * this list table matches the core Ads list treatment when the
+	 * user has not yet created any links.
 	 */
 	public function no_items() {
+		if ( class_exists( '\\WBAM\\Admin\\List_Empty_States' ) ) {
+			\WBAM\Admin\List_Empty_States::render_links_empty_state();
+			return;
+		}
+
 		esc_html_e( 'No links found.', 'wb-ads-rotator-with-split-test' );
 	}
 }

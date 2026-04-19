@@ -131,6 +131,14 @@ class Admin {
 			)
 		);
 
+		// Expose the placement registry + format dimensions to the
+		// ad-edit sizing section so the "Will render in:" live summary
+		// can resolve matches client-side without an AJAX round-trip.
+		$format_data = self::collect_format_js_data();
+		if ( ! empty( $format_data ) ) {
+			wp_localize_script( 'wbam-admin', 'wbamFormatData', $format_data );
+		}
+
 		// Code editor.
 		if ( 'post' === $hook || 'post-new' === $hook ) {
 			$settings = wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
@@ -277,8 +285,10 @@ class Admin {
 							?>
 							<label class="wbam-placement-option">
 								<input type="checkbox" name="wbam_placements[]" value="<?php echo esc_attr( $placement->get_id() ); ?>" <?php checked( in_array( $placement->get_id(), $placements, true ) ); ?> />
-								<span class="wbam-option-title"><?php echo esc_html( $placement->get_name() ); ?></span>
-								<span class="wbam-option-desc"><?php echo esc_html( $placement->get_description() ); ?></span>
+								<span class="wbam-option-body">
+									<span class="wbam-option-title"><?php echo esc_html( $placement->get_name() ); ?></span>
+									<span class="wbam-option-desc"><?php echo esc_html( $placement->get_description() ); ?></span>
+								</span>
 							</label>
 						<?php endforeach; ?>
 					</div>
@@ -342,6 +352,11 @@ class Admin {
 		$priority      = '' === $priority ? 5 : absint( $priority );
 		$session_limit = get_post_meta( $post->ID, '_wbam_session_limit', true );
 		$session_limit = '' === $session_limit ? '' : absint( $session_limit );
+		$is_responsive = get_post_meta( $post->ID, '_wbam_is_responsive', true );
+		$ad_format     = get_post_meta( $post->ID, '_wbam_ad_format', true );
+		$ad_width      = (int) get_post_meta( $post->ID, '_wbam_ad_width', true );
+		$ad_height     = (int) get_post_meta( $post->ID, '_wbam_ad_height', true );
+		$format_labels = \WBAM\Core\Ad_Formats::all();
 		?>
 		<div class="wbam-metabox">
 			<div class="wbam-status-options">
@@ -356,16 +371,71 @@ class Admin {
 			</div>
 
 			<div class="wbam-priority-field">
-				<label for="wbam_priority"><?php esc_html_e( 'Priority', 'wb-ads-rotator-with-split-test' ); ?></label>
+				<label for="wbam_priority"><?php esc_html_e( 'Priority', 'wb-ads-rotator-with-split-test' ); ?></label><?php echo Field_Tooltips::tip_for( 'priority' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?>
 				<input type="range" id="wbam_priority" name="wbam_priority" min="1" max="10" value="<?php echo esc_attr( $priority ); ?>" />
 				<span class="wbam-priority-value"><?php echo esc_html( $priority ); ?></span>
-				<p class="description"><?php esc_html_e( 'Higher priority ads display first.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p class="description"><?php esc_html_e( 'Higher priority = bigger share when multiple ads compete for the same slot. Default is 5.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p class="wbam-priority-share-hint" aria-live="polite">
+					<?php /* Filled in by JS: 'In a 3-way tie with two default-priority ads, this ad wins ~X% of impressions.' */ ?>
+				</p>
 			</div>
 
 			<div class="wbam-session-limit-field">
-				<label for="wbam_session_limit"><?php esc_html_e( 'Session Limit', 'wb-ads-rotator-with-split-test' ); ?></label>
+				<label for="wbam_session_limit"><?php esc_html_e( 'Session Limit', 'wb-ads-rotator-with-split-test' ); ?></label><?php echo Field_Tooltips::tip_for( 'session_limit' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?>
 				<input type="number" id="wbam_session_limit" name="wbam_session_limit" min="0" value="<?php echo esc_attr( $session_limit ); ?>" placeholder="<?php esc_attr_e( 'Unlimited', 'wb-ads-rotator-with-split-test' ); ?>" />
 				<p class="description"><?php esc_html_e( 'Max views per visitor session. Leave empty for unlimited.', 'wb-ads-rotator-with-split-test' ); ?></p>
+			</div>
+
+			<div class="wbam-sizing-section">
+				<div class="wbam-sizing-section__head">
+					<h3 class="wbam-sizing-section__title"><?php esc_html_e( 'Sizing', 'wb-ads-rotator-with-split-test' ); ?><?php echo Field_Tooltips::tip_for( 'sizing_mode' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?></h3>
+					<span class="wbam-sizing-section__hint"><?php esc_html_e( 'Controls where this ad can render.', 'wb-ads-rotator-with-split-test' ); ?></span>
+				</div>
+
+				<div class="wbam-sizing-choice" role="radiogroup" aria-label="<?php esc_attr_e( 'Ad sizing mode', 'wb-ads-rotator-with-split-test' ); ?>">
+					<label class="wbam-sizing-option <?php echo '1' === (string) $is_responsive ? 'is-active' : ''; ?>">
+						<input type="radio" name="wbam_sizing_mode" value="responsive" <?php checked( '1', (string) $is_responsive ); ?> />
+						<span class="wbam-sizing-option__title"><?php esc_html_e( 'Responsive', 'wb-ads-rotator-with-split-test' ); ?></span>
+						<span class="wbam-sizing-option__desc"><?php esc_html_e( 'Fills any slot. Best for AdSense auto and fluid HTML.', 'wb-ads-rotator-with-split-test' ); ?></span>
+					</label>
+					<label class="wbam-sizing-option <?php echo '1' !== (string) $is_responsive ? 'is-active' : ''; ?>">
+						<input type="radio" name="wbam_sizing_mode" value="fixed" <?php checked( '1', (string) $is_responsive, false ) ? '' : checked( true, true ); ?> <?php echo '1' !== (string) $is_responsive ? 'checked' : ''; ?> />
+						<span class="wbam-sizing-option__title"><?php esc_html_e( 'Fixed size', 'wb-ads-rotator-with-split-test' ); ?></span>
+						<span class="wbam-sizing-option__desc"><?php esc_html_e( 'Known width and height. Matches only compatible slots.', 'wb-ads-rotator-with-split-test' ); ?></span>
+					</label>
+				</div>
+
+				<!-- Hidden carrier so existing save pipeline (_wbam_is_responsive) keeps working. -->
+				<input type="hidden" id="wbam_is_responsive" name="wbam_is_responsive" value="<?php echo '1' === (string) $is_responsive ? '1' : ''; ?>" />
+
+				<div class="wbam-sizing-fixed-fields" <?php echo '1' === (string) $is_responsive ? 'hidden' : ''; ?>>
+					<label for="wbam_ad_format" class="wbam-inline-label"><?php esc_html_e( 'Format', 'wb-ads-rotator-with-split-test' ); ?></label>
+					<select id="wbam_ad_format" name="wbam_ad_format" class="wbam-sizing-fixed-fields__select">
+						<option value=""><?php esc_html_e( 'Auto-detect from image', 'wb-ads-rotator-with-split-test' ); ?></option>
+						<?php foreach ( $format_labels as $slug => $meta ) : ?>
+							<?php
+							if ( 'responsive' === $slug ) {
+								continue; } // Responsive lives in the choice above.
+							?>
+							<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $ad_format, $slug ); ?>>
+								<?php echo esc_html( $meta['label'] ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+
+					<div class="wbam-sizing-custom-dims" <?php echo 'custom' === $ad_format ? '' : 'hidden'; ?>>
+						<span class="wbam-inline-label"><?php esc_html_e( 'Dimensions', 'wb-ads-rotator-with-split-test' ); ?></span><?php echo Field_Tooltips::tip_for( 'custom_dims' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?>
+						<input type="number" name="wbam_ad_width" min="0" step="1" value="<?php echo esc_attr( $ad_width ? $ad_width : '' ); ?>" placeholder="W" class="small-text" />
+						<span class="wbam-sizing-x">&times;</span>
+						<input type="number" name="wbam_ad_height" min="0" step="1" value="<?php echo esc_attr( $ad_height ? $ad_height : '' ); ?>" placeholder="H" class="small-text" />
+						<span class="wbam-sizing-units"><?php esc_html_e( 'px', 'wb-ads-rotator-with-split-test' ); ?></span>
+					</div>
+				</div>
+
+				<div class="wbam-sizing-compat" aria-live="polite">
+					<span class="wbam-sizing-compat__label"><?php esc_html_e( 'Will render in:', 'wb-ads-rotator-with-split-test' ); ?></span>
+					<span class="wbam-sizing-compat__value"><?php esc_html_e( 'Calculating...', 'wb-ads-rotator-with-split-test' ); ?></span>
+				</div>
 			</div>
 
 			<?php
@@ -380,9 +450,131 @@ class Admin {
 		</div>
 		<script>
 		jQuery(function($) {
+			// Priority slider live value + win-share transparency hint.
+			//
+			// Phase H.3: site owners and advertisers should see exactly
+			// what raising the priority slider does. Frequency_Manager
+			// builds a weighted pool where each ad contributes `priority`
+			// copies, so the win share in a tie of N ads at priorities
+			// p1..pN is p_i / sum(p). We illustrate the most common tie
+			// scenario (3 ads, two at the default priority of 5).
+			var priorityHintTpl = <?php echo wp_json_encode( __( 'In a 3-way tie with two default-priority (5) ads, this ad would win about %d%% of impressions.', 'wb-ads-rotator-with-split-test' ) ); ?>;
+
+			function updatePriorityHint( value ) {
+				var p     = parseInt( value, 10 ) || 5;
+				var share = Math.round( ( p / ( p + 5 + 5 ) ) * 100 );
+				// Translation string uses printf-style %d / %% — un-escape
+				// the literal percent so JS shows '33%' not '33%%'.
+				$( '.wbam-priority-share-hint' ).text(
+					priorityHintTpl.replace( '%d', share ).replace( /%%/g, '%' )
+				);
+			}
+
 			$('#wbam_priority').on('input', function() {
 				$(this).next('.wbam-priority-value').text(this.value);
+				updatePriorityHint( this.value );
 			});
+
+			// Initial paint so the hint is visible on page load.
+			updatePriorityHint( $( '#wbam_priority' ).val() );
+
+			// Sizing section wiring. We use a two-choice radio group for the
+			// sizing mode instead of a standalone checkbox so the mental
+			// model is explicit: 'responsive' or 'fixed', with the fixed
+			// controls only visible when fixed is selected.
+			var $modeRadios = $('input[name="wbam_sizing_mode"]'),
+				$hidden     = $('#wbam_is_responsive'),
+				$fixed      = $('.wbam-sizing-fixed-fields'),
+				$format     = $('#wbam_ad_format'),
+				$customDims = $('.wbam-sizing-custom-dims'),
+				$compat     = $('.wbam-sizing-compat__value'),
+				$options    = $('.wbam-sizing-option');
+
+			function currentMode() {
+				return $modeRadios.filter(':checked').val() || 'responsive';
+			}
+
+			function syncMode() {
+				var mode = currentMode();
+				$hidden.val( mode === 'responsive' ? '1' : '' );
+				$fixed.prop('hidden', mode === 'responsive');
+				$options.each(function() {
+					$(this).toggleClass('is-active', $(this).find('input[type="radio"]').is(':checked'));
+				});
+				updateCompat();
+			}
+
+			function syncCustomDims() {
+				$customDims.prop('hidden', $format.val() !== 'custom');
+				updateCompat();
+			}
+
+			// Compute the compatible placement names locally from the
+			// data emitted in wbamFormatData (populated via wp_localize).
+			// No AJAX round-trip — the match logic is pure and fast.
+			function updateCompat() {
+				if ( typeof window.wbamFormatData === 'undefined' ) {
+					$compat.text('');
+					return;
+				}
+
+				var mode   = currentMode(),
+					format = mode === 'responsive' ? 'responsive' : ($format.val() || 'auto');
+
+				if ( mode === 'fixed' && format === 'auto' ) {
+					$compat.text( wbamFormatData.i18n.autoDetect );
+					return;
+				}
+
+				if ( mode === 'fixed' && format === 'custom' ) {
+					var w = parseInt($customDims.find('input[name="wbam_ad_width"]').val(), 10) || 0,
+						h = parseInt($customDims.find('input[name="wbam_ad_height"]').val(), 10) || 0;
+					if ( w <= 0 || h <= 0 ) {
+						$compat.text( wbamFormatData.i18n.enterDims );
+						return;
+					}
+					format = detectFormat(w, h);
+					if ( format === 'custom' ) {
+						$compat.text( wbamFormatData.i18n.noMatch );
+						return;
+					}
+				}
+
+				var matches = [];
+				$.each( wbamFormatData.placements, function( slug, entry ) {
+					if ( format === 'responsive' || (entry.accepted || []).indexOf( format ) !== -1 ) {
+						matches.push( entry.name );
+					}
+				} );
+
+				if ( matches.length === 0 ) {
+					$compat.text( wbamFormatData.i18n.noMatch );
+					return;
+				}
+				if ( matches.length === Object.keys(wbamFormatData.placements).length ) {
+					$compat.text( wbamFormatData.i18n.every );
+					return;
+				}
+				$compat.text( matches.join(', ') );
+			}
+
+			function detectFormat(w, h) {
+				var found = 'custom';
+				$.each( wbamFormatData.formats, function( slug, dims ) {
+					if ( dims.w === w && dims.h === h ) {
+						found = slug;
+						return false;
+					}
+				} );
+				return found;
+			}
+
+			$modeRadios.on('change', syncMode);
+			$format.on('change', syncCustomDims);
+			$customDims.on('input', 'input[type="number"]', updateCompat);
+
+			syncMode();
+			syncCustomDims();
 		});
 		</script>
 		<?php
@@ -616,6 +808,37 @@ class Admin {
 			: '';
 		update_post_meta( $post_id, '_wbam_session_limit', $session_limit );
 
+		// Save responsive flag. The sizing section emits a hidden
+		// wbam_is_responsive input whose value is '1' when the
+		// Responsive mode is selected and '' otherwise, so we check
+		// the value rather than isset() (the field is always present).
+		// A sibling wbam_sizing_mode radio is the authoritative source
+		// of truth for UI rendering, but the hidden carrier keeps the
+		// existing _wbam_is_responsive meta key stable for downstream
+		// consumers (wrapper CSS, REST exposure, etc.).
+		$mode_input    = isset( $_POST['wbam_sizing_mode'] ) ? sanitize_key( wp_unslash( $_POST['wbam_sizing_mode'] ) ) : '';
+		$is_responsive = 'responsive' === $mode_input || ! empty( $_POST['wbam_is_responsive'] ) ? '1' : '0';
+		update_post_meta( $post_id, '_wbam_is_responsive', $is_responsive );
+
+		// Save ad format + dimensions. Resolution order:
+		// 1. If Responsive ticked: format is 'responsive', dims cleared.
+		// 2. Else if admin picked a named format (non-custom): store slug,
+		// copy W/H from the taxonomy so downstream consumers have
+		// dimensions without another lookup.
+		// 3. Else if admin picked 'custom' with W/H: store as-is, detect
+		// if dims match a named format and upgrade the slug for free.
+		// 4. Else (Auto-detect option): call the detector against the
+		// ad-type data; fall back to 'responsive' when indeterminate.
+		$format_input = isset( $_POST['wbam_ad_format'] ) ? sanitize_text_field( wp_unslash( $_POST['wbam_ad_format'] ) ) : '';
+		$width_input  = isset( $_POST['wbam_ad_width'] ) ? absint( wp_unslash( $_POST['wbam_ad_width'] ) ) : 0;
+		$height_input = isset( $_POST['wbam_ad_height'] ) ? absint( wp_unslash( $_POST['wbam_ad_height'] ) ) : 0;
+
+		$resolved = self::resolve_ad_format( $post_id, $is_responsive, $format_input, $width_input, $height_input );
+
+		update_post_meta( $post_id, '_wbam_ad_format', $resolved['format'] );
+		update_post_meta( $post_id, '_wbam_ad_width', $resolved['width'] );
+		update_post_meta( $post_id, '_wbam_ad_height', $resolved['height'] );
+
 		// Save placements.
 		$placements = isset( $_POST['wbam_placements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) ) : array();
 		update_post_meta( $post_id, '_wbam_placements', $placements );
@@ -667,6 +890,174 @@ class Admin {
 		 * @param int $post_id Post ID.
 		 */
 		do_action( 'wbam_save_ad_meta', $post_id );
+	}
+
+	/**
+	 * Build the JS-side payload consumed by the sizing section's
+	 * "Will render in:" live compatibility summary.
+	 *
+	 * @since 2.8.1
+	 * @return array
+	 */
+	private static function collect_format_js_data() {
+		if ( ! class_exists( '\\WBAM\\Core\\Ad_Formats' ) ) {
+			return array();
+		}
+
+		$formats_out = array();
+		foreach ( \WBAM\Core\Ad_Formats::all() as $slug => $meta ) {
+			$formats_out[ $slug ] = array(
+				'w' => (int) $meta['width'],
+				'h' => (int) $meta['height'],
+			);
+		}
+
+		$placements_out = array();
+		$registry       = apply_filters( 'wbam_get_placements', array() );
+		if ( is_array( $registry ) ) {
+			foreach ( $registry as $slug => $entry ) {
+				if ( ! is_array( $entry ) || empty( $entry['name'] ) ) {
+					continue;
+				}
+				$placements_out[ $slug ] = array(
+					'name'     => (string) $entry['name'],
+					'accepted' => isset( $entry['accepted_formats'] ) ? (array) $entry['accepted_formats'] : array(),
+				);
+			}
+		}
+
+		return array(
+			'formats'    => $formats_out,
+			'placements' => $placements_out,
+			'i18n'       => array(
+				'autoDetect' => __( 'Auto-detected from your image on save.', 'wb-ads-rotator-with-split-test' ),
+				'enterDims'  => __( 'Enter width x height to see matches.', 'wb-ads-rotator-with-split-test' ),
+				'noMatch'    => __( 'No placements match this size yet.', 'wb-ads-rotator-with-split-test' ),
+				'every'      => __( 'Every placement.', 'wb-ads-rotator-with-split-test' ),
+			),
+		);
+	}
+
+	/**
+	 * Resolve the final format slug + dimensions for an ad.
+	 *
+	 * Pure function; safe to unit-test in isolation. See the comment
+	 * in save_metaboxes() for the resolution order.
+	 *
+	 * @since 2.8.1
+	 * @param int    $post_id       Ad post ID (read ad-type data for auto-detect).
+	 * @param string $is_responsive '1' if the Responsive flag is ticked.
+	 * @param string $format_input  Admin-selected format slug ('' = auto-detect).
+	 * @param int    $width_input   Width from the Custom W x H inputs.
+	 * @param int    $height_input  Height from the Custom W x H inputs.
+	 * @return array{format:string, width:int, height:int}
+	 */
+	private static function resolve_ad_format( $post_id, $is_responsive, $format_input, $width_input, $height_input ) {
+		// Rule 1: Responsive flag wins.
+		if ( '1' === (string) $is_responsive ) {
+			return array(
+				'format' => \WBAM\Core\Ad_Formats::RESPONSIVE,
+				'width'  => 0,
+				'height' => 0,
+			);
+		}
+
+		$all = \WBAM\Core\Ad_Formats::all();
+
+		// Rule 2: Named format picked.
+		if ( '' !== $format_input && isset( $all[ $format_input ] ) && 'custom' !== $format_input ) {
+			$meta = $all[ $format_input ];
+			return array(
+				'format' => $format_input,
+				'width'  => (int) $meta['width'],
+				'height' => (int) $meta['height'],
+			);
+		}
+
+		// Rule 3: Custom W x H.
+		if ( 'custom' === $format_input && $width_input > 0 && $height_input > 0 ) {
+			$detected = \WBAM\Core\Ad_Formats::detect_by_dimensions( $width_input, $height_input );
+			return array(
+				'format' => $detected, // may auto-upgrade to a named slug when dims match.
+				'width'  => $width_input,
+				'height' => $height_input,
+			);
+		}
+
+		// Rule 4: Auto-detect from ad-type data.
+		$dims = self::detect_ad_dimensions( $post_id );
+		if ( $dims['width'] > 0 && $dims['height'] > 0 ) {
+			$detected = \WBAM\Core\Ad_Formats::detect_by_dimensions( $dims['width'], $dims['height'] );
+			return array(
+				'format' => $detected,
+				'width'  => $dims['width'],
+				'height' => $dims['height'],
+			);
+		}
+
+		// Fallback: responsive. Safe permissive default — the ad will
+		// render in every placement until someone corrects the format.
+		return array(
+			'format' => \WBAM\Core\Ad_Formats::RESPONSIVE,
+			'width'  => 0,
+			'height' => 0,
+		);
+	}
+
+	/**
+	 * Best-effort dimension detection for an ad, read from its type data.
+	 *
+	 * Image ads: if the image_url points to a local attachment, read the
+	 * attachment metadata. External URLs return zeros (we don't fetch
+	 * remote images during a save — that's a blocking network call and
+	 * a privacy surface).
+	 *
+	 * Code / AdSense / Rich / Email Capture: no deterministic size, so
+	 * we return zeros and let the caller fall back to responsive.
+	 *
+	 * @since 2.8.1
+	 * @param int $post_id Ad post ID.
+	 * @return array{width:int, height:int}
+	 */
+	private static function detect_ad_dimensions( $post_id ) {
+		$data = get_post_meta( $post_id, '_wbam_ad_data', true );
+		$type = is_array( $data ) && ! empty( $data['type'] ) ? (string) $data['type'] : '';
+
+		if ( 'image' !== $type ) {
+			return array(
+				'width'  => 0,
+				'height' => 0,
+			);
+		}
+
+		$image_url = isset( $data['image_url'] ) ? (string) $data['image_url'] : '';
+		if ( '' === $image_url ) {
+			return array(
+				'width'  => 0,
+				'height' => 0,
+			);
+		}
+
+		$attachment_id = attachment_url_to_postid( $image_url );
+		if ( $attachment_id <= 0 ) {
+			return array(
+				'width'  => 0,
+				'height' => 0,
+			);
+		}
+
+		$src = wp_get_attachment_image_src( $attachment_id, 'full' );
+		if ( ! is_array( $src ) ) {
+			return array(
+				'width'  => 0,
+				'height' => 0,
+			);
+		}
+
+		return array(
+			'width'  => isset( $src[1] ) ? (int) $src[1] : 0,
+			'height' => isset( $src[2] ) ? (int) $src[2] : 0,
+		);
 	}
 
 	/**

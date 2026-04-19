@@ -16,18 +16,18 @@
 }
 
 .wbam-status-active {
-	background: #d4edda;
-	color: #155724;
+	background: var(--wbam-success-bg);
+	color: var(--wbam-success-text);
 }
 
 .wbam-status-inactive {
-	background: #e2e3e5;
-	color: #383d41;
+	background: var(--wbam-surface-sunken);
+	color: var(--wbam-text);
 }
 
 .wbam-status-expired {
-	background: #f8d7da;
-	color: #721c24;
+	background: var(--wbam-danger-bg);
+	color: var(--wbam-danger-text);
 }
 
 /* Link type badges */
@@ -40,23 +40,23 @@
 }
 
 .wbam-link-type-affiliate {
-	background: #cce5ff;
-	color: #004085;
+	background: var(--wbam-info-bg);
+	color: var(--wbam-info-text);
 }
 
 .wbam-link-type-guest_post {
-	background: #d4edda;
-	color: #155724;
+	background: var(--wbam-success-bg);
+	color: var(--wbam-success-text);
 }
 
 .wbam-link-type-external {
-	background: #fff3cd;
-	color: #856404;
+	background: var(--wbam-warning-bg);
+	color: var(--wbam-warning-text);
 }
 
 .wbam-link-type-internal {
-	background: #e2e3e5;
-	color: #383d41;
+	background: var(--wbam-surface-sunken);
+	color: var(--wbam-text);
 }
 
 /* Copy button */
@@ -78,15 +78,15 @@
 .wbam-link-info {
 	margin-top: 30px;
 	padding: 20px;
-	background: #f9f9f9;
-	border: 1px solid #ccc;
+	background: var(--wbam-surface);
+	border: 1px solid var(--wbam-border);
 	border-radius: 4px;
 }
 
 .wbam-link-info h3 {
 	margin-top: 0;
 	padding-bottom: 10px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--wbam-border-subtle);
 }
 
 .wbam-link-info table {
@@ -105,14 +105,14 @@
 
 .wbam-link-info code {
 	padding: 3px 8px;
-	background: #fff;
-	border: 1px solid #ddd;
+	background: var(--wbam-bg);
+	border: 1px solid var(--wbam-border-subtle);
 	border-radius: 3px;
 }
 
 /* Form required indicator */
 .required {
-	color: #dc3545;
+	color: var(--wbam-danger);
 }
 
 /* List table adjustments */
@@ -161,7 +161,7 @@
 /* Pro upsell notice */
 .wbam-pro-notice {
 	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	color: #fff;
+	color: var(--wbam-bg);
 	padding: 15px 20px;
 	border-radius: 4px;
 	margin: 20px 0;
@@ -169,7 +169,7 @@
 
 .wbam-pro-notice h3 {
 	margin: 0 0 10px;
-	color: #fff;
+	color: var(--wbam-bg);
 }
 
 .wbam-pro-notice p {
@@ -178,14 +178,14 @@
 }
 
 .wbam-pro-notice .button {
-	background: #fff;
+	background: var(--wbam-bg);
 	color: #667eea;
 	border: none;
 	font-weight: 600;
 }
 
 .wbam-pro-notice .button:hover {
-	background: #f0f0f0;
+	background: var(--wbam-surface-alt);
 	color: #764ba2;
 }
 
@@ -198,15 +198,15 @@
 
 .wbam-links-grid .wbam-links-item {
 	padding: 15px;
-	background: #f9f9f9;
-	border: 1px solid #ddd;
+	background: var(--wbam-surface);
+	border: 1px solid var(--wbam-border-subtle);
 	border-radius: 4px;
 }
 
 .wbam-links-grid .wbam-link-description {
 	margin: 10px 0 0;
-	font-size: 13px;
-	color: #666;
+	font-size: var(--wbam-font-size-sm);
+	color: var(--wbam-text-muted);
 }
 
 /* Inline links list */
