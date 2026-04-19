@@ -1,0 +1,499 @@
+/*
+ * Store landing-page hero compositions.
+ *
+ * Palette is deliberately warm amber/yellow to match the
+ * store.wbcomdesigns.com landing page theme for WB Ad Manager
+ * (brand: #D97706). These are NOT sharing banners — they are the
+ * single hero image that appears at the top of each product page.
+ *
+ * Target dimensions: 1440x810 (16:9, renders well at 1200px and up).
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600;1,9..144,800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+	--brand:       #D97706;  /* amber-600 */
+	--brand-dark:  #B45309;  /* amber-700 */
+	--brand-deep:  #78350F;  /* amber-900 */
+	--brand-light: #FEF3C7;  /* amber-100 */
+	--brand-muted: #FDE68A;  /* amber-200 */
+	--ink:         #1C1917;  /* stone-900 */
+	--ink-soft:    #44403C;  /* stone-700 */
+	--slate:       #57534E;  /* stone-600 */
+	--paper:       #FFFBEB;  /* amber-50  */
+	--paper-warm:  #FEF7D6;  /* slightly deeper cream */
+	--white:       #FFFFFF;
+	--green:       #059669;  /* emerald-600, for positive deltas */
+	--rule:        #78350F;
+
+	--font-display: 'Fraunces', 'Times New Roman', serif;
+	--font-body:    'Manrope', system-ui, -apple-system, sans-serif;
+	--font-mono:    'JetBrains Mono', ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+body {
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--font-body);
+	font-size: 16px;
+	line-height: 1.4;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+.stage {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	padding: 70px 90px;
+	display: grid;
+	grid-template-columns: 1.05fr 0.95fr;
+	gap: 60px;
+	overflow: hidden;
+	background:
+		radial-gradient(ellipse 70% 55% at 85% 10%, rgba(217, 119, 6, 0.18), transparent 60%),
+		radial-gradient(ellipse 55% 45% at 10% 95%, rgba(254, 243, 199, 0.9), transparent 55%),
+		linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%);
+}
+
+.stage::before {
+	content: '';
+	position: absolute;
+	inset: 24px;
+	border: 1.5px solid var(--ink);
+	border-radius: 6px;
+	pointer-events: none;
+}
+
+/* subtle noise */
+.stage::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.10 0 0 0 0 0.09 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+	opacity: 0.6;
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* ---------------------------------------------------------------- */
+/* Left column (copy block)                                         */
+/* ---------------------------------------------------------------- */
+
+.copy {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 28px;
+	padding: 20px 0;
+}
+
+.kicker {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--brand-dark);
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.kicker::before {
+	content: '';
+	width: 10px;
+	height: 10px;
+	background: var(--brand);
+	border-radius: 50%;
+}
+
+h1 {
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-size: 76px;
+	line-height: 0.98;
+	letter-spacing: -0.02em;
+	color: var(--ink);
+	margin: 0;
+}
+
+h1 em {
+	font-style: italic;
+	font-weight: 600;
+	color: var(--brand-dark);
+}
+
+.lede {
+	font-size: 20px;
+	line-height: 1.5;
+	color: var(--ink-soft);
+	max-width: 540px;
+	font-weight: 500;
+}
+
+.pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 8px;
+}
+
+.pill {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 8px 14px;
+	border: 1.5px solid var(--ink);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--ink);
+}
+
+.pill.on {
+	background: var(--ink);
+	color: var(--brand-light);
+}
+
+.pill.brand {
+	background: var(--brand);
+	color: var(--white);
+	border-color: var(--brand);
+}
+
+.footer {
+	position: absolute;
+	left: 90px;
+	bottom: 54px;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	font-family: var(--font-mono);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	z-index: 3;
+}
+
+.footer .dot {
+	width: 6px;
+	height: 6px;
+	background: var(--brand);
+	border-radius: 50%;
+}
+
+/* ---------------------------------------------------------------- */
+/* Right column (visual)                                            */
+/* ---------------------------------------------------------------- */
+
+.visual {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Numeral backdrop */
+.numeral {
+	position: absolute;
+	right: -60px;
+	top: -80px;
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-style: italic;
+	font-size: 560px;
+	line-height: 0.85;
+	color: var(--brand);
+	opacity: 0.14;
+	z-index: 0;
+	letter-spacing: -0.04em;
+	pointer-events: none;
+	user-select: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* Three-in-one cards (free hero)                                   */
+/* ---------------------------------------------------------------- */
+
+.card-stack {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	width: 100%;
+	max-width: 440px;
+}
+
+.card {
+	background: var(--white);
+	border: 1.5px solid var(--ink);
+	border-radius: 10px;
+	padding: 22px 26px;
+	display: flex;
+	align-items: center;
+	gap: 18px;
+	box-shadow: 6px 6px 0 var(--ink);
+	position: relative;
+}
+
+.card:nth-child(2) {
+	margin-left: 24px;
+}
+
+.card:nth-child(3) {
+	margin-left: 48px;
+}
+
+.card-icon {
+	width: 46px;
+	height: 46px;
+	flex: 0 0 46px;
+	background: var(--brand);
+	color: var(--white);
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--font-display);
+	font-style: italic;
+	font-weight: 800;
+	font-size: 24px;
+}
+
+.card-body {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.card-title {
+	font-family: var(--font-display);
+	font-weight: 700;
+	font-size: 22px;
+	line-height: 1.15;
+	color: var(--ink);
+}
+
+.card-note {
+	font-size: 13px;
+	color: var(--slate);
+	line-height: 1.4;
+	font-weight: 500;
+}
+
+.card-badge {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	padding: 4px 8px;
+	border-radius: 4px;
+	background: var(--brand-light);
+	color: var(--brand-deep);
+}
+
+/* ---------------------------------------------------------------- */
+/* Portal dashboard (pro hero)                                      */
+/* ---------------------------------------------------------------- */
+
+.portal {
+	position: relative;
+	z-index: 2;
+	background: var(--white);
+	border: 1.5px solid var(--ink);
+	border-radius: 14px;
+	padding: 24px;
+	width: 100%;
+	max-width: 460px;
+	box-shadow: 8px 8px 0 var(--ink);
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	transform: rotate(-1.2deg);
+}
+
+.portal-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 16px;
+	border-bottom: 1px solid var(--brand-light);
+}
+
+.portal-brand {
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-size: 18px;
+	color: var(--ink);
+}
+
+.portal-chip {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: var(--brand);
+	color: var(--white);
+}
+
+.wallet {
+	background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+	border-radius: 10px;
+	padding: 20px;
+	color: var(--white);
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.wallet-label {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	opacity: 0.85;
+}
+
+.wallet-amount {
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-size: 42px;
+	line-height: 1;
+	letter-spacing: -0.02em;
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.wallet-amount .cur {
+	font-size: 22px;
+	font-weight: 600;
+	opacity: 0.8;
+}
+
+.wallet-meta {
+	font-size: 12px;
+	opacity: 0.85;
+	font-weight: 500;
+}
+
+.metrics {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+
+.metric {
+	background: var(--brand-light);
+	border-radius: 8px;
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.metric-label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--brand-deep);
+}
+
+.metric-value {
+	font-family: var(--font-display);
+	font-weight: 800;
+	font-size: 24px;
+	line-height: 1;
+	color: var(--ink);
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+}
+
+.metric-delta {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	color: var(--green);
+}
+
+.campaigns {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.campaign-label {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--slate);
+	margin-bottom: 2px;
+}
+
+.campaign {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 12px;
+	border-radius: 8px;
+	background: var(--paper-warm);
+	border: 1px solid var(--brand-muted);
+}
+
+.campaign-name {
+	flex: 1;
+	font-weight: 700;
+	font-size: 13px;
+	color: var(--ink);
+}
+
+.campaign-bar {
+	width: 90px;
+	height: 6px;
+	background: var(--brand-muted);
+	border-radius: 999px;
+	overflow: hidden;
+	position: relative;
+}
+
+.campaign-bar span {
+	position: absolute;
+	inset: 0;
+	background: var(--brand);
+	border-radius: 999px;
+}
+
+.campaign-value {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	font-weight: 700;
+	color: var(--brand-dark);
+}
