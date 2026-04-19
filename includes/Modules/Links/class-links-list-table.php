@@ -310,13 +310,29 @@ class Links_List_Table extends \WP_List_Table {
 			'wbam_delete_link_' . $item->id
 		);
 
+		$cloak_prefix = \WBAM\Modules\Links\Link_Cloaker::get_instance()->get_cloak_prefix();
+		$cloaked_url  = home_url( '/' . $cloak_prefix . '/' . $item->slug );
+		$shortcode    = '[wbam_link id="' . (int) $item->id . '"]' . $item->name . '[/wbam_link]';
+
 		$actions = array(
-			'edit'   => sprintf(
+			'edit'           => sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( $edit_url ),
 				__( 'Edit', 'wb-ads-rotator-with-split-test' )
 			),
-			'delete' => sprintf(
+			'copy-url'       => sprintf(
+				'<a href="#" class="wbam-copy-row" data-copy="%s" data-done="%s">%s</a>',
+				esc_attr( $cloaked_url ),
+				esc_attr__( 'Copied!', 'wb-ads-rotator-with-split-test' ),
+				esc_html__( 'Copy URL', 'wb-ads-rotator-with-split-test' )
+			),
+			'copy-shortcode' => sprintf(
+				'<a href="#" class="wbam-copy-row" data-copy="%s" data-done="%s">%s</a>',
+				esc_attr( $shortcode ),
+				esc_attr__( 'Copied!', 'wb-ads-rotator-with-split-test' ),
+				esc_html__( 'Copy Shortcode', 'wb-ads-rotator-with-split-test' )
+			),
+			'delete'         => sprintf(
 				'<a href="%s" onclick="return confirm(\'%s\');" class="delete">%s</a>',
 				esc_url( $delete_url ),
 				esc_attr__( 'Are you sure you want to delete this link?', 'wb-ads-rotator-with-split-test' ),
