@@ -161,6 +161,20 @@ class Admin {
 			'high'
 		);
 
+		// Preview metabox is only useful once the ad has been saved at
+		// least once — before that there is no post meta to render from.
+		global $post;
+		if ( $post && $post->ID && 'auto-draft' !== $post->post_status ) {
+			add_meta_box(
+				'wbam-ad-preview',
+				__( 'Preview', 'wb-ads-rotator-with-split-test' ),
+				array( $this, 'render_preview_metabox' ),
+				'wbam-ad',
+				'normal',
+				'high'
+			);
+		}
+
 		add_meta_box(
 			'wbam-ad-placements',
 			__( 'Placements', 'wb-ads-rotator-with-split-test' ),
@@ -583,6 +597,214 @@ class Admin {
 		});
 		</script>
 		<?php
+	}
+
+	/**
+	 * Render the Preview metabox.
+	 *
+	 * Shows an approximate render of the saved ad so the admin can verify
+	 * their content without clicking through to a frontend page. Code ads
+	 * are isolated in a sandboxed iframe so pasted scripts cannot touch the
+	 * admin. AdSense shows a placeholder because the real AdSense script
+	 * only runs on public pages.
+	 *
+	 * @param \WP_Post $post Post.
+	 * @return void
+	 */
+	public function render_preview_metabox( $post ) {
+		$ad_data = get_post_meta( $post->ID, '_wbam_ad_data', true );
+		$type    = is_array( $ad_data ) && ! empty( $ad_data['type'] ) ? (string) $ad_data['type'] : '';
+
+		if ( '' === $type ) {
+			echo '<p class="description">'
+				. esc_html__( 'Save the ad first to see a preview.', 'wb-ads-rotator-with-split-test' )
+				. '</p>';
+			return;
+		}
+
+		echo '<p class="description" style="margin:0 0 10px;">'
+			. esc_html__( 'Approximate render. Final appearance depends on the theme and placement wrapper. Save the ad to refresh this preview.', 'wb-ads-rotator-with-split-test' )
+			. '</p>';
+
+		echo '<div class="wbam-preview-stage" style="padding:20px;background:#f6f7f7;border:1px solid #dcdcde;border-radius:4px;min-height:60px;">';
+
+		switch ( $type ) {
+			case 'image':
+				$this->render_preview_image( $ad_data );
+				break;
+			case 'rich_content':
+				$this->render_preview_rich_content( $ad_data );
+				break;
+			case 'code':
+				$this->render_preview_code( $ad_data );
+				break;
+			case 'adsense':
+				$this->render_preview_adsense( $ad_data );
+				break;
+			case 'email_capture':
+				$this->render_preview_email_capture( $ad_data, (int) $post->ID );
+				break;
+			default:
+				echo '<p>' . esc_html(
+					sprintf(
+						/* translators: %s: ad type slug */
+						__( 'Preview not available for ad type: %s', 'wb-ads-rotator-with-split-test' ),
+						$type
+					)
+				) . '</p>';
+		}
+
+		echo '</div>';
+	}
+
+	/**
+	 * Image ad preview.
+	 *
+	 * @param array $data Ad data.
+	 * @return void
+	 */
+	private function render_preview_image( $data ) {
+		$url = isset( $data['image_url'] ) ? esc_url( $data['image_url'] ) : '';
+		if ( '' === $url ) {
+			echo '<p>' . esc_html__( 'No image selected.', 'wb-ads-rotator-with-split-test' ) . '</p>';
+			return;
+		}
+		$alt  = isset( $data['alt_text'] ) ? $data['alt_text'] : '';
+		$link = isset( $data['link_url'] ) ? $data['link_url'] : '';
+
+		echo '<div style="text-align:center;">';
+		if ( '' !== $link ) {
+			printf(
+				'<a href="%s" target="_blank" rel="noopener nofollow"><img src="%s" alt="%s" style="max-width:100%%;height:auto;border:0;"></a>',
+				esc_url( $link ),
+				esc_attr( $url ),
+				esc_attr( $alt )
+			);
+		} else {
+			printf(
+				'<img src="%s" alt="%s" style="max-width:100%%;height:auto;border:0;">',
+				esc_attr( $url ),
+				esc_attr( $alt )
+			);
+		}
+		echo '</div>';
+	}
+
+	/**
+	 * Rich-content ad preview.
+	 *
+	 * @param array $data Ad data.
+	 * @return void
+	 */
+	private function render_preview_rich_content( $data ) {
+		$content = isset( $data['content'] ) ? (string) $data['content'] : '';
+		if ( '' === trim( $content ) ) {
+			echo '<p>' . esc_html__( 'No content yet.', 'wb-ads-rotator-with-split-test' ) . '</p>';
+			return;
+		}
+		echo '<div class="wbam-preview-rich">' . wp_kses_post( $content ) . '</div>';
+	}
+
+	/**
+	 * Code ad preview rendered in a sandboxed iframe so pasted scripts
+	 * cannot read admin cookies, modify the edit screen, or phone home
+	 * on behalf of the logged-in admin.
+	 *
+	 * @param array $data Ad data.
+	 * @return void
+	 */
+	private function render_preview_code( $data ) {
+		$code = isset( $data['code'] ) ? (string) $data['code'] : '';
+		if ( '' === trim( $code ) ) {
+			echo '<p>' . esc_html__( 'No code pasted yet.', 'wb-ads-rotator-with-split-test' ) . '</p>';
+			return;
+		}
+		// Build a minimal HTML document. Keep bg/color sensible so an
+		// unstyled ad snippet doesn't render as white-on-white.
+		$doc  = '<!DOCTYPE html><html><head><meta charset="utf-8">';
+		$doc .= '<style>body{margin:0;padding:12px;font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#1d2327;background:#fff;}</style>';
+		$doc .= '</head><body>' . $code . '</body></html>';
+		printf(
+			'<iframe sandbox="allow-scripts allow-same-origin" style="width:100%%;min-height:200px;border:0;background:#fff;" srcdoc="%s"></iframe>',
+			esc_attr( $doc )
+		);
+	}
+
+	/**
+	 * AdSense preview. Real AdSense only loads on approved public pages,
+	 * so show a labeled placeholder with the configured unit IDs.
+	 *
+	 * @param array $data Ad data.
+	 * @return void
+	 */
+	private function render_preview_adsense( $data ) {
+		$pub = isset( $data['publisher_id'] ) ? (string) $data['publisher_id'] : '';
+		if ( '' === $pub ) {
+			$pub = (string) \WBAM\Core\Settings_Helper::get( 'adsense_publisher_id', '' );
+		}
+		$unit   = isset( $data['ad_unit_id'] ) ? (string) $data['ad_unit_id'] : '';
+		$format = isset( $data['format'] ) ? (string) $data['format'] : 'auto';
+
+		echo '<div style="padding:28px 20px;background:#fff;border:1px dashed #c3c4c7;border-radius:4px;text-align:center;">';
+		echo '<div style="font-weight:600;color:#1d2327;margin-bottom:6px;">' . esc_html__( 'Google AdSense', 'wb-ads-rotator-with-split-test' ) . '</div>';
+		echo '<div style="font-family:monospace;color:#50575e;font-size:13px;">';
+		if ( '' !== $pub ) {
+			echo esc_html( $pub );
+		}
+		if ( '' !== $unit ) {
+			echo ' / ' . esc_html( $unit );
+		}
+		echo '</div>';
+		echo '<div style="color:#8c8f94;font-size:12px;margin-top:10px;">' . esc_html(
+			sprintf(
+			/* translators: %s: AdSense format (auto, horizontal, etc.) */
+				__( 'Format: %s. Real AdSense renders only on approved public pages.', 'wb-ads-rotator-with-split-test' ),
+				$format
+			)
+		) . '</div>';
+		echo '</div>';
+	}
+
+	/**
+	 * Email Capture ad preview.
+	 *
+	 * @param array $data    Ad data.
+	 * @param int   $post_id Ad post ID (for CSS isolation hints).
+	 * @return void
+	 */
+	private function render_preview_email_capture( $data, $post_id ) {
+		$headline    = isset( $data['headline'] ) ? (string) $data['headline'] : __( 'Subscribe to our Newsletter', 'wb-ads-rotator-with-split-test' );
+		$description = isset( $data['description'] ) ? (string) $data['description'] : '';
+		$button      = isset( $data['button_text'] ) ? (string) $data['button_text'] : __( 'Subscribe', 'wb-ads-rotator-with-split-test' );
+		$bg          = isset( $data['bg_color'] ) ? (string) $data['bg_color'] : '#ffffff';
+		$text_color  = isset( $data['text_color'] ) ? (string) $data['text_color'] : '#1d2327';
+		$btn_color   = isset( $data['button_color'] ) ? (string) $data['button_color'] : '#2271b1';
+		$show_name   = ! empty( $data['show_name_field'] );
+		$privacy     = isset( $data['privacy_text'] ) ? (string) $data['privacy_text'] : '';
+
+		printf(
+			'<div style="background:%s;color:%s;padding:22px;border-radius:6px;max-width:420px;margin:0 auto;">',
+			esc_attr( $bg ),
+			esc_attr( $text_color )
+		);
+		echo '<div style="font-size:18px;font-weight:700;margin-bottom:6px;">' . esc_html( $headline ) . '</div>';
+		if ( '' !== $description ) {
+			echo '<div style="font-size:13px;margin-bottom:14px;">' . esc_html( $description ) . '</div>';
+		}
+		if ( $show_name ) {
+			echo '<input type="text" placeholder="' . esc_attr__( 'Your name', 'wb-ads-rotator-with-split-test' ) . '" disabled style="display:block;width:100%;padding:8px 10px;margin-bottom:8px;border:1px solid #c3c4c7;border-radius:4px;background:#fff;color:#1d2327;">';
+		}
+		echo '<input type="email" placeholder="' . esc_attr__( 'you@example.com', 'wb-ads-rotator-with-split-test' ) . '" disabled style="display:block;width:100%;padding:8px 10px;margin-bottom:8px;border:1px solid #c3c4c7;border-radius:4px;background:#fff;color:#1d2327;">';
+		printf(
+			'<button type="button" disabled style="background:%s;color:#fff;border:0;padding:9px 16px;border-radius:4px;font-weight:600;cursor:not-allowed;">%s</button>',
+			esc_attr( $btn_color ),
+			esc_html( $button )
+		);
+		if ( '' !== $privacy ) {
+			echo '<div style="font-size:11px;margin-top:10px;opacity:.75;">' . esc_html( $privacy ) . '</div>';
+		}
+		echo '</div>';
+		unset( $post_id );
 	}
 
 	/**
