@@ -442,6 +442,8 @@ class Help_Docs {
 	 *
 	 * Mirrors the same categories as the Upgrade page so free users get
 	 * a clear overview without clicking away.
+	 *
+	 * @return void
 	 */
 	private function render_pro_teaser() {
 		?>
