@@ -11,7 +11,8 @@
   "scripts": {
     "build": "grunt build",
     "dist": "grunt dist",
-    "watch": "grunt watch"
+    "watch": "grunt watch",
+    "release": "node scripts/build-release.mjs"
   },
   "devDependencies": {
     "grunt": "^1.6.1",
