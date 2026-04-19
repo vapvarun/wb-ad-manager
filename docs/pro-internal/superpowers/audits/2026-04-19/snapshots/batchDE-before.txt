@@ -1,0 +1,19 @@
+# Batch D+E — BEFORE snapshot
+# Date: 2026-04-19
+# Pro HEAD: 69a4f92
+
+## Table hashes locked
+
+ad_submissions           1        eccbc87e4b5ce2fe28308fd9f2a7baf3
+campaigns                14       2ad8eff1801cdd5bf343bef64f3dcf7b
+classifieds              16       997dec9644e30e45fb1b06a5a58531a1
+transactions             28       6298d7b3db03456ca16ef4a3e2ab8891
+
+## Scope
+
+- Tighten Classifieds mode dialog description
+- Gate Overview stat cards by Site Mode
+- Gate Overview Active Campaigns section
+- Update CLAUDE.md Recent Changes + bump version 1.5.0 → 1.5.1
+
+All additive / gating — no data changes expected.

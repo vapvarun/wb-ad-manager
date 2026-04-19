@@ -1,0 +1,19 @@
+# Batch B — BEFORE snapshot
+# Date: 2026-04-19
+# Pro HEAD: 0626a8f (post Batch A)
+
+## Expected delta
+Batch B commits add hooks (filters + actions) and a HOOKS.md doc.
+All changes additive. Zero writes. Zero schema changes.
+
+## Table hashes locked
+
+ad_submissions           1        eccbc87e4b5ce2fe28308fd9f2a7baf3
+advertisers              6        9e6d1bf88f20f0a856f2ba1526d67dfc
+campaigns                14       2ad8eff1801cdd5bf343bef64f3dcf7b
+classifieds              16       997dec9644e30e45fb1b06a5a58531a1
+classified_inquiries     6        6a815926850ac3886d300708a8a31e9b
+transactions             28       6298d7b3db03456ca16ef4a3e2ab8891
+packages                 10       3227a95526e21fe9e2ae8425bd6ada53
+
+Any delta post-commit = revert batch.

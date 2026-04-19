@@ -1,0 +1,72 @@
+# Batch B — AFTER snapshot
+# Date: 2026-04-19
+# Pro HEAD: 80cfef5
+
+## Diff vs before snapshot
+
+ZERO row deltas across all audited tables.
+
+## Table row counts + id hashes (VERIFIED IDENTICAL)
+
+table                    count    hash
+ad_submissions           1        eccbc87e4b5ce2fe28308fd9f2a7baf3   ✅
+advertisers              6        9e6d1bf88f20f0a856f2ba1526d67dfc   ✅
+campaigns                14       2ad8eff1801cdd5bf343bef64f3dcf7b   ✅
+classifieds              16       997dec9644e30e45fb1b06a5a58531a1   ✅
+classified_inquiries     6        6a815926850ac3886d300708a8a31e9b   ✅
+transactions             28       6298d7b3db03456ca16ef4a3e2ab8891   ✅
+packages                 10       3227a95526e21fe9e2ae8425bd6ada53   ✅
+
+## Commits landed in Batch B
+
+ee918dc — Ad submission DX: 4 wizard action slots + data filter
+fa0a731 — Advertiser_Manager: before_/after_ hooks on create/update/delete
+7b83df6 — Campaign_Manager: before_/after_ hooks on create/update/delete
+33c3752 — Classified + Package managers: before_/after_ hooks on write methods
+7f7b371 — REST response-shape filters on Packages + Classifieds APIs
+80cfef5 — Add docs/HOOKS.md — public hook reference
+
+## Behavioral checks passed
+
+- Ad wizard renders clean (4 step slots no-op until hooked)              ✅
+- Portal Overview loads                                                   ✅
+- REST GET /packages = 200 with identical payload                         ✅
+- REST GET /classifieds = 200, 16 rows returned                           ✅
+- REST GET /reviews = 200                                                 ✅
+- REST GET /classifieds/trending = 200                                    ✅
+- No mutated hook signatures (all new hooks, legacy preserved)            ✅
+- HOOKS.md published with 4 worked examples                               ✅
+
+## Data flow safety gate — PASSED
+
+Batch B commits are additive: add new filter gates, add new post-commit
+actions, add new REST response filters, add render-time action slots,
+create a new documentation file. Zero write-path changes. Zero schema
+changes. Zero option value rewrites. Every existing hook retained.
+
+A registered filter with no callbacks is a pass-through (apply_filters
+returns its input unchanged). A registered action with no listeners is
+a no-op. Runtime cost per request: ~20 no-op calls, immeasurable.
+
+Verdict: Batch B SAFE TO RELEASE.
+
+## DX grade projection (from Pass 6)
+
+Before Batch B:
+- Task A (pricing model):     HARD
+- Task B (ad format):         EASY  ✅
+- Task C (submission field):  FORK-REQUIRED  ❌
+- Task D (wallet gateway):    HARD
+- Task E (template override): EASY  ✅
+- Overall: HARD (4/10)
+
+After Batch B:
+- Task A (pricing model):     HARD (no change — needs pricing registry hook, deferred to later batch)
+- Task B (ad format):         EASY  ✅
+- Task C (submission field):  EASY  ✅  (was FORK-REQUIRED)
+- Task D (wallet gateway):    HARD (no change — wallet hooks deferred)
+- Task E (template override): EASY  ✅
+- Overall: MEDIUM-EASY (6.5/10)
+
+Marketing-ready claim: "extensible via ~20 hooks, 4 wizard slots, and
+REST response filters. See docs/HOOKS.md for signatures."

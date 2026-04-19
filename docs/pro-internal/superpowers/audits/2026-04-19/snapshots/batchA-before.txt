@@ -1,0 +1,52 @@
+# Batch A — BEFORE snapshot
+# Date: 2026-04-19
+# Pro HEAD: 8573ebc (after Phase A audit commit)
+# Free HEAD: 9f38b51
+
+## Table row counts + id hashes
+
+table                    count    hash
+ad_submissions           1        eccbc87e4b5ce2fe28308fd9f2a7baf3
+advertisers              6        9e6d1bf88f20f0a856f2ba1526d67dfc
+campaigns                14       2ad8eff1801cdd5bf343bef64f3dcf7b
+classifieds              16       997dec9644e30e45fb1b06a5a58531a1
+classified_meta          0        (empty)
+classified_inquiries     6        6a815926850ac3886d300708a8a31e9b
+classified_upgrades      0        (empty)
+transactions             28       6298d7b3db03456ca16ef4a3e2ab8891
+credit_ledger            5        afe805e5a3c3ec7fa05645a6a2a6e607
+packages                 10       3227a95526e21fe9e2ae8425bd6ada53
+membership_plans         2        05cf281c050be3da4eecf3bc6e8aac1b
+subscriptions            4        f8ef5bbac13edd1c0251d9200be10bf6
+links                    0        (empty)
+link_partnerships        0        (empty)
+reviews                  0        (empty)
+messages                 0        (empty)
+message_threads          0        (empty)
+
+## Key option values
+
+wbam_pro_db_version              : 3.8.0
+wbam_pro_settings.site_mode      : full
+wbam_pro_settings._mode_applied  : true
+wbam_pro_settings._previous_mode : full
+
+## Page option keys (WARNING — these bypass Settings API per Pass 1)
+
+wbam_page_advertiser_dashboard   : 172
+wbam_page_classifieds            : 173
+wbam_page_my_classifieds         : 113
+wbam_page_ad_submission          : (not present)
+wbam_page_post_classified        : (not present)
+
+## Free plugin settings
+
+wbam_settings                    : a:0:{} (empty array — Free plugin not configured)
+
+## Post snapshot checks
+
+All Batch A items must preserve:
+- Every table count + hash identical OR changed by exactly the amount the plan item predicted.
+- wbam_pro_settings.site_mode unchanged
+- wbam_page_* key values unchanged (re-registration must not rewrite values)
+- No new orphan rows across any wp_wbam_* table

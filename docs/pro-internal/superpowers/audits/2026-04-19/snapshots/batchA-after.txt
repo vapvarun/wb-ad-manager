@@ -1,0 +1,65 @@
+# Batch A — AFTER snapshot
+# Date: 2026-04-19
+# Pro HEAD: 8aff043
+# Free HEAD: 9f38b51 (unchanged in Batch A)
+
+## Diff vs before snapshot
+
+ZERO row deltas across all 17 audited tables.
+ZERO option value changes on wbam_page_* keys and wbam_pro_settings.
+
+## Table row counts + id hashes (VERIFIED IDENTICAL)
+
+table                    count    hash
+ad_submissions           1        eccbc87e4b5ce2fe28308fd9f2a7baf3   ✅
+advertisers              6        9e6d1bf88f20f0a856f2ba1526d67dfc   ✅
+campaigns                14       2ad8eff1801cdd5bf343bef64f3dcf7b   ✅
+classifieds              16       997dec9644e30e45fb1b06a5a58531a1   ✅
+classified_meta          0        (empty)                            ✅
+classified_inquiries     6        6a815926850ac3886d300708a8a31e9b   ✅
+transactions             28       6298d7b3db03456ca16ef4a3e2ab8891   ✅
+credit_ledger            5        afe805e5a3c3ec7fa05645a6a2a6e607   ✅
+packages                 10       3227a95526e21fe9e2ae8425bd6ada53   ✅
+membership_plans         2        05cf281c050be3da4eecf3bc6e8aac1b   ✅
+subscriptions            4        f8ef5bbac13edd1c0251d9200be10bf6   ✅
+
+## Options VERIFIED IDENTICAL
+
+wbam_pro_db_version                 : 3.8.0          ✅
+wbam_pro_settings.site_mode         : full           ✅
+wbam_pro_settings._mode_applied     : true           ✅
+wbam_pro_settings._previous_mode    : full           ✅
+wbam_pro_settings (serialized hash) : a:28:{...}     ✅
+wbam_page_advertiser_dashboard      : 172            ✅
+wbam_page_classifieds               : 173            ✅
+wbam_page_my_classifieds            : 113            ✅
+wbam_page_my_favorites              : 114            ✅
+wbam_page_my_following              : 115            ✅
+wbam_page_submit_ad                 : 6              ✅
+
+## Commits landed in Batch A
+
+95fd66e — Register wbam_page_* options via Settings API
+2733663 — Route Pro Keyword_Linker through Settings_Helper::get_free()
+3afec34 — Replace __return_true with named REST_Permissions callbacks
+52f18ef — Register 7 unsanitized options via Settings API
+8aff043 — CLAUDE.md: codify cross-plugin + REST permission rules
+
+## Behavioral checks passed
+
+- Settings admin page loads with no fatals + no notices   ✅
+- Advertiser portal loads                                  ✅
+- REST GET /wp-json/wbam-pro/v1/packages returns 200       ✅
+- Site Mode unchanged (Full Platform)                      ✅
+- No new rows in any table                                 ✅
+- No dropped rows in any table                             ✅
+- No altered row-id ordering                               ✅
+
+## Data flow safety gate — PASSED
+
+All Batch A commits are additive (register_setting, new helper class,
+replace bare __return_true with named callback, CLAUDE.md rule).
+Zero write-path changes. Zero schema changes. Zero option value
+rewrites.
+
+Verdict: Batch A SAFE TO RELEASE.
