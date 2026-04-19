@@ -194,7 +194,7 @@ class Comment_Placement implements Placement_Interface {
 
 			$show = false;
 			if ( $repeat ) {
-				$show = ( $count % $after_count === 0 );
+				$show = ( 0 === $count % $after_count );
 			} else {
 				$show = ( $count === $after_count );
 			}

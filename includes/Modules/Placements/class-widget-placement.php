@@ -2,6 +2,11 @@
 /**
  * Widget Placement
  *
+ * Placement class + the sidebar widget class live together because they
+ * deploy as a single unit and share the same module gate.
+ *
+ * phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound -- Placement + widget cohesive pair.
+ *
  * @package WB_Ad_Manager
  * @since   1.0.0
  */

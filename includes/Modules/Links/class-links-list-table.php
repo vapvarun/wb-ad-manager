@@ -96,6 +96,10 @@ class Links_List_Table extends \WP_List_Table {
 	 * @return array
 	 */
 	protected function get_views() {
+		// Read-only filter state from the admin list URL. WP_List_Table filters
+		// are GET-based by convention and do not carry nonces — nothing is
+		// mutated here, only rendered.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter state.
 		$current = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'all';
 		$views   = array();
 
@@ -149,8 +153,11 @@ class Links_List_Table extends \WP_List_Table {
 			return;
 		}
 
+		// Read-only filter state from the list-table URL; no state mutation.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter state.
 		$link_type   = isset( $_GET['link_type'] ) ? sanitize_text_field( wp_unslash( $_GET['link_type'] ) ) : '';
 		$category_id = isset( $_GET['category_id'] ) ? (int) $_GET['category_id'] : 0;
+		// phpcs:enable
 
 		?>
 		<div class="alignleft actions">
@@ -194,7 +201,10 @@ class Links_List_Table extends \WP_List_Table {
 		// Process bulk actions.
 		$this->process_bulk_action();
 
-		// Build query args.
+		// Build query args from read-only filter/sort/search URL params.
+		// WP_List_Table filters are GET-based by convention and carry no
+		// nonce; nothing below is a state mutation.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter / sort / search state.
 		$args = array(
 			'limit'   => $per_page,
 			'offset'  => ( $this->get_pagenum() - 1 ) * $per_page,
@@ -217,6 +227,7 @@ class Links_List_Table extends \WP_List_Table {
 		if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
 			$args['search'] = sanitize_text_field( wp_unslash( $_GET['s'] ) );
 		}
+		// phpcs:enable
 
 		$this->items = $this->link_manager->get_links( $args );
 
@@ -406,10 +417,15 @@ class Links_List_Table extends \WP_List_Table {
 
 		$class = 'wbam-status wbam-status-' . $item->status;
 
-		// Check if expired.
-		if ( 'active' === $item->status && $item->expires_at && strtotime( $item->expires_at ) < time() ) {
-			$class = 'wbam-status wbam-status-expired';
-			$label = __( 'Expired', 'wb-ads-rotator-with-split-test' );
+		// Check if expired. strtotime() returns false on bad input — only flag
+		// as expired when we successfully parsed a past timestamp, so malformed
+		// DB values don't silently mark active links "expired".
+		if ( 'active' === $item->status && $item->expires_at ) {
+			$expires_ts = strtotime( $item->expires_at );
+			if ( false !== $expires_ts && $expires_ts < time() ) {
+				$class = 'wbam-status wbam-status-expired';
+				$label = __( 'Expired', 'wb-ads-rotator-with-split-test' );
+			}
 		}
 
 		return sprintf( '<span class="%s">%s</span>', esc_attr( $class ), esc_html( $label ) );
@@ -422,10 +438,17 @@ class Links_List_Table extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_created_at( $item ) {
+		$created_ts = strtotime( (string) $item->created_at );
+		if ( false === $created_ts ) {
+			// Unparseable DB value — show the raw string instead of rendering
+			// "55 years ago" from a strtotime(false) → 0 fallback.
+			return esc_html( (string) $item->created_at );
+		}
+
 		return sprintf(
 			'<span title="%s">%s</span>',
 			esc_attr( $item->created_at ),
-			esc_html( human_time_diff( strtotime( $item->created_at ), time() ) . ' ' . __( 'ago', 'wb-ads-rotator-with-split-test' ) )
+			esc_html( human_time_diff( $created_ts, time() ) . ' ' . __( 'ago', 'wb-ads-rotator-with-split-test' ) )
 		);
 	}
 

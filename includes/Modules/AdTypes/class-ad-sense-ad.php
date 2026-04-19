@@ -2,6 +2,13 @@
 /**
  * Google AdSense Ad Type
  *
+ * Filename follows the autoloader's hyphenate-before-uppercase convention
+ * (AdSense -> ad-sense -> class-ad-sense-ad.php) rather than WPCS's
+ * preferred class-adsense-ad.php. Renaming the file would break the
+ * autoloader for every existing deployment.
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- Filename matches the PSR-4-style autoloader convention; renaming would break existing sites.
+ *
  * @package WB_Ad_Manager
  * @since   1.0.0
  */

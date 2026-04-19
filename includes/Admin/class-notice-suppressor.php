@@ -120,16 +120,16 @@ class Notice_Suppressor {
 
 		foreach ( $filter->callbacks as $priority => $callbacks ) {
 			foreach ( $callbacks as $cb ) {
-				$callable = isset( $cb['function'] ) ? $cb['function'] : null;
-				if ( null === $callable ) {
+				$cb_callable = isset( $cb['function'] ) ? $cb['function'] : null;
+				if ( null === $cb_callable ) {
 					continue;
 				}
 
-				if ( $this->is_our_callback( $callable ) ) {
+				if ( $this->is_our_callback( $cb_callable ) ) {
 					continue;
 				}
 
-				remove_action( $hook, $callable, $priority );
+				remove_action( $hook, $cb_callable, $priority );
 			}
 		}
 	}
@@ -137,31 +137,31 @@ class Notice_Suppressor {
 	/**
 	 * Does the given callback belong to WB Ad Manager?
 	 *
-	 * @param mixed $callable A WP hook callable: string, array, or Closure.
+	 * @param mixed $cb_callable A WP hook callable: string, array, or Closure.
 	 * @return bool
 	 */
-	private function is_our_callback( $callable ) {
+	private function is_our_callback( $cb_callable ) {
 		// [ $object, 'method' ] or [ 'ClassName', 'method' ].
-		if ( is_array( $callable ) && isset( $callable[0] ) ) {
-			$class = is_object( $callable[0] ) ? get_class( $callable[0] ) : (string) $callable[0];
+		if ( is_array( $cb_callable ) && isset( $cb_callable[0] ) ) {
+			$class = is_object( $cb_callable[0] ) ? get_class( $cb_callable[0] ) : (string) $cb_callable[0];
 			return 0 === strpos( $class, 'WBAM\\' );
 		}
 
 		// Plain function name or static "Class::method".
-		if ( is_string( $callable ) ) {
-			if ( 0 === strpos( $callable, 'WBAM\\' ) ) {
+		if ( is_string( $cb_callable ) ) {
+			if ( 0 === strpos( $cb_callable, 'WBAM\\' ) ) {
 				return true;
 			}
-			if ( 0 === strpos( $callable, 'wbam_' ) ) {
+			if ( 0 === strpos( $cb_callable, 'wbam_' ) ) {
 				return true;
 			}
 			return false;
 		}
 
 		// Closures — only keep if declared inside a WBAM file.
-		if ( $callable instanceof \Closure ) {
+		if ( $cb_callable instanceof \Closure ) {
 			try {
-				$ref  = new \ReflectionFunction( $callable );
+				$ref  = new \ReflectionFunction( $cb_callable );
 				$file = (string) $ref->getFileName();
 				if ( '' !== $file && false !== strpos( $file, DIRECTORY_SEPARATOR . 'wb-ads-rotator-with-split-test' . DIRECTORY_SEPARATOR ) ) {
 					return true;

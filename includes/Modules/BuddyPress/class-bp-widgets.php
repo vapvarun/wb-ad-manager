@@ -2,6 +2,12 @@
 /**
  * BuddyPress Widgets
  *
+ * Bundles the widget registrar + all three BP widget classes in one file
+ * because they share the "is BuddyPress active" gate and deploy as a
+ * single unit.
+ *
+ * phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound -- Widget set lives together for cohesion.
+ *
  * @package WB_Ad_Manager
  * @since   1.1.0
  */

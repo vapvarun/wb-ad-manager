@@ -7,6 +7,11 @@
  * single "BuddyPress Directories" checkbox that hid six positions
  * behind a post-save dropdown.
  *
+ * All six directory-position classes live here because they share the
+ * same BP-directory dependency and are trivially small (~10 lines each).
+ *
+ * phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound -- Related directory-position classes share this file.
+ *
  * @package WB_Ad_Manager
  * @since   1.1.0
  */

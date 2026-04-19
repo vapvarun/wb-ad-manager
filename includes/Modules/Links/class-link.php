@@ -337,8 +337,14 @@ class Link {
 			return false;
 		}
 
-		if ( $this->expires_at && strtotime( $this->expires_at ) < time() ) {
-			return false;
+		if ( $this->expires_at ) {
+			$expires_ts = strtotime( $this->expires_at );
+			// A malformed expires_at shouldn't silently mark the link expired
+			// (strtotime(false) would compare 0 < time() and always win); treat
+			// unparseable values as "no expiration set".
+			if ( false !== $expires_ts && $expires_ts < time() ) {
+				return false;
+			}
 		}
 
 		return true;

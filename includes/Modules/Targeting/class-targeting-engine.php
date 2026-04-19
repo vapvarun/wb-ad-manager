@@ -157,6 +157,7 @@ class Targeting_Engine {
 			} catch ( \Exception $e ) {
 				// Invalid date format, skip this check.
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- WP_DEBUG-gated diagnostic log for malformed start_date meta.
 					error_log( 'WB Ad Manager: Invalid start_date format: ' . $schedule['start_date'] );
 				}
 			}
@@ -173,6 +174,7 @@ class Targeting_Engine {
 			} catch ( \Exception $e ) {
 				// Invalid date format, skip this check.
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- WP_DEBUG-gated diagnostic log for malformed end_date meta.
 					error_log( 'WB Ad Manager: Invalid end_date format: ' . $schedule['end_date'] );
 				}
 			}

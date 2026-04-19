@@ -2,6 +2,15 @@
 /**
  * bbPress Module
  *
+ * Groups the bbPress module class + its placement + its widgets in one
+ * file because they share the "is bbPress active" gate and deploy as a
+ * single unit. Class names start with lowercase "b" to mirror the
+ * bbPress project's own naming convention (bbPress is the brand).
+ *
+ * phpcs:disable WordPress.Files.FileName.InvalidClassFileName -- File hosts multiple classes; see note above.
+ * phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound -- Module + placement + widgets live together for cohesion.
+ * phpcs:disable PEAR.NamingConventions.ValidClassName.StartWithCapital -- bbPress-branded class names intentionally match the bbPress project's lowercase prefix.
+ *
  * @package WB_Ad_Manager
  * @since   1.1.0
  */
@@ -256,7 +265,7 @@ class bbPress_Placement implements \WBAM\Modules\Placements\Placement_Interface 
 
 			$show = false;
 			if ( $repeat ) {
-				$show = ( $count % $after_count === 0 );
+				$show = ( 0 === $count % $after_count );
 			} else {
 				$show = ( $count === $after_count );
 			}

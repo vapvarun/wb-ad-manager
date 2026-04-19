@@ -8,6 +8,7 @@
 	<!-- Exclude -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
 	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/dist/*</exclude-pattern>
 	<exclude-pattern>/tests/*</exclude-pattern>
 	<exclude-pattern>/bin/*</exclude-pattern>
 	<exclude-pattern>/.wordpress-org/*</exclude-pattern>
@@ -41,6 +42,16 @@
 		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
 		<exclude name="Squiz.Commenting.FileComment.Missing"/>
 		<exclude name="Squiz.PHP.CommentedOutCode.Found"/>
+	</rule>
+
+	<!-- Two files ship with filenames that match the autoloader's
+	     "hyphenate before each uppercase" convention rather than WPCS's
+	     preferred single-token form. Renaming would break every deployed
+	     site's autoloader. Exclude the filename sniff for them only —
+	     all other WPCS rules still apply. -->
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>*/includes/Modules/AdTypes/class-ad-sense-ad\.php</exclude-pattern>
+		<exclude-pattern>*/includes/Modules/bbPress/class-bb-press-module\.php</exclude-pattern>
 	</rule>
 
 	<!-- Register wbam_icon as a trusted auto-escaped helper (returns pre-escaped markup). -->

@@ -295,6 +295,8 @@ class Partnership_Form {
 							<option value=""><?php esc_html_e( '— Any page —', 'wb-ads-rotator-with-split-test' ); ?></option>
 							<?php
 							$pages = get_pages( array( 'post_status' => 'publish' ) );
+							// get_pages() returns false on DB error; default to empty list.
+							$pages = is_array( $pages ) ? $pages : array();
 							foreach ( $pages as $page ) :
 								?>
 								<option value="<?php echo esc_attr( $page->ID ); ?>"><?php echo esc_html( $page->post_title ); ?></option>

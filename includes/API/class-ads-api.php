@@ -563,7 +563,7 @@ class Ads_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$impressions = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$table} {$where} AND type = 'impression'",
 				$values
 			)
@@ -572,7 +572,7 @@ class Ads_API {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
 				"SELECT COUNT(*) FROM {$table} {$where} AND type = 'click'",
 				$values
 			)
@@ -648,9 +648,10 @@ class Ads_API {
 	/**
 	 * GET /ads/placements — List available placement types (public).
 	 *
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object (unused; required by REST callback contract).
 	 * @return \WP_REST_Response
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by REST callback contract.
 	public function get_placement_types( $request ) {
 		$engine     = \WBAM\Modules\Placements\Placement_Engine::get_instance();
 		$placements = $engine->get_placements();
@@ -670,9 +671,10 @@ class Ads_API {
 	/**
 	 * GET /ads/types — List available ad types (public).
 	 *
-	 * @param \WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object (unused; required by REST callback contract).
 	 * @return \WP_REST_Response
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by REST callback contract.
 	public function get_ad_types( $request ) {
 		$engine   = \WBAM\Modules\Placements\Placement_Engine::get_instance();
 		$ad_types = $engine->get_ad_types();
