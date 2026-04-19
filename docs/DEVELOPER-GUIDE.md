@@ -658,14 +658,55 @@ add_action( 'wbam_register_placements', function( $engine ) {
 
 ## REST API
 
-### Available Endpoints
+All endpoints live under the `wbam/v1` namespace. Admin endpoints check
+the `manage_options` capability via `check_admin_permission()` and return
+a `WP_Error` with HTTP 403 if the current user can't manage options.
+Public endpoints are nonce-less by design — they're used for impression
+tracking from the frontend.
 
-The plugin registers endpoints under the `wbam/v1` namespace.
+### Endpoint catalog
 
-#### Get Ad
+#### Ads — `includes/API/class-ads-api.php`
 
-```
-GET /wp-json/wbam/v1/ads/{id}
+| Method | Route | Auth | Purpose |
+|--------|-------|------|---------|
+| GET | `/ads` | Public | List published ads. Params: `per_page` (max 100), `page` |
+| POST | `/ads` | Admin | Create an ad. Required: `title` |
+| GET | `/ads/{id}` | Admin | Get a single ad with full metadata |
+| PUT | `/ads/{id}` | Admin | Update an ad. Accepts `title`, `status`, `content` |
+| DELETE | `/ads/{id}` | Admin | Permanently delete an ad |
+| GET | `/ads/serve` | Public | Serve an ad for a placement. Required: `placement`. Optional: `post_id`, `page_url` |
+| GET | `/ads/placements` | Public | List every registered placement type |
+| GET | `/ads/types` | Public | List every registered ad type |
+| POST | `/ads/track` | Public | Track an impression or click. Required: `ad_id`, `event_type` (`impression` or `click`). Optional: `placement` |
+| GET | `/ads/{id}/stats` | Admin | Per-ad stats. Optional: `start_date`, `end_date` |
+| POST | `/ads/{id}/duplicate` | Admin | Duplicate an ad |
+
+#### Analytics — `includes/API/class-analytics-api.php`
+
+| Method | Route | Auth | Purpose |
+|--------|-------|------|---------|
+| GET | `/analytics/overview` | Admin | Summary stats. Optional: `start_date`, `end_date`, `limit` (max 50) |
+| GET | `/analytics/ads/{id}` | Admin | Per-ad stats. Optional: `start_date`, `end_date` |
+| GET | `/analytics/daily` | Admin | Daily time-series. Required: `start_date`, `end_date`. Optional: `ad_id` |
+| POST | `/analytics/track` | Public | Alternate tracking endpoint. Required: `ad_id`, `event_type`. Optional: `placement` |
+
+#### Links — `includes/API/class-links-api.php`
+
+| Method | Route | Auth | Purpose |
+|--------|-------|------|---------|
+| GET | `/links` | Admin | List links. Optional filters: `status`, `link_type`, `category_id`, `search`, `per_page` (max 100), `page` |
+| POST | `/links` | Admin | Create a link |
+| GET | `/links/categories` | Admin | List link categories |
+| POST | `/links/categories` | Admin | Create a category. Required: `name`. Optional: `slug`, `description` |
+| GET | `/partnerships` | Admin | List partnership inquiries. Optional filters: `status`, `per_page` (max 100), `page` |
+
+### Example: Get a single ad
+
+```bash
+curl -X GET \
+    -u admin:application_password \
+    https://example.com/wp-json/wbam/v1/ads/123
 ```
 
 **Response:**
@@ -683,18 +724,13 @@ GET /wp-json/wbam/v1/ads/{id}
 }
 ```
 
-#### Track Impression (Internal)
+### Example: Track an impression from the frontend
 
-```
-POST /wp-json/wbam/v1/track/impression
-```
-
-**Body:**
-```json
-{
-    "ad_id": 123,
-    "placement": "header"
-}
+```bash
+curl -X POST \
+    -H "Content-Type: application/json" \
+    https://example.com/wp-json/wbam/v1/ads/track \
+    -d '{"ad_id":123,"event_type":"impression","placement":"header"}'
 ```
 
 ### Adding Custom Endpoints
