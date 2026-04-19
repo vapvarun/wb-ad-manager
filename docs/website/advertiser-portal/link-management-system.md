@@ -39,7 +39,7 @@ The `Link_Tracker` class hooks into the free plugin's `wbam_link_clicked` and `w
 - Device type (desktop, mobile, tablet)
 - Country (from IP geolocation)
 - Referrer URL
-- Anonymised IP hash (daily rotating salt)
+- Anonymised IP hash (salt rotates at UTC midnight — a new salt per UTC calendar day)
 - Browser
 - User ID (if logged in)
 

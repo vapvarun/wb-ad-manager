@@ -145,7 +145,7 @@ This tab is always visible. Analytics-specific settings only appear when analyti
 |---------|---------|-------------|
 | Pixel Tracking | Off | Use tracking pixels/beacons for more accurate viewability tracking |
 | Track Logged-in Users | Off | Include logged-in users in analytics; by default only anonymous visitors are tracked |
-| Bot Filtering | Off | Exclude known bots and crawlers (Googlebot, Bingbot, SEMrush, Ahrefs, and 30+ others) |
+| Bot Filtering | Off | Exclude known bots and crawlers. The tracker rejects requests whose User-Agent matches any of 40 substrings, including Googlebot, Bingbot, Yandexbot, Ahrefsbot, SEMrushbot, and headless-browser signatures (Puppeteer, Selenium, PhantomJS). See [Analytics Dashboard](../analytics/analytics-dashboard.md#bot-filtering) for the full list |
 | Data Retention | 365 days | Raw event data older than this is deleted. Range: 30–3,650 days. Aggregated daily stats are kept permanently |
 | Aggregate After | 7 days | After this many days, raw events are rolled up into daily summary stats. Range: 1–30 days |
 
@@ -156,7 +156,7 @@ These settings apply regardless of whether analytics is enabled.
 | Setting | Default | Description |
 |---------|---------|-------------|
 | Require Cookie Consent | Off | Only track when the visitor has accepted cookies. Integrates with CookieYes, Complianz, Moove GDPR, and Cookie Notice |
-| Anonymize IP Addresses | Off | Hash IP addresses with a daily rotating salt, strip user IDs, and remove sensitive query parameters from tracked URLs |
+| Anonymize IP Addresses | Off | Hash IP addresses with a salt that rotates at UTC midnight (new salt per UTC calendar day), strip user IDs, and remove sensitive query parameters from tracked URLs |
 
 ---
 

@@ -70,7 +70,20 @@ Configured at **Pro Settings → Analytics & Privacy**.
 
 ## Bot Filtering
 
-When **Bot Filtering** is enabled in Analytics settings, the tracker rejects requests from known crawlers before recording any event. Filtered user agents include Googlebot, Bingbot, Yandexbot, Ahrefsbot, SEMrushbot, headless browsers (Puppeteer, Selenium, PhantomJS), and 30+ other patterns.
+When **Bot Filtering** is enabled in Analytics settings, the tracker inspects the `User-Agent` header and rejects the request before recording any event if it matches a known crawler. Empty or missing `User-Agent` is also rejected.
+
+The filter checks the lowercased user-agent string for these 40 substrings:
+
+| Group | Patterns |
+|-------|----------|
+| Search engines | `googlebot`, `bingbot`, `slurp` (Yahoo), `duckduckbot`, `baiduspider`, `yandexbot`, `sogou`, `exabot`, `applebot` |
+| Social | `facebot`, `facebookexternalhit`, `twitterbot`, `linkedinbot`, `pinterest` |
+| SEO / monitoring | `semrushbot`, `ahrefsbot`, `mj12bot`, `dotbot`, `petalbot`, `bytespider`, `ia_archiver` (Alexa), `mediapartners`, `lighthouse` |
+| Generic | `crawler`, `spider`, `bot/`, `bot;` |
+| Headless / automation | `headless`, `phantomjs`, `selenium`, `puppeteer`, `scraper` |
+| HTTP libraries | `wget`, `curl/`, `python-requests`, `python-urllib`, `java/`, `httpclient`, `go-http-client`, `apache-httpclient`, `libwww-perl` |
+
+Matching is case-insensitive and uses substring match, so variant user-agent strings containing any of the above are filtered. The list lives in `includes/Modules/Analytics/class-analytics-tracker.php`.
 
 ---
 
@@ -79,7 +92,7 @@ When **Bot Filtering** is enabled in Analytics settings, the tracker rejects req
 | Setting | Effect |
 |---------|--------|
 | Require Cookie Consent | Events are only recorded after the visitor consents via a supported cookie consent plugin (CookieYes, Complianz, Moove GDPR, Cookie Notice) |
-| Anonymize IP Addresses | IP addresses are hashed with a daily rotating salt. User IDs and country data are not stored. Device type (non-PII) is still recorded |
+| Anonymize IP Addresses | IP addresses are hashed with a salt that rotates at UTC midnight (a new salt per UTC calendar day). User IDs and country data are not stored. Device type (non-PII) is still recorded |
 
 ---
 

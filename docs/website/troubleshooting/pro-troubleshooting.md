@@ -131,7 +131,7 @@ Version 1.4.0 (DB 2.8.0) introduced the `wbam_classified_meta` table to replace 
    SELECT COUNT(*) FROM wp_postmeta WHERE meta_key = '_wbam_custom_fields';
    ```
    If this returns rows but `wbam_classified_meta` is empty, the migration did not run.
-3. Go to **WB Ads → Tools** (if present) and look for a "Re-run Migration" button. If unavailable, contact support with your DB version number (visible in the Installer class as `DB_VERSION`).
+3. Trigger the migration by forcing the plugin's upgrade routine to re-run: deactivate WB Ad Manager Pro, then reactivate it. The installer runs `maybe_upgrade()` on activation and will create missing tables and migrate legacy meta if the stored DB version is behind the current `DB_VERSION` constant. If reactivation does not fix the issue, contact support with your current DB version (stored in the `wbam_pro_db_version` option).
 4. Confirm the classified post delete hook is working — meta rows should auto-delete when a classified is deleted (via `Classified::delete()` or `cascade_delete_classified_data()`).
 
 ---
@@ -211,4 +211,4 @@ Pro customers receive priority support. When contacting support, include:
 - PHP version
 - Error messages from `debug.log`
 - Steps to reproduce the issue
-- Your DB version (visible in **WB Ads → Tools** or in the `wbam_settings` option as `db_version`)
+- Your DB version (stored in the `wbam_pro_db_version` option; view with `wp option get wbam_pro_db_version` or look up the row in `wp_options`)
