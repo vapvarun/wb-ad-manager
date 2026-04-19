@@ -1,0 +1,234 @@
+# Pro Settings Configuration
+
+> **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
+
+Configure WB Ad Manager Pro via **WB Ads → Pro Settings** (or navigate to **Ads → Pro Settings** in your admin menu). Settings are split across seven tabs.
+
+---
+
+## Tab 1: General
+
+Navigate to: **Pro Settings → General**
+
+### Advertiser Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Admin as Advertiser | Off | Automatically create an advertiser account for admin users when they access the ad manager |
+| Auto-Approve Advertisers | Off | Automatically approve new advertiser registrations without manual review |
+
+### Trust System (Auto-Approval)
+
+Automatically approve ads from advertisers who have a track record of approved submissions.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Enable Trust System | Off | Enables trust-based auto-approval for qualified advertisers |
+| Approvals Required | 2 | How many manually approved ads an advertiser needs before becoming trusted |
+| Auto-Approve Paid Ads | On | Only auto-approve ads that were paid for; free ads still require manual review |
+| Always Review Code Ads | On | HTML/code ads always require manual approval regardless of trust status (recommended for security) |
+
+### Data Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Analytics | Off | Enable impression and click tracking across all ads |
+| Delete Data on Uninstall | Off | Permanently delete all analytics data, advertisers, campaigns, and settings when the plugin is uninstalled |
+
+---
+
+## Tab 2: Modules
+
+Navigate to: **Pro Settings → Modules**
+
+Enable or disable Pro feature modules. Disabling a module hides it from all admin menus and frontend shortcodes. Module dependencies are enforced automatically — if you disable a required module, dependent modules disable too.
+
+> **Note:** The **Advertisers** module is a core module and is always active. It does not appear in this toggle list and cannot be disabled.
+
+| Module | Default | Depends On | Description |
+|--------|---------|------------|-------------|
+| Classifieds Marketplace | On | Wallet | Lets users post and browse classified ads |
+| Ad Submissions | On | Wallet, Campaigns, Packages | Frontend ad submission form for advertisers |
+| Campaigns | On | Wallet | Campaign management for grouping and scheduling ads |
+| Wallet & Billing | On | — | Advertiser credit wallet and pay-per-impression billing |
+| Ad Packages | On | Wallet, Campaigns | Purchasable ad packages with predefined limits |
+| A/B Testing | On | — | Compare ad variations |
+| Ad Rotation | On | — | Weighted ad rotation engine |
+| Links Pro | On | — | Enhanced link tracking, health checks, and keyword auto-linking |
+| BuddyPress Integration | On | — | Social features via BuddyPress (requires BuddyPress active) |
+| Email Notifications | On | — | Automated emails for all platform events |
+
+**Dependency map:**
+- Campaigns requires Wallet
+- Packages requires Wallet + Campaigns
+- Ad Submissions requires Wallet + Campaigns + Packages
+- Classifieds requires Wallet
+
+---
+
+## Tab 3: Payments
+
+Navigate to: **Pro Settings → Payments**
+
+This tab has two separate forms: **Stripe** and **Wallet Settings**.
+
+> **Note:** PayPal and Razorpay payment handler classes exist in the plugin code but admin settings fields for these gateways (Client ID, Secret, Key ID, etc.) are not yet available in this tab. To use PayPal or Razorpay, configure their credentials directly via the `wbam_pro_settings` database option or the `wbam_pro_settings` filter. Admin UI for these gateways is coming in a future release.
+
+> **WooCommerce Integration:** A WooCommerce payment method section also appears in this tab when WooCommerce is active. Enable it to allow advertisers to top up their wallet via WooCommerce checkout using your existing WooCommerce payment gateways.
+
+### Stripe Payment Gateway
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Enable Stripe | Off | Allow advertisers to add wallet funds via Stripe |
+| Test Mode | Off | Use test API keys (disable before going live) |
+| Test Publishable Key | — | Stripe test publishable key (`pk_test_...`) |
+| Test Secret Key | — | Stripe test secret key (`sk_test_...`) |
+| Live Publishable Key | — | Stripe live publishable key (`pk_live_...`) |
+| Live Secret Key | — | Stripe live secret key (`sk_live_...`) |
+| Webhook Secret | — | Stripe webhook signing secret (`whsec_...`) |
+| Currency | USD | Currency for Stripe transactions |
+| Minimum Amount | $5.00 | Minimum single wallet top-up amount |
+| Maximum Amount | $10,000.00 | Maximum single wallet top-up amount |
+
+**Webhook URL:** `https://yoursite.com/wp-json/wbam-pro/v1/stripe/webhook`
+
+Configure this URL in your Stripe Dashboard. Required events: `payment_intent.succeeded`, `checkout.session.completed`, `charge.refunded`.
+
+### Wallet Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Currency | USD | Currency code used for all wallet balances and transactions |
+| Currency Symbol | $ | Symbol displayed with amounts (e.g., `$`, `€`, `£`) |
+| Offline Payment | Off | Enable manual/bank transfer payments — admin must approve each request |
+| Payment Instructions | — | Bank details and instructions shown to advertisers when they choose offline payment |
+| Low Balance Threshold | $10.00 | Send a notification when an advertiser's balance falls below this amount (0 to disable) |
+| Billing Threshold | $0.01 | Minimum unbilled amount before deducting from wallet for CPM/CPC campaigns |
+
+---
+
+## Tab 4: Pages
+
+Navigate to: **Pro Settings → Pages**
+
+Map WordPress pages to plugin features. The plugin creates these pages automatically on activation. You can reassign them to any published, draft, or private page.
+
+| Page Key | Default Slug | Default Shortcode |
+|----------|--------------|-------------------|
+| Advertiser Dashboard | `/advertiser-dashboard` | `[wbam_advertiser_dashboard]` |
+| Classifieds | `/classifieds` | `[wbam_browse_classifieds]` |
+| My Classifieds | `/my-classifieds` | `[wbam_my_classifieds]` |
+| My Favorites | `/my-favorites` | `[wbam_my_favorites]` |
+| Following | `/my-following` | `[wbam_my_following]` |
+
+Each page row shows a **Visit** link to preview the current page and a **Create** button to generate a new page with the correct shortcode automatically inserted.
+
+Settings are saved as individual `wbam_page_{key}` options (e.g., `wbam_page_advertiser_dashboard`) for fast lookup.
+
+---
+
+## Tab 5: Analytics & Privacy
+
+Navigate to: **Pro Settings → Analytics & Privacy**
+
+This tab is always visible. Analytics-specific settings only appear when analytics is enabled in the General tab.
+
+### Analytics Settings
+
+*(Visible only when analytics is enabled)*
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Pixel Tracking | Off | Use tracking pixels/beacons for more accurate viewability tracking |
+| Track Logged-in Users | Off | Include logged-in users in analytics; by default only anonymous visitors are tracked |
+| Bot Filtering | Off | Exclude known bots and crawlers (Googlebot, Bingbot, SEMrush, Ahrefs, and 30+ others) |
+| Data Retention | 365 days | Raw event data older than this is deleted. Range: 30–3,650 days. Aggregated daily stats are kept permanently |
+| Aggregate After | 7 days | After this many days, raw events are rolled up into daily summary stats. Range: 1–30 days |
+
+### GDPR & Privacy Settings
+
+These settings apply regardless of whether analytics is enabled.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Require Cookie Consent | Off | Only track when the visitor has accepted cookies. Integrates with CookieYes, Complianz, Moove GDPR, and Cookie Notice |
+| Anonymize IP Addresses | Off | Hash IP addresses with a daily rotating salt, strip user IDs, and remove sensitive query parameters from tracked URLs |
+
+---
+
+## Tab 6: Classifieds
+
+Navigate to: **Pro Settings → Classifieds**
+
+*(Only visible when the Classifieds module is enabled)*
+
+### Classifieds Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Enable Classifieds | On | Master switch for the classifieds marketplace |
+| Require Approval | — | New listings require admin approval before going live |
+| Listing Duration | 30 days | Default expiration period for new listings |
+| Max Images | 10 | Maximum images per listing (up to 50) |
+
+### Advertiser Restrictions
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Max Classifieds Per Advertiser | 0 (unlimited) | Cap how many active listings an advertiser can have at once |
+| Minimum Balance to Post | $0.00 | Require a minimum wallet balance before posting is allowed (0 to disable) |
+
+### Upgrade Options
+
+Allow advertisers to pay to promote their listings.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Enable Upgrades | — | Allow advertisers to purchase listing upgrades |
+| Upgrade Duration | 7 days | How long each upgrade remains active |
+| Featured Price | $5.00 / 30 days | Price to feature a listing (highlighted with badge). Set to 0 to disable |
+| Highlighted Price | $3.00 / 7 days | Price for a coloured background highlight. Set to 0 to disable |
+| Urgent Price | $4.00 / 7 days | Price for an urgent badge. Set to 0 to disable |
+| Top of Category Price | $10.00 / 30 days | Price to pin a listing at the top of its category. Set to 0 to disable |
+| Bump Price | $2.00 / 7 days | Price to bump a listing to the top of search results. Set to 0 to disable |
+
+### Inquiries
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Enable Inquiries | — | Allow site visitors to send inquiries about listings |
+| Email Notifications | — | Email the advertiser when an inquiry is received |
+
+### Featured Listings Billing
+
+Configure how the wallet is charged for featured listings.
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Monthly Fee | $10.00 | Amount deducted per billing cycle (30 days) |
+| Billing Model | Recurring Monthly | **One-Time Payment** — single charge for selected duration. **Recurring Monthly** — automatic monthly deduction |
+| Duration Options | 1, 3, 6, 12 months | Which duration options advertisers can choose from |
+
+---
+
+## Tab 7: Emails
+
+Navigate to: **Pro Settings → Emails**
+
+Configure automated email notifications. This tab is managed by the Email Notifications module. If that module is disabled, the tab is still visible but inactive.
+
+Common email events configured here include: advertiser registration, ad approved/rejected, campaign status changes, low wallet balance alerts, classified listing approved/expired, inquiry received, and payment confirmation.
+
+---
+
+## Settings Storage
+
+| Option Name | Contents |
+|-------------|----------|
+| `wbam_pro_settings` | General, Trust System, Analytics enable/disable, Currency, Wallet, GDPR flags |
+| `wbam_pro_stripe_settings` | All Stripe keys, webhook secret, min/max amounts |
+| `wbam_pro_classifieds_settings` | Classifieds module settings, upgrade prices |
+| `wbam_pro_email_settings` | Email notification settings |
+| `wbam_pro_analytics_settings` | Data retention, aggregation, report range |
+| `wbam_page_{key}` | Individual page ID per portal page |

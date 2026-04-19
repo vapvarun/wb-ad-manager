@@ -1,0 +1,67 @@
+# Batch D+E — AFTER snapshot
+# Date: 2026-04-19
+# Pro HEAD: 3de8047
+
+## Diff vs before snapshot
+
+ZERO row deltas across all audited tables, even after two Site Mode flips
+(Full → Classifieds → Full) during the regression matrix run.
+
+## Table hashes VERIFIED IDENTICAL
+
+ad_submissions           1        eccbc87e4b5ce2fe28308fd9f2a7baf3   ✅
+advertisers              6        9e6d1bf88f20f0a856f2ba1526d67dfc   ✅
+campaigns                14       2ad8eff1801cdd5bf343bef64f3dcf7b   ✅
+classifieds              16       997dec9644e30e45fb1b06a5a58531a1   ✅
+transactions             28       6298d7b3db03456ca16ef4a3e2ab8891   ✅
+packages                 10       3227a95526e21fe9e2ae8425bd6ada53   ✅
+
+## Commits landed in Batch D+E
+
+037d520 — Site Mode respect: Overview stat cards + Classifieds description
+3de8047 — Bump version 1.5.0 → 1.5.1 + CLAUDE.md Recent Changes
+
+## Behavioral checks passed
+
+### Full Platform mode
+- Portal Overview shows ad-centric cards (Impressions/Clicks/Active Campaigns)  ✅
+- Total Spent hidden (advertiser is in managed billing_mode — correct)          ✅
+- Quick Actions shows all 5 options                                              ✅
+- Active Campaigns section visible                                               ✅
+
+### Classifieds mode
+- Overview shows ONLY Active Listings card (ad cards gone)                       ✅
+- Quick Actions shows ONLY Post Classified                                       ✅
+- Active Campaigns section hidden                                                ✅
+- Tabs: Overview/Classifieds/Inquiries/Favorites/Following/Messages/Membership/Profile ✅
+- No Ads/Campaigns/Link Partnerships/Analytics/Wallet tabs                       ✅
+
+### Classifieds dialog description
+Now reads: "Users post classified listings with featured / bump upgrades.
+No paid ads, no link partnerships — classifieds-only marketplace."
+(Previously: "May or may not have ads." — inaccurate.)                          ✅
+
+### REST endpoints (Full mode)
+- GET /packages       = 200                                                      ✅
+- GET /classifieds    = 200 (16 rows)                                            ✅
+- GET /reviews        = 200                                                      ✅
+- GET /trending       = 200                                                      ✅
+
+## Data flow safety gate — PASSED
+
+Only render-path changes: Site Mode-aware card gating, one string literal
+fix, version metadata bump. Zero schema changes. Zero option writes.
+
+Verdict: Batch D+E SAFE TO RELEASE.
+
+## Known deferred work (tracked in site-mode-respect-gaps.md)
+
+- Recent Activity feed still shows ad events in Classifieds mode
+  (Advertiser::get_recent_activity needs module-aware filter)
+- Direct-link to hidden tab falls through to generic unavailable state
+  (should redirect to Overview with notice)
+- Admin submenu gates for Revenue / Analytics / Ad Settings in
+  Classifieds mode
+- Full Pass 5 promise-vs-behavior sweep (expand from 12 sampled to all)
+
+These are P1/P2 follow-ups, not release blockers.
