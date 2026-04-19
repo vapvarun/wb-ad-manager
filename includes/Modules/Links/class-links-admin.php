@@ -250,7 +250,7 @@ class Links_Admin {
 		<div class="notice notice-info wbam-link-intro" style="padding:14px 16px;border-left-width:4px;">
 			<h3 style="margin:0 0 6px;"><?php esc_html_e( 'What a cloaked link does', 'wb-ads-rotator-with-split-test' ); ?></h3>
 			<p style="margin:0 0 8px;">
-				<?php esc_html_e( 'Turn a long or ugly destination URL into a clean, branded one on your domain. Visitors click the short URL on your site and are redirected to the destination — you see every click in the stats column.', 'wb-ads-rotator-with-split-test' ); ?>
+				<?php esc_html_e( 'Turn a long or ugly destination URL into a clean, branded one on your domain. Visitors click the short URL on your site and are redirected to the destination. You see every click in the stats column.', 'wb-ads-rotator-with-split-test' ); ?>
 			</p>
 			<p style="margin:0;font-size:13px;color:#50575e;">
 				<?php
@@ -280,7 +280,7 @@ class Links_Admin {
 				</p>
 
 				<p style="margin:0 0 6px;"><strong><?php esc_html_e( '1. Cloaked URL', 'wb-ads-rotator-with-split-test' ); ?></strong>
-					— <?php esc_html_e( 'Paste this anywhere a link is accepted (posts, menus, widgets). Redirects to your destination URL.', 'wb-ads-rotator-with-split-test' ); ?>
+					. <?php esc_html_e( 'Paste this anywhere a link is accepted (posts, menus, widgets). Redirects to your destination URL.', 'wb-ads-rotator-with-split-test' ); ?>
 				</p>
 				<p style="margin:0 0 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
 					<input type="text" readonly value="<?php echo esc_attr( $cloaked_url ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
@@ -293,7 +293,7 @@ class Links_Admin {
 				</p>
 
 				<p style="margin:0 0 6px;"><strong><?php esc_html_e( '2. Shortcode with custom anchor text', 'wb-ads-rotator-with-split-test' ); ?></strong>
-					— <?php esc_html_e( 'Use this in post content when you want specific anchor text and full rel-attribute control.', 'wb-ads-rotator-with-split-test' ); ?>
+					. <?php esc_html_e( 'Use this in post content when you want specific anchor text and full rel-attribute control.', 'wb-ads-rotator-with-split-test' ); ?>
 				</p>
 				<p style="margin:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
 					<input type="text" readonly value="<?php echo esc_attr( $shortcode ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
@@ -338,7 +338,7 @@ class Links_Admin {
 					<td>
 						<input type="url" name="destination_url" id="destination_url" class="large-text" required
 							value="<?php echo esc_url( $link ? $link->destination_url : '' ); ?>">
-						<p class="description"><?php esc_html_e( 'The real URL visitors end up on after clicking. Include any affiliate / tracking parameters here — they are invisible to your audience.', 'wb-ads-rotator-with-split-test' ); ?></p>
+						<p class="description"><?php esc_html_e( 'The real URL visitors end up on after clicking. Include any affiliate / tracking parameters here. They are invisible to your audience.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</td>
 				</tr>
 
@@ -384,7 +384,7 @@ class Links_Admin {
 					</th>
 					<td>
 						<select name="category_id" id="category_id">
-							<option value="0"><?php esc_html_e( '— No Category —', 'wb-ads-rotator-with-split-test' ); ?></option>
+							<option value="0"><?php esc_html_e( 'No Category', 'wb-ads-rotator-with-split-test' ); ?></option>
 							<?php
 							$link_manager = Link_Manager::get_instance();
 							$categories   = $link_manager->get_categories();
@@ -419,7 +419,7 @@ class Links_Admin {
 								<?php esc_html_e( 'Enable cloaking', 'wb-ads-rotator-with-split-test' ); ?>
 							</label>
 							<p class="description" style="margin:4px 0 10px 24px;">
-								<?php esc_html_e( 'When on, the short URL stays in the address bar while the browser is sent to the destination — visitors see your domain, not the target. Turn off only if you want the raw destination URL in place.', 'wb-ads-rotator-with-split-test' ); ?>
+								<?php esc_html_e( 'When on, the short URL stays in the address bar while the browser is sent to the destination. Visitors see your domain, not the target. Turn off only if you want the raw destination URL in place.', 'wb-ads-rotator-with-split-test' ); ?>
 							</p>
 
 							<label>
@@ -446,7 +446,7 @@ class Links_Admin {
 								<?php esc_html_e( 'Open in new tab', 'wb-ads-rotator-with-split-test' ); ?>
 							</label>
 							<p class="description" style="margin:4px 0 0 24px;">
-								<?php esc_html_e( 'Adds target="_blank" so visitors stay on your site. Only applies when you use the [wbam_link] shortcode — a raw cloaked URL opens in the same tab unless you add target yourself.', 'wb-ads-rotator-with-split-test' ); ?>
+								<?php esc_html_e( 'Adds target="_blank" so visitors stay on your site. Only applies when you use the [wbam_link] shortcode. A raw cloaked URL opens in the same tab unless you add target yourself.', 'wb-ads-rotator-with-split-test' ); ?>
 							</p>
 						</fieldset>
 					</td>
@@ -467,11 +467,11 @@ class Links_Admin {
 						<p class="description">
 							<?php esc_html_e( 'Which HTTP redirect the browser sees when someone clicks the cloaked URL.', 'wb-ads-rotator-with-split-test' ); ?>
 							<br>
-							<strong><?php esc_html_e( '307 Temporary', 'wb-ads-rotator-with-split-test' ); ?></strong> — <?php esc_html_e( 'safest default. Browsers and bots always re-check the link, so you stay in control of where it points.', 'wb-ads-rotator-with-split-test' ); ?>
+							<strong><?php esc_html_e( '307 Temporary', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'Safest default. Browsers and bots always re-check the link, so you stay in control of where it points.', 'wb-ads-rotator-with-split-test' ); ?>
 							<br>
-							<strong><?php esc_html_e( '302 Found', 'wb-ads-rotator-with-split-test' ); ?></strong> — <?php esc_html_e( 'also temporary; older equivalent of 307. Use if a specific destination rejects 307.', 'wb-ads-rotator-with-split-test' ); ?>
+							<strong><?php esc_html_e( '302 Found', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'Also temporary; older equivalent of 307. Use if a specific destination rejects 307.', 'wb-ads-rotator-with-split-test' ); ?>
 							<br>
-							<strong><?php esc_html_e( '301 Permanent', 'wb-ads-rotator-with-split-test' ); ?></strong> — <?php esc_html_e( 'search engines treat the destination as the canonical URL and browsers may cache the redirect aggressively. Only pick this for permanent moves, never for affiliate links.', 'wb-ads-rotator-with-split-test' ); ?>
+							<strong><?php esc_html_e( '301 Permanent', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'Search engines treat the destination as the canonical URL and browsers may cache the redirect aggressively. Only pick this for permanent moves, never for affiliate links.', 'wb-ads-rotator-with-split-test' ); ?>
 						</p>
 					</td>
 				</tr>
@@ -489,15 +489,15 @@ class Links_Admin {
 							<?php endforeach; ?>
 						</select>
 						<p class="description">
-							<strong><?php esc_html_e( 'Active', 'wb-ads-rotator-with-split-test' ); ?></strong> — <?php esc_html_e( 'the cloaked URL redirects to the destination and clicks are counted.', 'wb-ads-rotator-with-split-test' ); ?>
+							<strong><?php esc_html_e( 'Active', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'The cloaked URL redirects to the destination and clicks are counted.', 'wb-ads-rotator-with-split-test' ); ?>
 							<br>
-							<strong><?php esc_html_e( 'Inactive', 'wb-ads-rotator-with-split-test' ); ?></strong> — <?php esc_html_e( 'the cloaked URL returns 404 (or redirects to a fallback if you set one in Settings). Use to temporarily disable a link without deleting its click history.', 'wb-ads-rotator-with-split-test' ); ?>
+							<strong><?php esc_html_e( 'Inactive', 'wb-ads-rotator-with-split-test' ); ?></strong>: <?php esc_html_e( 'The cloaked URL returns 404 (or redirects to a fallback if you set one in Settings). Use to temporarily disable a link without deleting its click history.', 'wb-ads-rotator-with-split-test' ); ?>
 						</p>
 					</td>
 				</tr>
 
 				<?php
-				// strtotime() returns false on malformed input — PHP 8.1+ deprecates
+				// strtotime() returns false on malformed input. PHP 8.1+ deprecates
 				// passing false to gmdate(). Guard so the form renders blank for
 				// corrupted stored values instead of throwing a deprecation notice.
 				$expires_ts    = ( $link && $link->expires_at ) ? strtotime( $link->expires_at ) : false;
@@ -639,7 +639,7 @@ class Links_Admin {
 	 * Nonce verification: the caller `handle_admin_actions()` validates the
 	 * `wbam_save_link` nonce via `check_admin_referer()` BEFORE invoking this
 	 * method, so the `$_POST` reads below are guarded. phpcs:disable
-	 * WordPress.Security.NonceVerification.Missing — verified by caller.
+	 * WordPress.Security.NonceVerification.Missing. Verified by caller.
 	 */
 	private function save_link() {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Caller handle_admin_actions() verifies the wbam_save_link nonce.

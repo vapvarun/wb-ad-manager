@@ -161,7 +161,7 @@ class WBAM_Ad_Widget extends \WP_Widget {
 				id="<?php echo esc_attr( $this->get_field_id( 'ad_id' ) ); ?>"
 				name="<?php echo esc_attr( $this->get_field_name( 'ad_id' ) ); ?>"
 			>
-				<option value=""><?php esc_html_e( '— Select an ad —', 'wb-ads-rotator-with-split-test' ); ?></option>
+				<option value=""><?php esc_html_e( 'Select an ad', 'wb-ads-rotator-with-split-test' ); ?></option>
 				<?php foreach ( $ads as $ad ) : ?>
 					<option value="<?php echo esc_attr( $ad->ID ); ?>" <?php selected( $ad_id, $ad->ID ); ?>>
 						<?php echo esc_html( $ad->post_title ); ?>

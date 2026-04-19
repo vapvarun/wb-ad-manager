@@ -142,96 +142,115 @@ class Help_Docs {
 	 * Render Getting Started tab.
 	 */
 	private function render_getting_started_tab() {
+		$ads_url      = admin_url( 'edit.php?post_type=wbam-ad' );
+		$add_ad_url   = admin_url( 'post-new.php?post_type=wbam-ad' );
+		$settings_url = admin_url( 'edit.php?post_type=wbam-ad&page=wbam-settings' );
+		$links_url    = admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links' );
+		$wizard_url   = admin_url( 'index.php?page=wbam-setup' );
+		$tools_url    = admin_url( 'edit.php?post_type=wbam-ad&page=wbam-tools' );
 		?>
 		<div class="wbam-help-section">
-			<h2><?php esc_html_e( 'Welcome to WB Ad Manager', 'wb-ads-rotator-with-split-test' ); ?></h2>
-			<?php if ( $this->is_pro_active ) : ?>
-				<p><?php esc_html_e( 'Ad management and classifieds marketplace for WordPress — with advertisers, wallet, campaigns, and analytics.', 'wb-ads-rotator-with-split-test' ); ?></p>
+			<?php if ( ! $this->is_pro_active ) : ?>
+				<div class="wbam-doc-section">
+					<h3><?php esc_html_e( 'If you just installed the plugin', 'wb-ads-rotator-with-split-test' ); ?></h3>
+					<p>
+						<?php
+						printf(
+							/* translators: 1: opening anchor tag to the setup wizard, 2: closing anchor tag */
+							esc_html__( 'Run the %1$sSetup Wizard%2$s. It takes under a minute and seeds three sample ads (header banner, sidebar code, in-content promo) so you can see how placements work. Remove the samples any time from Tools.', 'wb-ads-rotator-with-split-test' ),
+							'<a href="' . esc_url( $wizard_url ) . '">',
+							'</a>'
+						);
+						?>
+					</p>
+				</div>
+
+				<div class="wbam-doc-section">
+					<h3><?php esc_html_e( 'Publish your first ad', 'wb-ads-rotator-with-split-test' ); ?></h3>
+					<ol>
+						<li>
+							<?php
+							printf(
+								/* translators: 1: opening anchor tag, 2: closing anchor tag */
+								esc_html__( 'Go to %1$sAdd New Ad%2$s and give it a title (visitors never see this).', 'wb-ads-rotator-with-split-test' ),
+								'<a href="' . esc_url( $add_ad_url ) . '">',
+								'</a>'
+							);
+							?>
+						</li>
+						<li><?php esc_html_e( 'Pick an ad type (Image, Rich Content, HTML/JS Code, Google AdSense, or Email Capture) and fill in its content.', 'wb-ads-rotator-with-split-test' ); ?></li>
+						<li><?php esc_html_e( 'Check one or more placements in the Placements metabox (header, footer, after paragraph X, sidebar widget, popup, sticky bar, etc.).', 'wb-ads-rotator-with-split-test' ); ?></li>
+						<li><?php esc_html_e( 'Set Priority 1 to 10 in the Ad Status metabox. When several ads share a placement, higher-priority ads are shown more often.', 'wb-ads-rotator-with-split-test' ); ?></li>
+						<li><?php esc_html_e( 'Publish. The ad starts appearing immediately in every placement you selected.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					</ol>
+				</div>
+
+				<div class="wbam-doc-section">
+					<h3><?php esc_html_e( 'Where things live', 'wb-ads-rotator-with-split-test' ); ?></h3>
+					<ul>
+						<li><strong><a href="<?php echo esc_url( $ads_url ); ?>"><?php esc_html_e( 'All Ads', 'wb-ads-rotator-with-split-test' ); ?></a></strong>: <?php esc_html_e( 'the ad list with impression and click counts, plus status filters.', 'wb-ads-rotator-with-split-test' ); ?></li>
+						<li><strong><a href="<?php echo esc_url( $settings_url ); ?>"><?php esc_html_e( 'Settings', 'wb-ads-rotator-with-split-test' ); ?></a></strong>: <?php esc_html_e( 'global display options, AdSense publisher ID, geo-provider, privacy toggles.', 'wb-ads-rotator-with-split-test' ); ?></li>
+						<li><strong><a href="<?php echo esc_url( $links_url ); ?>"><?php esc_html_e( 'Links', 'wb-ads-rotator-with-split-test' ); ?></a></strong>: <?php esc_html_e( 'cloaked affiliate URLs and the [wbam_partnership_inquiry] admin queue.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					</ul>
+				</div>
 			<?php else : ?>
-				<p><?php esc_html_e( 'Complete ad management for WordPress — five ad types, sixteen placements, targeting, A/B comparison, and click tracking.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<div class="wbam-doc-section">
+					<h3><?php esc_html_e( 'Publish your first ad', 'wb-ads-rotator-with-split-test' ); ?></h3>
+					<ol>
+						<li>
+							<?php
+							printf(
+								/* translators: 1: opening anchor tag, 2: closing anchor tag */
+								esc_html__( 'Go to %1$sAdd New Ad%2$s. Pick an ad type and fill in the content.', 'wb-ads-rotator-with-split-test' ),
+								'<a href="' . esc_url( $add_ad_url ) . '">',
+								'</a>'
+							);
+							?>
+						</li>
+						<li><?php esc_html_e( 'Assign placements and priority, then publish.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					</ol>
+				</div>
+
+				<div class="wbam-doc-section">
+					<h3><?php esc_html_e( 'Pro-only admin areas', 'wb-ads-rotator-with-split-test' ); ?></h3>
+					<ol>
+						<li>
+							<?php
+							printf(
+								/* translators: 1: opening anchor tag, 2: closing anchor tag */
+								esc_html__( 'Seed demo data from %1$sTools%2$s. Creates sample ads, classifieds, advertisers, and 30 days of analytics so you can explore every Pro screen with real numbers. The itemized "Remove" button wipes them when you are done.', 'wb-ads-rotator-with-split-test' ),
+								'<a href="' . esc_url( $tools_url ) . '">',
+								'</a>'
+							);
+							?>
+						</li>
+						<li>
+							<?php
+							printf(
+								/* translators: 1: opening anchor tag, 2: closing anchor tag */
+								esc_html__( 'Turn modules on or off in %1$sPro Settings → Modules%2$s (Classifieds, Campaigns, Wallet, A/B Testing, etc.). Each module adds its own submenu under WB Ad Manager.', 'wb-ads-rotator-with-split-test' ),
+								'<a href="' . esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-pro-settings&tab=modules' ) ) . '">',
+								'</a>'
+							);
+							?>
+						</li>
+					</ol>
+				</div>
 			<?php endif; ?>
 
-			<div class="wbam-quick-start">
-				<h3><?php esc_html_e( 'Quick Start Guide', 'wb-ads-rotator-with-split-test' ); ?></h3>
-
-				<?php if ( ! $this->is_pro_active ) : ?>
-				<div class="wbam-step">
-					<span class="wbam-step-number">1</span>
-					<div class="wbam-step-content">
-						<h4><?php esc_html_e( 'Run the Setup Wizard', 'wb-ads-rotator-with-split-test' ); ?></h4>
-						<p><?php esc_html_e( 'The wizard seeds three sample ads across the header, sidebar, and in-content placements so you can see the plugin in action in under a minute. You can remove the samples any time with one click.', 'wb-ads-rotator-with-split-test' ); ?></p>
-						<a href="<?php echo esc_url( admin_url( 'index.php?page=wbam-setup' ) ); ?>" class="button">
-							<?php esc_html_e( 'Open Setup Wizard', 'wb-ads-rotator-with-split-test' ); ?>
-						</a>
-					</div>
-				</div>
-				<?php endif; ?>
-
-				<div class="wbam-step">
-					<span class="wbam-step-number"><?php echo $this->is_pro_active ? '1' : '2'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Literal. ?></span>
-					<div class="wbam-step-content">
-						<h4><?php esc_html_e( 'Create Your First Ad', 'wb-ads-rotator-with-split-test' ); ?></h4>
-						<p><?php esc_html_e( 'Go to WB Ad Manager > Add New. Choose Image, Rich Content, HTML/JS Code, AdSense, or Email Capture. Assign placements and publish.', 'wb-ads-rotator-with-split-test' ); ?></p>
-						<a href="<?php echo esc_url( admin_url( 'post-new.php?post_type=wbam-ad' ) ); ?>" class="button button-primary">
-							<?php esc_html_e( 'Create Ad', 'wb-ads-rotator-with-split-test' ); ?>
-						</a>
-					</div>
-				</div>
-
-				<div class="wbam-step">
-					<span class="wbam-step-number"><?php echo $this->is_pro_active ? '2' : '3'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Literal. ?></span>
-					<div class="wbam-step-content">
-						<h4><?php esc_html_e( 'Set Up Placements', 'wb-ads-rotator-with-split-test' ); ?></h4>
-						<p><?php esc_html_e( 'Ads display automatically in the placements you pick: header, footer, before/after content, paragraph, sidebar widgets, popup, sticky bar, archive, comments, BuddyPress, bbPress, and Jetonomy.', 'wb-ads-rotator-with-split-test' ); ?></p>
-					</div>
-				</div>
-
-				<?php if ( $this->is_pro_active ) : ?>
-				<div class="wbam-step">
-					<span class="wbam-step-number">3</span>
-					<div class="wbam-step-content">
-						<h4><?php esc_html_e( 'Import Demo Data', 'wb-ads-rotator-with-split-test' ); ?></h4>
-						<p><?php esc_html_e( 'See all features in action with sample ads, classifieds, advertisers, and analytics. Import from the Tools page and remove when ready.', 'wb-ads-rotator-with-split-test' ); ?></p>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-tools' ) ); ?>" class="button">
-							<?php esc_html_e( 'Go to Tools', 'wb-ads-rotator-with-split-test' ); ?>
-						</a>
-					</div>
-				</div>
-
-				<div class="wbam-step">
-					<span class="wbam-step-number">4</span>
-					<div class="wbam-step-content">
-						<h4><?php esc_html_e( 'Configure Modules', 'wb-ads-rotator-with-split-test' ); ?></h4>
-						<p><?php esc_html_e( 'Enable or disable features like Classifieds, Campaigns, Wallet, A/B Testing, and more from Pro Settings > Modules.', 'wb-ads-rotator-with-split-test' ); ?></p>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-pro-settings&tab=modules' ) ); ?>" class="button">
-							<?php esc_html_e( 'Manage Modules', 'wb-ads-rotator-with-split-test' ); ?>
-						</a>
-					</div>
-				</div>
-				<?php else : ?>
-				<div class="wbam-step">
-					<span class="wbam-step-number">4</span>
-					<div class="wbam-step-content">
-						<h4><?php esc_html_e( 'Manage Links & Partnerships', 'wb-ads-rotator-with-split-test' ); ?></h4>
-						<p><?php esc_html_e( 'Create cloaked affiliate links with click tracking, group them into categories, and accept inbound partnership inquiries with the [wbam_partnership_inquiry] shortcode.', 'wb-ads-rotator-with-split-test' ); ?></p>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links' ) ); ?>" class="button">
-							<?php esc_html_e( 'Open Links', 'wb-ads-rotator-with-split-test' ); ?>
-						</a>
-					</div>
-				</div>
-				<?php endif; ?>
-			</div>
-
-			<div class="wbam-support-box">
-				<h3><?php esc_html_e( 'Need Help?', 'wb-ads-rotator-with-split-test' ); ?></h3>
-				<p><?php esc_html_e( 'Free users get community support on the WordPress.org forum. Pro customers can open a priority ticket with Wbcom Designs.', 'wb-ads-rotator-with-split-test' ); ?></p>
+			<div class="wbam-doc-section">
+				<h3><?php esc_html_e( 'Need help?', 'wb-ads-rotator-with-split-test' ); ?></h3>
 				<p>
-					<a href="https://wordpress.org/support/plugin/wb-ads-rotator-with-split-test/" target="_blank" rel="noopener" class="button">
-						<?php esc_html_e( 'WordPress.org Support Forum', 'wb-ads-rotator-with-split-test' ); ?>
-					</a>
-					<a href="https://wbcomdesigns.com/contact/" target="_blank" rel="noopener" class="button">
-						<?php esc_html_e( 'Contact Wbcom Support', 'wb-ads-rotator-with-split-test' ); ?>
-					</a>
+					<?php
+					printf(
+						/* translators: 1: opening anchor tag for WP.org forum, 2: closing tag, 3: opening anchor tag for Wbcom contact, 4: closing tag */
+						esc_html__( 'Free users: %1$sWordPress.org support forum%2$s. Pro customers: %3$sopen a priority ticket%4$s with Wbcom Designs.', 'wb-ads-rotator-with-split-test' ),
+						'<a href="https://wordpress.org/support/plugin/wb-ads-rotator-with-split-test/" target="_blank" rel="noopener">',
+						'</a>',
+						'<a href="https://wbcomdesigns.com/contact/" target="_blank" rel="noopener">',
+						'</a>'
+					);
+					?>
 				</p>
 			</div>
 		</div>
@@ -259,7 +278,7 @@ class Help_Docs {
 			</div>
 
 			<div class="wbam-doc-section">
-				<h3><?php esc_html_e( 'Placements — 16+ positions', 'wb-ads-rotator-with-split-test' ); ?></h3>
+				<h3><?php esc_html_e( 'Placements. 16+ positions', 'wb-ads-rotator-with-split-test' ); ?></h3>
 				<p><?php esc_html_e( 'Each ad can be assigned to as many placements as you want, across standard WordPress and three community plugins.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				<ul>
 					<li><strong><?php esc_html_e( 'Page positions:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Header, footer, before / after content, after paragraph X, before / after archive loop.', 'wb-ads-rotator-with-split-test' ); ?></li>
@@ -315,7 +334,7 @@ class Help_Docs {
 			<?php if ( ! $this->is_pro_active ) : ?>
 			<div class="wbam-upgrade-cta">
 				<h3><?php esc_html_e( 'Unlock PRO', 'wb-ads-rotator-with-split-test' ); ?></h3>
-				<p><?php esc_html_e( 'Turn your site into an ad marketplace. Pro adds an advertiser portal, wallet & payments, classifieds, campaigns with budgets, advanced analytics, and more. Keep all the Free features — add revenue on top.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p><?php esc_html_e( 'Turn your site into an ad marketplace. Pro adds an advertiser portal, wallet & payments, classifieds, campaigns with budgets, advanced analytics, and more. Keep all the Free features. Add revenue on top.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				<p>
 					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=pro-features' ) ); ?>" class="button button-primary">
 						<?php esc_html_e( 'See PRO Features', 'wb-ads-rotator-with-split-test' ); ?>
@@ -421,7 +440,7 @@ class Help_Docs {
 				<ul>
 					<li><?php esc_html_e( 'Auto-linking keywords in your content', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Link health checker (broken links, redirects)', 'wb-ads-rotator-with-split-test' ); ?></li>
-					<li><?php esc_html_e( 'Link Scanner — find monetization opportunities in existing content', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><?php esc_html_e( 'Link Scanner. Find monetization opportunities in existing content', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'CSV bulk import for links and keywords', 'wb-ads-rotator-with-split-test' ); ?></li>
 				</ul>
 			</div>
@@ -442,12 +461,12 @@ class Help_Docs {
 		<div class="wbam-help-section wbam-pro-teaser">
 			<h2><?php esc_html_e( 'What\'s in WB Ad Manager PRO', 'wb-ads-rotator-with-split-test' ); ?></h2>
 			<p class="wbam-pro-teaser-intro">
-				<?php esc_html_e( 'PRO keeps everything you have in the Free plugin and adds a full monetization layer — advertiser portal, wallet, campaigns, classifieds, and revenue analytics. Here\'s what you get when you upgrade.', 'wb-ads-rotator-with-split-test' ); ?>
+				<?php esc_html_e( 'PRO keeps everything you have in the Free plugin and adds a full monetization layer. Advertiser portal, wallet, campaigns, classifieds, and revenue analytics. Here\'s what you get when you upgrade.', 'wb-ads-rotator-with-split-test' ); ?>
 			</p>
 
 			<div class="wbam-doc-section">
 				<h3><?php esc_html_e( 'Advertiser Portal', 'wb-ads-rotator-with-split-test' ); ?></h3>
-				<p><?php esc_html_e( 'Let advertisers sign up, submit, and manage their own ads — you review & approve.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p><?php esc_html_e( 'Let advertisers sign up, submit, and manage their own ads. You review & approve.', 'wb-ads-rotator-with-split-test' ); ?></p>
 				<ul>
 					<li><?php esc_html_e( 'Advertiser registration and dedicated dashboard (14 tabs: Overview, My Ads, Campaigns, Classifieds, Inquiries, Favorites, Following, Messages, Link Partnerships, Wallet, Membership, Analytics, Share of Voice, Profile)', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Self-service ad submission with admin review queue', 'wb-ads-rotator-with-split-test' ); ?></li>
@@ -481,7 +500,7 @@ class Help_Docs {
 					<li><?php esc_html_e( 'Full classified listings system with image galleries', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Category + location taxonomies with sidebar search', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Paid upgrades: Featured, Highlighted, Urgent, Bump to top', 'wb-ads-rotator-with-split-test' ); ?></li>
-					<li><?php esc_html_e( 'Multiple price types — fixed, negotiable, free', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><?php esc_html_e( 'Multiple price types: fixed, negotiable, free', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Buyer inquiry system, favorites / saved listings, seller profiles with reviews and ratings', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Custom fields builder for category-specific data', 'wb-ads-rotator-with-split-test' ); ?></li>
 				</ul>
@@ -493,7 +512,7 @@ class Help_Docs {
 					<li><?php esc_html_e( 'Daily impression & click aggregation with time-series reports', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'CTR and revenue reports, geo + device breakdowns, CSV export', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'A/B testing with statistical significance and traffic splitting', 'wb-ads-rotator-with-split-test' ); ?></li>
-					<li><?php esc_html_e( 'Slot inventory view — AdSense-style capacity overview', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><?php esc_html_e( 'Slot inventory view. AdSense-style capacity overview', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Share of Voice analysis per advertiser', 'wb-ads-rotator-with-split-test' ); ?></li>
 				</ul>
 			</div>
@@ -501,8 +520,8 @@ class Help_Docs {
 			<div class="wbam-doc-section">
 				<h3><?php esc_html_e( 'Advanced Link Management', 'wb-ads-rotator-with-split-test' ); ?></h3>
 				<ul>
-					<li><?php esc_html_e( 'Keyword auto-linking — automatically link mentions of your keywords', 'wb-ads-rotator-with-split-test' ); ?></li>
-					<li><?php esc_html_e( 'Link Scanner — find monetization opportunities in existing posts', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><?php esc_html_e( 'Keyword auto-linking. Automatically link mentions of your keywords', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><?php esc_html_e( 'Link Scanner. Find monetization opportunities in existing posts', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Broken-link detection and redirect management', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'CSV bulk import for links and keywords', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Advanced link analytics (referrer, device, country)', 'wb-ads-rotator-with-split-test' ); ?></li>
@@ -512,7 +531,7 @@ class Help_Docs {
 			<div class="wbam-doc-section">
 				<h3><?php esc_html_e( 'Community & Developer Extras', 'wb-ads-rotator-with-split-test' ); ?></h3>
 				<ul>
-					<li><?php esc_html_e( 'Enhanced BuddyPress integration — seller profiles in member directory, activity stream for listings, following/favorites system', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><?php esc_html_e( 'Enhanced BuddyPress integration. Seller profiles in member directory, activity stream for listings, following/favorites system', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Admin audit logs of every ad / credit / campaign action', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Ad review queue with approval workflow', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><?php esc_html_e( 'Priority support from Wbcom Designs', 'wb-ads-rotator-with-split-test' ); ?></li>
@@ -562,7 +581,7 @@ class Help_Docs {
 
 			<div class="wbam-faq-item">
 				<h4><?php esc_html_e( 'How does the Email Capture ad type work?', 'wb-ads-rotator-with-split-test' ); ?></h4>
-				<p><?php esc_html_e( 'Email Capture renders an inline subscribe form anywhere you assign it as a placement. You control the headline, description, button text, colours, and success message. Submissions fire the wbam_email_captured action so you can forward them to Mailchimp, ConvertKit, or any webhook — there\'s no external service tie-in.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p><?php esc_html_e( 'Email Capture renders an inline subscribe form anywhere you assign it as a placement. You control the headline, description, button text, colours, and success message. Submissions fire the wbam_email_captured action so you can forward them to Mailchimp, ConvertKit, or any webhook. There\'s no external service tie-in.', 'wb-ads-rotator-with-split-test' ); ?></p>
 			</div>
 
 			<div class="wbam-faq-item">
@@ -616,7 +635,7 @@ class Help_Docs {
 
 			<div class="wbam-faq-item">
 				<h4><?php esc_html_e( 'How do I remove demo data?', 'wb-ads-rotator-with-split-test' ); ?></h4>
-				<p><?php esc_html_e( 'After importing, the Tools page shows a "Remove All Demo Data" button with an itemized list of what will be deleted. Your real content is never touched — every item is verified against the demo flag before removal.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<p><?php esc_html_e( 'After importing, the Tools page shows a "Remove All Demo Data" button with an itemized list of what will be deleted. Your real content is never touched. Every item is verified against the demo flag before removal.', 'wb-ads-rotator-with-split-test' ); ?></p>
 			</div>
 			<?php endif; ?>
 

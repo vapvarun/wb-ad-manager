@@ -766,7 +766,7 @@ class Admin {
 		<p class="wbam-comparison-note">
 			<?php
 			if ( 0 === $winner_id ) {
-				esc_html_e( 'No winner yet — ads need at least 100 impressions each for a meaningful comparison.', 'wb-ads-rotator-with-split-test' );
+				esc_html_e( 'No winner yet. Ads need at least 100 impressions each for a meaningful comparison.', 'wb-ads-rotator-with-split-test' );
 			} else {
 				esc_html_e( 'Winner is the ad with highest CTR among those with 100+ impressions.', 'wb-ads-rotator-with-split-test' );
 			}
