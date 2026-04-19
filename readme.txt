@@ -152,13 +152,13 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 
 == Screenshots ==
 
-1. Ad listing screen with status and placement info
-2. Add new ad screen with ad type selection
-3. Google AdSense ad configuration
-4. Placement options with multiple choices
-5. Targeting rules metabox
-6. Settings page with AdSense configuration
-7. Setup wizard for first-time users
+1. All Ads list — impressions, clicks, placement, and status for every ad at a glance.
+2. Ad editor — five ad types (Image, Rich Content, HTML/JS Code, Google AdSense, Email Capture) with a weighted-priority slider, session-limit cap, and responsive/fixed sizing.
+3. Settings page — general, display, performance, geo, AdSense, privacy, and advanced options in one place.
+4. Setup Wizard — three-step first-run flow that seeds sample ads so you see the plugin in action in under a minute.
+5. Help & Docs, Features tab — full inventory of what the free plugin ships (5 ad types, 16+ placements, community integrations, A/B comparison, link partnerships, email capture, and more).
+6. Help & Docs, "What's in PRO" — clear breakdown of Pro-only additions (advertiser portal, wallet, campaigns, classifieds marketplace, advanced analytics, link scanner).
+7. Free vs PRO comparison — row-by-row feature table so you know exactly what you're getting at each tier.
 
 == Changelog ==
 
