@@ -1,4 +1,15 @@
+---
+title: WB Ad Manager Pro - Installation & Requirements
+persona: Evaluator — Pro
+tier: pro
+one_job: Spell out what Pro adds, its required versions and dependencies, and every step to install it on top of the free plugin.
+outcome: Reader can confirm their stack meets the minimum versions, install the Pro add-on, activate the license, and identify optional integrations (BuddyPress, WooCommerce).
+assumes: WB Ad Manager (free) already activated, admin access, valid Pro license key.
+---
+
 # WB Ad Manager Pro - Installation & Requirements
+
+![Setup wizard step 1 — pick how you'll use WB Ad Manager](../images/pro/setup-wizard.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 

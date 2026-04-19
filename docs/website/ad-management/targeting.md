@@ -1,3 +1,12 @@
+---
+title: Targeting & Display Rules
+persona: Operator — Free
+tier: free
+one_job: Show a site owner how to control when, where, and to whom an ad appears using the free plugin's targeting rules.
+outcome: Reader can configure display rules, device/user/role targeting, and page-level inclusions or exclusions for any ad.
+assumes: WordPress admin access, the free plugin activated, at least one ad created.
+---
+
 # Targeting & Display Rules
 
 Control when, where, and to whom your ads appear.

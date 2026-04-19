@@ -1,8 +1,17 @@
+---
+title: Settings
+persona: Operator — Free
+tier: free
+one_job: Document every setting on the free plugin's Settings page so a site owner can configure global ad behaviour.
+outcome: Reader understands General, Display, Performance, Geo Targeting, AdSense, Privacy, and Advanced settings and when to change each default.
+assumes: WordPress admin access, the free plugin activated.
+---
+
 # Settings
 
 Configure WB Ad Manager at **WB Ad Manager → Settings**.
 
-![Settings Page](../images/for-site-owners/settings-page.png)
+![General settings page with display, performance, geo, AdSense and privacy sections](../images/free/settings-general.png)
 *The settings page with General, Display, Performance, Geo Targeting, AdSense, Privacy, and Advanced sections*
 
 ---

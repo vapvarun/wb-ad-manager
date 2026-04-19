@@ -1,3 +1,12 @@
+---
+title: Common Issues & Solutions
+persona: Operator — Free
+tier: free
+one_job: Help a site owner diagnose and resolve the most frequent issues with the free plugin before contacting support.
+outcome: Reader can run the quick-fix checklist, diagnose install/menu/placement/click-count problems, and know where to look for error information.
+assumes: Free plugin installed, WordPress admin access.
+---
+
 # Common Issues & Solutions
 
 ## What You'll Learn

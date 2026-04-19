@@ -1,4 +1,15 @@
+---
+title: Analytics Dashboard
+persona: Operator — Pro
+tier: pro
+one_job: Document the Pro Ad Analytics and Revenue dashboards so admins can enable them, filter data, and interpret each metric.
+outcome: Reader can turn on analytics tracking, use the date-range filters, and read every overview metric, chart, and breakdown on both dashboards.
+assumes: WB Ad Manager Pro installed and activated, analytics toggled on in Pro Settings.
+---
+
 # Analytics Dashboard
+
+![Revenue dashboard — earnings by day, top earning ads, and revenue by placement](../images/pro/revenue-dashboard.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 

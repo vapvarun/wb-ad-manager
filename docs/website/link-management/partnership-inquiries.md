@@ -1,3 +1,12 @@
+---
+title: Link Partnerships
+persona: Operator — Free
+tier: free
+one_job: Show a site owner how to accept inbound link partnership inquiries via a structured on-site form and manage them from the admin.
+outcome: Reader can place the inquiry shortcode, review submissions, and accept or reject each request without email ping-pong.
+assumes: Free plugin installed and activated, a page on the site where the inquiry form can live.
+---
+
 # Link Partnerships
 
 Accept inbound partnership inquiries from advertisers, bloggers, and affiliate
@@ -181,7 +190,7 @@ And style it:
 
 **Does this integrate with a CRM?**
 No — all inquiries stay in your WordPress database. Use the
-`wbam_partnership_created` action (see the developer guide) to forward
+[`wbam_partnership_created`](../../DEVELOPER-GUIDE.md#link-partnerships) action (see the developer guide) to forward
 submissions to HubSpot, Pipedrive, or any webhook.
 
 **Can I change the partnership types?**

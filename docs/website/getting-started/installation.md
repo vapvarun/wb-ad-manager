@@ -1,4 +1,15 @@
+---
+title: Installation Guide
+persona: Evaluator — Free
+tier: free
+one_job: Get someone trying the free plugin from zero to a working install, verified.
+outcome: Reader can install the free plugin via WordPress.org or ZIP upload, meet the prerequisites, and confirm the install succeeded.
+assumes: WordPress 5.8+, PHP 7.4+, admin access to the target site.
+---
+
 # Installation Guide
+
+![WP Ad Manager active on the Plugins list](../images/free/install-active.png)
 
 ## What You'll Learn
 

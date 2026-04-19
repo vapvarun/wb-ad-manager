@@ -1,4 +1,15 @@
+---
+title: Wallet and Payments
+persona: Operator — Pro
+tier: pro
+one_job: Explain how advertiser wallets get funded through the Wbcom Credits SDK and how site owners configure credit top-up paths.
+outcome: Reader can pick a top-up path (WooCommerce products, subscriptions, memberships, PMPro, MemberPress), configure it, and confirm credits reach a wallet.
+assumes: WB Ad Manager Pro installed and activated, and one supported source plugin (WooCommerce or a membership plugin) installed.
+---
+
 # Wallet and Payments
+
+![Credits tab — Wbcom Credits SDK adapters and mapped products](../images/pro/settings-credits.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
@@ -59,6 +70,8 @@ Use this when you want an advertiser's credit allowance to be part of their memb
 Advertisers can always add credits outside their membership using a WooCommerce credit pack in parallel.
 
 ## Spending — how credits leave the wallet
+
+![Admin Transactions page with filters for Credits, Debits, Holds, Releases, and Refunds](../images/pro/transactions.png)
 
 Credits leave the wallet through four entry points. Every spend is recorded in the advertiser's ledger with a transaction type so you can see what happened and when.
 

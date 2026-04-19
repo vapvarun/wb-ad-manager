@@ -1,4 +1,15 @@
+---
+title: Ad Submissions and Approval Workflow
+persona: Operator — Pro
+tier: pro
+one_job: Explain exactly what happens when an advertiser submits an ad and how the admin reviews, approves, rejects, or requests changes.
+outcome: Reader can trace a submission through validation, wallet charge, campaign creation, approval, and rollback on failure, and knows every submission status.
+assumes: WB Ad Manager Pro installed and activated, at least one package and one advertiser account.
+---
+
 # Ad Submissions and Approval Workflow
+
+![Ads tab showing submitted ads with status badges](../images/pro/portal-ads.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
@@ -78,7 +89,7 @@ The submission system fires action hooks at each key moment so you can add custo
 
 | Hook | When It Fires | Parameters |
 |------|--------------|------------|
-| `wbam_ad_submitted` | After a submission is created | `$submission` object |
+| [`wbam_ad_submitted`](../../pro-developer/HOOKS.md#ad-submissions) | After a submission is created | `$submission` object |
 | `wbam_ad_submission_approved` | After an admin approves a submission | `$submission` object |
 | `wbam_ad_submission_rejected` | After an admin rejects a submission | `$submission` object, `$reason` string |
 | `wbam_ad_submission_changes_requested` | After changes are requested | `$submission` object, `$notes` string |

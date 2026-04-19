@@ -1,4 +1,15 @@
+---
+title: Setting Up Classifieds
+persona: Operator — Pro
+tier: pro
+one_job: Walk a site owner through enabling the Classifieds module and wiring up every page, shortcode, taxonomy, and listing setting it needs.
+outcome: Reader can enable Classifieds, create required pages with shortcodes, configure categories/locations, and accept seller submissions.
+assumes: WB Ad Manager Pro installed and activated.
+---
+
 # Setting Up Classifieds
+
+![Classifieds frontend browse page with search, category, location, and price filters](../images/pro/classifieds-browse.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 

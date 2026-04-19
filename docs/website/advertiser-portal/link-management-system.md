@@ -1,4 +1,15 @@
+---
+title: Link Management System
+persona: Operator — Pro
+tier: pro
+one_job: Describe every Pro extension to the free link module — advanced click tracking, keyword auto-linking, link health, CSV import, and link groups.
+outcome: Reader can enable Links Pro and use its advanced tracking, auto-linking, health checks, CSV import, and grouping features.
+assumes: WB Ad Manager Pro installed and activated, free Links module in use.
+---
+
 # Link Management System
+
+![Links list with cloaked URLs, type, clicks, and status](../images/free/links-list.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
@@ -24,13 +35,13 @@ WB Ad Manager Pro extends the free WB Ad Manager link module with advanced click
 
 Links are created and managed in the free WB Ad Manager plugin's Links section. The Pro module extends these links with additional tracking and management features.
 
-When a link is clicked, the `wbam_link_clicked` action fires and the Pro module's `Link_Tracker` records detailed click data automatically.
+When a link is clicked, the [`wbam_link_clicked`](../../DEVELOPER-GUIDE.md#links) action fires and the Pro module's `Link_Tracker` records detailed click data automatically.
 
 ---
 
 ## Advanced Click Tracking
 
-The `Link_Tracker` class hooks into the free plugin's `wbam_link_clicked` and `wbam_before_link_redirect` actions.
+The `Link_Tracker` class hooks into the free plugin's [`wbam_link_clicked`](../../DEVELOPER-GUIDE.md#links) and [`wbam_before_link_redirect`](../../DEVELOPER-GUIDE.md#links) actions.
 
 **Data recorded per click:**
 

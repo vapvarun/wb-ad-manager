@@ -1,3 +1,12 @@
+---
+title: Ad Display Shortcodes
+persona: Operator — Free
+tier: free
+one_job: Document the free plugin's ad display shortcodes so site owners can render specific ads manually.
+outcome: Reader can use [wbam_ad] and [wbam_ads] with every supported parameter to display one or more ads by ID.
+assumes: Free plugin installed and activated, at least one ad created.
+---
+
 # Ad Display Shortcodes
 
 ## What You'll Learn

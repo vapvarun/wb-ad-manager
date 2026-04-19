@@ -1,4 +1,15 @@
+---
+title: Pro Settings Configuration
+persona: Operator — Pro
+tier: pro
+one_job: Document every Pro Settings tab (General, Modules, Packages, Credits, Analytics & Privacy, Payments, Advanced) so admins can configure Pro end-to-end.
+outcome: Reader understands every setting on every Pro Settings tab and knows which defaults to change for their monetization model.
+assumes: WB Ad Manager Pro installed and activated.
+---
+
 # Pro Settings Configuration
+
+![Pro Settings → Modules with each module toggled on or off](../images/pro/settings-modules.png)
 
 > **PRO feature.** Requires the [WB Ad Manager Pro](https://wbcomdesigns.com/downloads/wb-ad-manager-pro/) add-on on top of the free plugin.
 
@@ -9,6 +20,8 @@ Configure WB Ad Manager Pro via **WB Ads → Pro Settings** (or navigate to **Ad
 ## Tab 1: General
 
 Navigate to: **Pro Settings → General**
+
+![Pro Settings → General](../images/pro/settings-general.png)
 
 ### Advertiser Settings
 
@@ -70,6 +83,8 @@ The Advertisers module is core and always active; it does not appear in this tog
 
 Navigate to: **Pro Settings → Credits**
 
+![Pro Settings → Credits — adapters and mappings](../images/pro/settings-credits.png)
+
 Pro uses the **Wbcom Credits SDK** to accept credit top-ups rather than shipping its own payment-gateway integrations. Every adapter whose source plugin is active on the site auto-appears in this tab; you enable the adapters you want to use and map each one's products / levels to a credit amount.
 
 ### Available adapters
@@ -114,6 +129,8 @@ See [Wallet and Payments](../payments/wallet-and-payments.md) for the full end-t
 ## Tab 4: Pages
 
 Navigate to: **Pro Settings → Pages**
+
+![Pro Settings → Pages — portal page assignments](../images/pro/settings-pages.png)
 
 Map WordPress pages to plugin features. The plugin creates these pages automatically on activation. You can reassign them to any published, draft, or private page.
 
@@ -163,6 +180,8 @@ These settings apply regardless of whether analytics is enabled.
 ## Tab 6: Classifieds
 
 Navigate to: **Pro Settings → Classifieds**
+
+![Pro Settings → Classifieds](../images/pro/settings-classifieds.png)
 
 *(Only visible when the Classifieds module is enabled)*
 
@@ -218,6 +237,8 @@ Configure how the wallet is charged for featured listings.
 ## Tab 7: Emails
 
 Navigate to: **Pro Settings → Emails**
+
+![Pro Settings → Emails](../images/pro/settings-emails.png)
 
 Configure automated email notifications. This tab is managed by the Email Notifications module. If that module is disabled, the tab is still visible but inactive.
 
