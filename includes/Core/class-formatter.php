@@ -123,7 +123,10 @@ class Formatter {
 			$format = get_option( 'date_format' );
 		}
 
-		$timestamp = is_numeric( $date ) ? $date : strtotime( $date );
+		$timestamp = is_numeric( $date ) ? (int) $date : strtotime( (string) $date );
+		if ( false === $timestamp ) {
+			return '';
+		}
 
 		return date_i18n( $format, $timestamp );
 	}
@@ -140,7 +143,10 @@ class Formatter {
 			$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 		}
 
-		$timestamp = is_numeric( $datetime ) ? $datetime : strtotime( $datetime );
+		$timestamp = is_numeric( $datetime ) ? (int) $datetime : strtotime( (string) $datetime );
+		if ( false === $timestamp ) {
+			return '';
+		}
 
 		return date_i18n( $format, $timestamp );
 	}

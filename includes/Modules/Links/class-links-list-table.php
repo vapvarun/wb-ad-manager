@@ -406,10 +406,15 @@ class Links_List_Table extends \WP_List_Table {
 
 		$class = 'wbam-status wbam-status-' . $item->status;
 
-		// Check if expired.
-		if ( 'active' === $item->status && $item->expires_at && strtotime( $item->expires_at ) < time() ) {
-			$class = 'wbam-status wbam-status-expired';
-			$label = __( 'Expired', 'wb-ads-rotator-with-split-test' );
+		// Check if expired. strtotime() returns false on bad input — only flag
+		// as expired when we successfully parsed a past timestamp, so malformed
+		// DB values don't silently mark active links "expired".
+		if ( 'active' === $item->status && $item->expires_at ) {
+			$expires_ts = strtotime( $item->expires_at );
+			if ( false !== $expires_ts && $expires_ts < time() ) {
+				$class = 'wbam-status wbam-status-expired';
+				$label = __( 'Expired', 'wb-ads-rotator-with-split-test' );
+			}
 		}
 
 		return sprintf( '<span class="%s">%s</span>', esc_attr( $class ), esc_html( $label ) );
@@ -422,10 +427,17 @@ class Links_List_Table extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_created_at( $item ) {
+		$created_ts = strtotime( (string) $item->created_at );
+		if ( false === $created_ts ) {
+			// Unparseable DB value — show the raw string instead of rendering
+			// "55 years ago" from a strtotime(false) → 0 fallback.
+			return esc_html( (string) $item->created_at );
+		}
+
 		return sprintf(
 			'<span title="%s">%s</span>',
 			esc_attr( $item->created_at ),
-			esc_html( human_time_diff( strtotime( $item->created_at ), time() ) . ' ' . __( 'ago', 'wb-ads-rotator-with-split-test' ) )
+			esc_html( human_time_diff( $created_ts, time() ) . ' ' . __( 'ago', 'wb-ads-rotator-with-split-test' ) )
 		);
 	}
 

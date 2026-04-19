@@ -377,13 +377,20 @@ class Links_Admin {
 					</td>
 				</tr>
 
+				<?php
+				// strtotime() returns false on malformed input — PHP 8.1+ deprecates
+				// passing false to gmdate(). Guard so the form renders blank for
+				// corrupted stored values instead of throwing a deprecation notice.
+				$expires_ts    = ( $link && $link->expires_at ) ? strtotime( $link->expires_at ) : false;
+				$expires_value = false !== $expires_ts ? gmdate( 'Y-m-d\TH:i', $expires_ts ) : '';
+				?>
 				<tr>
 					<th scope="row">
 						<label for="expires_at"><?php esc_html_e( 'Expiration Date', 'wb-ads-rotator-with-split-test' ); ?></label>
 					</th>
 					<td>
 						<input type="datetime-local" name="expires_at" id="expires_at"
-							value="<?php echo esc_attr( $link && $link->expires_at ? gmdate( 'Y-m-d\TH:i', strtotime( $link->expires_at ) ) : '' ); ?>">
+							value="<?php echo esc_attr( $expires_value ); ?>">
 						<p class="description"><?php esc_html_e( 'Leave empty for no expiration.', 'wb-ads-rotator-with-split-test' ); ?></p>
 					</td>
 				</tr>
@@ -496,6 +503,18 @@ class Links_Admin {
 		$link_id = isset( $_POST['link_id'] ) ? (int) $_POST['link_id'] : 0;
 		$is_edit = (bool) $link_id;
 
+		// Expiration: parse the datetime-local input. strtotime() returns false
+		// on malformed input; in that case treat the field as empty rather than
+		// storing a 1970-01-01 timestamp (or triggering a PHP 8.1+ deprecation
+		// notice by passing false to gmdate).
+		$expires_at = null;
+		if ( ! empty( $_POST['expires_at'] ) ) {
+			$expires_ts = strtotime( sanitize_text_field( wp_unslash( $_POST['expires_at'] ) ) );
+			if ( false !== $expires_ts ) {
+				$expires_at = gmdate( 'Y-m-d H:i:s', $expires_ts );
+			}
+		}
+
 		$data = array(
 			'name'             => isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '',
 			'destination_url'  => isset( $_POST['destination_url'] ) ? esc_url_raw( wp_unslash( $_POST['destination_url'] ) ) : '',
@@ -508,9 +527,7 @@ class Links_Admin {
 			'new_tab'          => isset( $_POST['new_tab'] ) ? 1 : 0,
 			'redirect_type'    => isset( $_POST['redirect_type'] ) ? (int) $_POST['redirect_type'] : 307,
 			'status'           => isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 'active',
-			'expires_at'       => isset( $_POST['expires_at'] ) && ! empty( $_POST['expires_at'] )
-				? gmdate( 'Y-m-d H:i:s', strtotime( sanitize_text_field( wp_unslash( $_POST['expires_at'] ) ) ) )
-				: null,
+			'expires_at'       => $expires_at,
 			'description'      => isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '',
 		);
 

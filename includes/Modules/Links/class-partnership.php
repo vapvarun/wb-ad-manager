@@ -297,7 +297,11 @@ class Partnership {
 	 * @return string
 	 */
 	public function get_time_ago() {
-		return human_time_diff( strtotime( $this->created_at ), current_datetime()->getTimestamp() );
+		$created_ts = strtotime( (string) $this->created_at );
+		if ( false === $created_ts ) {
+			return '';
+		}
+		return human_time_diff( $created_ts, current_datetime()->getTimestamp() );
 	}
 
 	/**
