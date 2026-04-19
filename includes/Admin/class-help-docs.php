@@ -248,78 +248,68 @@ class Help_Docs {
 			<?php /* translators: %s: version label (FREE or PRO) */ ?>
 			<h2><?php printf( esc_html__( 'Features (%s Version)', 'wb-ads-rotator-with-split-test' ), esc_html( $version_label ) ); ?></h2>
 
-			<div class="wbam-features-grid">
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'image', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( '5 Ad Types', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Image, Rich Content, HTML/JS Code, Google AdSense, and Email Capture.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
+			<div class="wbam-doc-section">
+				<h3><?php esc_html_e( 'Ad Management', 'wb-ads-rotator-with-split-test' ); ?></h3>
+				<ul>
+					<li><strong><?php esc_html_e( '5 ad types:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Image, Rich Content (HTML editor), HTML/JS Code, Google AdSense, and Email Capture (inline subscribe form).', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Weighted rotation:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Assign each ad a 1–10 priority slider; higher priorities win more often in the same placement.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'A/B comparison metabox:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Side-by-side impressions / clicks / CTR across ads sharing a placement, with an automatic "winner" badge at 100+ impressions.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Frequency control:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Per-ad session impression cap + global max-ads-per-page, plus lazy loading for below-the-fold ads.', 'wb-ads-rotator-with-split-test' ); ?></li>
+				</ul>
+			</div>
 
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'map-pin', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( '16+ Placements', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Header, footer, paragraph, archive, sidebar widgets, popup (delay / scroll / exit intent), sticky bar (4 positions), comments, shortcode.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
+			<div class="wbam-doc-section">
+				<h3><?php esc_html_e( 'Placements — 16+ positions', 'wb-ads-rotator-with-split-test' ); ?></h3>
+				<p><?php esc_html_e( 'Each ad can be assigned to as many placements as you want, across standard WordPress and three community plugins.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<ul>
+					<li><strong><?php esc_html_e( 'Page positions:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Header, footer, before / after content, after paragraph X, before / after archive loop.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Overlays:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Popup / modal (delay, scroll %, or exit-intent triggers) and sticky bar (4 positions: top-bar, bottom-bar, bottom-right, bottom-left).', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Widgets & shortcode:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Sidebar widget plus a [wbam_ad id="123"] shortcode for exact placement control.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'BuddyPress:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Activity stream + 6 directory positions (before / between / after members and groups).', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'bbPress:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '7 positions including between-replies with a configurable frequency (every N replies, repeating or once).', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Jetonomy:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '7 positions: sidebar top / bottom / after-about, after topic body, before / between / after replies.', 'wb-ads-rotator-with-split-test' ); ?></li>
+				</ul>
+			</div>
 
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'users', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Community Integrations', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'BuddyPress (activity + 6 directory positions), bbPress (7 positions + between replies), Jetonomy (7 positions).', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
+			<div class="wbam-doc-section">
+				<h3><?php esc_html_e( 'Targeting & Scheduling', 'wb-ads-rotator-with-split-test' ); ?></h3>
+				<ul>
+					<li><strong><?php esc_html_e( 'Visitor targeting:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Device (desktop / tablet / mobile), user status (logged in / out), and user role (Administrator, Editor, Author, Subscriber, or any custom role).', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Content targeting:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Include / exclude by specific post, page, category, tag, post type, or page template.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Geo targeting:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Country-level targeting via ip-api.com, ipinfo.io, or ipapi.co with automatic provider fallback.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Scheduling:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Start / end dates, specific days of the week, and time-of-day ranges (using your WordPress timezone).', 'wb-ads-rotator-with-split-test' ); ?></li>
+				</ul>
+			</div>
 
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'eye', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Display Rules & Scheduling', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Per-page, category, post type, and user role. Start / end dates, day of week, and time of day.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
+			<div class="wbam-doc-section">
+				<h3><?php esc_html_e( 'Link Management', 'wb-ads-rotator-with-split-test' ); ?></h3>
+				<p><?php esc_html_e( 'Turn long affiliate URLs into short, trackable links on your own domain. Redirects are 307 by default, cloaked through /go/slug, and every click is counted.', 'wb-ads-rotator-with-split-test' ); ?></p>
+				<ul>
+					<li><strong><?php esc_html_e( 'Cloaked URLs + click tracking:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'yoursite.com/go/book → destination, with per-link click counts in the list.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Categories & filtering:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Group links (e.g. "Amazon", "Software deals"), filter the list table, or render a category list with [wbam_links category="slug"].', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'SEO controls:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'rel="nofollow" and rel="sponsored" toggles per link; 301 / 302 / 307 redirect type per link.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Expiration dates:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Optional expiry so time-limited offers stop redirecting automatically.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Link Partnerships:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Drop [wbam_partnership_inquiry] on any page to accept paid-link / exchange / sponsored-post inquiries with accept-reject workflow and auto emails.', 'wb-ads-rotator-with-split-test' ); ?></li>
+				</ul>
+			</div>
 
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'smartphone', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Device & Geo Targeting', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Desktop / tablet / mobile targeting plus country-level geo targeting via ip-api.com, ipinfo.io, or ipapi.co.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
+			<div class="wbam-doc-section">
+				<h3><?php esc_html_e( 'Privacy & GDPR', 'wb-ads-rotator-with-split-test' ); ?></h3>
+				<ul>
+					<li><strong><?php esc_html_e( 'IP anonymization:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Raw IPs are hashed before storage in the analytics table.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Consent-gated AdSense:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Opt-in flag that delays AdSense script loading until a cookie consent plugin signals consent.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Opt-in delete on uninstall:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Plugin preserves your data by default; enable the setting for a full wipe when you uninstall.', 'wb-ads-rotator-with-split-test' ); ?></li>
+				</ul>
+			</div>
 
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'gauge', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Rotation & Frequency', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Weighted priority rotation (1–10 slider), global max-ads-per-page, per-ad session impression cap, lazy loading.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
-
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'bar-chart-3', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'A/B Comparison', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Side-by-side CTR comparison metabox with "winner" badge across ads sharing a placement.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
-
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'link', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Link Management', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Cloaked affiliate links with categories, click tracking, redirect types, and nofollow / sponsored rel attributes.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
-
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'handshake', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Link Partnerships', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Accept paid link / exchange / sponsored post inquiries via [wbam_partnership_inquiry] with accept/reject workflow and auto emails.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
-
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'mail', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Email Capture', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'Inline newsletter form as an ad type — customizable colours, optional name field, hooks for Mailchimp / ConvertKit / webhooks.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
-
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'shield-check', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Privacy & GDPR', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'IP anonymization, consent-gated AdSense loading, no raw IPs stored, opt-in delete-on-uninstall.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
-
-				<div class="wbam-feature-card">
-					<?php echo wbam_icon( 'code', array( 'size' => 'lg' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
-					<h4><?php esc_html_e( 'Developer API', 'wb-ads-rotator-with-split-test' ); ?></h4>
-					<p><?php esc_html_e( 'REST API (21 routes), 100+ action/filter hooks, custom ad-type and placement extension points, full translation support.', 'wb-ads-rotator-with-split-test' ); ?></p>
-				</div>
+			<div class="wbam-doc-section">
+				<h3><?php esc_html_e( 'Developer API', 'wb-ads-rotator-with-split-test' ); ?></h3>
+				<ul>
+					<li><strong><?php esc_html_e( 'REST API:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '21 endpoints under /wp-json/wbam/v1/ covering ads, analytics, links, partnerships, and settings.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Hooks & filters:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '100+ action and filter hooks on every write operation, with custom ad-type and placement extension points.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'Abilities API (WP 6.9+):', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '15 named abilities for AI and headless consumers of the ads data.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'i18n ready:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'POT file ships in /languages; every user-facing string is translatable.', 'wb-ads-rotator-with-split-test' ); ?></li>
+				</ul>
 			</div>
 
 			<?php if ( ! $this->is_pro_active ) : ?>
