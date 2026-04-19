@@ -107,40 +107,38 @@ function parseRequires(phpPath) {
 	const src = readFileSync(phpPath, 'utf8');
 	const out = new Set();
 	// Track the source file's directory (relative to ROOT) so __DIR__
-	// requires resolve to the right plugin-relative path.
+	// references resolve to the right plugin-relative path.
 	const srcDirRel = relative(ROOT, dirname(phpPath)).replace(/\\/g, '/');
-	const re = /\b(?:require|require_once|include|include_once)\s*\(?\s*([^;]+?)\s*\)?\s*;/g;
+
+	// Match ANY statement that concatenates a path anchor with a string
+	// literal ending in a file extension. Covers:
+	//   require_once __DIR__ . '/foo.php'
+	//   include WBAM_PRO_PATH . 'demo-data-setup.php'
+	//   $file = plugin_dir_path(__FILE__) . 'demo-data/ads/ad-01.jpg'
+	//   file_exists( WBAM_PRO_PATH . 'demo-data-setup.php' )
+	//   wp_enqueue_script( 'lucide', WBAM_URL . 'assets/vendor/lucide.min.js' )
+	// Caught extensions: php, js, css, svg, png, jpg, jpeg, gif, webp,
+	// json, pot, mo, html, txt, md.
+	const re = /(__DIR__|__FILE__|plugin_dir_path\s*\([^)]*\)|\b[A-Z][A-Z0-9_]+(?:_PATH|_DIR|_URL|_FILE|_PLUGIN_DIR))\s*\.\s*['"]([^'"]+?\.(?:php|js|css|svg|png|jpe?g|gif|webp|json|pot|mo|html?|txt|md))['"]/g;
 	let m;
 	while ((m = re.exec(src)) !== null) {
-		const raw = m[1].trim();
-		const pathMatch = raw.match(/['"]([^'"]+\.php)['"]/);
-		if (!pathMatch) continue;
-		let rel = pathMatch[1];
+		const anchor = m[1];
+		let rel = m[2];
 		if (rel.startsWith('/')) rel = rel.slice(1);
 		rel = rel.replace(/^\.\//, '');
 
 		// Skip WordPress core paths (always present at runtime).
 		if (/^wp-(admin|includes|content)\//.test(rel)) continue;
+		// Skip protocol-ish references (external URLs pasted into string).
+		if (/^https?:/.test(rel) || /^\/\//.test(rel)) continue;
 
-		const usesDir = /__DIR__/.test(raw);
-		const usesFile = /__FILE__|plugin_dir_path\s*\(/.test(raw);
-		// Check __DIR__ FIRST. __DIR__ contains "_DIR" as substring so it
-		// would false-match any naive plugin-constant check below.
-		const usesConstant = !usesDir && /\b(WBAM_\w+|[A-Z]+_(?:PATH|DIR|PLUGIN_DIR))\b/.test(raw);
-
-		// __DIR__ relative — prepend the source file's directory.
-		if (usesDir && srcDirRel) {
-			out.add(`${srcDirRel}/${rel}`);
-			continue;
-		}
-		// Plugin-root-relative if the expression used a plugin constant
-		// or plugin_dir_path(__FILE__). Keep rel as-is.
-		if (usesConstant || usesFile) {
+		if (/__DIR__/.test(anchor)) {
+			out.add(srcDirRel ? `${srcDirRel}/${rel}` : rel);
+		} else {
+			// __FILE__, plugin_dir_path(), *_PATH, *_DIR, *_URL, *_FILE
+			// constants all resolve to the plugin root.
 			out.add(rel);
-			continue;
 		}
-		// Fall back to plugin-root-relative.
-		out.add(rel);
 	}
 	return [...out];
 }
@@ -278,21 +276,25 @@ function main() {
 		if (isExcluded(rel, patterns)) continue;
 		requireInZip(rel, 'PHP');
 	}
-	// 3d. require / require_once / include targets across the whole tree.
-	// Scans the main plugin file plus EVERY PHP file under includes/ so the
-	// check catches deep require paths like vendor/wbcom-credits-sdk loaded
-	// from includes/Core/class-credits-bridge.php. Without this Pro 1.5.0
-	// shipped with a fatal on activation because vendor/wbcom-credits-sdk
-	// was stripped by .distignore and only that one deep file referenced it.
-	const requireSources = [mainFile, ...walk('includes', ['.php'])];
-	const requiredPaths = new Set();
-	for (const src of requireSources) {
-		for (const r of parseRequires(src)) requiredPaths.add(r);
+	// 3d. Runtime file references across the whole PHP tree.
+	// Scans every PHP file under includes/ PLUS the main plugin file
+	// for any string literal that concatenates a plugin path anchor
+	// (__DIR__, __FILE__, plugin_dir_path(), *_PATH, *_DIR, *_URL)
+	// with a file path. Catches broken bundling for:
+	//   - vendor/wbcom-credits-sdk/*.php (referenced from deep require)
+	//   - assets/vendor/lucide.min.js (referenced from wp_enqueue_script)
+	//   - demo-data-setup.php (referenced from admin AJAX handlers)
+	//   - demo-data/ads/*.jpg (referenced from the setup script)
+	// Any file extension is checked (php, js, css, images, json, pot, md).
+	const refSources = [mainFile, ...walk('includes', ['.php'])];
+	const referencedPaths = new Set();
+	for (const src of refSources) {
+		for (const r of parseRequires(src)) referencedPaths.add(r);
 	}
-	for (const r of requiredPaths) {
-		if (!r.endsWith('.php')) continue;
+	for (const r of referencedPaths) {
 		if (isExcluded(r, patterns)) continue;
-		requireInZip(r, 'require target');
+		const kind = r.endsWith('.php') ? 'PHP reference' : `${r.split('.').pop().toUpperCase()} reference`;
+		requireInZip(r, kind);
 	}
 
 	if (errors.length > 0) {
@@ -302,7 +304,38 @@ function main() {
 		die(1, `${errors.length} file(s) missing from release zip. Fix .distignore or ensure files are committed.`);
 	}
 
-	// 4. Build final zip. Using cwd instead of "cd X && zip" keeps us shell-free.
+	// 4. Smoke test — PHP-lint every file that will ship. Catches
+	// syntax errors that passed local development but would fatal on
+	// a customer site. Cheap: only runs if the `php` binary is
+	// available, skipped silently if not.
+	let smokeFiles = 0;
+	let smokeFailed = 0;
+	try {
+		// Probe for php on PATH.
+		run('php', ['-v']);
+		for (const phpFile of walk(pluginDir, ['.php'])) {
+			smokeFiles++;
+			try {
+				run('php', ['-l', phpFile]);
+			} catch (err) {
+				smokeFailed++;
+				const shown = relative(pluginDir, phpFile);
+				console.error(RED(`  x PHP syntax error in zip: ${shown}`));
+			}
+		}
+		if (smokeFailed > 0) {
+			die(1, `${smokeFailed} of ${smokeFiles} PHP file(s) failed syntax check inside zip.`);
+		}
+	} catch (err) {
+		if (smokeFiles === 0) {
+			console.log(DIM('  smoke test -> skipped (php binary not on PATH)'));
+		}
+	}
+	if (smokeFiles > 0) {
+		console.log(DIM(`  smoke test  -> php -l on ${smokeFiles} file(s) — all clean`));
+	}
+
+	// 5. Build final zip. Using cwd instead of "cd X && zip" keeps us shell-free.
 	const outZip = resolve(DIST, `${releaseName}-${version}.zip`);
 	rmSync(outZip, { force: true });
 	run('zip', ['-rq', outZip, slug], { cwd: extractRoot });
@@ -317,7 +350,7 @@ function main() {
 	console.log(`  Path:  ${relative(ROOT, outZip)}`);
 	console.log(`  Size:  ${(zipStats.size / 1024).toFixed(0)} KB`);
 	console.log(`  Files: ${entryCount}`);
-	console.log(GREEN('OK Completeness checks passed (CSS, JS, PHP, require targets)'));
+	console.log(GREEN('OK Completeness checks passed (assets, PHP tree, runtime file references)'));
 
 	// 6. Cleanup work dir.
 	rmSync(WORK, { recursive: true, force: true });
