@@ -201,8 +201,9 @@ class Frontend {
 			$visitor_hash   = hash( 'sha256', $ip_address . $user_agent_raw . $daily_salt );
 		}
 
-		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
-		$referer    = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+		$user_agent  = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+		$referer     = isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '';
+		$device_type = self::detect_device_type( $user_agent );
 
 		// GDPR: Store empty string for IP address - use visitor_hash for unique visitor detection.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -216,10 +217,38 @@ class Frontend {
 				'ip_address'   => '', // GDPR: Never store raw IP addresses.
 				'user_agent'   => $user_agent,
 				'referer'      => $referer,
+				'device_type'  => $device_type,
 				'created_at'   => current_time( 'mysql' ),
 			),
-			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
+	}
+
+	/**
+	 * Bucket a User-Agent into desktop / mobile / tablet / unknown.
+	 *
+	 * Pro's Device Breakdown chart reads this column and groups by value,
+	 * so a Pro site that has only this free plugin installed will show an
+	 * empty chart unless we populate it here. The regex set matches the
+	 * one in Pro's Analytics_Tracker so both producers file events into
+	 * the same buckets.
+	 *
+	 * @since 2.8.1
+	 *
+	 * @param string $user_agent Sanitised User-Agent header.
+	 * @return string One of: mobile, tablet, desktop, unknown.
+	 */
+	public static function detect_device_type( $user_agent ) {
+		if ( '' === (string) $user_agent ) {
+			return 'unknown';
+		}
+		if ( preg_match( '/Mobile|Android.*Mobile|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i', $user_agent ) ) {
+			return 'mobile';
+		}
+		if ( preg_match( '/iPad|Android(?!.*Mobile)|Tablet/i', $user_agent ) ) {
+			return 'tablet';
+		}
+		return 'desktop';
 	}
 
 	/**
