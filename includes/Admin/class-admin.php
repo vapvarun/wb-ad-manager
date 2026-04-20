@@ -1194,12 +1194,42 @@ class Admin {
 			}
 		);
 
-		// Find winner (highest CTR with at least 100 impressions).
-		$winner_id = 0;
-		foreach ( $stats as $stat ) {
-			if ( $stat['impressions'] >= 100 ) {
-				$winner_id = $stat['id'];
-				break;
+		// Find a credible winner. "Credible" = top ad by CTR among those
+		// with enough impressions, AND a meaningful lead over the runner-up
+		// so we don't declare a winner when two variants are within noise
+		// of each other. The old rule ("top CTR with ≥100 impressions")
+		// flagged a winner even on a 0.05% CTR gap, which misled customers
+		// into disabling variants that were statistically identical.
+		$min_samples   = 100; // Impressions required on every contender.
+		$min_lead      = 0.20; // Winner's CTR must be 20% higher than runner-up.
+		$min_abs_lead  = 1.0;  // ...or at least 1 percentage point above, for low-CTR tests.
+		$eligible      = array_values(
+			array_filter(
+				$stats,
+				static function ( $s ) use ( $min_samples ) {
+					return $s['impressions'] >= $min_samples;
+				}
+			)
+		);
+		$winner_id     = 0;
+		$winner_reason = '';
+
+		if ( count( $eligible ) === 1 ) {
+			$winner_id     = $eligible[0]['id'];
+			$winner_reason = 'only_eligible';
+		} elseif ( count( $eligible ) >= 2 ) {
+			$leader     = $eligible[0];
+			$runner_up  = $eligible[1];
+			$lead_ratio = $runner_up['ctr'] > 0
+				? ( $leader['ctr'] - $runner_up['ctr'] ) / $runner_up['ctr']
+				: 1.0;
+			$lead_abs   = $leader['ctr'] - $runner_up['ctr'];
+
+			if ( $lead_ratio >= $min_lead || $lead_abs >= $min_abs_lead ) {
+				$winner_id     = $leader['id'];
+				$winner_reason = 'clear_lead';
+			} else {
+				$winner_reason = 'too_close';
 			}
 		}
 
@@ -1274,9 +1304,15 @@ class Admin {
 		<p class="wbam-comparison-note">
 			<?php
 			if ( 0 === $winner_id ) {
-				esc_html_e( 'No winner yet. Ads need at least 100 impressions each for a meaningful comparison.', 'wb-ads-rotator-with-split-test' );
+				if ( 'too_close' === $winner_reason ) {
+					esc_html_e( 'The top two ads are still within noise of each other. Keep the test running until one pulls clearly ahead.', 'wb-ads-rotator-with-split-test' );
+				} else {
+					esc_html_e( 'No winner yet. Each ad needs at least 100 impressions before a fair comparison.', 'wb-ads-rotator-with-split-test' );
+				}
+			} elseif ( 'only_eligible' === $winner_reason ) {
+				esc_html_e( 'Only one ad has enough data so far. Keep the rotation running to compare against the others.', 'wb-ads-rotator-with-split-test' );
 			} else {
-				esc_html_e( 'Winner is the ad with highest CTR among those with 100+ impressions.', 'wb-ads-rotator-with-split-test' );
+				esc_html_e( 'Winner has a clear lead in CTR over the runner-up with enough data to trust the result.', 'wb-ads-rotator-with-split-test' );
 			}
 			?>
 		</p>
