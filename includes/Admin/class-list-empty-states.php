@@ -7,9 +7,6 @@
  * callout + primary CTA. Gives first-time users a clear next
  * action instead of an empty table they have to puzzle out.
  *
- * See Phase G.5 of the Format-Aware Placement Matching plan
- * (wb-ad-manager-pro/docs/superpowers/plans/2026-04-15-format-aware-placement-matching.md).
- *
  * @package WB_Ad_Manager
  * @since   2.8.0
  */

@@ -79,13 +79,24 @@ if ( ! function_exists( 'wbam_register_lucide' ) ) {
 	/**
 	 * Register the wbam-lucide script + its .wbam-icon CSS rules.
 	 *
-	 * Runs on both wp_enqueue_scripts and admin_enqueue_scripts so every page
-	 * that might call wbam_icon() has the handle registered. Idempotent —
-	 * safe to call multiple times across both plugins.
+	 * Single source of truth for lucide registration. Companion plugins must
+	 * NOT re-register this handle — they only call
+	 * `wp_enqueue_script( 'wbam-lucide' )` / `wp_enqueue_style( 'wbam-lucide' )`.
+	 *
+	 * Hooked at `init` priority 1 so the handle is in the WP script registry
+	 * before any plugin's enqueue logic runs (typically `wp_enqueue_scripts`
+	 * priority 10). The cost is a single row in the registry; the benefit is
+	 * deterministic version control: when this plugin updates lucide, every
+	 * companion plugin inherits the new version automatically.
 	 *
 	 * @since 2.8.1
+	 * @since 2.9.0 Hooked on init@1 instead of wp_enqueue_scripts@5 so the
+	 *              registry is populated before any plugin's enqueue logic runs.
 	 */
 	function wbam_register_lucide() {
+		// Idempotency guard preserves correctness if some third-party code
+		// registers `wbam-lucide` first; the contract says they shouldn't, but
+		// we don't crash on misbehaviour.
 		if ( ! wp_script_is( 'wbam-lucide', 'registered' ) ) {
 			wp_register_script(
 				'wbam-lucide',
@@ -109,8 +120,10 @@ if ( ! function_exists( 'wbam_register_lucide' ) ) {
 			);
 		}
 	}
-	add_action( 'wp_enqueue_scripts', 'wbam_register_lucide', 5 );
-	add_action( 'admin_enqueue_scripts', 'wbam_register_lucide', 5 );
+	// Register early on init so the handle is available before any plugin or
+	// theme reaches `wp_enqueue_scripts`/`admin_enqueue_scripts`. Priority 1
+	// keeps it ahead of WP core's late-init handlers.
+	add_action( 'init', 'wbam_register_lucide', 1 );
 }
 
 if ( ! function_exists( 'wbam_ad_fits_placement' ) ) {

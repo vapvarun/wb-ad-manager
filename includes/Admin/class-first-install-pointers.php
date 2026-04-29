@@ -7,9 +7,6 @@
  * Upgrades intentionally skip this (flag defaults off) so power
  * users aren't annoyed by guidance they don't need.
  *
- * See Phase G.2 of the Format-Aware Placement Matching plan
- * (wb-ad-manager-pro/docs/superpowers/plans/2026-04-15-format-aware-placement-matching.md).
- *
  * @package WB_Ad_Manager
  * @since   2.8.1
  */
