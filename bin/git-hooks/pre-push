@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# pre-push hook for wb-ads-rotator-with-split-test.
+#
+# Runs `composer verify-no-test` (the full local-CI gate minus PHPUnit:
+# PHPCS + PHPStan + architecture-checks + plugincheck + verify-flow).
+# Uses verify-no-test by default because the WP test scaffold
+# (bin/install-wp-tests.sh) is per-developer setup. Once a contributor
+# has run that script, they can switch to full `composer verify` by
+# editing this hook.
+#
+# Aborts the push if any check fails.
+#
+# Activated via `git config core.hooksPath bin/git-hooks` — see
+# `composer install-hooks`.
+#
+# Bypass (use sparingly, only for emergencies):
+#   git push --no-verify
+#
+# Skip via env var (e.g., when pushing docs-only changes):
+#   WBAM_SKIP_VERIFY=1 git push
+
+set -uo pipefail
+
+if [ "${WBAM_SKIP_VERIFY:-0}" = "1" ]; then
+	echo "WBAM_SKIP_VERIFY=1 — skipping local-CI gate." >&2
+	exit 0
+fi
+
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$HOOK_DIR/../.." && pwd)"
+
+cd "$REPO_ROOT"
+
+echo "─────────────────────────────────────────────────────"
+echo " pre-push: running composer verify-no-test (local-CI gate)"
+echo "─────────────────────────────────────────────────────"
+
+if ! command -v composer >/dev/null 2>&1; then
+	echo "ERROR: composer not found in PATH. Install it or set WBAM_SKIP_VERIFY=1 to bypass." >&2
+	exit 1
+fi
+
+# Prefer full verify (with PHPUnit) when the WP test scaffold is set up.
+if [ -f "/tmp/wordpress-tests-lib/includes/functions.php" ] || [ -d "${WP_TESTS_DIR:-}" ]; then
+	GATE="verify"
+else
+	GATE="verify-no-test"
+fi
+
+if composer "$GATE"; then
+	echo
+	echo "✓ Local-CI gate passed ($GATE). Push proceeding."
+	exit 0
+else
+	echo
+	echo "✗ Local-CI gate failed ($GATE). Push aborted." >&2
+	echo "  Fix the issues above, OR bypass with: WBAM_SKIP_VERIFY=1 git push" >&2
+	exit 1
+fi
