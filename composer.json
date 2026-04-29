@@ -39,10 +39,19 @@
 		"phpstan-baseline": "phpstan analyse --generate-baseline=phpstan-baseline.neon --allow-empty-baseline --memory-limit=2G",
 		"plugincheck": "bash bin/run-plugin-check.sh",
 		"verify-flow": "bash bin/verify-data-flow.sh",
+		"arch-checks": "bash ../wb-ad-manager-pro/bin/architecture-checks.sh",
 		"verify": [
 			"@lint",
 			"@phpstan",
+			"@arch-checks",
 			"@test",
+			"@plugincheck",
+			"@verify-flow"
+		],
+		"verify-no-test": [
+			"@lint",
+			"@phpstan",
+			"@arch-checks",
 			"@plugincheck",
 			"@verify-flow"
 		],
@@ -55,7 +64,9 @@
 		"phpstan": "Static analysis at level 7 across both plugins.",
 		"plugincheck": "Run WP Plugin Check CLI on both plugins — no category exclusions.",
 		"verify-flow": "WP-CLI data-flow assertions against the live Local site.",
-		"verify": "Run lint + phpstan + phpunit + plugincheck + verify-flow in sequence.",
+		"arch-checks": "Free/Pro architecture-contract enforcement (delegates to PRO's bin/architecture-checks.sh).",
+		"verify": "Full local-CI gate: lint + phpstan + arch-checks + phpunit + plugincheck + verify-flow. Use before pushing.",
+		"verify-no-test": "Same as verify but skips PHPUnit. Use when WP test scaffold (install-wp-tests.sh) is not set up locally.",
 		"dist": "Build free-only and free+pro combo distribution zips."
 	},
 	"config": {
