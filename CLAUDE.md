@@ -15,6 +15,40 @@ Ad rotation + A/B split-test plugin. Renamed from the legacy `buddypress-ads-rot
 
 ---
 
+## First-clone setup (run once)
+
+```bash
+# 1. PHP dependencies
+composer install
+
+# 2. Activate the tracked git pre-push hook. This makes `git push` block on a
+#    failing local-CI gate (composer verify-no-test). One-time per clone —
+#    no symlinks or hook copying, just `git config core.hooksPath`.
+composer install-hooks
+
+# 3. (Optional) WP test framework for PHPUnit. Per-developer setup because
+#    Local-by-Flywheel uses random per-site MySQL ports — you'll need yours.
+#    bash bin/install-wp-tests.sh wbam_test root root <your-mysql-host:port> latest
+#    Once installed: export WBAM_FULL_VERIFY=1 to run PHPUnit in the gate.
+```
+
+Day-to-day commands:
+
+| Command | What it runs | When |
+|---|---|---|
+| `composer verify-no-test` | lint + phpstan + arch-checks + plugincheck + verify-flow | Default pre-push gate (no PHPUnit needed) |
+| `composer verify` | the above + PHPUnit | When WP test scaffold is set up |
+| `composer arch-checks` | Free/Pro contract enforcement only | Quick sanity check during development |
+| `composer lint-fix` | phpcbf auto-fixes | Before lint to clear easy issues |
+
+Push gates:
+- Default: hook runs `composer verify-no-test` automatically before every push.
+- Opt into full gate: `WBAM_FULL_VERIFY=1 git push`
+- Skip gate (emergencies only): `WBAM_SKIP_VERIFY=1 git push`
+- Bypass all hooks: `git push --no-verify` (don't make this a habit)
+
+---
+
 ## Basecamp Project Management
 
 > **⚠️ CURRENT BOARD:** `WB Ad Manager` (project `44982066`). Both Free and Pro plugins share this single board — cards are tagged `[Free]` or `[Pro]` in the title.
