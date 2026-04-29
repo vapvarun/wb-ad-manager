@@ -175,6 +175,8 @@ class List_Empty_States {
 	 * Render the empty-state callout markup.
 	 *
 	 * @param array $args {
+	 *     Render arguments.
+	 *
 	 *     @type string $icon      Dashicon class (e.g. 'dashicons-megaphone').
 	 *     @type string $title     Heading copy.
 	 *     @type string $body      Explanatory sentence.
