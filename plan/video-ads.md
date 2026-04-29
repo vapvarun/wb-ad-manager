@@ -5,6 +5,15 @@
 > **Estimate:** 2 sprints (~3-4 weeks AI-accelerated)
 > **Owner:** Varun
 > **Roadmap reference:** [`../../wb-ad-manager-pro/plan/roadmap-5-year.md`](../../wb-ad-manager-pro/plan/roadmap-5-year.md) — Pillar 2 lead bet
+>
+> **⚠️ Dual driver:** This is **both** a roadmap-priority feature (per the strategic analysis) **AND a client-funded project**. The in-video injection capability has a paying client engagement attached. That changes how we run this sprint:
+>
+> - **Client requirements take precedence** over our speculative scope below. Before sprint start, run a kickoff session with the client to capture their exact spec — supported video sources, timestamp UX expectations, branding requirements, analytics needs, whether they need the standalone VAST capability at all or just in-video.
+> - **Client gets the v1.** Anything in this plan they don't need ships in 2.12.x as a follow-up — don't bloat v1 with our speculative additions if it delays their delivery.
+> - **Build the FOUNDATION their way, generalize via filters.** If their use case needs a specific player adapter or a particular tracking pixel, ship it as the canonical implementation; expose the same surface to all customers via filter so the next 100 customers benefit.
+> - **Don't private-fork.** Everything we build for the client ships in the public release. The client gets the implementation; the community gets the same plugin. No "client edition" branch.
+> - **Document client commitments separately.** Once spec is locked, create `plan/video-ads-client-spec.md` (gitignored if needed for confidentiality, otherwise committed) with the client's exact deliverables and dates. This plan stays the public-facing engineering plan.
+> - **Architectural hooks are designed once.** The hook surface for in-video injection is part of the 5-year foundation — once shipped, we cannot rename it without `do_action_deprecated()`. Design hooks for the GENERAL case, not the client-specific case, even if the first consumer is the client.
 
 ---
 
@@ -301,3 +310,25 @@ Total: ~58 hours of focused work. Two sprints with buffer = realistic.
 2. **Should standalone video ads autoplay?** Recommend `autoplay="muted"` by default (browsers allow this), with admin toggle to disable. Customer can opt out per ad.
 3. **VAST tag library — which networks first?** Recommend the 5 with the most documented WP-customer usage: SpotX, Magnite, AdsWizz, Google IMA (sample tags), Tremor. Customers can add custom via filter.
 4. **In-video on RSS/AMP feeds?** Detect and skip — these contexts don't have a JavaScript runtime that can run our player. Do not attempt.
+
+## Client-project intake — must complete before sprint starts
+
+Before we begin coding, we need answers from the client to the following. These determine actual scope vs the speculative scope above. Capture in `plan/video-ads-client-spec.md` once the kickoff happens.
+
+| # | Question | Why it matters |
+|---|---|---|
+| 1 | What video player(s) does the client use? (HTML5 native, video.js, Plyr, JW Player, custom?) | Determines which adapter ships v1; others slide to follow-up |
+| 2 | What video sources? Self-hosted mp4, HLS, Vimeo embed, YouTube, mixed? | YouTube blocks 3rd-party injection — client must know the limitation |
+| 3 | Pre-roll, mid-roll, post-roll, or all three? | Mid-roll is the hardest UX (resume position, scrub-back behavior) |
+| 4 | Skippable, non-skippable, or both? Default skip-after seconds? | Skippable changes UX significantly |
+| 5 | Click-through behavior — same tab, new tab, native player overlay? | Affects player adapter design |
+| 6 | What ad formats? Direct video file (mp4), VAST tag (point at network), or both? | If "VAST tag only," we don't need the file-upload path in v1 |
+| 7 | What analytics does the client need to see? Quartiles, completion rate, skip rate, click-through, all of the above? | Determines whether the existing analytics dashboard is sufficient or needs new fields |
+| 8 | Branding — does the player need a branded skin, custom CTA text, custom skip button? | If yes, we need a theming layer; if no, ship default UX |
+| 9 | What is the client's WordPress version + PHP version? | Confirms our PHP 7.4 / WP 6.7 minimums match their stack |
+| 10 | What is the client's delivery deadline? | Drives sprint cadence + scope cuts |
+| 11 | Does the client need standalone VAST video ads (separate from in-video)? | If they only need in-video, we can DEFER standalone to 2.12.1 |
+| 12 | Will the client review the plan before we start coding? | Strongly recommend yes — surfaces #1-11 ambiguities upfront |
+| 13 | NDA / confidentiality on the client's name in commit messages and docs? | Determines whether `plan/video-ads-client-spec.md` is committed or kept local |
+
+Don't start the sprint until these have answers. A 2-sprint estimate with unknowns becomes a 4-sprint reality.
