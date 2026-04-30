@@ -1,9 +1,10 @@
 # WB Ads Rotator with Split Test (FREE) — Feature Audit Report
 
-**Generated**: 2026-04-29
+**Generated**: 2026-04-30
 **Version**: 2.8.0
-**Source**: [`audit/manifest.json`](manifest.json)
-**Counts**: 21 REST routes (22 method bindings) · 7 AJAX handlers · 9 admin pages · 6 shortcodes · 1 CPT · 7 DB tables · 73 actions + 57 filters fired
+**Source**: [`audit/manifest.json`](manifest.json) · [`audit/manifest.summary.json`](manifest.summary.json)
+**Counts**: 21 REST routes (22 method bindings) · 7 AJAX handlers · 9 admin pages · 6 shortcodes · 1 CPT · 7 DB tables · 73 actions + 57 filters fired · 32 services
+**Companion**: paired with `wb-ad-manager-pro` (PRO refactored Wallet to Credits SDK; this FREE plugin unchanged. FREE/PRO architecture contract authoritative at [`../wb-ad-manager-pro/plan/free-pro-architecture-contract.md`](../../wb-ad-manager-pro/plan/free-pro-architecture-contract.md))
 
 ---
 

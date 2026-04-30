@@ -1,7 +1,7 @@
 # WB Ads Rotator (FREE) — Role × Capability Matrix
 
-**Generated**: 2026-04-29
-**Source**: [`audit/manifest.json`](manifest.json)
+**Generated**: 2026-04-30
+**Source**: [`audit/manifest.json`](manifest.json) · [`audit/manifest.summary.json`](manifest.summary.json)
 
 The plugin uses **only WP core capabilities** — no custom caps. The CPT `wbam-ad` uses `capability_type: post`, so any role with `edit_posts` can author ads, but settings/admin pages require `manage_options`.
 

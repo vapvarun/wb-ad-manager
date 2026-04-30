@@ -1772,10 +1772,10 @@
     "ci_local": "phpcs / phpstan / phpunit"
   },
   "generated": {
-    "at": "2026-04-29T18:37:26Z",
+    "at": "2026-04-30T14:38:02Z",
     "from": "wp-plugin-onboard skill",
-    "branch": "main",
-    "schema_version": "v1",
+    "branch": "2.8.1",
+    "schema_version": "v2.1",
     "scan_scope": "prebuilt_dir",
     "scan_path": "build/free/wb-ads-rotator-with-split-test",
     "php_file_count": 72,

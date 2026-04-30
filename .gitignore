@@ -68,3 +68,5 @@ phpunit.xml.bak
 # Local development
 *.local.php
 wp-config-local.php
+
+.claude-tmp/

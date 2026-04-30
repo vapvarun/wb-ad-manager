@@ -1,7 +1,7 @@
 # WB Ads Rotator (FREE) — Code Flow Maps
 
-**Generated**: 2026-04-29
-**Source**: [`audit/manifest.json`](manifest.json)
+**Generated**: 2026-04-30
+**Source**: [`audit/manifest.json`](manifest.json) · [`audit/manifest.summary.json`](manifest.summary.json)
 
 ---
 

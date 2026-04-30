@@ -1,6 +1,6 @@
 # WB Ads Rotator with Split Test - Claude Code Instructions
 
-> **READ FIRST:** [`audit/manifest.json`](audit/manifest.json) is the canonical inventory — 22 REST routes, 7 AJAX handlers, 9 admin pages, 6 shortcodes, 7 DB tables, 1 CPT (`wbam-ad`), 73 actions + 57 filters fired, 32 services. Use this before grepping. See also [`audit/FEATURE_AUDIT.md`](audit/FEATURE_AUDIT.md), [`audit/CODE_FLOWS.md`](audit/CODE_FLOWS.md), [`audit/ROLE_MATRIX.md`](audit/ROLE_MATRIX.md). Open `audit/graph.html` (via `cd audit && python3 -m http.server 8765`) for an interactive Cytoscape view. Refresh with `/wp-plugin-onboard --refresh` after non-trivial changes.
+> **READ FIRST:** [`audit/manifest.summary.json`](audit/manifest.summary.json) (~3 KB index) — load the full [`audit/manifest.json`](audit/manifest.json) only when a task touches a specific category. Canonical inventory: 22 REST routes, 7 AJAX handlers, 9 admin pages, 6 shortcodes, 7 DB tables, 1 CPT (`wbam-ad`), 73 actions + 57 filters fired, 32 services. Use this before grepping. See also [`audit/FEATURE_AUDIT.md`](audit/FEATURE_AUDIT.md), [`audit/CODE_FLOWS.md`](audit/CODE_FLOWS.md), [`audit/ROLE_MATRIX.md`](audit/ROLE_MATRIX.md). Open `audit/graph.html` (via `cd audit && python3 -m http.server 8765`) for an interactive Cytoscape view. Refresh with `/wp-plugin-onboard --refresh` after non-trivial changes.
 
 > **ARCHITECTURE CONTRACT** (lives in PRO repo since PRO consumes most of it): `../wb-ad-manager-pro/plan/free-pro-architecture-contract.md` is authoritative. Run `bash ../wb-ad-manager-pro/bin/architecture-checks.sh` before every commit — it enforces Free/Pro coupling rules including ones that affect this (FREE) plugin. Sprint plan for current cleanup: [`plan/2.9.0-pro-coupling-cleanup.md`](plan/2.9.0-pro-coupling-cleanup.md).
 
@@ -150,7 +150,7 @@ This free plugin provides:
 - Targeting engine
 - REST API for ads/analytics/links/settings
 
-Pro (`wb-ad-manager-pro`) adds: classifieds, advertiser portal, wallet/payments, campaigns, advanced analytics, A/B winner auto-selection, multi-variate testing.
+Pro (`wb-ad-manager-pro`) adds: classifieds, advertiser portal, **credits/wallet billing (via Wbcom Credits SDK as of 1.6.0)**, campaigns, advanced analytics, A/B winner auto-selection, multi-variate testing.
 
 **Never duplicate code between the two plugins.** Pro extends Free via hooks/filters — if a hook is needed, add it here first.
 
@@ -176,3 +176,11 @@ Use `/wp-plugin-release` when ready to ship. Build output goes to `build/` (giti
 - `distignore` is plugin-root-relative
 - The builder's runtime-reference scanner catches forgot-to-ship bugs
 - Test on real WP before shipping the zip
+
+---
+
+## Recent changes
+
+| Date | Type | Description | Files |
+|---|---|---|---|
+| 2026-04-30 | refresh | Re-onboard FREE plugin: regenerated `audit/manifest.json` metadata to schema v2.1, emitted `audit/manifest.summary.json` (~3 KB token-efficient index), refreshed audit reports' generated dates and added companion-plugin context. FREE codebase itself unchanged; refresh aligns with PRO's Wallet → Credits SDK migration. | `audit/manifest.json`, `audit/manifest.summary.json`, `audit/FEATURE_AUDIT.md`, `audit/CODE_FLOWS.md`, `audit/ROLE_MATRIX.md`, `CLAUDE.md` |
