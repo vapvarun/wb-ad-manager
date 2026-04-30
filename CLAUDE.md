@@ -179,8 +179,30 @@ Use `/wp-plugin-release` when ready to ship. Build output goes to `build/` (giti
 
 ---
 
+## Customer journeys (Phase 4.7 — added 2026-04-30 refresh)
+
+`audit/journeys/` holds end-to-end customer-flow contracts. Each journey is a single markdown file with YAML frontmatter; an LLM agent with Playwright + curl + mysql_query MCPs can execute it and write a PASS/FAIL report to `audit/journey-runs/{run-id}/{slug}.json`. Journeys complement (don't replace) PHPUnit — they verify the whole stack from DOM to DB.
+
+```bash
+composer journeys:dry-run    # list what would run (no execution)
+composer journeys:critical   # run only priority=critical journeys
+composer journeys            # run all (needs reachable $LOCAL_CI_SITE_URL)
+```
+
+**Current critical journeys (5 total):**
+- `customer/01-ad-renders-on-frontend.md` — anonymous visitor sees rendered ad + impression recorded
+- `customer/02-click-tracking-records-event.md` — click AJAX path writes to `wp_wbam_analytics`
+- `customer/03-partnership-inquiry-submission.md` — partnership form submit + rate-limit
+- `admin/01-create-publish-ad.md` — admin can create + publish a `wbam-ad` post
+- `security/01-rest-permission-gates.md` — REST namespace gates anon/subscriber/admin correctly
+
+When a bug is fixed, add a journey for it under the appropriate sub-directory. The journey IS the regression test. See `audit/journeys/README.md` and `audit/journeys/.template.md`.
+
+**Note:** This plugin's local-CI gate is `composer verify-no-test` (driven by `bin/git-hooks/pre-push`), NOT the skill's default `composer ci:no-journeys`. The skill's default `bin/local-ci.sh` was intentionally NOT installed because the existing `verify-no-test` chain (lint + phpstan + arch-checks + plugincheck + verify-flow) is more comprehensive than the skill's template. Journeys are wired as a separate composer script and can be invoked manually.
+
 ## Recent changes
 
 | Date | Type | Description | Files |
 |---|---|---|---|
+| 2026-04-30 | refresh | Phase 4.7 journey scaffold added by updated wp-plugin-onboard skill: `audit/journeys/{customer,admin,security,system}/`, `audit/journey-runs/`, `bin/run-journeys.sh`, 5 critical-priority journeys authored, `composer journeys{,:critical,:dry-run}` scripts added. Existing tooling (composer.json verify chain, pre-push hook, `bin/local-ci.sh` ABSENT by design, `bin/coding-rules-check.sh` ABSENT — superseded by `verify-no-test` + `arch-checks`) was preserved. Manifest, summary, and audit reports unchanged from earlier same-day refresh; counts hold (22 REST / 7 AJAX / 9 admin / 6 shortcodes / 7 tables / 32 services / 130 hooks fired). | `audit/journeys/`, `audit/journey-runs/`, `bin/run-journeys.sh`, `composer.json`, `CLAUDE.md` |
 | 2026-04-30 | refresh | Re-onboard FREE plugin: regenerated `audit/manifest.json` metadata to schema v2.1, emitted `audit/manifest.summary.json` (~3 KB token-efficient index), refreshed audit reports' generated dates and added companion-plugin context. FREE codebase itself unchanged; refresh aligns with PRO's Wallet → Credits SDK migration. | `audit/manifest.json`, `audit/manifest.summary.json`, `audit/FEATURE_AUDIT.md`, `audit/CODE_FLOWS.md`, `audit/ROLE_MATRIX.md`, `CLAUDE.md` |

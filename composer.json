@@ -60,7 +60,10 @@
 			"@plugincheck",
 			"@verify-flow"
 		],
-		"dist": "bash bin/build-zips.sh"
+		"dist": "bash bin/build-zips.sh",
+		"journeys": "bash bin/run-journeys.sh",
+		"journeys:critical": "bash bin/run-journeys.sh --priority critical",
+		"journeys:dry-run": "bash bin/run-journeys.sh --dry-run"
 	},
 	"scripts-descriptions": {
 		"test": "Run full PHPUnit suite (free + pro when WBAM_RUN_PRO_TESTS=1).",
@@ -73,7 +76,10 @@
 		"install-hooks": "Activate the tracked git pre-push hook (bin/git-hooks/pre-push). One-time per clone.",
 		"verify": "Full local-CI gate: lint + phpstan + arch-checks + phpunit + plugincheck + verify-flow. Use before pushing.",
 		"verify-no-test": "Same as verify but skips PHPUnit. Use when WP test scaffold (install-wp-tests.sh) is not set up locally.",
-		"dist": "Build free-only and free+pro combo distribution zips."
+		"dist": "Build free-only and free+pro combo distribution zips.",
+		"journeys": "Run all customer journeys (Playwright + curl + mysql) against $LOCAL_CI_SITE_URL.",
+		"journeys:critical": "Run only critical-priority journeys.",
+		"journeys:dry-run": "List journeys that would run; no execution."
 	},
 	"config": {
 		"platform": {
