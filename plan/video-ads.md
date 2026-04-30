@@ -1,5 +1,20 @@
 # Plan: Video Ads — Standalone (VAST/VPAID) + In-Video Timestamp Injection
 
+> **⚠️ SUPERSEDED — see split plans below**
+>
+> Per the architectural principle "ads plugin doesn't build video services," this plan's scope was split into two focused plans across the right plugins:
+>
+> - [`../../wb-ad-manager-pro/plan/1.7.0-in-video-ads-with-mediashield.md`](../../wb-ad-manager-pro/plan/1.7.0-in-video-ads-with-mediashield.md) — wb-ads side: video/audio ad creative types, VAST 4.x parsing, REST endpoints (`GET /wb-ads/v1/creative` + `POST /wb-ads/v1/event`), CPM-V/CPM-A pricing, frequency capping, A/B testing, Pro management UX. **Zero player code.**
+> - [`../../mediashield-pro/plan/1.1.0-ads-on-videos.md`](../../mediashield-pro/plan/1.1.0-ads-on-videos.md) — mediashield side: per-video ad-slot admin UI (timeline scrubber), player runtime JS (intercept timestamps, pause/resume content, skip button countdown, quartile detection), cross-analytics writeback. **Zero ad-engine code.**
+>
+> The original scope below described wb-ads building player adapters for video.js / Plyr / JW Player / WP video block / mediashield. That was wrong — generic player adapters belong in player-owner plugins, not in wb-ads. Future video-player plugins that want to consume wb-ads creatives integrate via the documented REST contract, the same way mediashield does.
+>
+> The original file content is preserved below for git history but should not drive new work. Use the split plans above.
+>
+> ---
+
+# Plan: Video Ads — Standalone (VAST/VPAID) + In-Video Timestamp Injection
+
 > **Status:** Draft for review
 > **Target releases:** FREE 2.12.0 + PRO 1.7.0 (paired — ship together)
 > **Estimate:** 2 sprints (~3-4 weeks AI-accelerated)
