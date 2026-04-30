@@ -525,8 +525,68 @@
       "default_roles": [
         "administrator"
       ],
-      "where": "All admin handlers and REST permission_callbacks",
-      "note": "Plugin uses WP core capability — no custom capabilities defined"
+      "registered_at": "WordPress core",
+      "enforced_at": [
+        "includes/Core/class-abilities.php:139",
+        "includes/Core/class-abilities.php:183",
+        "includes/Core/class-abilities.php:241",
+        "includes/Core/class-abilities.php:293",
+        "includes/Core/class-abilities.php:327",
+        "includes/Core/class-abilities.php:494",
+        "includes/Core/class-abilities.php:542",
+        "includes/Core/class-abilities.php:603",
+        "includes/Core/class-abilities.php:661",
+        "includes/Core/class-abilities.php:721",
+        "includes/Core/class-abilities.php:755",
+        "includes/Core/class-abilities.php:799",
+        "includes/Admin/class-setup-wizard.php:104",
+        "includes/Admin/class-demo-data-cleaner.php:68",
+        "includes/Admin/class-demo-data-cleaner.php:211",
+        "includes/Admin/class-settings.php:437",
+        "includes/API/class-links-api.php:246",
+        "includes/API/class-settings-api.php:112",
+        "includes/API/class-ads-api.php:216",
+        "includes/API/class-analytics-api.php:154",
+        "includes/Modules/Targeting/class-targeting-engine.php:98",
+        "includes/Modules/Links/class-partnership-admin.php:117"
+      ],
+      "enforcement_count": 22,
+      "meta": false,
+      "requires_context": "none",
+      "note": "WP core capability — primary gate for all 9 admin pages, all 22 REST routes (settings/ads/analytics/links/abilities), and 7 AJAX handlers. FREE registers no custom caps."
+    },
+    {
+      "cap": "edit_post",
+      "default_roles": [
+        "administrator",
+        "editor",
+        "author"
+      ],
+      "registered_at": "WordPress core (meta cap, mapped via map_meta_cap)",
+      "enforced_at": [
+        "includes/Admin/class-admin.php:63",
+        "includes/Admin/class-admin.php:1019",
+        "includes/Admin/class-display-options.php:539"
+      ],
+      "enforcement_count": 3,
+      "meta": true,
+      "requires_context": "post",
+      "note": "WP core meta cap. Used in save_post / metabox handlers for the wbam-ad CPT. Properly supplied with $post_id at every call site."
+    },
+    {
+      "cap": "unfiltered_html",
+      "default_roles": [
+        "administrator",
+        "editor (single-site only)"
+      ],
+      "registered_at": "WordPress core",
+      "enforced_at": [
+        "includes/Modules/AdTypes/class-code-ad.php:226"
+      ],
+      "enforcement_count": 1,
+      "meta": false,
+      "requires_context": "none",
+      "note": "WP core capability gating raw HTML/JS code-ad payloads. Correctly used to prevent privilege escalation through stored ad markup."
     }
   ],
   "services": [
@@ -1772,7 +1832,7 @@
     "ci_local": "phpcs / phpstan / phpunit"
   },
   "generated": {
-    "at": "2026-04-30T14:38:02Z",
+    "at": "2026-04-30T16:00:00Z",
     "from": "wp-plugin-onboard skill",
     "branch": "2.8.1",
     "schema_version": "v2.1",
@@ -1791,6 +1851,27 @@
       "blocks": 0,
       "cron": 0,
       "wp_cli": 0
+    },
+    "scanner_version": "cap-scanner-v2"
+  },
+  "static_analysis": {
+    "cap_drift": {
+      "declared_but_unenforced": [],
+      "enforced_but_undeclared": [],
+      "manage_options_gate_count": 22,
+      "manage_options_gate_note": "Bare current_user_can('manage_options') checks across plugin admin/REST/AJAX paths. Plugin gates ALL 9 admin pages, ALL 22 REST routes, and ALL admin AJAX handlers behind manage_options — typical WP pattern but a permission monoculture: only full administrators can operate the plugin. No granular plugin caps exist; staff/editor workflows are not supported. Future enhancement opportunity: introduce wbam_manage_ads / wbam_view_analytics caps and gate non-destructive views (analytics dashboard) at a lower threshold.",
+      "scanner_note": "Scanned every PHP file in build/free/wb-ads-rotator-with-split-test (72 files). Detected zero add_role / add_cap declarations. CPT 'wbam-ad' uses capability_type=post with default map_meta_cap (false) — no primitive caps auto-generated; all CPT screens fall back to manage_options (post-type default for non-public CPTs without explicit capability map). FREE plugin registers 0 custom capabilities.",
+      "summary": {
+        "total_caps_enforced": 3,
+        "custom_caps_registered": 0,
+        "wp_core_caps_used": [
+          "manage_options",
+          "edit_post",
+          "unfiltered_html"
+        ],
+        "cpt_capability_type": "post",
+        "cpt_map_meta_cap": false
+      }
     }
   }
 }

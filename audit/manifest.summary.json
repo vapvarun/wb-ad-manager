@@ -19,7 +19,7 @@
     "blocks": 0,
     "post_types": 1,
     "tables": 7,
-    "capabilities": 1,
+    "capabilities": 3,
     "services": 32,
     "hooks_fired": 130,
     "cron": 0,
@@ -101,7 +101,7 @@
     "architecture_contract": "../wb-ad-manager-pro/plan/free-pro-architecture-contract.md"
   },
   "generated": {
-    "at": "2026-04-30T14:38:02Z",
+    "at": "2026-04-30T16:00:00Z",
     "from": "wp-plugin-onboard skill",
     "branch": "2.8.1",
     "schema_version": "v2.1",
