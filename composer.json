@@ -62,7 +62,9 @@
 		],
 		"dist": "bash bin/build-zips.sh",
 		"journeys": "bash bin/run-journeys.sh",
-		"journeys:critical": "bash bin/run-journeys.sh --priority critical",
+		"journeys:critical": "bash bin/run-journeys.sh --priority critical --smoke",
+		"journeys:critical-runbook": "bash bin/run-journeys.sh --priority critical",
+		"journeys:smoke": "bash bin/run-journeys.sh --smoke",
 		"journeys:dry-run": "bash bin/run-journeys.sh --dry-run"
 	},
 	"scripts-descriptions": {
@@ -77,8 +79,10 @@
 		"verify": "Full local-CI gate: lint + phpstan + arch-checks + phpunit + plugincheck + verify-flow. Use before pushing.",
 		"verify-no-test": "Same as verify but skips PHPUnit. Use when WP test scaffold (install-wp-tests.sh) is not set up locally.",
 		"dist": "Build free-only and free+pro combo distribution zips.",
-		"journeys": "Run all customer journeys (Playwright + curl + mysql) against $LOCAL_CI_SITE_URL.",
-		"journeys:critical": "Run only critical-priority journeys.",
+		"journeys": "Write the agent-runbook for every customer-journey markdown under audit/journeys/. Hand the runbook to an LLM session with Playwright + mysql_query MCPs loaded for full execution.",
+		"journeys:critical": "Smoke-check critical journeys' environment readiness (HTTP, REST namespace, dev-auto-login mu-plugin, frontmatter, declared DB tables). Pure shell, deterministic, CI-friendly. Default for pre-push gates.",
+		"journeys:critical-runbook": "Write the agent-runbook for critical-priority journeys only. Use for full Playwright execution in an interactive QA session.",
+		"journeys:smoke": "Smoke-check ALL journeys (any priority). Useful after a fresh-install or major DB migration.",
 		"journeys:dry-run": "List journeys that would run; no execution."
 	},
 	"config": {
