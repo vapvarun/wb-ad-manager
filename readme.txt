@@ -5,7 +5,7 @@ Tags: ads, ad manager, ad rotation, split test, adsense
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,11 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 7. Free vs PRO comparison. Row-by-row feature table so you know exactly what you're getting at each tier.
 
 == Changelog ==
+
+= 2.8.1 =
+* Performance: The Google AdSense script is now loaded only on pages that actually display an AdSense ad. Pages with no AdSense ad no longer pay for the extra script request — faster page loads and a cleaner Lighthouse score across the rest of the site.
+* Fix: A/B test winners are now declared only when one variant beats the other by a meaningful margin. Previously the dashboard could flag a winner when the two variants were within normal click-rate noise, so admins could be misled into picking a variant that wasn't actually better.
+* Fix: The analytics dashboard now records the visitor's device type (desktop / mobile / tablet) on every event. The "Device" breakdown chart now reflects real traffic instead of showing every event as Unknown.
 
 = 2.8.0 =
 * New: Jetonomy integration module with 7 placement positions: sidebar (top / after About card / bottom), after topic body, before / between / after replies. Requires Jetonomy v1.3.0+.
