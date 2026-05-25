@@ -27,7 +27,19 @@ use WBAM\Core\Settings_Helper;
 class AdSense_Ad implements Ad_Type_Interface {
 
 	/**
-	 * Flag to track if AdSense script has been enqueued.
+	 * Whether an AdSense ad has rendered on this request.
+	 *
+	 * Set by render(); read by maybe_enqueue_adsense_script() so the
+	 * pagead script only loads on pages that actually contain an
+	 * AdSense ad. Without this gate, ad-blockers see the AdSense URL on
+	 * every page and block sibling non-AdSense ads as collateral damage.
+	 *
+	 * @var bool
+	 */
+	private static $ad_rendered = false;
+
+	/**
+	 * Whether the pagead script has already been enqueued (idempotency).
 	 *
 	 * @var bool
 	 */
@@ -46,7 +58,8 @@ class AdSense_Ad implements Ad_Type_Interface {
 	public function __construct() {
 		$this->publisher_id = Settings_Helper::get( 'adsense_publisher_id', '' );
 
-		// Enqueue AdSense script in footer if we have ads.
+		// Enqueue AdSense script in footer ONLY if an AdSense ad actually
+		// rendered on this request — render() sets $ad_rendered.
 		add_action( 'wp_footer', array( $this, 'maybe_enqueue_adsense_script' ), 5 );
 	}
 
@@ -88,15 +101,26 @@ class AdSense_Ad implements Ad_Type_Interface {
 
 	/**
 	 * Maybe enqueue AdSense script.
-	 * Only loads if AdSense ads are being displayed on the page.
+	 *
+	 * Only enqueues when an AdSense ad has actually rendered on this
+	 * request (set via render()), so ad-blockers do not see the pagead
+	 * URL on pages that have no AdSense ad and block sibling non-AdSense
+	 * ads as collateral damage.
 	 */
 	public function maybe_enqueue_adsense_script() {
+		// Hard gate: no AdSense ad on this page → don't load the script.
+		if ( ! self::$ad_rendered ) {
+			return;
+		}
+
 		if ( self::$script_enqueued ) {
 			return;
 		}
 
-		// Skip if Auto Ads is enabled (script already in head).
+		// Skip if Auto Ads is enabled (script already enqueued in head by
+		// class-frontend.php::maybe_add_adsense_auto_ads()).
 		if ( Settings_Helper::is_enabled( 'adsense_auto_ads' ) && Settings_Helper::get( 'adsense_publisher_id' ) ) {
+			self::$script_enqueued = true;
 			return;
 		}
 
@@ -105,12 +129,15 @@ class AdSense_Ad implements Ad_Type_Interface {
 			return;
 		}
 
-		// Enqueue AdSense script properly.
+		// Enqueue in footer (true) — render() runs during the_content,
+		// which is past wp_head, so head-enqueue would be a no-op.
 		$adsense_url = add_query_arg( 'client', $publisher_id, 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' );
-		wp_enqueue_script( 'wbam-adsense-ad', $adsense_url, array(), null, false ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_script( 'wbam-adsense-ad', $adsense_url, array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 
 		// Add async and crossorigin attributes via filter.
 		add_filter( 'script_loader_tag', array( $this, 'add_adsense_script_attributes' ), 10, 2 );
+
+		self::$script_enqueued = true;
 	}
 
 	/**
@@ -160,8 +187,9 @@ class AdSense_Ad implements Ad_Type_Interface {
 			return '';
 		}
 
-		// Mark that we need the AdSense script.
-		self::$script_enqueued = true;
+		// Signal to maybe_enqueue_adsense_script() that an AdSense ad
+		// has rendered, so the pagead script may be enqueued.
+		self::$ad_rendered = true;
 
 		$ad_format    = isset( $data['ad_format'] ) ? $data['ad_format'] : 'auto';
 		$ad_layout    = isset( $data['ad_layout'] ) ? $data['ad_layout'] : '';

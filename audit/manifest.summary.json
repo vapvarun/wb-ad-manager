@@ -1,0 +1,125 @@
+{
+  "$schema": "https://wpmediaverse.com/schemas/wp-plugin-manifest-summary-v1.json",
+  "plugin": {
+    "slug": "wb-ads-rotator-with-split-test",
+    "name": "Wbcom Designs - WB Ad Manager",
+    "version": "2.8.0",
+    "namespace": "WBAM",
+    "main_file": "wb-ads-rotator-with-split-test.php",
+    "text_domain": "wb-ads-rotator-with-split-test",
+    "extends": null,
+    "extension_hook_consumed": null,
+    "extension_hook_fired": "wbam_init"
+  },
+  "counts": {
+    "rest": 22,
+    "ajax": 7,
+    "admin_pages": 9,
+    "shortcodes": 6,
+    "blocks": 0,
+    "post_types": 1,
+    "tables": 7,
+    "capabilities": 3,
+    "services": 32,
+    "hooks_fired": 130,
+    "cron": 0,
+    "wp_cli": 0
+  },
+  "rest_namespace": "wbam/v1",
+  "ajax_actions": [
+    "wbam_dismiss_notice",
+    "wbam_track_click",
+    "wbam_email_capture",
+    "wbam_dismiss_setup",
+    "wbam_dismiss_pointer",
+    "wbam_track_link_click",
+    "wbam_submit_partnership"
+  ],
+  "shortcode_tags": [
+    "wbam_ad",
+    "wbam_ads",
+    "wbam_link",
+    "wbam_links",
+    "wbam_link_url",
+    "wbam_partnership_inquiry"
+  ],
+  "table_names": [
+    "{prefix}wbam_links",
+    "{prefix}wbam_link_categories",
+    "{prefix}wbam_link_clicks",
+    "{prefix}wbam_analytics",
+    "{prefix}wbam_email_submissions",
+    "{prefix}wbam_link_partnerships",
+    "{prefix}wbam_rate_limits"
+  ],
+  "post_type_slugs": [
+    "wbam-ad"
+  ],
+  "service_keys": [
+    "Plugin (singleton)",
+    "Installer",
+    "Settings_Helper",
+    "Placement_Format_Map",
+    "Privacy_Helper",
+    "Abilities (WP 6.9+)",
+    "Placement_Engine",
+    "Targeting_Engine",
+    "Frequency_Manager",
+    "Geo_Engine",
+    "Frontend (singleton)",
+    "Admin (singleton)",
+    "Settings (admin)",
+    "Display_Options",
+    "Setup_Wizard",
+    "Demo_Data_Cleaner",
+    "Help_Docs",
+    "Upgrade_Pro",
+    "First_Install_Pointers",
+    "Field_Tooltips",
+    "List_Empty_States",
+    "Notice_Suppressor",
+    "BP_Module",
+    "bbPress_Module",
+    "Jetonomy_Module",
+    "Links_Module (singleton)",
+    "Link_Manager (singleton)",
+    "Partnership_Manager (singleton)",
+    "API_Bootstrap",
+    "admin.field_tooltips",
+    "admin.first_install_pointers",
+    "admin.list_empty_states"
+  ],
+  "detail_files": {
+    "manifest": "audit/manifest.json",
+    "feature_audit": "audit/FEATURE_AUDIT.md",
+    "code_flows": "audit/CODE_FLOWS.md",
+    "role_matrix": "audit/ROLE_MATRIX.md",
+    "graph_viewer": "audit/graph.html"
+  },
+  "companion": {
+    "pro_plugin": "wb-ad-manager-pro",
+    "architecture_contract": "../wb-ad-manager-pro/plan/free-pro-architecture-contract.md"
+  },
+  "generated": {
+    "at": "2026-04-30T16:00:00Z",
+    "from": "wp-plugin-onboard skill",
+    "branch": "2.8.1",
+    "schema_version": "v2.1",
+    "scan_scope": "prebuilt_dir",
+    "scan_path": "build/free/wb-ads-rotator-with-split-test",
+    "php_file_count": 72,
+    "baseline": {
+      "rest": 21,
+      "ajax_unique": 6,
+      "actions_fired": 73,
+      "filters_fired": 57,
+      "tables": 7,
+      "shortcodes": 6,
+      "admin_pages": 7,
+      "post_types": 1,
+      "blocks": 0,
+      "cron": 0,
+      "wp_cli": 0
+    }
+  }
+}

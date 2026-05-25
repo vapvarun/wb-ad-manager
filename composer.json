@@ -39,14 +39,33 @@
 		"phpstan-baseline": "phpstan analyse --generate-baseline=phpstan-baseline.neon --allow-empty-baseline --memory-limit=2G",
 		"plugincheck": "bash bin/run-plugin-check.sh",
 		"verify-flow": "bash bin/verify-data-flow.sh",
+		"arch-checks": "bash ../wb-ad-manager-pro/bin/architecture-checks.sh",
+		"install-hooks": [
+			"@php -r \"chmod('bin/git-hooks/pre-push', 0755);\"",
+			"git config core.hooksPath bin/git-hooks",
+			"@php -r \"echo 'Git hooks activated. pre-push will run composer verify-no-test (or verify when test scaffold is set up).' . PHP_EOL;\""
+		],
 		"verify": [
 			"@lint",
 			"@phpstan",
+			"@arch-checks",
 			"@test",
 			"@plugincheck",
 			"@verify-flow"
 		],
-		"dist": "bash bin/build-zips.sh"
+		"verify-no-test": [
+			"@lint",
+			"@phpstan",
+			"@arch-checks",
+			"@plugincheck",
+			"@verify-flow"
+		],
+		"dist": "bash bin/build-zips.sh",
+		"journeys": "bash bin/run-journeys.sh",
+		"journeys:critical": "bash bin/run-journeys.sh --priority critical --smoke",
+		"journeys:critical-runbook": "bash bin/run-journeys.sh --priority critical",
+		"journeys:smoke": "bash bin/run-journeys.sh --smoke",
+		"journeys:dry-run": "bash bin/run-journeys.sh --dry-run"
 	},
 	"scripts-descriptions": {
 		"test": "Run full PHPUnit suite (free + pro when WBAM_RUN_PRO_TESTS=1).",
@@ -55,8 +74,16 @@
 		"phpstan": "Static analysis at level 7 across both plugins.",
 		"plugincheck": "Run WP Plugin Check CLI on both plugins — no category exclusions.",
 		"verify-flow": "WP-CLI data-flow assertions against the live Local site.",
-		"verify": "Run lint + phpstan + phpunit + plugincheck + verify-flow in sequence.",
-		"dist": "Build free-only and free+pro combo distribution zips."
+		"arch-checks": "Free/Pro architecture-contract enforcement (delegates to PRO's bin/architecture-checks.sh).",
+		"install-hooks": "Activate the tracked git pre-push hook (bin/git-hooks/pre-push). One-time per clone.",
+		"verify": "Full local-CI gate: lint + phpstan + arch-checks + phpunit + plugincheck + verify-flow. Use before pushing.",
+		"verify-no-test": "Same as verify but skips PHPUnit. Use when WP test scaffold (install-wp-tests.sh) is not set up locally.",
+		"dist": "Build free-only and free+pro combo distribution zips.",
+		"journeys": "Write the agent-runbook for every customer-journey markdown under audit/journeys/. Hand the runbook to an LLM session with Playwright + mysql_query MCPs loaded for full execution.",
+		"journeys:critical": "Smoke-check critical journeys' environment readiness (HTTP, REST namespace, dev-auto-login mu-plugin, frontmatter, declared DB tables). Pure shell, deterministic, CI-friendly. Default for pre-push gates.",
+		"journeys:critical-runbook": "Write the agent-runbook for critical-priority journeys only. Use for full Playwright execution in an interactive QA session.",
+		"journeys:smoke": "Smoke-check ALL journeys (any priority). Useful after a fresh-install or major DB migration.",
+		"journeys:dry-run": "List journeys that would run; no execution."
 	},
 	"config": {
 		"platform": {

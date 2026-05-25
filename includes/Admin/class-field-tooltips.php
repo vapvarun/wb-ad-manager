@@ -7,9 +7,6 @@
  * giving targeted, always-available help without cluttering the
  * metabox with inline description text.
  *
- * See Phase G.4 of the Format-Aware Placement Matching plan
- * (wb-ad-manager-pro/docs/superpowers/plans/2026-04-15-format-aware-placement-matching.md).
- *
  * @package WB_Ad_Manager
  * @since   2.8.0
  */

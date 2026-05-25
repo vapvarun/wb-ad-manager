@@ -68,3 +68,13 @@ phpunit.xml.bak
 # Local development
 *.local.php
 wp-config-local.php
+
+.claude-tmp/
+
+# Journey runs — bin/run-journeys.sh writes a fresh subdir per invocation
+# (runbook.json + per-journey result files). The directory is needed at
+# runtime; the regression sentinel only reads the LATEST prior run, so
+# committing every run bloats the repo with stale per-machine artifacts.
+# Keep the directory shape via .gitkeep, ignore the run subdirs.
+/audit/journey-runs/*
+!/audit/journey-runs/.gitkeep

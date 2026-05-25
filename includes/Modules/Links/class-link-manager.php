@@ -903,6 +903,96 @@ class Link_Manager {
 	}
 
 	/**
+	 * Get aggregate click trends across all links over a date window.
+	 *
+	 * Returns a labels/data pair suitable for chart rendering.
+	 * Exposed as the public accessor for the FREE-owned `wbam_link_clicks`
+	 * table so consumers (including PRO) never query it directly. Honours
+	 * the `wbam_link_click_trends` filter so callers can override.
+	 *
+	 * @since 2.8.1
+	 * @param int         $days       Window length in days when $start_date omitted.
+	 * @param string|null $start_date Optional ISO start date (Y-m-d).
+	 * @return array{labels: list<string>, data: list<int>}
+	 */
+	public function get_click_trends( $days = 30, $start_date = null ) {
+		global $wpdb;
+
+		$days     = max( 1, absint( $days ) );
+		$start_ts = $start_date ? strtotime( $start_date ) : strtotime( "-{$days} days" );
+		$end      = time();
+
+		// strtotime() returns false on parse failure; fall back to the days window.
+		$start = ( false === $start_ts ) ? ( $end - ( $days * DAY_IN_SECONDS ) ) : $start_ts;
+
+		$labels = array();
+		$data   = array();
+		for ( $date = $start; $date <= $end; $date += DAY_IN_SECONDS ) {
+			$labels[] = gmdate( 'M j', $date );
+			$data[]   = 0;
+		}
+
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$table_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $this->clicks_table ) );
+
+		if ( $table_exists ) {
+			$results = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT DATE(clicked_at) as date, COUNT(*) as clicks
+					 FROM {$this->clicks_table}
+					 WHERE clicked_at >= %s AND clicked_at <= %s
+					 GROUP BY DATE(clicked_at)
+					 ORDER BY date ASC",
+					gmdate( 'Y-m-d', $start ),
+					gmdate( 'Y-m-d', $end ) . ' 23:59:59'
+				)
+			);
+
+			if ( $results ) {
+				$by_date = array();
+				foreach ( $results as $row ) {
+					$by_date[ $row->date ] = (int) $row->clicks;
+				}
+				$data = array();
+				for ( $date = $start; $date <= $end; $date += DAY_IN_SECONDS ) {
+					$key    = gmdate( 'Y-m-d', $date );
+					$data[] = isset( $by_date[ $key ] ) ? $by_date[ $key ] : 0;
+				}
+			}
+		}
+		// phpcs:enable
+
+		$trends = array(
+			'labels' => $labels,
+			'data'   => $data,
+		);
+
+		/**
+		 * Filter the click-trends payload before it is returned.
+		 *
+		 * @since 2.8.1
+		 * @param array  $trends     { labels: string[], data: int[] }
+		 * @param int    $days
+		 * @param string $start_date
+		 */
+		$filtered = apply_filters( 'wbam_link_click_trends', $trends, $days, $start_date );
+
+		// Coerce filtered payload back to the documented shape — third-party
+		// filters may return malformed data; normalise rather than propagate.
+		if ( ! is_array( $filtered )
+			|| ! isset( $filtered['labels'], $filtered['data'] )
+			|| ! is_array( $filtered['labels'] )
+			|| ! is_array( $filtered['data'] ) ) {
+			return $trends;
+		}
+
+		return array(
+			'labels' => array_values( array_map( 'strval', $filtered['labels'] ) ),
+			'data'   => array_values( array_map( 'intval', $filtered['data'] ) ),
+		);
+	}
+
+	/**
 	 * Get all active links for dropdown/selection.
 	 *
 	 * @return array
