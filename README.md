@@ -2,6 +2,9 @@
 
 Complete ad management, affiliate link tracking, and community monetization for WordPress.
 
+- **Product page:** https://store.wbcomdesigns.com/wb-ad-manager
+- **Documentation:** https://store.wbcomdesigns.com/wb-ad-manager/docs/
+
 ![WB Ad Manager Pro — Advertiser Portal](docs/website/images/pro/portal-overview.png)
 
 ---
@@ -81,3 +84,9 @@ Installation guide: [`docs/website/getting-started/installation.md`](docs/websit
 - PHP 7.4+
 - Pro add-on requires the free plugin to be installed first (declared via `Requires Plugins` header)
 - Pro DB version: `3.8.0` (option `wbam_pro_db_version`)
+
+---
+
+## Repository naming
+
+This repo is `wb-ad-manager` on GitHub but the plugin ships on WordPress.org as `wb-ads-rotator-with-split-test`. The wp.org slug, plugin folder, main file name (`wb-ads-rotator-with-split-test.php`), text domain, and `.pot` filename intentionally stay on the original slug to preserve auto-updates, translation pull from translate.wordpress.org, and existing-install continuity. Only the GitHub URL and the display name ("WB Ad Manager") reflect the rebrand.
