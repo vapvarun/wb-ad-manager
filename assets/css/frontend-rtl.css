@@ -139,8 +139,8 @@
 	justify-content: center;
 	align-items: center;
 	max-width: 100%;
-	margin-left: auto;
 	margin-right: auto;
+	margin-left: auto;
 	box-sizing: border-box;
 }
 
@@ -238,7 +238,7 @@
    ========================================================================== */
 
 .wbam-ad-rich-content {
-	text-align: left;
+	text-align: right;
 }
 
 .wbam-ad-rich-content p:first-child {
@@ -335,7 +335,7 @@
    ========================================================================== */
 
 .wbam-align-left {
-	text-align: left;
+	text-align: right;
 }
 
 .wbam-align-center {
@@ -343,7 +343,7 @@
 }
 
 .wbam-align-right {
-	text-align: right;
+	text-align: left;
 }
 
 /* ==========================================================================
@@ -510,18 +510,18 @@ html.dark,
 
 .wbam-sticky-bottom-right {
 	bottom: 20px;
-	right: 20px;
+	left: 20px;
 }
 
 .wbam-sticky-bottom-left {
 	bottom: 20px;
-	left: 20px;
+	right: 20px;
 }
 
 .wbam-sticky-bottom-bar {
 	bottom: 0;
-	left: 0;
 	right: 0;
+	left: 0;
 	max-width: 100%;
 	border-radius: 0;
 	padding: 15px 20px;
@@ -529,8 +529,8 @@ html.dark,
 
 .wbam-sticky-top-bar {
 	top: 0;
-	left: 0;
 	right: 0;
+	left: 0;
 	max-width: 100%;
 	border-radius: 0;
 	padding: 15px 20px;
@@ -539,7 +539,7 @@ html.dark,
 .wbam-sticky-close {
 	position: absolute;
 	top: -10px;
-	right: -10px;
+	left: -10px;
 	width: 28px;
 	height: 28px;
 	padding: 0;
@@ -564,7 +564,7 @@ html.dark,
 .wbam-sticky-bottom-bar .wbam-sticky-close,
 .wbam-sticky-top-bar .wbam-sticky-close {
 	top: 50%;
-	right: 15px;
+	left: 15px;
 	transform: translateY(-50%);
 }
 
@@ -586,8 +586,8 @@ html.dark,
 .wbam-popup-overlay {
 	position: fixed;
 	top: 0;
-	left: 0;
 	right: 0;
+	left: 0;
 	bottom: 0;
 	background: var(--wbam-overlay-bg, rgba(0, 0, 0, 0.7));
 	z-index: 99999;
@@ -620,7 +620,7 @@ html.dark,
 .wbam-popup-close {
 	position: absolute;
 	top: 10px;
-	right: 10px;
+	left: 10px;
 	width: 32px;
 	height: 32px;
 	padding: 0;
@@ -693,8 +693,8 @@ html.dark,
 
 	.wbam-sticky-bottom-right,
 	.wbam-sticky-bottom-left {
-		left: 20px;
 		right: 20px;
+		left: 20px;
 	}
 
 	.wbam-popup-modal {
@@ -732,8 +732,8 @@ html.dark,
 
 .wbam-comment-between {
 	margin: 15px 0;
-	border-left: 3px solid var(--wbam-border-color-dark, #ddd);
-	padding-left: 15px;
+	border-right: 3px solid var(--wbam-border-color-dark, #ddd);
+	padding-right: 15px;
 }
 
 /* ==========================================================================
@@ -765,8 +765,8 @@ html.dark,
 
 .wbam-bbpress-between-replies {
 	margin: 15px 0;
-	border-left: 3px solid var(--wbam-border-color-dark, #ddd);
-	padding-left: 15px;
+	border-right: 3px solid var(--wbam-border-color-dark, #ddd);
+	padding-right: 15px;
 }
 
 /* bbPress widget styles */
@@ -800,7 +800,7 @@ html.dark,
 
 	.wbam-comment-between,
 	.wbam-bbpress-between-replies {
-		border-left-color: var(--wbam-border-color-darker);
+		border-right-color: var(--wbam-border-color-darker);
 	}
 }
 
@@ -819,7 +819,7 @@ html.dark,
 .dark-mode .wbam-bbpress-between-replies,
 .theme-dark .wbam-bbpress-between-replies,
 [data-theme="dark"] .wbam-bbpress-between-replies {
-	border-left-color: var(--wbam-border-color-darker);
+	border-right-color: var(--wbam-border-color-darker);
 }
 
 /* ==========================================================================
@@ -841,7 +841,7 @@ html.dark,
 .wbam-email-close {
 	position: absolute;
 	top: 10px;
-	right: 10px;
+	left: 10px;
 	width: 28px;
 	height: 28px;
 	background: var(--wbam-hover-bg-darker, rgba(0, 0, 0, 0.1));
@@ -1003,10 +1003,10 @@ html.dark,
 	content: '';
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	right: 50%;
 	width: 20px;
 	height: 20px;
-	margin: -10px 0 0 -10px;
+	margin: -10px -10px 0 0;
 	border: 2px solid var(--wbam-text-light, #fff);
 	border-top-color: transparent;
 	border-radius: 50%;
@@ -1014,7 +1014,7 @@ html.dark,
 }
 
 @keyframes wbam-spin {
-	to { transform: rotate(360deg); }
+	to { transform: rotate(-360deg); }
 }
 
 /* Responsive */
