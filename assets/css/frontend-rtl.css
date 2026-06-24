@@ -449,6 +449,8 @@
  * the light :root chain flipping the theme's own tokens; this block guarantees
  * a correct dark palette for every other dark trigger and a consistent
  * baseline. Accent stays the theme/brand colour. */
+html[data-bx-mode="dark"],
+body.buddyx-dark-theme,
 html.dark-mode,
 body.dark-mode,
 body.dark-scheme,

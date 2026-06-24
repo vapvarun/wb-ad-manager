@@ -445,10 +445,14 @@
  * body.dark-*). Values are EXPLICIT dark hex — NOT chained through the
  * --bx-color-* / --reign-* tokens, because those vars stay light unless the theme itself is
  * in dark mode, so chaining here would resolve to light on a generic
- * [data-theme="dark"] toggle. BuddyX/Reign native dark is already handled by
- * the light :root chain flipping the theme's own tokens; this block guarantees
- * a correct dark palette for every other dark trigger and a consistent
- * baseline. Accent stays the theme/brand colour. */
+ * [data-theme="dark"] toggle. BuddyX 5.1+/Reign signal their runtime dark
+ * toggle via html[data-bx-mode="dark"] (legacy body.buddyx-dark-theme), which
+ * the theme's own light :root chain does NOT flip for plugin-owned tokens, so
+ * those triggers are listed explicitly here. This block guarantees a correct
+ * dark palette for every dark trigger and a consistent baseline. Accent stays
+ * the theme/brand colour. */
+html[data-bx-mode="dark"],
+body.buddyx-dark-theme,
 html.dark-mode,
 body.dark-mode,
 body.dark-scheme,
