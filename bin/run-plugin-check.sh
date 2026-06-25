@@ -30,8 +30,19 @@ run_check() {
 	local slug="$1"
 	echo
 	echo "== plugin-check: $slug =="
+	# Ignored code (documented false positive, not a category exclusion):
+	#   wp_function_not_compatible_with_requires_wp
+	#     The Abilities API (wp_register_ability/_category, @since 6.9) is a
+	#     progressive enhancement. Registration is gated on the 6.9-only
+	#     wp_abilities_api_init / wp_abilities_api_categories_init hooks AND
+	#     wrapped in function_exists(), so the plugin runs cleanly on its
+	#     declared "Requires at least: 5.8" minimum. The sniff is a pure
+	#     header-vs-@since comparison and cannot see the runtime gating;
+	#     bumping the minimum to 6.9 would wrongly drop support for the vast
+	#     majority of installs.
 	wp_cli plugin check "$slug" \
 		--severity=warning \
+		--ignore-codes=wp_function_not_compatible_with_requires_wp \
 		--format=table || EXIT=$?
 }
 

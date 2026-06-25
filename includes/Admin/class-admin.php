@@ -354,7 +354,7 @@ class Admin {
 			return;
 		}
 
-		$next = '1' === (string) $_GET['wbam_toggle_enabled'] ? '1' : '0';
+		$next = '1' === sanitize_text_field( wp_unslash( $_GET['wbam_toggle_enabled'] ) ) ? '1' : '0';
 		update_post_meta( $post_id, '_wbam_enabled', $next );
 
 		// Invalidate the placement cache; otherwise the frontend keeps
@@ -1115,7 +1115,9 @@ class Admin {
 				'post_type'      => 'wbam-ad',
 				'posts_per_page' => 50,
 				'post_status'    => 'publish',
+				// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- Bounded exclusion set on an admin screen.
 				'post__not_in'   => array( $post->ID ),
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Admin-only query; cost acceptable.
 				'meta_query'     => array(
 					array(
 						'key'     => '_wbam_enabled',
