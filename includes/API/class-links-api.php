@@ -23,9 +23,9 @@ class Links_API {
 	/**
 	 * REST namespace.
 	 *
-	 * @var string
+	 * @var non-falsy-string
 	 */
-	private $namespace = 'wbam/v1';
+	private const REST_NAMESPACE = 'wbam/v1';
 
 	/**
 	 * Constructor.
@@ -40,7 +40,7 @@ class Links_API {
 	public function register_routes() {
 		// Admin: list + create links.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/links',
 			array(
 				array(
@@ -90,7 +90,7 @@ class Links_API {
 
 		// Admin: link categories.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/links/categories',
 			array(
 				array(
@@ -123,7 +123,7 @@ class Links_API {
 
 		// Admin: partnerships list.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/partnerships',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -153,7 +153,7 @@ class Links_API {
 
 		// Admin: update partnership status.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/partnerships/(?P<id>\d+)',
 			array(
 				'methods'             => \WP_REST_Server::EDITABLE,
@@ -176,7 +176,7 @@ class Links_API {
 
 		// Admin: single link CRUD.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/links/(?P<id>\d+)',
 			array(
 				array(
@@ -200,7 +200,7 @@ class Links_API {
 
 		// Admin: link click stats.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/links/(?P<id>\d+)/stats',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -221,7 +221,7 @@ class Links_API {
 
 		// Public: track link click.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/links/(?P<id>\d+)/track',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,

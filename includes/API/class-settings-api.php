@@ -23,9 +23,9 @@ class Settings_API {
 	/**
 	 * REST namespace.
 	 *
-	 * @var string
+	 * @var non-falsy-string
 	 */
-	private $namespace = 'wbam/v1';
+	private const REST_NAMESPACE = 'wbam/v1';
 
 	/**
 	 * Settings keys that belong to the display options group.
@@ -56,7 +56,7 @@ class Settings_API {
 	public function register_routes() {
 		// Admin: get / update all settings.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/settings',
 			array(
 				array(
@@ -80,7 +80,7 @@ class Settings_API {
 
 		// Admin: get / update display options subset.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/settings/display',
 			array(
 				array(

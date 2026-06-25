@@ -23,9 +23,9 @@ class Analytics_API {
 	/**
 	 * REST namespace.
 	 *
-	 * @var string
+	 * @var non-falsy-string
 	 */
-	private $namespace = 'wbam/v1';
+	private const REST_NAMESPACE = 'wbam/v1';
 
 	/**
 	 * Constructor.
@@ -40,7 +40,7 @@ class Analytics_API {
 	public function register_routes() {
 		// Admin: overview summary stats.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/analytics/overview',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -68,7 +68,7 @@ class Analytics_API {
 
 		// Admin: per-ad stats with date range.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/analytics/ads/(?P<id>\d+)',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -89,7 +89,7 @@ class Analytics_API {
 
 		// Admin: daily time-series data.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/analytics/daily',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -117,7 +117,7 @@ class Analytics_API {
 
 		// Public: track event (alternative path to /ads/track).
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/analytics/track',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,

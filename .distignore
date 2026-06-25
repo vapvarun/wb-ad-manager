@@ -10,6 +10,10 @@ docs
 bin
 build
 coverage
+audit
+plan
+plans
+.autovap
 
 # Build files
 .distignore
@@ -48,6 +52,10 @@ README.md
 CHANGELOG.md
 ROADMAP.md
 CONTRIBUTING.md
+CLAUDE.md
+
+# Internal tooling artifacts (never ship)
+.contract-audit-baseline.json
 
 # IDE/Editor files
 .idea
