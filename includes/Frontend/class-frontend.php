@@ -57,6 +57,9 @@ class Frontend {
 			array( 'dashicons' ),
 			WBAM_VERSION
 		);
+		// Load the RTL stylesheet (frontend-rtl.css / frontend-rtl.min.css) on RTL locales.
+		wp_style_add_data( 'wbam-frontend', 'rtl', 'replace' );
+		wp_style_add_data( 'wbam-frontend', 'suffix', $suffix );
 
 		wp_enqueue_script(
 			'wbam-frontend',
