@@ -917,6 +917,11 @@ html.dark,
 	border-color: var(--wbam-email-btn, var(--wbam-bg-button, #2271b1));
 }
 
+.wbam-email-input:focus-visible {
+	outline: 2px solid var(--wbam-email-btn, var(--wbam-bg-button, #2271b1));
+	outline-offset: 2px;
+}
+
 .wbam-email-input::placeholder {
 	color: var(--wbam-text-meta, #999);
 }

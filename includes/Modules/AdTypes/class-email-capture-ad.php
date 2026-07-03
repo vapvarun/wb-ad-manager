@@ -239,7 +239,7 @@ class Email_Capture_Ad implements Ad_Type_Interface {
 					<div class="wbam-email-fields">
 						<?php if ( $show_name ) : ?>
 							<div class="wbam-email-field wbam-email-field-name">
-								<input type="text" name="subscriber_name" placeholder="<?php echo esc_attr( $placeholders['name'] ); ?>" class="wbam-email-input">
+								<input type="text" name="subscriber_name" placeholder="<?php echo esc_attr( $placeholders['name'] ); ?>" aria-label="<?php echo esc_attr( $placeholders['name'] ); ?>" class="wbam-email-input">
 							</div>
 							<?php
 							/**
@@ -254,7 +254,7 @@ class Email_Capture_Ad implements Ad_Type_Interface {
 						<?php endif; ?>
 
 						<div class="wbam-email-field wbam-email-field-email">
-							<input type="email" name="subscriber_email" placeholder="<?php echo esc_attr( $placeholders['email'] ); ?>" class="wbam-email-input" required>
+							<input type="email" name="subscriber_email" placeholder="<?php echo esc_attr( $placeholders['email'] ); ?>" aria-label="<?php echo esc_attr( $placeholders['email'] ); ?>" class="wbam-email-input" required>
 						</div>
 
 						<?php

@@ -140,8 +140,8 @@ class Popup_Placement implements Placement_Interface {
 		);
 		?>
 		<div class="wbam-placement-extra">
-			<label><?php esc_html_e( 'Trigger', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<select name="wbam_data[popup_trigger]" class="wbam-popup-trigger-select">
+			<label for="wbam_popup_trigger"><?php esc_html_e( 'Trigger', 'wb-ads-rotator-with-split-test' ); ?></label>
+			<select id="wbam_popup_trigger" name="wbam_data[popup_trigger]" class="wbam-popup-trigger-select">
 				<?php foreach ( $triggers as $key => $label ) : ?>
 					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $trigger, $key ); ?>>
 						<?php echo esc_html( $label ); ?>
@@ -150,12 +150,12 @@ class Popup_Placement implements Placement_Interface {
 			</select>
 		</div>
 		<div class="wbam-placement-extra wbam-popup-delay-option" <?php echo 'delay' !== $trigger ? 'style="display:none;"' : ''; ?>>
-			<label><?php esc_html_e( 'Delay (seconds)', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<input type="number" name="wbam_data[popup_delay]" value="<?php echo esc_attr( $delay ); ?>" min="1" max="60" />
+			<label for="wbam_popup_delay"><?php esc_html_e( 'Delay (seconds)', 'wb-ads-rotator-with-split-test' ); ?></label>
+			<input type="number" id="wbam_popup_delay" name="wbam_data[popup_delay]" value="<?php echo esc_attr( $delay ); ?>" min="1" max="60" />
 		</div>
 		<div class="wbam-placement-extra wbam-popup-scroll-option" <?php echo 'scroll' !== $trigger ? 'style="display:none;"' : ''; ?>>
-			<label><?php esc_html_e( 'Scroll Percentage', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<input type="number" name="wbam_data[popup_scroll]" value="<?php echo esc_attr( $scroll ); ?>" min="10" max="100" />%
+			<label for="wbam_popup_scroll"><?php esc_html_e( 'Scroll Percentage', 'wb-ads-rotator-with-split-test' ); ?></label>
+			<input type="number" id="wbam_popup_scroll" name="wbam_data[popup_scroll]" value="<?php echo esc_attr( $scroll ); ?>" min="10" max="100" />%
 		</div>
 		<?php
 	}

@@ -113,8 +113,8 @@ class Display_Options {
 
 				<?php // Specific Pages - Most specific targeting first. ?>
 				<div class="wbam-rule-row">
-					<label><?php esc_html_e( 'Selected Pages', 'wb-ads-rotator-with-split-test' ); ?></label>
-					<select name="wbam_display_rules[posts][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Choose individual pages...', 'wb-ads-rotator-with-split-test' ); ?>">
+					<label for="wbam_rules_posts"><?php esc_html_e( 'Selected Pages', 'wb-ads-rotator-with-split-test' ); ?></label>
+					<select id="wbam_rules_posts" name="wbam_display_rules[posts][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Choose individual pages...', 'wb-ads-rotator-with-split-test' ); ?>">
 						<?php
 						$all_pages = get_pages(
 							array(
@@ -179,8 +179,8 @@ class Display_Options {
 
 				<?php // Categories. ?>
 				<div class="wbam-rule-row">
-					<label><?php esc_html_e( 'Categories', 'wb-ads-rotator-with-split-test' ); ?></label>
-					<select name="wbam_display_rules[categories][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select categories...', 'wb-ads-rotator-with-split-test' ); ?>">
+					<label for="wbam_rules_categories"><?php esc_html_e( 'Categories', 'wb-ads-rotator-with-split-test' ); ?></label>
+					<select id="wbam_rules_categories" name="wbam_display_rules[categories][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select categories...', 'wb-ads-rotator-with-split-test' ); ?>">
 						<?php
 						$all_categories = get_categories( array( 'hide_empty' => false ) );
 						// get_categories() returns WP_Error if taxonomy missing.
@@ -196,8 +196,8 @@ class Display_Options {
 
 				<?php // Tags. ?>
 				<div class="wbam-rule-row">
-					<label><?php esc_html_e( 'Tags', 'wb-ads-rotator-with-split-test' ); ?></label>
-					<select name="wbam_display_rules[tags][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select tags...', 'wb-ads-rotator-with-split-test' ); ?>">
+					<label for="wbam_rules_tags"><?php esc_html_e( 'Tags', 'wb-ads-rotator-with-split-test' ); ?></label>
+					<select id="wbam_rules_tags" name="wbam_display_rules[tags][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select tags...', 'wb-ads-rotator-with-split-test' ); ?>">
 						<?php
 						$all_tags = get_tags( array( 'hide_empty' => false ) );
 						// get_tags() returns WP_Error if taxonomy missing.
@@ -228,8 +228,8 @@ class Display_Options {
 				</div>
 
 				<div class="wbam-rule-row">
-					<label><?php esc_html_e( 'Categories', 'wb-ads-rotator-with-split-test' ); ?></label>
-					<select name="wbam_display_rules[exclude_categories][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select categories to exclude...', 'wb-ads-rotator-with-split-test' ); ?>">
+					<label for="wbam_rules_exclude_categories"><?php esc_html_e( 'Categories', 'wb-ads-rotator-with-split-test' ); ?></label>
+					<select id="wbam_rules_exclude_categories" name="wbam_display_rules[exclude_categories][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select categories to exclude...', 'wb-ads-rotator-with-split-test' ); ?>">
 						<?php foreach ( $all_categories as $cat ) : ?>
 							<option value="<?php echo esc_attr( $cat->term_id ); ?>" <?php selected( in_array( $cat->term_id, $exclude_cats, true ) ); ?>>
 								<?php echo esc_html( $cat->name ); ?>
@@ -239,8 +239,8 @@ class Display_Options {
 				</div>
 
 				<div class="wbam-rule-row">
-					<label><?php esc_html_e( 'Tags', 'wb-ads-rotator-with-split-test' ); ?></label>
-					<select name="wbam_display_rules[exclude_tags][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select tags to exclude...', 'wb-ads-rotator-with-split-test' ); ?>">
+					<label for="wbam_rules_exclude_tags"><?php esc_html_e( 'Tags', 'wb-ads-rotator-with-split-test' ); ?></label>
+					<select id="wbam_rules_exclude_tags" name="wbam_display_rules[exclude_tags][]" multiple class="wbam-select2" data-placeholder="<?php esc_attr_e( 'Select tags to exclude...', 'wb-ads-rotator-with-split-test' ); ?>">
 						<?php foreach ( $all_tags as $tag ) : ?>
 							<option value="<?php echo esc_attr( $tag->term_id ); ?>" <?php selected( in_array( $tag->term_id, $exclude_tags, true ) ); ?>>
 								<?php echo esc_html( $tag->name ); ?>
@@ -316,9 +316,9 @@ class Display_Options {
 			<div class="wbam-schedule-field">
 				<label><?php esc_html_e( 'Time of Day', 'wb-ads-rotator-with-split-test' ); ?></label>
 				<div class="wbam-time-range">
-					<input type="time" name="wbam_schedule[time_start]" value="<?php echo esc_attr( $time_start ); ?>" />
+					<input type="time" name="wbam_schedule[time_start]" value="<?php echo esc_attr( $time_start ); ?>" aria-label="<?php esc_attr_e( 'Start time', 'wb-ads-rotator-with-split-test' ); ?>" />
 					<span><?php esc_html_e( 'to', 'wb-ads-rotator-with-split-test' ); ?></span>
-					<input type="time" name="wbam_schedule[time_end]" value="<?php echo esc_attr( $time_end ); ?>" />
+					<input type="time" name="wbam_schedule[time_end]" value="<?php echo esc_attr( $time_end ); ?>" aria-label="<?php esc_attr_e( 'End time', 'wb-ads-rotator-with-split-test' ); ?>" />
 				</div>
 				<p class="description"><?php esc_html_e( 'Leave empty to show all day. Uses site timezone.', 'wb-ads-rotator-with-split-test' ); ?></p>
 			</div>
@@ -458,7 +458,7 @@ class Display_Options {
 				</div>
 
 				<div class="wbam-geo-row">
-					<label class="wbam-section-label wbam-geo-countries-label">
+					<label class="wbam-section-label wbam-geo-countries-label" for="wbam_geo_countries">
 						<?php
 						if ( 'exclude' === $mode ) {
 							esc_html_e( 'Countries to exclude', 'wb-ads-rotator-with-split-test' );
@@ -476,7 +476,7 @@ class Display_Options {
 						}
 						?>
 					</p>
-					<select name="wbam_geo_targeting[countries][]" multiple class="wbam-select2 wbam-country-select wbam-geo-countries-select" data-placeholder="<?php esc_attr_e( 'Search and select countries...', 'wb-ads-rotator-with-split-test' ); ?>" style="width: 100%;">
+					<select id="wbam_geo_countries" name="wbam_geo_targeting[countries][]" multiple class="wbam-select2 wbam-country-select wbam-geo-countries-select" data-placeholder="<?php esc_attr_e( 'Search and select countries...', 'wb-ads-rotator-with-split-test' ); ?>" style="width: 100%;">
 						<?php foreach ( $countries as $code => $name ) : ?>
 							<option value="<?php echo esc_attr( $code ); ?>" <?php selected( in_array( $code, $selected_countries, true ) ); ?>>
 								<?php echo esc_html( $name ); ?>

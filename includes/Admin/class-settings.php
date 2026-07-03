@@ -132,6 +132,7 @@ class Settings {
 			'wbam-settings',
 			'wbam_general',
 			array(
+				'label_for'   => 'wbam_setting_min_content_length',
 				'id'          => 'min_content_length',
 				'description' => __( 'Minimum characters required to show paragraph ads. Set 0 to disable.', 'wb-ads-rotator-with-split-test' ),
 			)
@@ -156,6 +157,7 @@ class Settings {
 			'wbam-settings',
 			'wbam_general',
 			array(
+				'label_for'   => 'wbam_setting_max_ads_per_page',
 				'id'          => 'max_ads_per_page',
 				'description' => __( 'Maximum number of ads to show per page. Set 0 for unlimited.', 'wb-ads-rotator-with-split-test' ),
 			)
@@ -176,6 +178,7 @@ class Settings {
 			'wbam-settings',
 			'wbam_display',
 			array(
+				'label_for'   => 'wbam_setting_ad_label',
 				'id'          => 'ad_label',
 				'placeholder' => __( 'e.g., Advertisement', 'wb-ads-rotator-with-split-test' ),
 				'description' => __( 'Optional label to display above/below ads.', 'wb-ads-rotator-with-split-test' ),
@@ -189,6 +192,7 @@ class Settings {
 			'wbam-settings',
 			'wbam_display',
 			array(
+				'label_for'   => 'wbam_setting_ad_label_position',
 				'id'      => 'ad_label_position',
 				'options' => array(
 					'above' => __( 'Above Ad', 'wb-ads-rotator-with-split-test' ),
@@ -204,6 +208,7 @@ class Settings {
 			'wbam-settings',
 			'wbam_display',
 			array(
+				'label_for'   => 'wbam_setting_container_class',
 				'id'          => 'container_class',
 				'placeholder' => __( 'e.g., my-ad-wrapper', 'wb-ads-rotator-with-split-test' ),
 				'description' => __( 'Additional CSS class for ad containers.', 'wb-ads-rotator-with-split-test' ),
@@ -268,6 +273,7 @@ class Settings {
 			'wbam-settings',
 			'wbam_geo',
 			array(
+				'label_for'   => 'wbam_setting_geo_ipinfo_key',
 				'id'          => 'geo_ipinfo_key',
 				'placeholder' => __( 'Enter API key (optional)', 'wb-ads-rotator-with-split-test' ),
 				'description' => __( 'Get a free API key from ipinfo.io for 50K requests/month.', 'wb-ads-rotator-with-split-test' ),
@@ -289,6 +295,7 @@ class Settings {
 			'wbam-settings',
 			'wbam_adsense',
 			array(
+				'label_for'   => 'wbam_setting_adsense_publisher_id',
 				'id'          => 'adsense_publisher_id',
 				'placeholder' => 'ca-pub-1234567890123456',
 				'description' => __( 'Your AdSense Publisher ID (e.g., ca-pub-1234567890123456). Used as default for all AdSense ads.', 'wb-ads-rotator-with-split-test' ),
@@ -596,7 +603,7 @@ class Settings {
 		$value       = isset( $settings[ $id ] ) ? $settings[ $id ] : '';
 		$placeholder = $args['placeholder'] ?? '';
 		?>
-		<input type="text" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $id . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" class="regular-text" />
+		<input type="text" id="wbam_setting_<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $id . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" class="regular-text" />
 		<?php if ( ! empty( $args['description'] ) ) : ?>
 			<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
 		<?php endif; ?>
@@ -613,7 +620,7 @@ class Settings {
 		$id       = $args['id'];
 		$value    = isset( $settings[ $id ] ) ? $settings[ $id ] : 0;
 		?>
-		<input type="number" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $id . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" min="0" class="small-text" />
+		<input type="number" id="wbam_setting_<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $id . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>" min="0" class="small-text" />
 		<?php if ( ! empty( $args['description'] ) ) : ?>
 			<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
 		<?php endif; ?>
@@ -631,7 +638,7 @@ class Settings {
 		$value    = isset( $settings[ $id ] ) ? $settings[ $id ] : '';
 		$options  = $args['options'] ?? array();
 		?>
-		<select name="<?php echo esc_attr( self::OPTION_NAME . '[' . $id . ']' ); ?>">
+		<select id="wbam_setting_<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( self::OPTION_NAME . '[' . $id . ']' ); ?>">
 			<?php foreach ( $options as $key => $label ) : ?>
 				<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $value, $key ); ?>><?php echo esc_html( $label ); ?></option>
 			<?php endforeach; ?>

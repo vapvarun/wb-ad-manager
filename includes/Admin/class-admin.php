@@ -518,6 +518,7 @@ class Admin {
 						value="<?php echo esc_attr( $type->get_id() ); ?>"
 						id="wbam-adtype-<?php echo esc_attr( $type->get_id() ); ?>"
 						class="wbam-adtype-radio"
+						aria-label="<?php echo esc_attr( $type->get_name() ); ?>"
 						<?php checked( $ad_type, $type->get_id() ); ?> />
 			<?php endforeach; ?>
 
@@ -725,9 +726,9 @@ class Admin {
 
 					<div class="wbam-sizing-custom-dims" <?php echo 'custom' === $ad_format ? '' : 'hidden'; ?>>
 						<span class="wbam-inline-label"><?php esc_html_e( 'Dimensions', 'wb-ads-rotator-with-split-test' ); ?></span><?php echo Field_Tooltips::tip_for( 'custom_dims' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?>
-						<input type="number" name="wbam_ad_width" min="0" step="1" value="<?php echo esc_attr( $ad_width ? $ad_width : '' ); ?>" placeholder="W" class="small-text" />
+						<input type="number" name="wbam_ad_width" min="0" step="1" value="<?php echo esc_attr( $ad_width ? $ad_width : '' ); ?>" placeholder="W" class="small-text" aria-label="<?php esc_attr_e( 'Width in pixels', 'wb-ads-rotator-with-split-test' ); ?>" />
 						<span class="wbam-sizing-x">&times;</span>
-						<input type="number" name="wbam_ad_height" min="0" step="1" value="<?php echo esc_attr( $ad_height ? $ad_height : '' ); ?>" placeholder="H" class="small-text" />
+						<input type="number" name="wbam_ad_height" min="0" step="1" value="<?php echo esc_attr( $ad_height ? $ad_height : '' ); ?>" placeholder="H" class="small-text" aria-label="<?php esc_attr_e( 'Height in pixels', 'wb-ads-rotator-with-split-test' ); ?>" />
 						<span class="wbam-sizing-units"><?php esc_html_e( 'px', 'wb-ads-rotator-with-split-test' ); ?></span>
 					</div>
 				</div>
@@ -1078,9 +1079,9 @@ class Admin {
 			echo '<div style="font-size:13px;margin-bottom:14px;">' . esc_html( $description ) . '</div>';
 		}
 		if ( $show_name ) {
-			echo '<input type="text" placeholder="' . esc_attr__( 'Your name', 'wb-ads-rotator-with-split-test' ) . '" disabled style="display:block;width:100%;padding:8px 10px;margin-bottom:8px;border:1px solid #c3c4c7;border-radius:4px;background:#fff;color:#1d2327;">';
+			echo '<input type="text" placeholder="' . esc_attr__( 'Your name', 'wb-ads-rotator-with-split-test' ) . '" aria-label="' . esc_attr__( 'Name field preview', 'wb-ads-rotator-with-split-test' ) . '" disabled style="display:block;width:100%;padding:8px 10px;margin-bottom:8px;border:1px solid #c3c4c7;border-radius:4px;background:#fff;color:#1d2327;">';
 		}
-		echo '<input type="email" placeholder="' . esc_attr__( 'you@example.com', 'wb-ads-rotator-with-split-test' ) . '" disabled style="display:block;width:100%;padding:8px 10px;margin-bottom:8px;border:1px solid #c3c4c7;border-radius:4px;background:#fff;color:#1d2327;">';
+		echo '<input type="email" placeholder="' . esc_attr__( 'you@example.com', 'wb-ads-rotator-with-split-test' ) . '" aria-label="' . esc_attr__( 'Email field preview', 'wb-ads-rotator-with-split-test' ) . '" disabled style="display:block;width:100%;padding:8px 10px;margin-bottom:8px;border:1px solid #c3c4c7;border-radius:4px;background:#fff;color:#1d2327;">';
 		printf(
 			'<button type="button" disabled style="background:%s;color:#fff;border:0;padding:9px 16px;border-radius:4px;font-weight:600;cursor:not-allowed;">%s</button>',
 			esc_attr( $btn_color ),

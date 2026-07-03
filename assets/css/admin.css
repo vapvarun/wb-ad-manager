@@ -110,6 +110,11 @@
 	outline: none;
 }
 
+.wbam-adtype-tab:focus-visible {
+	outline: 2px solid var(--wbam-accent, #2271b1);
+	outline-offset: 2px;
+}
+
 .wbam-adtype-tab-active,
 .wbam-adtype-tab-active:hover {
 	background: var(--wbam-bg);
@@ -257,6 +262,15 @@
 	border-color: var(--wbam-accent);
 	box-shadow: 0 0 0 1px var(--wbam-accent);
 	outline: none;
+}
+
+.wbam-field input[type="text"]:focus-visible,
+.wbam-field input[type="url"]:focus-visible,
+.wbam-field input[type="number"]:focus-visible,
+.wbam-field select:focus-visible,
+.wbam-field textarea:focus-visible {
+	outline: 2px solid var(--wbam-accent, #2271b1);
+	outline-offset: 2px;
 }
 
 .wbam-field textarea {
@@ -507,6 +521,11 @@
 	border-color: var(--wbam-accent);
 	box-shadow: 0 0 0 1px var(--wbam-accent);
 	outline: none;
+}
+
+.wbam-session-limit-field input[type="number"]:focus-visible {
+	outline: 2px solid var(--wbam-accent, #2271b1);
+	outline-offset: 2px;
 }
 
 .wbam-priority-field .description,
@@ -909,6 +928,11 @@
 	outline: none;
 }
 
+.wbam-schedule-field input[type="date"]:focus-visible {
+	outline: 2px solid var(--wbam-accent, #2271b1);
+	outline-offset: 2px;
+}
+
 .wbam-schedule-field .description {
 	margin-top: 5px;
 	font-size: var(--wbam-font-size-xs);
@@ -966,6 +990,11 @@
 	border-color: var(--wbam-accent);
 	box-shadow: 0 0 0 1px var(--wbam-accent);
 	outline: none;
+}
+
+.wbam-time-range input[type="time"]:focus-visible {
+	outline: 2px solid var(--wbam-accent, #2271b1);
+	outline-offset: 2px;
 }
 
 .wbam-time-range span {

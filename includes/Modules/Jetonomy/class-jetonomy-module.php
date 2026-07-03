@@ -255,8 +255,8 @@ class Jetonomy_Placement implements Placement_Interface {
 		$repeat = ! empty( $data['jetonomy_repeat'] );
 		?>
 		<div class="wbam-placement-extra">
-			<label><?php esc_html_e( 'Show after every', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<input type="number" name="wbam_data[jetonomy_every]" value="<?php echo esc_attr( $every ); ?>" min="1" max="50" style="width:60px;" />
+			<label for="wbam_jetonomy_every"><?php esc_html_e( 'Show after every', 'wb-ads-rotator-with-split-test' ); ?></label>
+			<input type="number" id="wbam_jetonomy_every" name="wbam_data[jetonomy_every]" value="<?php echo esc_attr( $every ); ?>" min="1" max="50" style="width:60px;" />
 			<?php esc_html_e( 'replies', 'wb-ads-rotator-with-split-test' ); ?>
 			<label style="margin-left:15px;">
 				<input type="checkbox" name="wbam_data[jetonomy_repeat]" value="1" <?php checked( $repeat ); ?> />

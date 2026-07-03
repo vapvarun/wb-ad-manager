@@ -52,7 +52,7 @@ class Links_List_Table extends \WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'cb'              => '<input type="checkbox">',
+			'cb'              => '<input type="checkbox" aria-label="' . esc_attr__( 'Select all links', 'wb-ads-rotator-with-split-test' ) . '">',
 			'name'            => __( 'Name', 'wb-ads-rotator-with-split-test' ),
 			'destination_url' => __( 'Destination', 'wb-ads-rotator-with-split-test' ),
 			'cloaked_url'     => __( 'Cloaked URL', 'wb-ads-rotator-with-split-test' ),
@@ -161,7 +161,7 @@ class Links_List_Table extends \WP_List_Table {
 
 		?>
 		<div class="alignleft actions">
-			<select name="link_type">
+			<select name="link_type" aria-label="<?php esc_attr_e( 'Filter by link type', 'wb-ads-rotator-with-split-test' ); ?>">
 				<option value=""><?php esc_html_e( 'All Types', 'wb-ads-rotator-with-split-test' ); ?></option>
 				<?php foreach ( Link::get_link_types() as $value => $label ) : ?>
 					<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $link_type, $value ); ?>>
@@ -170,7 +170,7 @@ class Links_List_Table extends \WP_List_Table {
 				<?php endforeach; ?>
 			</select>
 
-			<select name="category_id">
+			<select name="category_id" aria-label="<?php esc_attr_e( 'Filter by category', 'wb-ads-rotator-with-split-test' ); ?>">
 				<option value=""><?php esc_html_e( 'All Categories', 'wb-ads-rotator-with-split-test' ); ?></option>
 				<?php
 				$categories = $this->link_manager->get_categories();
@@ -292,8 +292,10 @@ class Links_List_Table extends \WP_List_Table {
 	 */
 	public function column_cb( $item ) {
 		return sprintf(
-			'<input type="checkbox" name="link[]" value="%s">',
-			esc_attr( $item->id )
+			'<input type="checkbox" name="link[]" value="%s" aria-label="%s">',
+			esc_attr( $item->id ),
+			/* translators: %s: link name. */
+			esc_attr( sprintf( __( 'Select %s', 'wb-ads-rotator-with-split-test' ), $item->name ) )
 		);
 	}
 
