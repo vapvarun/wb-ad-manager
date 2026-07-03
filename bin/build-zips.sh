@@ -47,6 +47,27 @@ build_exclude_args() {
 	printf '%s\n' "${args[@]}"
 }
 
+# Guard: every literal assets/... path referenced from shipped PHP must
+# exist in the build payload. Catches .distignore patterns that silently
+# strip runtime files (e.g. an unanchored "vendor" once removed
+# assets/vendor/lucide.min.js and 404'd every frontend icon).
+verify_runtime_assets() {
+	local target="$1"
+	local missing=0
+	local ref
+	while IFS= read -r ref; do
+		if [ ! -f "$target/$ref" ]; then
+			echo "ERROR: PHP references '$ref' but it is missing from the build payload." >&2
+			missing=1
+		fi
+	done < <(grep -rhoE "assets/(css|js|vendor|images)/[A-Za-z0-9@_./-]+\.(css|js|png|svg|gif|woff2?)" \
+		--include='*.php' "$target" | sort -u)
+	if [ "$missing" -ne 0 ]; then
+		echo "Build aborted: runtime assets stripped from the zip (check .distignore anchoring)." >&2
+		exit 1
+	fi
+}
+
 # ------------------------------------------------------------------
 # 1. Free-only zip
 # ------------------------------------------------------------------
@@ -61,6 +82,8 @@ while IFS= read -r line; do
 done < <(build_exclude_args "$FREE_DIR/.distignore")
 
 rsync -a "${FREE_EXCLUDES[@]}" "$FREE_DIR/" "$FREE_TARGET/"
+
+verify_runtime_assets "$FREE_TARGET"
 
 FREE_ZIP="$DIST_DIR/wb-ads-rotator-with-split-test-${FREE_VERSION}.zip"
 rm -f "$FREE_ZIP"
