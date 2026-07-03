@@ -49,6 +49,7 @@ $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_link_clicks" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_analytics" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_email_submissions" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_link_partnerships" );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_rate_limits" );
 // phpcs:enable
 
 // Delete options.
