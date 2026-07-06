@@ -192,9 +192,9 @@ class Settings {
 			'wbam-settings',
 			'wbam_display',
 			array(
-				'label_for'   => 'wbam_setting_ad_label_position',
-				'id'      => 'ad_label_position',
-				'options' => array(
+				'label_for' => 'wbam_setting_ad_label_position',
+				'id'        => 'ad_label_position',
+				'options'   => array(
 					'above' => __( 'Above Ad', 'wb-ads-rotator-with-split-test' ),
 					'below' => __( 'Below Ad', 'wb-ads-rotator-with-split-test' ),
 				),

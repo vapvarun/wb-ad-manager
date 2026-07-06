@@ -5,7 +5,7 @@ Tags: ads, ad manager, ad rotation, split test, adsense
 Requires at least: 5.8
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.9.0
+Stable tag: 2.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,10 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 7. Free vs PRO comparison. Row-by-row feature table so you know exactly what you're getting at each tier.
 
 == Changelog ==
+
+= 2.9.1 - July 2026 =
+
+* Fix      - The Link Partnership form now follows dark mode on BuddyX 5.1+ and Reign, including the Partnership Type dropdown, which now shows a single readable arrow on a dark field instead of staying light.
 
 = 2.9.0 - June 2026 =
 
