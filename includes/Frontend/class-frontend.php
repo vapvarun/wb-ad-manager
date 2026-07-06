@@ -57,6 +57,9 @@ class Frontend {
 			array( 'dashicons' ),
 			WBAM_VERSION
 		);
+		// Load the RTL stylesheet (frontend-rtl.css / frontend-rtl.min.css) on RTL locales.
+		wp_style_add_data( 'wbam-frontend', 'rtl', 'replace' );
+		wp_style_add_data( 'wbam-frontend', 'suffix', $suffix );
 
 		wp_enqueue_script(
 			'wbam-frontend',
@@ -522,7 +525,7 @@ class Frontend {
 
 		// Atomic increment using INSERT ... ON DUPLICATE KEY UPDATE with LAST_INSERT_ID.
 		// LAST_INSERT_ID(expr) sets the return value to expr, allowing us to retrieve the new count atomically.
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name validated by table_exists().
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name validated by table_exists(); WBAM custom table name from $wpdb->prefix, not user input.
 		$wpdb->query(
 			$wpdb->prepare(
 				"INSERT INTO {$table_name} (rate_key, rate_count, expires)
@@ -548,12 +551,13 @@ class Frontend {
 			$count = 1;
 		} else {
 			// UPDATE case: get the new count from LAST_INSERT_ID().
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Atomic counter read on a WBAM custom table; no caching applicable.
 			$count = (int) $wpdb->get_var( 'SELECT LAST_INSERT_ID()' );
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
 			// Safeguard: if LAST_INSERT_ID returns 0, fall back to SELECT (shouldn't happen).
 			if ( 0 === $count ) {
-				// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name validated by table_exists().
+				// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Table name validated by table_exists(); WBAM custom table name from $wpdb->prefix, not user input.
 				$count = (int) $wpdb->get_var(
 					$wpdb->prepare(
 						"SELECT rate_count FROM {$table_name} WHERE rate_key = %s",
@@ -615,8 +619,9 @@ class Frontend {
 
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- One-time table-existence probe, result cached in self::$table_cache.
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name ) );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 
 		// Cache the result for subsequent calls.
 		self::$table_cache[ $table_name ] = ! empty( $exists );

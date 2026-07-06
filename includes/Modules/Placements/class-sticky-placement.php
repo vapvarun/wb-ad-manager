@@ -131,8 +131,8 @@ class Sticky_Placement implements Placement_Interface {
 		);
 		?>
 		<div class="wbam-placement-extra">
-			<label><?php esc_html_e( 'Position', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<select name="wbam_data[sticky_position]">
+			<label for="wbam_sticky_position"><?php esc_html_e( 'Position', 'wb-ads-rotator-with-split-test' ); ?></label>
+			<select id="wbam_sticky_position" name="wbam_data[sticky_position]">
 				<?php foreach ( $positions as $key => $label ) : ?>
 					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $position, $key ); ?>>
 						<?php echo esc_html( $label ); ?>

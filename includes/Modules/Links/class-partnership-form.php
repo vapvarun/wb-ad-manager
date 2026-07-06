@@ -452,24 +452,31 @@ class Partnership_Form {
 	private function get_default_styles() {
 		return '
 		.wbam-partnership-form-wrap {
-			/* CSS Variables with fallbacks */
-			--wbam-form-bg: var(--color-theme-white-box, var(--reign-site-sections-bg-color, #fff));
-			--wbam-form-text: var(--global-font-color, var(--reign-form-text-color, var(--reign-site-body-text-color, #333)));
-			--wbam-form-text-light: var(--color-meta, var(--reign-form-placeholder-color, var(--reign-site-alternate-text-color, #666)));
-			--wbam-form-border: var(--global-border-color, var(--reign-form-border-color, var(--reign-site-border-color, #ddd)));
-			--wbam-form-input-bg: var(--global-body-lightcolor, var(--reign-form-background-color, var(--reign-site-secondary-bg-color, #fff)));
-			--wbam-form-input-text: var(--reign-form-text-color, #333);
-			--wbam-form-placeholder: var(--reign-form-placeholder-color, #767676);
-			--wbam-form-focus: var(--color-theme-primary, var(--reign-form-focus-border-color, var(--reign-accent-color, #0073aa)));
-			--wbam-form-focus-bg: var(--reign-form-focus-background-color, #fdfdfd);
-			--wbam-form-focus-text: var(--reign-form-focus-text-color, #000);
-			--wbam-form-button-bg: var(--button-background-color, var(--reign-site-button-bg-color, #0073aa));
-			--wbam-form-button-bg-hover: var(--button-background-hover-color, var(--reign-site-button-bg-hover-color, #005a87));
-			--wbam-form-button-text: var(--button-text-color, var(--reign-site-button-text-color, #fff));
-			--wbam-form-button-text-hover: var(--button-text-hover-color, var(--reign-site-button-text-hover-color, #fff));
+			/* CSS Variables. Each token consumes the plugin semantic
+			   --wbam-* tokens first (defined in frontend.css, always enqueued
+			   on the frontend). Those chain through the host theme
+			   (BuddyX --bx-color-*, then Reign --reign-*) and are flipped to
+			   an explicit dark palette by frontend.css for every dark trigger
+			   incl. html[data-bx-mode="dark"] - so this form adopts dark mode
+			   automatically. Theme-var fallbacks kept for the
+			   disable_frontend_css edge case. */
+			--wbam-form-bg: var(--wbam-card-bg, var(--color-theme-white-box, var(--reign-site-sections-bg-color, #fff)));
+			--wbam-form-text: var(--wbam-text, var(--global-font-color, var(--reign-form-text-color, var(--reign-site-body-text-color, #333))));
+			--wbam-form-text-light: var(--wbam-text-muted, var(--color-meta, var(--reign-form-placeholder-color, var(--reign-site-alternate-text-color, #666))));
+			--wbam-form-border: var(--wbam-border, var(--global-border-color, var(--reign-form-border-color, var(--reign-site-border-color, #ddd))));
+			--wbam-form-input-bg: var(--wbam-surface-alt, var(--global-body-lightcolor, var(--reign-form-background-color, var(--reign-site-secondary-bg-color, #fff))));
+			--wbam-form-input-text: var(--wbam-text, var(--reign-form-text-color, #333));
+			--wbam-form-placeholder: var(--wbam-text-muted, var(--reign-form-placeholder-color, #767676));
+			--wbam-form-focus: var(--wbam-accent, var(--color-theme-primary, var(--reign-form-focus-border-color, var(--reign-accent-color, #0073aa))));
+			--wbam-form-focus-bg: var(--wbam-surface, var(--reign-form-focus-background-color, #fdfdfd));
+			--wbam-form-focus-text: var(--wbam-text, var(--reign-form-focus-text-color, #000));
+			--wbam-form-button-bg: var(--button-background-color, var(--reign-site-button-bg-color, var(--wbam-accent, #0073aa)));
+			--wbam-form-button-bg-hover: var(--button-background-hover-color, var(--reign-site-button-bg-hover-color, var(--wbam-accent-hover, #005a87)));
+			--wbam-form-button-text: var(--button-text-color, var(--reign-site-button-text-color, var(--wbam-accent-fg, #fff)));
+			--wbam-form-button-text-hover: var(--button-text-hover-color, var(--reign-site-button-text-hover-color, var(--wbam-accent-fg, #fff)));
 			--wbam-form-button-border: var(--button-border-color, var(--reign-site-button-bg-color, transparent));
 			--wbam-form-button-border-hover: var(--button-border-hover-color, var(--reign-site-button-bg-hover-color, transparent));
-			--wbam-form-required: var(--color-danger, #c00);
+			--wbam-form-required: var(--color-danger, var(--wbam-danger, #c00));
 			--wbam-form-radius: 4px;
 			--wbam-form-success-bg: var(--color-success-bg, #d4edda);
 			--wbam-form-success-border: var(--color-success-border, #c3e6cb);
@@ -609,6 +616,28 @@ class Partnership_Form {
 			.wbam-field-half {
 				flex: 0 0 100%;
 			}
+		}
+		/* Dark mode: the select arrow SVG is a hardcoded data URI, so swap it
+		   for a light arrow under the same dark triggers frontend.css uses.
+		   Re-declare background-repeat/position/size here too so the override
+		   is self-contained: a host theme that restyles selects with the
+		   `background` shorthand under dark mode resets background-repeat to
+		   `repeat`, which tiled the arrow across the whole field (Basecamp
+		   #10033607741 round 2). Pinning all four longhands keeps a single
+		   arrow regardless of the theme cascade. */
+		html[data-bx-mode="dark"] .wbam-partnership-form-wrap .wbam-form-field select,
+		body.buddyx-dark-theme .wbam-partnership-form-wrap .wbam-form-field select,
+		html.dark-mode .wbam-partnership-form-wrap .wbam-form-field select,
+		body.dark-mode .wbam-partnership-form-wrap .wbam-form-field select,
+		body.dark-scheme .wbam-partnership-form-wrap .wbam-form-field select,
+		html.dark .wbam-partnership-form-wrap .wbam-form-field select,
+		[data-theme="dark"] .wbam-partnership-form-wrap .wbam-form-field select,
+		.buddyx-dark-mode .wbam-partnership-form-wrap .wbam-form-field select,
+		.bb-dark-mode .wbam-partnership-form-wrap .wbam-form-field select {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%23b4b4b8\' d=\'M6 8L1 3h10z\'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 12px center;
+			background-size: 12px;
 		}
 		';
 	}

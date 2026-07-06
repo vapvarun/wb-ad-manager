@@ -3,13 +3,13 @@ Contributors: vapvarun, wbcomdesigns
 Donate link: https://wbcomdesigns.com/
 Tags: ads, ad manager, ad rotation, split test, adsense
 Requires at least: 5.8
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.8.1
+Stable tag: 2.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Comprehensive ad management for WordPress with ad rotation, split testing, multiple placements, Google AdSense, BuddyPress, bbPress, and Jetonomy integration.
+Ad management for WordPress: ad rotation, split testing, multiple placements, Google AdSense, plus BuddyPress, bbPress, and Jetonomy integration.
 
 == Description ==
 
@@ -184,6 +184,20 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 7. Free vs PRO comparison. Row-by-row feature table so you know exactly what you're getting at each tier.
 
 == Changelog ==
+
+= 2.9.1 - July 2026 =
+
+* Fix      - The Link Partnership form now follows dark mode on BuddyX 5.1+ and Reign, including the Partnership Type dropdown, which now shows a single readable arrow on a dark field instead of staying light.
+
+= 2.9.0 - June 2026 =
+
+Frontend dark mode that follows your active theme, plus RTL support.
+
+* New      - Dark mode for all frontend ad, link, and partnership output. The plugin adopts your theme's dark palette automatically instead of staying light on a dark site.
+* New      - Right-to-left stylesheet for frontend output, so ads and link blocks lay out correctly on Arabic, Hebrew, and other RTL sites.
+* Improve  - Frontend styling now inherits BuddyX 5.1+ and Reign color tokens, so ad blocks match the active theme out of the box.
+* Fix      - Dark mode now engages when BuddyX 5.1+ or Reign switch to dark with their runtime toggle, not only on the older theme setting.
+* Dev      - Clean pass on WordPress Plugin Check (zero errors and warnings) and PHPStan level 7, plus a documented RTL stylesheet load.
 
 = 2.8.1 =
 * Performance: The Google AdSense script is now loaded only on pages that actually display an AdSense ad. Pages with no AdSense ad no longer pay for the extra script request — faster page loads and a cleaner Lighthouse score across the rest of the site.

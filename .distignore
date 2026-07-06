@@ -1,15 +1,25 @@
 # Directories
+# NOTE: entries are anchored with a leading "/" (root-relative) on purpose.
+# Unanchored patterns match at ANY depth in both `wp dist-archive` and the
+# rsync --exclude list built by bin/build-zips.sh — an unanchored "vendor"
+# used to strip assets/vendor/ (lucide.min.js) out of the release zip and
+# 404 every icon on the frontend. Only .git / node_modules stay unanchored
+# (they must never ship at any depth).
 .git
-.github
-.wordpress-org
 node_modules
-tests
-vendor
-dist
-docs
-bin
-build
-coverage
+/.github
+/.wordpress-org
+/tests
+/vendor
+/dist
+/docs
+/bin
+/build
+/coverage
+/audit
+/plan
+/plans
+/.autovap
 
 # Build files
 .distignore
@@ -48,6 +58,10 @@ README.md
 CHANGELOG.md
 ROADMAP.md
 CONTRIBUTING.md
+CLAUDE.md
+
+# Internal tooling artifacts (never ship)
+.contract-audit-baseline.json
 
 # IDE/Editor files
 .idea
@@ -62,4 +76,6 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
-scripts
+
+# Internal scripts (root-relative)
+/scripts

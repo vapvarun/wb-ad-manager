@@ -283,7 +283,7 @@ class Links_Admin {
 					. <?php esc_html_e( 'Paste this anywhere a link is accepted (posts, menus, widgets). Redirects to your destination URL.', 'wb-ads-rotator-with-split-test' ); ?>
 				</p>
 				<p style="margin:0 0 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-					<input type="text" readonly value="<?php echo esc_attr( $cloaked_url ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
+					<input type="text" readonly value="<?php echo esc_attr( $cloaked_url ); ?>" aria-label="<?php esc_attr_e( 'Cloaked URL', 'wb-ads-rotator-with-split-test' ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
 					<button type="button" class="button wbam-copy-btn" data-copy="<?php echo esc_attr( $cloaked_url ); ?>">
 						<?php esc_html_e( 'Copy URL', 'wb-ads-rotator-with-split-test' ); ?>
 					</button>
@@ -296,7 +296,7 @@ class Links_Admin {
 					. <?php esc_html_e( 'Use this in post content when you want specific anchor text and full rel-attribute control.', 'wb-ads-rotator-with-split-test' ); ?>
 				</p>
 				<p style="margin:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-					<input type="text" readonly value="<?php echo esc_attr( $shortcode ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
+					<input type="text" readonly value="<?php echo esc_attr( $shortcode ); ?>" aria-label="<?php esc_attr_e( 'Link shortcode', 'wb-ads-rotator-with-split-test' ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
 					<button type="button" class="button wbam-copy-btn" data-copy="<?php echo esc_attr( $shortcode ); ?>">
 						<?php esc_html_e( 'Copy Shortcode', 'wb-ads-rotator-with-split-test' ); ?>
 					</button>

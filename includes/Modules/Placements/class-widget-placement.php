@@ -130,6 +130,7 @@ class WBAM_Ad_Widget extends \WP_Widget {
 				'posts_per_page' => -1,
 				'orderby'        => 'title',
 				'order'          => 'ASC',
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Admin-only query; cost acceptable.
 				'meta_query'     => array(
 					array(
 						'key'     => '_wbam_enabled',

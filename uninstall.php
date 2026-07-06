@@ -49,6 +49,7 @@ $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_link_clicks" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_analytics" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_email_submissions" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_link_partnerships" );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_rate_limits" );
 // phpcs:enable
 
 // Delete options.
@@ -71,9 +72,11 @@ wp_clear_scheduled_hook( 'wbam_daily_cleanup' );
 wp_clear_scheduled_hook( 'wbam_hourly_stats' );
 
 // Clean up user meta.
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup of plugin custom tables.
 $wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE 'wbam_%'" );
 
 // Clean up post meta.
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup of plugin custom tables.
 $wpdb->query( "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '_wbam_%'" );
 
 // Flush rewrite rules.

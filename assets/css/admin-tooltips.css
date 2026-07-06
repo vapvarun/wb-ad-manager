@@ -45,6 +45,8 @@
 
 .wbam-tip__icon:focus-visible {
 	box-shadow: 0 0 0 2px var(--wbam-accent);
+	outline: 2px solid var(--wbam-accent, #2271b1);
+	outline-offset: 2px;
 }
 
 .wbam-tip__icon[aria-expanded="true"] {

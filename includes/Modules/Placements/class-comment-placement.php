@@ -231,8 +231,8 @@ class Comment_Placement implements Placement_Interface {
 		);
 		?>
 		<div class="wbam-placement-extra">
-			<label><?php esc_html_e( 'Position', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<select name="wbam_data[comment_position]" class="wbam-comment-position-select">
+			<label for="wbam_comment_position"><?php esc_html_e( 'Position', 'wb-ads-rotator-with-split-test' ); ?></label>
+			<select id="wbam_comment_position" name="wbam_data[comment_position]" class="wbam-comment-position-select">
 				<?php foreach ( $positions as $key => $label ) : ?>
 					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $position, $key ); ?>>
 						<?php echo esc_html( $label ); ?>
@@ -241,8 +241,8 @@ class Comment_Placement implements Placement_Interface {
 			</select>
 		</div>
 		<div class="wbam-placement-extra wbam-comment-between-options" <?php echo ( 'between_comments' !== $position ) ? 'style="display:none;"' : ''; ?>>
-			<label><?php esc_html_e( 'Show after every', 'wb-ads-rotator-with-split-test' ); ?></label>
-			<input type="number" name="wbam_data[comment_after]" value="<?php echo esc_attr( $after_count ); ?>" min="1" max="50" style="width:60px;" />
+			<label for="wbam_comment_after"><?php esc_html_e( 'Show after every', 'wb-ads-rotator-with-split-test' ); ?></label>
+			<input type="number" id="wbam_comment_after" name="wbam_data[comment_after]" value="<?php echo esc_attr( $after_count ); ?>" min="1" max="50" style="width:60px;" />
 			<?php esc_html_e( 'comments', 'wb-ads-rotator-with-split-test' ); ?>
 			<label style="margin-left:15px;">
 				<input type="checkbox" name="wbam_data[comment_repeat]" value="1" <?php checked( $repeat ); ?> />

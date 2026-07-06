@@ -473,7 +473,10 @@
 			 * Initialize click tracking.
 			 */
 			init: function() {
-				var ads = document.querySelectorAll( '.wbam-ad[data-ad-id]' );
+				// Match both the canonical .wbam-ad class and the
+				// .wbam-ad-slot wrapper emitted by the placement engine,
+				// so tracking still attaches if a filter strips one class.
+				var ads = document.querySelectorAll( '.wbam-ad[data-ad-id], .wbam-ad-slot[data-ad-id]' );
 
 				ads.forEach( function( ad ) {
 					var links = ad.querySelectorAll( 'a' );

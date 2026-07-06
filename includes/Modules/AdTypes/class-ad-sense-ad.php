@@ -321,9 +321,9 @@ class AdSense_Ad implements Ad_Type_Interface {
 		<div class="wbam-field wbam-adsense-fixed" <?php echo 'fixed' !== $ad_format ? 'style="display:none;"' : ''; ?>>
 			<label><?php esc_html_e( 'Fixed Dimensions', 'wb-ads-rotator-with-split-test' ); ?></label>
 			<div class="wbam-field-input wbam-dimensions">
-				<input type="number" name="wbam_data[fixed_width]" value="<?php echo esc_attr( $fixed_width ); ?>" placeholder="<?php esc_attr_e( 'Width', 'wb-ads-rotator-with-split-test' ); ?>" min="0" style="width:100px;" />
+				<input type="number" name="wbam_data[fixed_width]" value="<?php echo esc_attr( $fixed_width ); ?>" placeholder="<?php esc_attr_e( 'Width', 'wb-ads-rotator-with-split-test' ); ?>" aria-label="<?php esc_attr_e( 'Fixed width in pixels', 'wb-ads-rotator-with-split-test' ); ?>" min="0" style="width:100px;" />
 				<span>×</span>
-				<input type="number" name="wbam_data[fixed_height]" value="<?php echo esc_attr( $fixed_height ); ?>" placeholder="<?php esc_attr_e( 'Height', 'wb-ads-rotator-with-split-test' ); ?>" min="0" style="width:100px;" />
+				<input type="number" name="wbam_data[fixed_height]" value="<?php echo esc_attr( $fixed_height ); ?>" placeholder="<?php esc_attr_e( 'Height', 'wb-ads-rotator-with-split-test' ); ?>" aria-label="<?php esc_attr_e( 'Fixed height in pixels', 'wb-ads-rotator-with-split-test' ); ?>" min="0" style="width:100px;" />
 				<span>px</span>
 			</div>
 		</div>

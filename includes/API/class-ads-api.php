@@ -23,9 +23,9 @@ class Ads_API {
 	/**
 	 * REST namespace.
 	 *
-	 * @var string
+	 * @var non-falsy-string
 	 */
-	private $namespace = 'wbam/v1';
+	private const REST_NAMESPACE = 'wbam/v1';
 
 	/**
 	 * Constructor.
@@ -40,7 +40,7 @@ class Ads_API {
 	public function register_routes() {
 		// Public: list published ads.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads',
 			array(
 				array(
@@ -74,7 +74,7 @@ class Ads_API {
 
 		// Public: serve ad for a placement.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads/serve',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -101,7 +101,7 @@ class Ads_API {
 
 		// Public: list available placement types.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads/placements',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -112,7 +112,7 @@ class Ads_API {
 
 		// Public: list available ad types.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads/types',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -123,7 +123,7 @@ class Ads_API {
 
 		// Public: track event (impression / click).
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads/track',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
@@ -152,7 +152,7 @@ class Ads_API {
 
 		// Admin: single ad CRUD.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads/(?P<id>\d+)',
 			array(
 				array(
@@ -176,7 +176,7 @@ class Ads_API {
 
 		// Admin: per-ad stats.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads/(?P<id>\d+)/stats',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -197,7 +197,7 @@ class Ads_API {
 
 		// Admin: duplicate ad.
 		register_rest_route(
-			$this->namespace,
+			self::REST_NAMESPACE,
 			'/ads/(?P<id>\d+)/duplicate',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
@@ -560,7 +560,7 @@ class Ads_API {
 			$values[] = sanitize_text_field( $request['end_date'] ) . ' 23:59:59';
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- WBAM custom table name from $wpdb->prefix, not user input.
 		$impressions = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.
@@ -569,7 +569,7 @@ class Ads_API {
 			)
 		);
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- WBAM custom table name from $wpdb->prefix, not user input.
 		$clicks = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Placeholders interpolated via  /  fragments; safe.

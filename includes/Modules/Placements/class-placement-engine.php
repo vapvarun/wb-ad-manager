@@ -393,15 +393,17 @@ class Placement_Engine {
 			$this->rendered_ad_ids[ $ad_id ] = true;
 		}
 
-		// Wrap every rendered ad in a standard .wbam-ad-slot container
-		// so the frontend stylesheet can apply responsive rules
-		// (max-width:100%, aspect-ratio preservation) regardless of
-		// ad type (image, code, AdSense, rich HTML, etc.). Named
-		// differently from the ad-type handlers' inner .wbam-ad
-		// wrappers to avoid collision with existing CSS selectors.
+		// Wrap every rendered ad in a standard container carrying BOTH
+		// the .wbam-ad-slot class (responsive rules: max-width:100%,
+		// aspect-ratio preservation) and the canonical .wbam-ad class,
+		// which the frontend contract depends on: frontend.js attaches
+		// the click-tracking listener to .wbam-ad[data-ad-id], and
+		// frontend.css applies the base/print/focus rules to .wbam-ad.
+		// No ad-type handler emits .wbam-ad itself, so this wrapper is
+		// the single source of that class.
 		if ( '' !== $output ) {
 			$is_responsive = '1' === (string) get_post_meta( $ad_id, '_wbam_is_responsive', true );
-			$classes       = 'wbam-ad-slot';
+			$classes       = 'wbam-ad wbam-ad-slot';
 			if ( $is_responsive ) {
 				$classes .= ' wbam-ad-slot--responsive';
 			}
