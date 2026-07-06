@@ -618,7 +618,13 @@ class Partnership_Form {
 			}
 		}
 		/* Dark mode: the select arrow SVG is a hardcoded data URI, so swap it
-		   for a light arrow under the same dark triggers frontend.css uses. */
+		   for a light arrow under the same dark triggers frontend.css uses.
+		   Re-declare background-repeat/position/size here too so the override
+		   is self-contained: a host theme that restyles selects with the
+		   `background` shorthand under dark mode resets background-repeat to
+		   `repeat`, which tiled the arrow across the whole field (Basecamp
+		   #10033607741 round 2). Pinning all four longhands keeps a single
+		   arrow regardless of the theme cascade. */
 		html[data-bx-mode="dark"] .wbam-partnership-form-wrap .wbam-form-field select,
 		body.buddyx-dark-theme .wbam-partnership-form-wrap .wbam-form-field select,
 		html.dark-mode .wbam-partnership-form-wrap .wbam-form-field select,
@@ -629,6 +635,9 @@ class Partnership_Form {
 		.buddyx-dark-mode .wbam-partnership-form-wrap .wbam-form-field select,
 		.bb-dark-mode .wbam-partnership-form-wrap .wbam-form-field select {
 			background-image: url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%23b4b4b8\' d=\'M6 8L1 3h10z\'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: right 12px center;
+			background-size: 12px;
 		}
 		';
 	}
