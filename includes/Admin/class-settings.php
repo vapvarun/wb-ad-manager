@@ -508,7 +508,7 @@ class Settings {
 			add_settings_error( 'wbam_messages', 'wbam_message', __( 'Settings saved.', 'wb-ads-rotator-with-split-test' ), 'updated' );
 		}
 		?>
-		<div class="wrap wbam-admin wbam-settings-wrap">
+		<div class="wrap wbam-admin wbam-settings-page wbam-settings-wrap">
 			<?php
 			\WBAM\Admin\UX::page_header(
 				array(
