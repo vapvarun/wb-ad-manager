@@ -140,8 +140,12 @@ class Link_Cloaker {
 		// Set no-cache headers.
 		nocache_headers();
 
-		// Perform redirect.
-		wp_safe_redirect( $url, $redirect_type );
+		// Cloaking external destinations is the whole purpose of this feature,
+		// so wp_safe_redirect() is wrong here: it only allows the site's own
+		// host and silently rewrites every external target to wp-admin. The
+		// destination is admin-entered and sanitised on save; re-sanitise here
+		// and use wp_redirect(). phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- Intentional external redirect for a link cloaker; URL is admin-set, not visitor-controlled.
+		wp_redirect( esc_url_raw( $url ), $redirect_type ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 		exit;
 	}
 
@@ -174,7 +178,8 @@ class Link_Cloaker {
 			case 'custom':
 				$custom_url = Settings_Helper::get( 'link_inactive_url', '' );
 				if ( ! empty( $custom_url ) ) {
-					wp_safe_redirect( $custom_url, 302 );
+					// Admin-set fallback URL, which may be external. phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+					wp_redirect( esc_url_raw( $custom_url ), 302 ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 					exit;
 				}
 				// Fall through to 404.
