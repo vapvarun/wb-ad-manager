@@ -660,7 +660,7 @@ class Ads_API {
 		foreach ( $placements as $placement ) {
 			$data[] = array(
 				'id'    => $placement->get_id(),
-				'label' => $placement->get_label(),
+				'label' => $placement->get_name(),
 				'group' => $placement->get_group(),
 			);
 		}
@@ -683,7 +683,7 @@ class Ads_API {
 		foreach ( $ad_types as $ad_type ) {
 			$data[] = array(
 				'id'    => $ad_type->get_id(),
-				'label' => $ad_type->get_label(),
+				'label' => $ad_type->get_name(),
 			);
 		}
 
