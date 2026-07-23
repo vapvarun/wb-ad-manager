@@ -33,6 +33,10 @@ class Admin {
 	 * Initialize.
 	 */
 	public function init() {
+		// Register + load the shared admin token palette before anything else,
+		// on every WB Ad Manager admin screen (priority 5). Pro depends on the
+		// `wbam-admin-tokens` handle too, so it must exist early.
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_tokens' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_metaboxes' ) );
 		add_action( 'save_post', array( $this, 'save_meta' ), 10, 2 );
@@ -375,6 +379,69 @@ class Admin {
 	}
 
 	/**
+	 * Whether the current admin screen belongs to WB Ad Manager.
+	 *
+	 * True for the ad and classified CPT screens, and for any page whose hook
+	 * or slug carries the `wbam` prefix (settings, links, advertisers, Pro
+	 * pages, etc.). This is the single gate that decides where the shared
+	 * token palette loads.
+	 *
+	 * @since 2.9.2
+	 * @param string $hook Current admin page hook suffix.
+	 * @return bool
+	 */
+	public function is_wbam_admin_screen( $hook ) {
+		if ( false !== strpos( (string) $hook, 'wbam' ) ) {
+			return true;
+		}
+
+		$screen = get_current_screen();
+		if ( $screen && in_array( $screen->post_type, array( 'wbam-ad', 'wbam-classified' ), true ) ) {
+			return true;
+		}
+
+		/**
+		 * Filter whether the shared admin token palette should load here.
+		 *
+		 * Lets an extension opt a custom screen into the WB Ad Manager admin
+		 * styling foundation.
+		 *
+		 * @since 2.9.2
+		 * @param bool   $is_ours Whether this is a WB Ad Manager admin screen.
+		 * @param string $hook    Current admin page hook suffix.
+		 */
+		return (bool) apply_filters( 'wbam_is_admin_screen', false, $hook );
+	}
+
+	/**
+	 * Register and enqueue the shared admin token palette.
+	 *
+	 * The `wbam-admin-tokens` handle is the single source of the --wbam-*
+	 * admin palette. Every admin stylesheet in both plugins depends on it and
+	 * inherits the tokens rather than redeclaring them. Registered even when
+	 * not enqueued here, so a dependent can pull it in on a screen this gate
+	 * does not match.
+	 *
+	 * @since 2.9.2
+	 * @param string $hook Current admin page hook suffix.
+	 */
+	public function enqueue_admin_tokens( $hook ) {
+		if ( ! wp_style_is( 'wbam-admin-tokens', 'registered' ) ) {
+			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			wp_register_style(
+				'wbam-admin-tokens',
+				WBAM_URL . 'assets/css/admin-tokens' . $suffix . '.css',
+				array(),
+				WBAM_VERSION
+			);
+		}
+
+		if ( $this->is_wbam_admin_screen( $hook ) ) {
+			wp_enqueue_style( 'wbam-admin-tokens' );
+		}
+	}
+
+	/**
 	 * Enqueue assets.
 	 *
 	 * @param string $hook Hook.
@@ -392,7 +459,7 @@ class Admin {
 		wp_enqueue_style(
 			'wbam-admin',
 			WBAM_URL . 'assets/css/admin' . $suffix . '.css',
-			array(),
+			array( 'wbam-admin-tokens' ),
 			WBAM_VERSION
 		);
 

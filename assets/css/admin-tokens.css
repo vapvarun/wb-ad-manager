@@ -1,0 +1,81 @@
+/**
+ * WB Ad Manager — admin design tokens (single source of truth).
+ *
+ * This is the ONLY place the --wbam-* admin palette is declared. Every admin
+ * stylesheet in both the free and Pro plugins depends on this file's handle
+ * (`wbam-admin-tokens`) and inherits these values by cascade, instead of
+ * redeclaring its own :root block. It is enqueued first, on every WB Ad
+ * Manager admin screen, so the tokens are defined before any consumer loads.
+ *
+ * Why one file: the palette was previously hand-copied across seven
+ * stylesheets and had already drifted (--wbam-border was #e5e5e5 on free
+ * screens and #c3c4c7 on Pro screens, inside the same menu). Centralising it
+ * makes that class of drift impossible.
+ *
+ * Note on theme-awareness: wp-admin is NOT theme-aware. theme.json presets
+ * (--wp--preset--color--*) and theme custom properties (--text-1, --brand)
+ * are never enqueued on a plugin settings screen, so the var() fallback heads
+ * below always resolve to their hardcoded tails in admin. The heads are kept
+ * only so a site that deliberately sets those variables in admin (rare) is
+ * honoured; they change nothing on a stock install.
+ *
+ * Pro-only tokens (credits SDK aliases, marketplace status colours, etc.) are
+ * NOT here — Pro adds those in its own :root block, extending this base. Free
+ * owns the base; Pro extends it. Never the reverse.
+ *
+ * @package WB_Ad_Manager
+ * @since   2.9.2
+ */
+
+:root {
+	/* Surfaces */
+	--wbam-bg:            var(--bg, var(--wp--preset--color--base, #ffffff));
+	--wbam-surface:       var(--surface, #f6f7f7);
+	--wbam-surface-alt:   var(--surface-alt, #f0f0f1);
+
+	/* Text */
+	--wbam-text:          var(--text-1, var(--wp--preset--color--contrast, #1d2327));
+	--wbam-text-muted:    var(--text-2, #646970);
+	--wbam-text-subtle:   #8c8f94;
+	--wbam-text-inverse:  #ffffff;
+
+	/* Accent */
+	--wbam-accent:        var(--brand, var(--wp--preset--color--primary, #2271b1));
+	--wbam-accent-hover:  var(--brand-hover, #135e96);
+	--wbam-accent-fg:     #ffffff;
+
+	/* Status */
+	--wbam-success:       #00a32a;
+	--wbam-danger:        #d63638;
+	--wbam-danger-bg:     #f8d7da;
+	--wbam-danger-text:   #721c24;
+	--wbam-warning:       #dba617;
+	--wbam-warning-bg:    #fff8e5;
+	--wbam-warning-text:  #856404;
+
+	/* Borders — a deliberate three-tier gradient, lightest to darkest:
+	   border (#e5e5e5) < border-subtle (#dcdcde) < border-strong (#c3c4c7). */
+	--wbam-border:        #e5e5e5;
+	--wbam-border-subtle: #dcdcde;
+	--wbam-border-strong: #c3c4c7;
+
+	/* Elevation */
+	--wbam-shadow-sm:     0 1px 2px rgba(0, 0, 0, 0.04);
+	--wbam-shadow-md:     0 2px 6px rgba(0, 0, 0, 0.08);
+	--wbam-shadow-lg:     0 4px 12px rgba(0, 0, 0, 0.12);
+
+	/* Radius */
+	--wbam-r-sm:          4px;
+	--wbam-r-md:          8px;
+	--wbam-r-lg:          12px;
+
+	/* Type scale */
+	--wbam-font-size-xs:  0.75rem;
+	--wbam-font-size-sm:  0.8125rem;
+	--wbam-font-size-md:  1rem;
+	--wbam-font-size-lg:  1.125rem;
+	--wbam-font-size-xl:  1.25rem;
+
+	/* Motion */
+	--wbam-transition:    0.2s ease;
+}
