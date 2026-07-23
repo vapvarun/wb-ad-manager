@@ -234,9 +234,15 @@ class Partnership_Admin {
 		// Show notices.
 		$this->show_notices();
 		?>
-		<div class="wrap wbam-partnerships-wrap">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Partnership Inquiries', 'wb-ads-rotator-with-split-test' ); ?></h1>
-			<hr class="wp-header-end">
+		<div class="wrap wbam-admin wbam-partnerships-wrap">
+			<?php
+			\WBAM\Admin\UX::page_header(
+				array(
+					'title' => __( 'Partnership Inquiries', 'wb-ads-rotator-with-split-test' ),
+					'desc'  => __( 'Requests submitted through your partnership form.', 'wb-ads-rotator-with-split-test' ),
+				)
+			);
+			?>
 
 			<!-- Status Filter Tabs -->
 			<ul class="subsubsub">

@@ -156,7 +156,7 @@ class Links_Admin {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only router between list / edit views; mutations are nonce-checked in their own handlers.
 		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'list';
 
-		echo '<div class="wrap">';
+		echo '<div class="wrap wbam-admin">';
 
 		switch ( $action ) {
 			case 'add':
@@ -180,13 +180,16 @@ class Links_Admin {
 		$list_table->prepare_items();
 
 		?>
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Links', 'wb-ads-rotator-with-split-test' ); ?></h1>
-		<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&action=add' ) ); ?>" class="page-title-action">
-			<?php esc_html_e( 'Add New Link', 'wb-ads-rotator-with-split-test' ); ?>
-		</a>
-		<hr class="wp-header-end">
-
-		<?php $this->show_notices(); ?>
+		<?php
+		\WBAM\Admin\UX::page_header(
+			array(
+				'title'   => __( 'Links', 'wb-ads-rotator-with-split-test' ),
+				'desc'    => __( 'Cloaked, trackable outbound and affiliate links.', 'wb-ads-rotator-with-split-test' ),
+				'actions' => '<a href="' . esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&action=add' ) ) . '" class="wbam-admin-btn wbam-admin-btn--primary">' . esc_html__( 'Add New Link', 'wb-ads-rotator-with-split-test' ) . '</a>',
+			)
+		);
+		$this->show_notices();
+		?>
 
 		<form method="get">
 			<input type="hidden" name="page" value="wbam-links">
@@ -770,7 +773,7 @@ class Links_Admin {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only view router; mutations are nonce-checked in their own handlers.
 		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'list';
 
-		echo '<div class="wrap">';
+		echo '<div class="wrap wbam-admin">';
 
 		if ( 'edit_category' === $action || 'add_category' === $action ) {
 			$this->render_category_form();
@@ -789,11 +792,15 @@ class Links_Admin {
 		$categories   = $link_manager->get_categories();
 
 		?>
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Link Categories', 'wb-ads-rotator-with-split-test' ); ?></h1>
-		<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories&action=add_category' ) ); ?>" class="page-title-action">
-			<?php esc_html_e( 'Add New Category', 'wb-ads-rotator-with-split-test' ); ?>
-		</a>
-		<hr class="wp-header-end">
+		<?php
+		\WBAM\Admin\UX::page_header(
+			array(
+				'title'   => __( 'Link Categories', 'wb-ads-rotator-with-split-test' ),
+				'desc'    => __( 'Group your links into categories.', 'wb-ads-rotator-with-split-test' ),
+				'actions' => '<a href="' . esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories&action=add_category' ) ) . '" class="wbam-admin-btn wbam-admin-btn--primary">' . esc_html__( 'Add New Category', 'wb-ads-rotator-with-split-test' ) . '</a>',
+			)
+		);
+		?>
 
 		<?php $this->show_notices(); ?>
 

@@ -67,7 +67,7 @@ class UX {
 				<?php endif; ?>
 			</div>
 			<?php if ( '' !== $args['actions'] ) : ?>
-				<div class="wbam-page-header__actions"><?php echo wp_kses_post( $args['actions'] ); ?></div>
+				<div class="wbam-page-header__actions"><?php echo wp_kses( $args['actions'], self::actions_allowed_html() ); ?></div>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -83,6 +83,72 @@ class UX {
 			return '';
 		}
 		return $html;
+	}
+
+	/**
+	 * Allowed HTML for the header/empty-state action slots.
+	 *
+	 * Actions are developer-authored button/link markup, often with an inline
+	 * Lucide SVG icon — which wp_kses_post() would strip. This allowlist keeps
+	 * the icons while still constraining the markup to buttons, links and SVG
+	 * shapes.
+	 *
+	 * @since 2.9.2
+	 * @return array<string,array<string,bool>>
+	 */
+	private static function actions_allowed_html() {
+		$svg_attrs = array(
+			'xmlns'           => true,
+			'width'           => true,
+			'height'          => true,
+			'viewbox'         => true,
+			'fill'            => true,
+			'stroke'          => true,
+			'stroke-width'    => true,
+			'stroke-linecap'  => true,
+			'stroke-linejoin' => true,
+			'class'           => true,
+			'aria-hidden'     => true,
+			'focusable'       => true,
+			'd'               => true,
+			'points'          => true,
+			'x1'              => true,
+			'y1'              => true,
+			'x2'              => true,
+			'y2'              => true,
+			'cx'              => true,
+			'cy'              => true,
+			'r'               => true,
+			'rx'              => true,
+			'x'               => true,
+			'y'               => true,
+		);
+
+		return array(
+			'a'        => array(
+				'href'   => true,
+				'class'  => true,
+				'id'     => true,
+				'target' => true,
+				'rel'    => true,
+				'data-*' => true,
+			),
+			'button'   => array(
+				'type'     => true,
+				'class'    => true,
+				'id'       => true,
+				'data-*'   => true,
+				'disabled' => true,
+			),
+			'span'     => array( 'class' => true ),
+			'svg'      => $svg_attrs,
+			'path'     => $svg_attrs,
+			'line'     => $svg_attrs,
+			'polyline' => $svg_attrs,
+			'polygon'  => $svg_attrs,
+			'circle'   => $svg_attrs,
+			'rect'     => $svg_attrs,
+		);
 	}
 
 	/**
@@ -179,7 +245,7 @@ class UX {
 				<p><?php echo esc_html( $args['message'] ); ?></p>
 			<?php endif; ?>
 			<?php if ( '' !== $args['actions'] ) : ?>
-				<div class="wbam-page-header__actions"><?php echo wp_kses_post( $args['actions'] ); ?></div>
+				<div class="wbam-page-header__actions"><?php echo wp_kses( $args['actions'], self::actions_allowed_html() ); ?></div>
 			<?php endif; ?>
 		</div>
 		<?php
