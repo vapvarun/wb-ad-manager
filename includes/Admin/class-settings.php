@@ -508,10 +508,16 @@ class Settings {
 			add_settings_error( 'wbam_messages', 'wbam_message', __( 'Settings saved.', 'wb-ads-rotator-with-split-test' ), 'updated' );
 		}
 		?>
-		<div class="wrap wbam-settings-wrap">
-			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-
-			<?php settings_errors( 'wbam_messages' ); ?>
+		<div class="wrap wbam-admin wbam-settings-wrap">
+			<?php
+			\WBAM\Admin\UX::page_header(
+				array(
+					'title' => get_admin_page_title(),
+					'desc'  => __( 'Ad display, performance, privacy and features.', 'wb-ads-rotator-with-split-test' ),
+				)
+			);
+			settings_errors( 'wbam_messages' );
+			?>
 
 			<div class="wbam-settings-container">
 				<form action="options.php" method="post" class="wbam-settings-form">

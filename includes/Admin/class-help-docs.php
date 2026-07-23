@@ -91,8 +91,15 @@ class Help_Docs {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only tab switcher; no state mutation.
 		$active_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'getting-started';
 		?>
-		<div class="wrap wbam-help-wrap">
-			<h1><?php esc_html_e( 'Help & Documentation', 'wb-ads-rotator-with-split-test' ); ?></h1>
+		<div class="wrap wbam-admin wbam-help-wrap">
+			<?php
+			\WBAM\Admin\UX::page_header(
+				array(
+					'title' => __( 'Help & Documentation', 'wb-ads-rotator-with-split-test' ),
+					'desc'  => __( 'Guides and answers for setting up and running ads.', 'wb-ads-rotator-with-split-test' ),
+				)
+			);
+			?>
 
 			<nav class="nav-tab-wrapper wbam-nav-tabs">
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-help&tab=getting-started' ) ); ?>"
