@@ -433,8 +433,9 @@ class Admin {
 	 * @param string $hook Current admin page hook suffix.
 	 */
 	public function enqueue_admin_tokens( $hook ) {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
 		if ( ! wp_style_is( 'wbam-admin-tokens', 'registered' ) ) {
-			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 			wp_register_style(
 				'wbam-admin-tokens',
 				WBAM_URL . 'assets/css/admin-tokens' . $suffix . '.css',
@@ -443,8 +444,19 @@ class Admin {
 			);
 		}
 
+		// The shared admin family (page header, cards, tables, buttons,
+		// badges). Depends on the token palette; both plugins' screens use it.
+		if ( ! wp_style_is( 'wbam-admin-family', 'registered' ) ) {
+			wp_register_style(
+				'wbam-admin-family',
+				WBAM_URL . 'assets/css/admin-family' . $suffix . '.css',
+				array( 'wbam-admin-tokens' ),
+				WBAM_VERSION
+			);
+		}
+
 		if ( $this->is_wbam_admin_screen( $hook ) ) {
-			wp_enqueue_style( 'wbam-admin-tokens' );
+			wp_enqueue_style( 'wbam-admin-family' );
 		}
 	}
 
@@ -611,9 +623,9 @@ class Admin {
 		?>
 		<style id="wbam-menu-sections">
 			/* Header rows are tight labels, not full item-height rows. The
-			   WordPress submenu link supplies its own vertical padding; zero it
-			   for headers and let the span provide a small top gap so five
-			   sections do not inflate the menu height. */
+				WordPress submenu link supplies its own vertical padding; zero it
+				for headers and let the span provide a small top gap so five
+				sections do not inflate the menu height. */
 			#adminmenu .wp-submenu li a[href^="#wbam-section-"] {
 				padding-top: 0;
 				padding-bottom: 0;
@@ -631,7 +643,7 @@ class Admin {
 				pointer-events: none;
 			}
 			/* First labelled section needs no big top gap - it follows the
-			   header-less Ads group directly. */
+				header-less Ads group directly. */
 			#adminmenu .wp-submenu li a[href^="#wbam-section-"]:hover,
 			#adminmenu .wp-submenu li a[href^="#wbam-section-"]:focus,
 			#adminmenu .wp-submenu li.current a[href^="#wbam-section-"],

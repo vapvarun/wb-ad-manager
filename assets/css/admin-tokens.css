@@ -78,4 +78,19 @@
 
 	/* Motion */
 	--wbam-transition:    0.2s ease;
+
+	/* Spacing scale — used by the shared admin family (page header, cards,
+	   tables, buttons, empty states) so every screen spaces the same way. */
+	--wbam-space-1:       4px;
+	--wbam-space-2:       8px;
+	--wbam-space-3:       12px;
+	--wbam-space-4:       16px;
+	--wbam-space-5:       20px;
+	--wbam-space-6:       24px;
+	--wbam-space-8:       32px;
+	--wbam-space-12:      48px;
+
+	/* Font weights */
+	--wbam-weight-medium:   500;
+	--wbam-weight-semibold: 600;
 }
