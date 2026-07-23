@@ -38,6 +38,13 @@ class Admin {
 		// `wbam-admin-tokens` handle too, so it must exist early.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_tokens' ), 5 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+
+		// Group the WB Ad Manager submenu into labelled sections. Priority 99
+		// so it runs after both Free (default 10) and Pro (20/22) have
+		// registered every submenu item. The section-header CSS must load on
+		// every admin page, because the sidebar renders everywhere.
+		add_action( 'admin_menu', array( $this, 'reorder_submenu_into_sections' ), 99 );
+		add_action( 'admin_head', array( $this, 'print_menu_section_css' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_metaboxes' ) );
 		add_action( 'save_post', array( $this, 'save_meta' ), 10, 2 );
 		add_filter( 'manage_wbam-ad_posts_columns', array( $this, 'add_columns' ) );
@@ -439,6 +446,190 @@ class Admin {
 		if ( $this->is_wbam_admin_screen( $hook ) ) {
 			wp_enqueue_style( 'wbam-admin-tokens' );
 		}
+	}
+
+	/**
+	 * Group the WB Ad Manager submenu into labelled sections.
+	 *
+	 * A purely presentational reorder of items already registered under the
+	 * ad CPT menu — no URL changes, no capability changes, nothing added or
+	 * removed. Free owns the default section map and order; Pro (and any
+	 * extension) slots its own pages into a section, or defines new sections,
+	 * through the two filters `regroup_submenu()` applies. An item whose slug
+	 * is not mapped lands in the header-less `other` bucket and is never
+	 * dropped.
+	 *
+	 * @since 2.9.2
+	 */
+	public function reorder_submenu_into_sections() {
+		$this->regroup_submenu(
+			'edit.php?post_type=wbam-ad',
+			array(
+				// Ads.
+				'edit.php?post_type=wbam-ad'     => 'ads',
+				'post-new.php?post_type=wbam-ad' => 'ads',
+				// Delivery.
+				'wbam-inventory'                 => 'delivery',
+				'wbam-ab-testing'                => 'delivery',
+				// Campaigns (advertiser intake + scheduling).
+				'wbam-campaigns'                 => 'campaigns',
+				'wbam-submissions'               => 'campaigns',
+				// Reports.
+				'wbam-analytics'                 => 'reports',
+				'wbam-revenue'                   => 'reports',
+				'wbam-audit-log'                 => 'reports',
+				// Settings.
+				'wbam-settings'                  => 'settings',
+				'wbam-pro-settings'              => 'settings',
+				'wbam-tools'                     => 'settings',
+				'wbam-help'                      => 'settings',
+			),
+			array(
+				'ads'       => __( 'Ads', 'wb-ads-rotator-with-split-test' ),
+				'delivery'  => __( 'Delivery', 'wb-ads-rotator-with-split-test' ),
+				'campaigns' => __( 'Campaigns', 'wb-ads-rotator-with-split-test' ),
+				'reports'   => __( 'Reports', 'wb-ads-rotator-with-split-test' ),
+				'settings'  => __( 'Settings', 'wb-ads-rotator-with-split-test' ),
+				'other'     => '',
+			)
+		);
+	}
+
+	/**
+	 * Rewrite a top-level menu's submenu into labelled sections.
+	 *
+	 * Ported from Learnomy's proven implementation so both products share one
+	 * approach. Fully filterable: an extension can slot any page into any
+	 * section (`wbam_admin_menu_section_map`) or define new sections and their
+	 * order (`wbam_admin_menu_sections`), for any of our menus, keyed by
+	 * `$parent`. Unmapped slugs fall into the header-less `other` bucket, so
+	 * nothing is ever dropped.
+	 *
+	 * @since 2.9.2
+	 * @param string               $parent_slug Top-level menu slug.
+	 * @param array<string,string> $groups      Default slug -> section-key map.
+	 * @param array<string,string> $group_order Default ordered section-key -> label.
+	 */
+	private function regroup_submenu( $parent_slug, $groups, $group_order ) {
+		global $submenu;
+
+		if ( empty( $submenu[ $parent_slug ] ) ) {
+			return;
+		}
+
+		/**
+		 * Filter the slug -> section-key map for a menu. $parent_slug says which menu.
+		 *
+		 * @since 2.9.2
+		 * @param array<string,string> $groups Slug -> section-key.
+		 * @param string               $parent_slug Top-level menu slug.
+		 */
+		$groups = (array) apply_filters( 'wbam_admin_menu_section_map', $groups, $parent_slug );
+
+		/**
+		 * Filter the ordered section-key -> label list for a menu. Controls both
+		 * section order and labels (an empty label renders no header row).
+		 *
+		 * @since 2.9.2
+		 * @param array<string,string> $group_order Section-key -> label, in order.
+		 * @param string               $parent_slug      Top-level menu slug.
+		 */
+		$group_order = (array) apply_filters( 'wbam_admin_menu_sections', $group_order, $parent_slug );
+
+		// Always keep a header-less catch-all so an unmapped slug is never
+		// dropped even if a filter removed 'other'.
+		if ( ! array_key_exists( 'other', $group_order ) ) {
+			$group_order['other'] = '';
+		}
+
+		$buckets = array_fill_keys( array_keys( $group_order ), array() );
+
+		foreach ( $submenu[ $parent_slug ] as $item ) {
+			// $item is [ menu_title, capability, menu_slug, page_title (optional) ].
+			$slug  = $item[2] ?? '';
+			$group = $groups[ $slug ] ?? 'other';
+			if ( ! isset( $buckets[ $group ] ) ) {
+				$group = 'other';
+			}
+			$buckets[ $group ][] = $item;
+		}
+
+		// Rebuild in section order, emitting a header before each labelled,
+		// non-empty section. Empty-label sections render flush.
+		$rebuilt = array();
+		foreach ( $group_order as $group => $label ) {
+			if ( empty( $buckets[ $group ] ) ) {
+				continue;
+			}
+			if ( '' !== (string) $label ) {
+				// Anchor namespaced by parent so headers in different menus
+				// never collide.
+				$rebuilt[] = $this->build_section_header( sanitize_key( $parent_slug ) . '-' . $group, (string) $label );
+			}
+			$rebuilt = array_merge( $rebuilt, $buckets[ $group ] );
+		}
+
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Intentional presentational reorder of our own menu's submenu; items are unchanged, only regrouped.
+		$submenu[ $parent_slug ] = $rebuilt;
+	}
+
+	/**
+	 * Build a non-clickable section header row for a submenu.
+	 *
+	 * The href is a no-op anchor (`#wbam-section-{slug}`); CSS from
+	 * `print_menu_section_css()` styles it as a small-caps label and disables
+	 * hover. Capability matches the pages it groups (`manage_options`) so the
+	 * header shows exactly when its items do.
+	 *
+	 * @since 2.9.2
+	 * @param string $slug  Section identifier.
+	 * @param string $label Translated section label.
+	 * @return array<int,string> WordPress submenu row tuple.
+	 */
+	private function build_section_header( $slug, $label ) {
+		return array(
+			'<span class="wbam-menu-section">' . esc_html( $label ) . '</span>',
+			'manage_options',
+			'#wbam-section-' . $slug,
+			esc_html( $label ),
+		);
+	}
+
+	/**
+	 * Print the CSS that styles the submenu section-header rows.
+	 *
+	 * Emitted on every admin page because the sidebar renders everywhere. The
+	 * rows are marked up as links to a `#wbam-section-*` anchor, so they are
+	 * neutralised here into non-interactive small-caps labels.
+	 *
+	 * @since 2.9.2
+	 */
+	public function print_menu_section_css() {
+		?>
+		<style id="wbam-menu-sections">
+			#adminmenu .wp-submenu li a .wbam-menu-section {
+				display: inline-block;
+				width: 100%;
+				padding-top: 8px;
+				padding-bottom: 4px;
+				color: rgba(240, 246, 252, 0.5);
+				font-size: 10px;
+				font-weight: 700;
+				letter-spacing: 0.05em;
+				text-transform: uppercase;
+				pointer-events: none;
+			}
+			#adminmenu .wp-submenu li a[href^="#wbam-section-"],
+			#adminmenu .wp-submenu li a[href^="#wbam-section-"]:hover,
+			#adminmenu .wp-submenu li a[href^="#wbam-section-"]:focus,
+			#adminmenu .wp-submenu li.current a[href^="#wbam-section-"],
+			#adminmenu .wp-submenu li a[href^="#wbam-section-"].current {
+				cursor: default;
+				background: transparent !important;
+				color: rgba(240, 246, 252, 0.5) !important;
+			}
+		</style>
+		<?php
 	}
 
 	/**
