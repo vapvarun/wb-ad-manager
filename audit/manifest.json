@@ -1664,6 +1664,13 @@
       "args": 3,
       "where": "includes/Modules/Placements/class-placement-engine.php",
       "purpose": "Final gate before ad displays — KEY EXTENSION POINT for PRO frequency cap, campaign pacing"
+    },
+    {
+      "name": "wbam_ad_cap_reached",
+      "type": "action",
+      "args": 2,
+      "where": "includes/Modules/Targeting/class-frequency-manager.php",
+      "purpose": "Fired when an ad reaches its total impression cap and stops being eligible for delivery"
     }
   ],
   "buddypress_integration": {
@@ -1832,8 +1839,8 @@
     "ci_local": "phpcs / phpstan / phpunit"
   },
   "generated": {
-    "at": "2026-04-30T16:00:00Z",
-    "from": "wp-plugin-onboard skill",
+    "at": "2026-07-23T12:00:00Z",
+    "from": "targeted delta (total impression cap) - full wp-plugin-onboard --refresh due at release",
     "branch": "2.8.1",
     "schema_version": "v2.1",
     "scan_scope": "prebuilt_dir",
@@ -1842,7 +1849,7 @@
     "baseline": {
       "rest": 21,
       "ajax_unique": 6,
-      "actions_fired": 73,
+      "actions_fired": 74,
       "filters_fired": 57,
       "tables": 7,
       "shortcodes": 6,
