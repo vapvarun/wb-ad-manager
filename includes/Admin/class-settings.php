@@ -93,6 +93,27 @@ class Settings {
 			array( $this, 'sanitize_settings' )
 		);
 
+		// Features Section - which parts of the plugin this site uses.
+		add_settings_section(
+			'wbam_features',
+			__( 'Features', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_features_section' ),
+			'wbam-settings'
+		);
+
+		add_settings_field(
+			'module_links',
+			__( 'Link Manager', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_module_field' ),
+			'wbam-settings',
+			'wbam_features',
+			array(
+				'id'          => 'links',
+				'label'       => __( 'Enable the Link Manager', 'wb-ads-rotator-with-split-test' ),
+				'description' => __( 'Adds the Links menu for managing outbound and affiliate links, link categories and partnership inquiries. Turn this off if you only run ads - your existing link data is kept and reappears if you switch it back on.', 'wb-ads-rotator-with-split-test' ),
+			)
+		);
+
 		// General Section.
 		add_settings_section(
 			'wbam_general',
@@ -401,6 +422,16 @@ class Settings {
 	public function sanitize_settings( $input ) {
 		$sanitized = array();
 
+		// Module toggles. This method rebuilds the option from scratch, so any
+		// key not written here is dropped on save - modules must be explicit or
+		// the toggle would reset itself every time Settings is saved. An
+		// unchecked box posts nothing, which correctly resolves to false.
+		$sanitized['modules'] = array();
+		$posted_modules       = isset( $input['modules'] ) && is_array( $input['modules'] ) ? $input['modules'] : array();
+		foreach ( array_keys( \WBAM\Core\Settings_Helper::module_defaults() ) as $module_slug ) {
+			$sanitized['modules'][ $module_slug ] = ! empty( $posted_modules[ $module_slug ] );
+		}
+
 		$sanitized['disable_ads_logged_in'] = ! empty( $input['disable_ads_logged_in'] );
 		$sanitized['disable_ads_admin']     = ! empty( $input['disable_ads_admin'] );
 		$sanitized['ad_label']              = sanitize_text_field( $input['ad_label'] ?? '' );
@@ -572,6 +603,36 @@ class Settings {
 		<p class="description" style="margin-top: 10px;">
 			<?php esc_html_e( 'If the primary provider fails, the system will automatically try the next provider.', 'wb-ads-rotator-with-split-test' ); ?>
 		</p>
+		<?php
+	}
+
+	/**
+	 * Render the Features section intro.
+	 */
+	public function render_features_section() {
+		echo '<p>' . esc_html__( 'Switch off anything this site does not use. Turning a feature off only hides its admin menu - no data is deleted.', 'wb-ads-rotator-with-split-test' ) . '</p>';
+	}
+
+	/**
+	 * Render a module on/off checkbox.
+	 *
+	 * Modules default to enabled, so an absent stored value must read as on.
+	 * That differs from render_checkbox_field(), which defaults to off.
+	 *
+	 * @since 2.9.2
+	 * @param array $args Field arguments. Expects 'id', 'label', 'description'.
+	 */
+	public function render_module_field( $args ) {
+		$slug    = $args['id'];
+		$enabled = \WBAM\Core\Settings_Helper::is_module_enabled( $slug );
+		?>
+		<label>
+			<input type="checkbox" name="<?php echo esc_attr( self::OPTION_NAME . '[modules][' . $slug . ']' ); ?>" value="1" <?php checked( $enabled ); ?> />
+			<?php echo esc_html( $args['label'] ?? '' ); ?>
+		</label>
+		<?php if ( ! empty( $args['description'] ) ) : ?>
+			<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
+		<?php endif; ?>
 		<?php
 	}
 

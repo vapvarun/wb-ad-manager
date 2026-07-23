@@ -51,6 +51,13 @@ class Links_Admin {
 	 * Add menu pages.
 	 */
 	public function add_submenu() {
+		// A site that does not use links switches the module off and loses the
+		// whole menu. PRO gates its four Links submenus on the same flag, so
+		// nothing is left orphaned under a parent that no longer exists.
+		if ( ! \WBAM\Core\Settings_Helper::is_module_enabled( 'links' ) ) {
+			return;
+		}
+
 		// Links - Separate top-level menu.
 		add_menu_page(
 			__( 'Links', 'wb-ads-rotator-with-split-test' ),

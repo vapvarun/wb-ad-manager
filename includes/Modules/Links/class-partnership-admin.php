@@ -53,6 +53,10 @@ class Partnership_Admin {
 	 * Add admin menu.
 	 */
 	public function add_admin_menu() {
+		if ( ! \WBAM\Core\Settings_Helper::is_module_enabled( 'links' ) ) {
+			return;
+		}
+
 		add_submenu_page(
 			'wbam-links',
 			__( 'Partnership Inquiries', 'wb-ads-rotator-with-split-test' ),
@@ -68,6 +72,11 @@ class Partnership_Admin {
 	 */
 	public function add_pending_count_bubble() {
 		global $menu, $submenu;
+
+		// Bail before the count query when there is no menu to badge.
+		if ( ! isset( $submenu['wbam-links'] ) ) {
+			return;
+		}
 
 		$pending_count = $this->manager->count_partnerships( array( 'status' => 'pending' ) );
 
