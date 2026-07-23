@@ -160,8 +160,21 @@ class Setup_Wizard {
 			call_user_func( $this->steps[ $this->step ]['handler'] );
 		}
 
-		// Enqueue styles.
-		wp_enqueue_style( 'wbam-setup', WBAM_URL . 'assets/css/setup-wizard.css', array(), WBAM_VERSION );
+		// Enqueue styles. The wizard is a standalone full-screen page, but it
+		// shares the one canonical --wbam-* token palette so its colours,
+		// spacing and buttons match the rest of the plugin. setup-wizard.css
+		// declares only the two tokens unique to the wizard and inherits the
+		// base palette from admin-tokens.css.
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		if ( ! wp_style_is( 'wbam-admin-tokens', 'registered' ) ) {
+			wp_register_style(
+				'wbam-admin-tokens',
+				WBAM_URL . 'assets/css/admin-tokens' . $suffix . '.css',
+				array(),
+				WBAM_VERSION
+			);
+		}
+		wp_enqueue_style( 'wbam-setup', WBAM_URL . 'assets/css/setup-wizard.css', array( 'wbam-admin-tokens' ), WBAM_VERSION );
 
 		// Clean buffer and start fresh for page output.
 		ob_end_clean();
@@ -188,7 +201,8 @@ class Setup_Wizard {
 			<?php
 			wp_enqueue_style( 'dashicons' );
 			wp_enqueue_style( 'buttons' );
-			wp_print_styles( array( 'dashicons', 'buttons', 'wbam-setup' ) );
+			// Tokens first so wbam-setup inherits them by cascade.
+			wp_print_styles( array( 'dashicons', 'buttons', 'wbam-admin-tokens', 'wbam-setup' ) );
 			?>
 		</head>
 		<body class="wbam-setup wp-core-ui">

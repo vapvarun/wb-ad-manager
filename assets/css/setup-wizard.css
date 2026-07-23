@@ -4,25 +4,12 @@
  * @package WB_Ad_Manager
  */
 
-/* Tokens — wizard renders its own <html> outside admin chrome so admin.css
-   is not loaded. Keep this in sync with assets/css/admin.css :root. */
+/* Tokens — the base --wbam-* palette is NOT declared here. The wizard renders
+   its own <html> outside admin chrome, so it loads admin-tokens.css (the single
+   source, enqueued as a dependency of this stylesheet) for the base palette.
+   Only the two tokens unique to the wizard live below. */
 :root {
-	--wbam-bg:            var(--bg, var(--wp--preset--color--base, #ffffff));
-	--wbam-surface:       var(--surface, #f6f7f7);
-	--wbam-surface-alt:   var(--surface-alt, #f0f0f1);
-	--wbam-text:          var(--text-1, var(--wp--preset--color--contrast, #1d2327));
-	--wbam-text-muted:    var(--text-2, #646970);
-	--wbam-text-subtle:   #8c8f94;
-	--wbam-accent:        var(--brand, var(--wp--preset--color--primary, #2271b1));
-	--wbam-accent-hover:  var(--brand-hover, #135e96);
 	--wbam-accent-light:  rgba(34, 113, 177, 0.08);
-	--wbam-success:       #00a32a;
-	--wbam-border-subtle: #dcdcde;
-	--wbam-font-size-xs:  0.75rem;
-	--wbam-font-size-sm:  0.8125rem;
-	--wbam-font-size-md:  1rem;
-	--wbam-font-size-lg:  1.125rem;
-	--wbam-font-size-xl:  1.25rem;
 	--wbam-font-size-2xl: 1.5rem;
 }
 
