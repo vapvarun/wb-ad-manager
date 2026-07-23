@@ -201,8 +201,16 @@ class Setup_Wizard {
 			<?php
 			wp_enqueue_style( 'dashicons' );
 			wp_enqueue_style( 'buttons' );
+			// The wizard renders standalone HTML and never calls wp_head(), so
+			// icons drawn with wbam_icon() (the megaphone logo, the Welcome
+			// checkmarks) had no Lucide stylesheet or script and showed as empty
+			// space. Print the Lucide style here; the script is printed in the
+			// footer so it can hydrate the <i data-lucide> placeholders.
+			if ( function_exists( 'wbam_register_lucide' ) ) {
+				wbam_register_lucide();
+			}
 			// Tokens first so wbam-setup inherits them by cascade.
-			wp_print_styles( array( 'dashicons', 'buttons', 'wbam-admin-tokens', 'wbam-setup' ) );
+			wp_print_styles( array( 'dashicons', 'buttons', 'wbam-admin-tokens', 'wbam-lucide', 'wbam-setup' ) );
 			?>
 		</head>
 		<body class="wbam-setup wp-core-ui">
@@ -267,6 +275,12 @@ class Setup_Wizard {
 					<?php esc_html_e( 'Exit Setup Wizard', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 			</div>
+			<?php
+			// Print the Lucide script (with its DOMContentLoaded hydration) so
+			// the <i data-lucide> icons above become real SVGs. The wizard skips
+			// wp_footer(), so this must be explicit.
+			wp_print_scripts( array( 'wbam-lucide' ) );
+			?>
 		</body>
 		</html>
 		<?php
