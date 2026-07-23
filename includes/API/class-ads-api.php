@@ -237,6 +237,16 @@ class Ads_API {
 			array(
 				'post_type'              => 'wbam-ad',
 				'post_status'            => 'publish',
+				// This endpoint is public (permission_callback __return_true), so
+				// it must not disclose ads the site owner has turned off. Only
+				// enabled ads belong in a public listing.
+				'meta_query'             => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Single indexed meta key on a small ad set; required to keep disabled ads out of the public response.
+					array(
+						'key'     => '_wbam_enabled',
+						'value'   => '1',
+						'compare' => '=',
+					),
+				),
 				'posts_per_page'         => $per_page,
 				'paged'                  => $page,
 				'no_found_rows'          => false,
