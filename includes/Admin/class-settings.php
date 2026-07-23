@@ -94,6 +94,26 @@ class Settings {
 		);
 
 		// Features Section - which parts of the plugin this site uses.
+		//
+		// PRO lists these same modules on its Modules tab alongside its own, so
+		// the site owner has one Modules screen rather than one per plugin.
+		// This section is therefore only rendered when PRO is absent. The
+		// stored value lives here either way, so the toggle keeps working if
+		// PRO is later deactivated.
+		if ( ! defined( 'WBAM_PRO_VERSION' ) ) {
+			$this->register_feature_settings();
+		}
+
+		// General Section.
+		$this->register_general_settings();
+	}
+
+	/**
+	 * Register the Features section (FREE-only installs).
+	 *
+	 * @since 2.9.2
+	 */
+	private function register_feature_settings() {
 		add_settings_section(
 			'wbam_features',
 			__( 'Features', 'wb-ads-rotator-with-split-test' ),
@@ -113,7 +133,14 @@ class Settings {
 				'description' => __( 'Adds the Links menu for managing outbound and affiliate links, link categories and partnership inquiries. Turn this off if you only run ads - your existing link data is kept and reappears if you switch it back on.', 'wb-ads-rotator-with-split-test' ),
 			)
 		);
+	}
 
+	/**
+	 * Register every settings section other than Features.
+	 *
+	 * @since 2.9.2
+	 */
+	private function register_general_settings() {
 		// General Section.
 		add_settings_section(
 			'wbam_general',
