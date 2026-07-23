@@ -110,7 +110,7 @@ class Links_List_Table extends \WP_List_Table {
 
 		$views['all'] = sprintf(
 			'<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
-			esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links' ) ),
+			esc_url( admin_url( 'admin.php?page=wbam-links' ) ),
 			'all' === $current ? 'current' : '',
 			__( 'All', 'wb-ads-rotator-with-split-test' ),
 			number_format_i18n( $all_count )
@@ -118,7 +118,7 @@ class Links_List_Table extends \WP_List_Table {
 
 		$views['active'] = sprintf(
 			'<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
-			esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&status=active' ) ),
+			esc_url( admin_url( 'admin.php?page=wbam-links&status=active' ) ),
 			'active' === $current ? 'current' : '',
 			__( 'Active', 'wb-ads-rotator-with-split-test' ),
 			number_format_i18n( $active_count )
@@ -126,7 +126,7 @@ class Links_List_Table extends \WP_List_Table {
 
 		$views['inactive'] = sprintf(
 			'<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
-			esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&status=inactive' ) ),
+			esc_url( admin_url( 'admin.php?page=wbam-links&status=inactive' ) ),
 			'inactive' === $current ? 'current' : '',
 			__( 'Inactive', 'wb-ads-rotator-with-split-test' ),
 			number_format_i18n( $inactive_count )
@@ -134,7 +134,7 @@ class Links_List_Table extends \WP_List_Table {
 
 		$views['expired'] = sprintf(
 			'<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
-			esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&status=expired' ) ),
+			esc_url( admin_url( 'admin.php?page=wbam-links&status=expired' ) ),
 			'expired' === $current ? 'current' : '',
 			__( 'Expired', 'wb-ads-rotator-with-split-test' ),
 			number_format_i18n( $expired_count )
@@ -306,9 +306,9 @@ class Links_List_Table extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_name( $item ) {
-		$edit_url   = admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&action=edit&link_id=' . $item->id );
+		$edit_url   = admin_url( 'admin.php?page=wbam-links&action=edit&link_id=' . $item->id );
 		$delete_url = wp_nonce_url(
-			admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&action=delete&link_id=' . $item->id ),
+			admin_url( 'admin.php?page=wbam-links&action=delete&link_id=' . $item->id ),
 			'wbam_delete_link_' . $item->id
 		);
 

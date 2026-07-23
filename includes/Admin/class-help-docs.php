@@ -152,7 +152,7 @@ class Help_Docs {
 		$ads_url      = admin_url( 'edit.php?post_type=wbam-ad' );
 		$add_ad_url   = admin_url( 'post-new.php?post_type=wbam-ad' );
 		$settings_url = admin_url( 'edit.php?post_type=wbam-ad&page=wbam-settings' );
-		$links_url    = admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links' );
+		$links_url    = admin_url( 'admin.php?page=wbam-links' );
 		$wizard_url   = admin_url( 'index.php?page=wbam-setup' );
 		$tools_url    = admin_url( 'edit.php?post_type=wbam-ad&page=wbam-tools' );
 		?>

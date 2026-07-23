@@ -185,7 +185,7 @@ class Links_Admin {
 			array(
 				'title'   => __( 'Links', 'wb-ads-rotator-with-split-test' ),
 				'desc'    => __( 'Cloaked, trackable outbound and affiliate links.', 'wb-ads-rotator-with-split-test' ),
-				'actions' => '<a href="' . esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links&action=add' ) ) . '" class="wbam-admin-btn wbam-admin-btn--primary">' . esc_html__( 'Add New Link', 'wb-ads-rotator-with-split-test' ) . '</a>',
+				'actions' => '<a href="' . esc_url( admin_url( 'admin.php?page=wbam-links&action=add' ) ) . '" class="wbam-admin-btn wbam-admin-btn--primary">' . esc_html__( 'Add New Link', 'wb-ads-rotator-with-split-test' ) . '</a>',
 			)
 		);
 		$this->show_notices();
@@ -414,7 +414,7 @@ class Links_Admin {
 							);
 							?>
 							<br>
-							<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories' ) ); ?>"><?php esc_html_e( 'Manage categories →', 'wb-ads-rotator-with-split-test' ); ?></a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbam-link-categories' ) ); ?>"><?php esc_html_e( 'Manage categories →', 'wb-ads-rotator-with-split-test' ); ?></a>
 						</p>
 					</td>
 				</tr>
@@ -562,7 +562,7 @@ class Links_Admin {
 			<p class="submit">
 				<input type="submit" name="wbam_save_link" class="button button-primary"
 					value="<?php echo esc_attr( $is_edit ? __( 'Update Link', 'wb-ads-rotator-with-split-test' ) : __( 'Create Link', 'wb-ads-rotator-with-split-test' ) ); ?>">
-				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-links' ) ); ?>" class="button">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbam-links' ) ); ?>" class="button">
 					<?php esc_html_e( 'Cancel', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 			</p>
@@ -797,7 +797,7 @@ class Links_Admin {
 			array(
 				'title'   => __( 'Link Categories', 'wb-ads-rotator-with-split-test' ),
 				'desc'    => __( 'Group your links into categories.', 'wb-ads-rotator-with-split-test' ),
-				'actions' => '<a href="' . esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories&action=add_category' ) ) . '" class="wbam-admin-btn wbam-admin-btn--primary">' . esc_html__( 'Add New Category', 'wb-ads-rotator-with-split-test' ) . '</a>',
+				'actions' => '<a href="' . esc_url( admin_url( 'admin.php?page=wbam-link-categories&action=add_category' ) ) . '" class="wbam-admin-btn wbam-admin-btn--primary">' . esc_html__( 'Add New Category', 'wb-ads-rotator-with-split-test' ) . '</a>',
 			)
 		);
 		?>
@@ -827,10 +827,10 @@ class Links_Admin {
 							<td><?php echo esc_html( $category->description ); ?></td>
 							<td><?php echo esc_html( $category->count ); ?></td>
 							<td>
-								<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories&action=edit_category&category_id=' . $category->id ) ); ?>">
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbam-link-categories&action=edit_category&category_id=' . $category->id ) ); ?>">
 									<?php esc_html_e( 'Edit', 'wb-ads-rotator-with-split-test' ); ?>
 								</a> |
-								<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories&action=delete_category&category_id=' . $category->id ), 'wbam_delete_category_' . $category->id ) ); ?>"
+								<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-link-categories&action=delete_category&category_id=' . $category->id ), 'wbam_delete_category_' . $category->id ) ); ?>"
 									onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to delete this category?', 'wb-ads-rotator-with-split-test' ); ?>');" class="delete">
 									<?php esc_html_e( 'Delete', 'wb-ads-rotator-with-split-test' ); ?>
 								</a>
@@ -940,7 +940,7 @@ class Links_Admin {
 			<p class="submit">
 				<input type="submit" name="wbam_save_category" class="button button-primary"
 					value="<?php echo esc_attr( $is_edit ? __( 'Update Category', 'wb-ads-rotator-with-split-test' ) : __( 'Create Category', 'wb-ads-rotator-with-split-test' ) ); ?>">
-				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-link-categories' ) ); ?>" class="button">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbam-link-categories' ) ); ?>" class="button">
 					<?php esc_html_e( 'Cancel', 'wb-ads-rotator-with-split-test' ); ?>
 				</a>
 			</p>
