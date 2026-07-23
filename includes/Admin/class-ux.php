@@ -27,12 +27,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class UX {
 
 	/**
-	 * Render (or return) the page header: title, optional subtitle, actions.
+	 * Render the page header block: title, optional subtitle, optional actions.
 	 *
 	 * Replaces the bare `<h1 class="wp-heading-inline">` + `<hr>` each screen
 	 * hand-rolled, so titles, spacing and action buttons line up everywhere.
-	 * Opens a `.wbam-admin` wrapper the caller closes with `page_footer()` —
-	 * the wrapper scopes the family's WP-list-table normalisation.
+	 * Renders only the header block (plus the notices anchor) — the caller keeps
+	 * its own `<div class="wrap wbam-admin">…</div>`. The `wbam-admin` class on
+	 * that wrap is what scopes the family's WP-list-table normalisation, so add
+	 * it when converting a screen.
 	 *
 	 * @since 2.9.2
 	 * @param array $args {
@@ -57,23 +59,22 @@ class UX {
 
 		ob_start();
 		?>
-		<div class="wrap wbam-admin">
-			<div class="wbam-page-header">
-				<div class="wbam-page-header__left">
-					<h1 class="wbam-page-header__title"><?php echo esc_html( $args['title'] ); ?></h1>
-					<?php if ( '' !== $args['desc'] ) : ?>
-						<p class="wbam-page-header__desc"><?php echo esc_html( $args['desc'] ); ?></p>
-					<?php endif; ?>
-				</div>
-				<?php if ( '' !== $args['actions'] ) : ?>
-					<div class="wbam-page-header__actions"><?php echo wp_kses_post( $args['actions'] ); ?></div>
+		<div class="wbam-page-header">
+			<div class="wbam-page-header__left">
+				<h1 class="wbam-page-header__title"><?php echo esc_html( $args['title'] ); ?></h1>
+				<?php if ( '' !== $args['desc'] ) : ?>
+					<p class="wbam-page-header__desc"><?php echo esc_html( $args['desc'] ); ?></p>
 				<?php endif; ?>
 			</div>
-			<?php
-			// WordPress moves admin notices to the first h1/hr; give it the
-			// anchor so notices land under the header, not above it.
-			?>
-			<hr class="wp-header-end" style="margin:0;border:0;">
+			<?php if ( '' !== $args['actions'] ) : ?>
+				<div class="wbam-page-header__actions"><?php echo wp_kses_post( $args['actions'] ); ?></div>
+			<?php endif; ?>
+		</div>
+		<?php
+		// WordPress relocates admin notices to just after the first h1/hr; keep
+		// an anchor so notices land under the header, not above it.
+		?>
+		<hr class="wp-header-end" style="margin:0;border:0;">
 		<?php
 		$html = ob_get_clean();
 
@@ -82,15 +83,6 @@ class UX {
 			return '';
 		}
 		return $html;
-	}
-
-	/**
-	 * Close the wrapper opened by page_header().
-	 *
-	 * @since 2.9.2
-	 */
-	public static function page_footer() {
-		echo '</div>';
 	}
 
 	/**
