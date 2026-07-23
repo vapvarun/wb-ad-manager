@@ -485,7 +485,10 @@ class Admin {
 				'wbam-help'                      => 'settings',
 			),
 			array(
-				'ads'       => __( 'Ads', 'wb-ads-rotator-with-split-test' ),
+				// First group is header-less: its items sit directly under the
+				// menu title and are self-evidently the ads, so a header there
+				// only adds height. The rest are labelled.
+				'ads'       => '',
 				'delivery'  => __( 'Delivery', 'wb-ads-rotator-with-split-test' ),
 				'campaigns' => __( 'Campaigns', 'wb-ads-rotator-with-split-test' ),
 				'reports'   => __( 'Reports', 'wb-ads-rotator-with-split-test' ),
@@ -607,26 +610,35 @@ class Admin {
 	public function print_menu_section_css() {
 		?>
 		<style id="wbam-menu-sections">
+			/* Header rows are tight labels, not full item-height rows. The
+			   WordPress submenu link supplies its own vertical padding; zero it
+			   for headers and let the span provide a small top gap so five
+			   sections do not inflate the menu height. */
+			#adminmenu .wp-submenu li a[href^="#wbam-section-"] {
+				padding-top: 0;
+				padding-bottom: 0;
+				min-height: 0;
+			}
 			#adminmenu .wp-submenu li a .wbam-menu-section {
-				display: inline-block;
-				width: 100%;
-				padding-top: 8px;
-				padding-bottom: 4px;
-				color: rgba(240, 246, 252, 0.5);
+				display: block;
+				padding: 8px 0 1px;
+				color: rgba(240, 246, 252, 0.45);
 				font-size: 10px;
-				font-weight: 700;
-				letter-spacing: 0.05em;
+				font-weight: 600;
+				letter-spacing: 0.06em;
+				line-height: 1.2;
 				text-transform: uppercase;
 				pointer-events: none;
 			}
-			#adminmenu .wp-submenu li a[href^="#wbam-section-"],
+			/* First labelled section needs no big top gap - it follows the
+			   header-less Ads group directly. */
 			#adminmenu .wp-submenu li a[href^="#wbam-section-"]:hover,
 			#adminmenu .wp-submenu li a[href^="#wbam-section-"]:focus,
 			#adminmenu .wp-submenu li.current a[href^="#wbam-section-"],
 			#adminmenu .wp-submenu li a[href^="#wbam-section-"].current {
 				cursor: default;
 				background: transparent !important;
-				color: rgba(240, 246, 252, 0.5) !important;
+				color: rgba(240, 246, 252, 0.45) !important;
 			}
 		</style>
 		<?php
