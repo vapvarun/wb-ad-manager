@@ -47,6 +47,12 @@ class Admin {
 		add_action( 'admin_head', array( $this, 'print_menu_section_css' ) );
 		add_action( 'add_meta_boxes', array( $this, 'add_metaboxes' ) );
 		add_action( 'save_post', array( $this, 'save_meta' ), 10, 2 );
+		// Publishing an ad should make it live. The sidebar "Ad Status" radio
+		// is separate from WP's Publish box, so an admin who reviews a pending
+		// submission and clicks the big Publish button got a published-but-
+		// disabled ad that never rendered. Enable on the transition INTO
+		// publish, via wp_after_insert_post so it runs AFTER save_meta().
+		add_action( 'wp_after_insert_post', array( $this, 'enable_on_publish' ), 10, 4 );
 		add_filter( 'manage_wbam-ad_posts_columns', array( $this, 'add_columns' ) );
 		add_action( 'manage_wbam-ad_posts_custom_column', array( $this, 'render_column' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'handle_disable_ad' ) );
@@ -714,6 +720,45 @@ class Admin {
 				wp_localize_script( 'wbam-admin', 'wbamCodeEditor', $settings );
 			}
 		}
+	}
+
+	/**
+	 * Enable an ad when it is published.
+	 *
+	 * The plugin's "Ad Status" (`_wbam_enabled`) is a control separate from
+	 * WordPress's post status. A submitted ad sits at `_wbam_enabled = 0`, so
+	 * an admin who reviews it and clicks Publish ends up with a published ad
+	 * that never renders — every visual cue says live, the ad is off. Clicking
+	 * Publish is an unambiguous "make this live" action, so the transition into
+	 * publish enables the ad. Runs on `wp_after_insert_post` (after
+	 * `save_meta()`), using `$post_before` to fire only on the transition — a
+	 * later save that sets the radio to Disabled on an already-published ad is
+	 * left alone.
+	 *
+	 * @since 2.9.2
+	 * @param int           $post_id     Post ID.
+	 * @param \WP_Post      $post        The saved post.
+	 * @param bool          $update      Whether this is an update.
+	 * @param \WP_Post|null $post_before The post before the save (null on create).
+	 */
+	public function enable_on_publish( $post_id, $post, $update, $post_before ) {
+		if ( ! $post instanceof \WP_Post || 'wbam-ad' !== $post->post_type ) {
+			return;
+		}
+
+		$was_published = $post_before instanceof \WP_Post && 'publish' === $post_before->post_status;
+		if ( 'publish' !== $post->post_status || $was_published ) {
+			return;
+		}
+
+		if ( '1' === (string) get_post_meta( $post_id, '_wbam_enabled', true ) ) {
+			return;
+		}
+
+		update_post_meta( $post_id, '_wbam_enabled', '1' );
+
+		// Clear the placement cache so the newly-enabled ad serves immediately.
+		do_action( 'wbam_save_ad_meta', $post_id );
 	}
 
 	/**
