@@ -496,9 +496,10 @@ class Admin {
 				'wbam-analytics'                 => 'reports',
 				'wbam-revenue'                   => 'reports',
 				'wbam-audit-log'                 => 'reports',
-				// Settings.
-				'wbam-settings'                  => 'settings',
+				// Settings. Order matters here: the main configuration first,
+				// then the ad-display options, then tools and help.
 				'wbam-pro-settings'              => 'settings',
+				'wbam-settings'                  => 'settings',
 				'wbam-tools'                     => 'settings',
 				'wbam-help'                      => 'settings',
 			),
@@ -573,6 +574,24 @@ class Admin {
 				$group = 'other';
 			}
 			$buckets[ $group ][] = $item;
+		}
+
+		// Within a section, order items by their position in the map rather
+		// than by whatever order the plugins happened to register them in —
+		// otherwise a late-registered page lands between two related ones
+		// (Tools appearing between Settings and Ad Display, say). Slugs not in
+		// the map keep their relative order at the end of their bucket.
+		$order_index = array_flip( array_keys( $groups ) );
+		foreach ( $buckets as $bucket_key => $bucket_items ) {
+			usort(
+				$bucket_items,
+				static function ( $a, $b ) use ( $order_index ) {
+					$pos_a = isset( $order_index[ $a[2] ?? '' ] ) ? $order_index[ $a[2] ?? '' ] : PHP_INT_MAX;
+					$pos_b = isset( $order_index[ $b[2] ?? '' ] ) ? $order_index[ $b[2] ?? '' ] : PHP_INT_MAX;
+					return $pos_a <=> $pos_b;
+				}
+			);
+			$buckets[ $bucket_key ] = $bucket_items;
 		}
 
 		// Rebuild in section order, emitting a header before each labelled,

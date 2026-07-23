@@ -69,14 +69,20 @@ class Settings {
 	 * Add submenu page.
 	 */
 	public function add_menu() {
-		// When PRO is active, rename to "Ad Settings" to avoid confusion with PRO's "Settings".
+		// Standalone, this IS the settings screen, so it is simply "Settings".
+		// With PRO active there are two config screens, so name this one for
+		// what it actually holds - how ads render on the site - while PRO's
+		// carries the business configuration under "Settings". A site owner can
+		// then tell them apart without opening both.
 		$pro_active = defined( 'WBAM_PRO_VERSION' );
-		$menu_title = $pro_active ? __( 'Ad Settings', 'wb-ads-rotator-with-split-test' ) : __( 'Settings', 'wb-ads-rotator-with-split-test' );
+		$title      = $pro_active
+			? __( 'Ad Display', 'wb-ads-rotator-with-split-test' )
+			: __( 'Settings', 'wb-ads-rotator-with-split-test' );
 
 		add_submenu_page(
 			'edit.php?post_type=wbam-ad',
-			__( 'Ad Settings', 'wb-ads-rotator-with-split-test' ),
-			$menu_title,
+			$title,
+			$title,
 			'manage_options',
 			'wbam-settings',
 			array( $this, 'render_page' )
