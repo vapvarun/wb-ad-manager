@@ -33,6 +33,28 @@ class Frequency_Manager {
 	const COOKIE_EXPIRATION = DAY_IN_SECONDS;
 
 	/**
+	 * Total lifetime impressions this ad may be delivered. 0/empty = unlimited.
+	 *
+	 * Distinct from `_wbam_session_limit`, which caps how many times ONE visitor
+	 * sees the ad in a session. This caps the ad across the whole site and every
+	 * visitor — "run this creative 5,000 times, then stop".
+	 */
+	const CAP_META = '_wbam_impression_cap';
+
+	/**
+	 * Impressions delivered so far against CAP_META.
+	 *
+	 * Deliberately its own counter rather than a read of the analytics tables.
+	 * Analytics recording is conditional — it is skipped when analytics are
+	 * disabled, when `track_logged_in` is off, for bots, and without GDPR
+	 * consent — so on a members-only site an analytics-derived count can sit at
+	 * near zero while the ad has in fact been delivered thousands of times. A
+	 * cap that under-counts silently over-delivers, which is the one failure
+	 * mode an advertiser will notice.
+	 */
+	const COUNT_META = '_wbam_impression_count';
+
+	/**
 	 * Ads shown on current page.
 	 *
 	 * @var array
@@ -63,8 +85,140 @@ class Frequency_Manager {
 		// Only track if ad actually has output (was rendered).
 		if ( ! empty( $output ) && ! empty( $ad_id ) ) {
 			$this->track_impression( $ad_id );
+			$this->record_delivery( $ad_id );
 		}
 		return $output;
+	}
+
+	/**
+	 * Count one delivered impression against the ad's total cap.
+	 *
+	 * Call this once per impression that actually reached a visitor. Surfaces
+	 * that render server-side are handled by on_ad_output(); surfaces that
+	 * decide client-side (in-stream video ads, for example) call this when the
+	 * creative actually starts.
+	 *
+	 * No cap set means no write, so uncapped ads cost nothing extra.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return void
+	 */
+	public function record_delivery( $ad_id ) {
+		$ad_id = (int) $ad_id;
+
+		if ( $ad_id <= 0 || $this->get_cap( $ad_id ) <= 0 ) {
+			return;
+		}
+
+		$delivered = $this->get_delivered( $ad_id ) + 1;
+		update_post_meta( $ad_id, self::COUNT_META, $delivered );
+
+		if ( $delivered >= $this->get_cap( $ad_id ) ) {
+			/**
+			 * Fired the moment an ad reaches its total impression cap.
+			 *
+			 * @param int $ad_id     Ad ID.
+			 * @param int $delivered Impressions delivered.
+			 */
+			do_action( 'wbam_ad_cap_reached', $ad_id, $delivered );
+		}
+	}
+
+	/**
+	 * Total impression cap for an ad. 0 = unlimited.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return int
+	 */
+	public function get_cap( $ad_id ) {
+		return max( 0, (int) get_post_meta( (int) $ad_id, self::CAP_META, true ) );
+	}
+
+	/**
+	 * Impressions delivered against the cap.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return int
+	 */
+	public function get_delivered( $ad_id ) {
+		return max( 0, (int) get_post_meta( (int) $ad_id, self::COUNT_META, true ) );
+	}
+
+	/**
+	 * Impressions this ad already served before it had a cap.
+	 *
+	 * Ads are usually already running when someone decides to cap them. Starting
+	 * the counter at zero would hand a creative that has served 3,000
+	 * impressions a fresh allowance of 5,000 and deliver 8,000 in total, which
+	 * is precisely the over-delivery the cap exists to prevent. So the first
+	 * time a cap is set we seed the counter from recorded history.
+	 *
+	 * This is a lower bound, not a true total: analytics recording is skipped
+	 * for bots, for logged-in visitors when `track_logged_in` is off, and
+	 * without GDPR consent. Under-counting history is the safe direction - it
+	 * can only make the ad run longer than its true remaining allowance, never
+	 * cut it short below what the advertiser paid for.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return int
+	 */
+	public function historical_impressions( $ad_id ) {
+		global $wpdb;
+
+		$ad_id = (int) $ad_id;
+
+		if ( $ad_id <= 0 ) {
+			return 0;
+		}
+
+		$table = $wpdb->prefix . 'wbam_analytics';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- One-off read when a cap is first set; result is stored in meta.
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM `{$table}` WHERE ad_id = %d AND event_type = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is built from $wpdb->prefix.
+				$ad_id,
+				'impression'
+			)
+		);
+
+		return max( 0, (int) $count );
+	}
+
+	/**
+	 * Start the cap counter for an ad, seeding it from recorded history.
+	 *
+	 * Idempotent: once the counter exists it is left alone, so re-saving an ad
+	 * never rewinds or double-seeds it.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return int The delivered count now on record.
+	 */
+	public function seed_delivered( $ad_id ) {
+		$ad_id = (int) $ad_id;
+
+		$existing = get_post_meta( $ad_id, self::COUNT_META, true );
+
+		if ( '' !== $existing && null !== $existing ) {
+			return $this->get_delivered( $ad_id );
+		}
+
+		$seed = $this->historical_impressions( $ad_id );
+		update_post_meta( $ad_id, self::COUNT_META, $seed );
+
+		return $seed;
+	}
+
+	/**
+	 * Whether the ad has used up its total impression cap.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return bool
+	 */
+	public function cap_reached( $ad_id ) {
+		$cap = $this->get_cap( $ad_id );
+
+		return $cap > 0 && $this->get_delivered( $ad_id ) >= $cap;
 	}
 
 	/**
@@ -110,6 +264,12 @@ class Frequency_Manager {
 	public function can_show_ad( $ad_id ) {
 		// Check page limit first.
 		if ( $this->page_limit_reached() ) {
+			return false;
+		}
+
+		// Total impression cap — the ad is finished for everyone, not just
+		// this visitor, so it is checked before any per-session logic.
+		if ( $this->cap_reached( $ad_id ) ) {
 			return false;
 		}
 

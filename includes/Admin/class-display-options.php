@@ -280,6 +280,12 @@ class Display_Options {
 		$time_start = isset( $schedule['time_start'] ) ? $schedule['time_start'] : '';
 		$time_end   = isset( $schedule['time_end'] ) ? $schedule['time_end'] : '';
 
+		// Total impression cap lives in its own meta rather than inside the
+		// serialised schedule array so the delivery path can read it cheaply.
+		$frequency        = \WBAM\Modules\Targeting\Frequency_Manager::get_instance();
+		$impression_cap   = $frequency->get_cap( $post->ID );
+		$impressions_done = $frequency->get_delivered( $post->ID );
+
 		$weekdays = array(
 			'mon' => __( 'Mon', 'wb-ads-rotator-with-split-test' ),
 			'tue' => __( 'Tue', 'wb-ads-rotator-with-split-test' ),
@@ -321,6 +327,33 @@ class Display_Options {
 					<input type="time" name="wbam_schedule[time_end]" value="<?php echo esc_attr( $time_end ); ?>" aria-label="<?php esc_attr_e( 'End time', 'wb-ads-rotator-with-split-test' ); ?>" />
 				</div>
 				<p class="description"><?php esc_html_e( 'Leave empty to show all day. Uses site timezone.', 'wb-ads-rotator-with-split-test' ); ?></p>
+			</div>
+			<div class="wbam-schedule-field">
+				<label for="wbam_impression_cap"><?php esc_html_e( 'Total Impressions', 'wb-ads-rotator-with-split-test' ); ?></label>
+				<input type="number" id="wbam_impression_cap" name="wbam_impression_cap" min="0" step="1" value="<?php echo esc_attr( $impression_cap > 0 ? (string) $impression_cap : '' ); ?>" placeholder="<?php esc_attr_e( 'Unlimited', 'wb-ads-rotator-with-split-test' ); ?>" />
+				<p class="description">
+					<?php esc_html_e( 'Stop showing this ad once it has been displayed this many times in total, across every visitor and placement. Leave empty for unlimited.', 'wb-ads-rotator-with-split-test' ); ?>
+				</p>
+				<?php if ( $impression_cap > 0 ) : ?>
+					<p class="description">
+						<?php
+						printf(
+							/* translators: 1: impressions delivered, 2: total cap, 3: percentage used. */
+							esc_html__( 'Delivered: %1$s of %2$s (%3$s%% used).', 'wb-ads-rotator-with-split-test' ),
+							esc_html( number_format_i18n( $impressions_done ) ),
+							esc_html( number_format_i18n( $impression_cap ) ),
+							esc_html( number_format_i18n( min( 100, round( ( $impressions_done / $impression_cap ) * 100 ) ) ) )
+						);
+						?>
+						<?php if ( $impressions_done >= $impression_cap ) : ?>
+							<strong><?php esc_html_e( 'Cap reached - this ad is no longer being shown.', 'wb-ads-rotator-with-split-test' ); ?></strong>
+						<?php endif; ?>
+					</p>
+					<label class="wbam-day-checkbox">
+						<input type="checkbox" name="wbam_impression_cap_reset" value="1" />
+						<span><?php esc_html_e( 'Reset the delivered count on save', 'wb-ads-rotator-with-split-test' ); ?></span>
+					</label>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php
@@ -562,6 +595,31 @@ class Display_Options {
 			} else {
 				delete_post_meta( $post_id, '_wbam_end_date' );
 			}
+		}
+
+		// Save total impression cap. Empty or 0 means unlimited, in which case
+		// the key is removed so the delivery path skips counting entirely.
+		if ( isset( $_POST['wbam_impression_cap'] ) ) {
+			$cap = absint( wp_unslash( $_POST['wbam_impression_cap'] ) );
+
+			if ( $cap > 0 ) {
+				update_post_meta( $post_id, \WBAM\Modules\Targeting\Frequency_Manager::CAP_META, $cap );
+
+				// Seed the counter from recorded history the first time a cap is
+				// set, so an ad that has already been running does not get a
+				// fresh full allowance on top of what it already served.
+				\WBAM\Modules\Targeting\Frequency_Manager::get_instance()->seed_delivered( $post_id );
+			} else {
+				delete_post_meta( $post_id, \WBAM\Modules\Targeting\Frequency_Manager::CAP_META );
+			}
+		}
+
+		// Reset the delivered count on request — lets an advertiser renew a
+		// finished ad without recreating it. Written as an explicit 0 rather
+		// than deleted: an absent counter is the signal to seed from history,
+		// so deleting it here would silently undo the reset on the next save.
+		if ( ! empty( $_POST['wbam_impression_cap_reset'] ) ) {
+			update_post_meta( $post_id, \WBAM\Modules\Targeting\Frequency_Manager::COUNT_META, 0 );
 		}
 
 		// Save visitor conditions.
