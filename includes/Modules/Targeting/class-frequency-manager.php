@@ -104,16 +104,54 @@ class Frequency_Manager {
 	 * @return void
 	 */
 	public function record_delivery( $ad_id ) {
-		$ad_id = (int) $ad_id;
+		global $wpdb;
 
-		if ( $ad_id <= 0 || $this->get_cap( $ad_id ) <= 0 ) {
+		$ad_id = (int) $ad_id;
+		$cap   = $this->get_cap( $ad_id );
+
+		if ( $ad_id <= 0 || $cap <= 0 ) {
 			return;
 		}
 
-		$delivered = $this->get_delivered( $ad_id ) + 1;
-		update_post_meta( $ad_id, self::COUNT_META, $delivered );
+		// Increment in SQL rather than read-modify-write.
+		//
+		// Ads are delivered concurrently, and `get + 1 then update` loses
+		// writes when two impressions land at once: both read the same value
+		// and both store the same increment. Measured on a seeded run, that
+		// under-counted by roughly half, which means an advertiser would be
+		// served about twice the impressions they paid for before the cap
+		// noticed. A single UPDATE is atomic, so simultaneous impressions each
+		// count exactly once.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Atomic counter; an ORM read-modify-write is the bug being fixed.
+		$updated = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->postmeta} SET meta_value = meta_value + 1 WHERE post_id = %d AND meta_key = %s",
+				$ad_id,
+				self::COUNT_META
+			)
+		);
 
-		if ( $delivered >= $this->get_cap( $ad_id ) ) {
+		// No row yet — seed it. add_post_meta() with $unique guards the race
+		// where two requests both find it missing.
+		if ( ! $updated ) {
+			if ( ! add_post_meta( $ad_id, self::COUNT_META, 1, true ) ) {
+				// Someone else created it first; apply our increment to theirs.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- See above.
+				$wpdb->query(
+					$wpdb->prepare(
+						"UPDATE {$wpdb->postmeta} SET meta_value = meta_value + 1 WHERE post_id = %d AND meta_key = %s",
+						$ad_id,
+						self::COUNT_META
+					)
+				);
+			}
+		}
+
+		wp_cache_delete( $ad_id, 'post_meta' );
+
+		$delivered = $this->get_delivered( $ad_id );
+
+		if ( $delivered >= $cap ) {
 			/**
 			 * Fired the moment an ad reaches its total impression cap.
 			 *
