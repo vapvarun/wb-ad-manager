@@ -18,6 +18,7 @@ use WBAM\Modules\Targeting\Frequency_Manager;
 use WBAM\Modules\Links\Links_Module;
 use WBAM\Admin\Admin;
 use WBAM\Admin\Settings;
+use WBAM\Admin\Email_Captures;
 use WBAM\Admin\Display_Options;
 use WBAM\Admin\Setup_Wizard;
 use WBAM\Admin\Demo_Data_Cleaner;
@@ -133,6 +134,10 @@ class Plugin {
 
 			$this->settings = Settings::get_instance();
 			$this->settings->init();
+
+			// Email Captures — read/export/erase surface for the Email Capture
+			// ad type's submissions (previously write-only; GDPR gap).
+			( new Email_Captures() )->init();
 
 			$display_options = Display_Options::get_instance();
 			$display_options->init();

@@ -31,5 +31,6 @@ class API_Bootstrap {
 		new Analytics_API();
 		new Links_API();
 		new Settings_API();
+		new Email_Captures_API();
 	}
 }
