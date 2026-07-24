@@ -51,6 +51,12 @@ class Settings {
 		'require_consent_adsense'  => false,  // Require consent before loading AdSense.
 		'anonymize_ip'             => true,   // Anonymize IP addresses in stored data.
 		'delete_data_on_uninstall' => false,
+		// Link cloaking. Read at runtime by Link_Cloaker but previously had no
+		// UI (the wbam_settings_tabs/_fields filter framework was never applied),
+		// so the cloak prefix and inactive-link behaviour were unconfigurable.
+		'link_cloak_prefix'        => 'go',
+		'link_inactive_action'     => '404',
+		'link_inactive_url'        => '',
 	);
 
 	/**
@@ -372,6 +378,70 @@ class Settings {
 				'description' => __( 'Delete all plugin data (ads, analytics, settings) when the plugin is uninstalled.', 'wb-ads-rotator-with-split-test' ),
 			)
 		);
+
+		// Link Cloaking Section. These three keys are read at runtime by
+		// Link_Cloaker; they used to be defined in a wbam_settings_fields filter
+		// that nothing ever rendered, so they were unconfigurable.
+		add_settings_section(
+			'wbam_links',
+			__( 'Link Cloaking', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_links_section' ),
+			'wbam-settings'
+		);
+
+		add_settings_field(
+			'link_cloak_prefix',
+			__( 'Cloak Prefix', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_text_field' ),
+			'wbam-settings',
+			'wbam_links',
+			array(
+				'label_for'   => 'wbam_setting_link_cloak_prefix',
+				'id'          => 'link_cloak_prefix',
+				'placeholder' => 'go',
+				/* translators: %s: example cloaked URL */
+				'description' => sprintf( __( 'URL prefix for cloaked links, e.g. %s. Rewrite rules refresh automatically on change.', 'wb-ads-rotator-with-split-test' ), home_url( '/go/your-link' ) ),
+			)
+		);
+
+		add_settings_field(
+			'link_inactive_action',
+			__( 'Inactive Link Action', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_select_field' ),
+			'wbam-settings',
+			'wbam_links',
+			array(
+				'label_for'   => 'wbam_setting_link_inactive_action',
+				'id'          => 'link_inactive_action',
+				'options'     => array(
+					'404'    => __( 'Show 404 page', 'wb-ads-rotator-with-split-test' ),
+					'home'   => __( 'Redirect to homepage', 'wb-ads-rotator-with-split-test' ),
+					'custom' => __( 'Redirect to custom URL', 'wb-ads-rotator-with-split-test' ),
+				),
+				'description' => __( 'What happens when an inactive or expired cloaked link is accessed.', 'wb-ads-rotator-with-split-test' ),
+			)
+		);
+
+		add_settings_field(
+			'link_inactive_url',
+			__( 'Inactive Link URL', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_text_field' ),
+			'wbam-settings',
+			'wbam_links',
+			array(
+				'label_for'   => 'wbam_setting_link_inactive_url',
+				'id'          => 'link_inactive_url',
+				'placeholder' => 'https://example.com/gone',
+				'description' => __( 'Used only when the action above is "Redirect to custom URL".', 'wb-ads-rotator-with-split-test' ),
+			)
+		);
+	}
+
+	/**
+	 * Render the Link Cloaking section intro.
+	 */
+	public function render_links_section() {
+		echo '<p>' . esc_html__( 'Control how cloaked link URLs look and how inactive links behave.', 'wb-ads-rotator-with-split-test' ) . '</p>';
 	}
 
 	/**
@@ -424,6 +494,13 @@ class Settings {
 		$sanitized['ad_label_position']     = in_array( $input['ad_label_position'] ?? '', array( 'above', 'below' ), true ) ? $input['ad_label_position'] : 'above';
 		$sanitized['container_class']       = sanitize_html_class( $input['container_class'] ?? '' );
 		$sanitized['max_ads_per_page']      = absint( $input['max_ads_per_page'] ?? 0 );
+
+		// Link cloaking. sanitize_title keeps the prefix rewrite-safe (matches
+		// Link_Cloaker::get_cloak_prefix); default back to 'go' if emptied.
+		$cloak_prefix                       = sanitize_title( $input['link_cloak_prefix'] ?? '' );
+		$sanitized['link_cloak_prefix']     = '' !== $cloak_prefix ? $cloak_prefix : 'go';
+		$sanitized['link_inactive_action']  = in_array( $input['link_inactive_action'] ?? '', array( '404', 'home', 'custom' ), true ) ? $input['link_inactive_action'] : '404';
+		$sanitized['link_inactive_url']     = esc_url_raw( $input['link_inactive_url'] ?? '' );
 
 		if ( ! empty( $input['disable_on_post_types'] ) && is_array( $input['disable_on_post_types'] ) ) {
 			$sanitized['disable_on_post_types'] = array_map( 'sanitize_key', $input['disable_on_post_types'] );

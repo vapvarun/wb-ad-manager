@@ -114,10 +114,6 @@ class Links_Module {
 		add_action( 'wp_ajax_wbam_track_link_click', array( $this, 'ajax_track_click' ) );
 		add_action( 'wp_ajax_nopriv_wbam_track_link_click', array( $this, 'ajax_track_click' ) );
 
-		// Register settings.
-		add_filter( 'wbam_settings_tabs', array( $this, 'add_settings_tab' ) );
-		add_filter( 'wbam_settings_fields', array( $this, 'add_settings_fields' ) );
-
 		// Allow PRO extensions.
 		do_action( 'wbam_links_module_init', $this );
 	}
@@ -177,89 +173,6 @@ class Links_Module {
 		do_action( 'wbam_link_click_tracked', $link_id, $_POST );
 
 		wp_send_json_success();
-	}
-
-	/**
-	 * Add Links settings tab.
-	 *
-	 * @param array $tabs Existing tabs.
-	 * @return array
-	 */
-	public function add_settings_tab( $tabs ) {
-		$tabs['links'] = __( 'Links', 'wb-ads-rotator-with-split-test' );
-		return $tabs;
-	}
-
-	/**
-	 * Add Links settings fields.
-	 *
-	 * @param array $fields Existing fields.
-	 * @return array
-	 */
-	public function add_settings_fields( $fields ) {
-		$fields['links'] = array(
-			array(
-				'id'          => 'link_cloak_prefix',
-				'title'       => __( 'Cloak Prefix', 'wb-ads-rotator-with-split-test' ),
-				'type'        => 'text',
-				'default'     => 'go',
-				'description' => sprintf(
-					/* translators: %s: example URL */
-					__( 'The URL prefix for cloaked links. Example: %s', 'wb-ads-rotator-with-split-test' ),
-					'<code>' . home_url( '/go/your-link' ) . '</code>'
-				),
-			),
-			array(
-				'id'          => 'link_default_nofollow',
-				'title'       => __( 'Default Nofollow', 'wb-ads-rotator-with-split-test' ),
-				'type'        => 'checkbox',
-				'default'     => 1,
-				'description' => __( 'Add nofollow attribute to links by default.', 'wb-ads-rotator-with-split-test' ),
-			),
-			array(
-				'id'          => 'link_default_sponsored',
-				'title'       => __( 'Default Sponsored', 'wb-ads-rotator-with-split-test' ),
-				'type'        => 'checkbox',
-				'default'     => 0,
-				'description' => __( 'Add sponsored attribute to links by default.', 'wb-ads-rotator-with-split-test' ),
-			),
-			array(
-				'id'          => 'link_default_new_tab',
-				'title'       => __( 'Open in New Tab', 'wb-ads-rotator-with-split-test' ),
-				'type'        => 'checkbox',
-				'default'     => 1,
-				'description' => __( 'Open links in new tab by default.', 'wb-ads-rotator-with-split-test' ),
-			),
-			array(
-				'id'          => 'link_default_redirect',
-				'title'       => __( 'Default Redirect Type', 'wb-ads-rotator-with-split-test' ),
-				'type'        => 'select',
-				'options'     => Link::get_redirect_types(),
-				'default'     => 307,
-				'description' => __( 'Default redirect type for cloaked links.', 'wb-ads-rotator-with-split-test' ),
-			),
-			array(
-				'id'          => 'link_inactive_action',
-				'title'       => __( 'Inactive Link Action', 'wb-ads-rotator-with-split-test' ),
-				'type'        => 'select',
-				'options'     => array(
-					'404'    => __( 'Show 404 page', 'wb-ads-rotator-with-split-test' ),
-					'home'   => __( 'Redirect to homepage', 'wb-ads-rotator-with-split-test' ),
-					'custom' => __( 'Redirect to custom URL', 'wb-ads-rotator-with-split-test' ),
-				),
-				'default'     => '404',
-				'description' => __( 'What to do when an inactive or expired link is accessed.', 'wb-ads-rotator-with-split-test' ),
-			),
-			array(
-				'id'          => 'link_inactive_url',
-				'title'       => __( 'Inactive Link URL', 'wb-ads-rotator-with-split-test' ),
-				'type'        => 'url',
-				'default'     => '',
-				'description' => __( 'Custom URL to redirect to when inactive link action is set to custom.', 'wb-ads-rotator-with-split-test' ),
-			),
-		);
-
-		return $fields;
 	}
 
 	/**
