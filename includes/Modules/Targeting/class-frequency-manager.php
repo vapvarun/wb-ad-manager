@@ -163,6 +163,132 @@ class Frequency_Manager {
 	}
 
 	/**
+	 * Claim one impression against the ad's total cap, atomically.
+	 *
+	 * The difference from record_delivery() is that this REFUSES when the cap
+	 * is already spent, and says so. record_delivery() always counts, which is
+	 * right for a surface that has already rendered the ad server-side — the
+	 * visitor has seen it, so the only honest thing left is to count it.
+	 *
+	 * Surfaces that decide client-side need the opposite: they ask before
+	 * playing, and skip when the answer is no. An in-stream video player picks
+	 * its break plan at page render and then plays those breaks over the next
+	 * several minutes, so "was it under cap at render time" is not the same
+	 * question as "is it under cap now". Without a claim, one viewer sitting
+	 * through four breaks delivers four impressions against a cap that may
+	 * have been spent at the first one.
+	 *
+	 * The check and the increment are a single UPDATE so concurrent viewers
+	 * cannot both pass a `get < cap` test and then both increment. Exactly one
+	 * of them gets the last impression.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return bool True when the impression may be shown and has been counted.
+	 */
+	public function claim_delivery( $ad_id ) {
+		global $wpdb;
+
+		$ad_id = (int) $ad_id;
+
+		if ( $ad_id <= 0 ) {
+			return false;
+		}
+
+		$cap = $this->get_cap( $ad_id );
+
+		// Uncapped ads are always claimable and keep no counter, matching
+		// record_delivery(): an unlimited ad costs no writes.
+		if ( $cap <= 0 ) {
+			return true;
+		}
+
+		// The counter row must exist for the conditional UPDATE to match. When
+		// a cap is set through the admin this has already happened via
+		// seed_delivered(); this covers caps set by code or by import.
+		if ( '' === (string) get_post_meta( $ad_id, self::COUNT_META, true ) ) {
+			$this->seed_delivered( $ad_id );
+		}
+
+		// Increment only while still under cap. Rows affected tells us whether
+		// we won the impression: 0 means the cap was already spent.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Atomic check-and-increment; a read-then-write here is the race being closed.
+		$granted = (int) $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->postmeta} SET meta_value = CAST( meta_value AS UNSIGNED ) + 1
+				 WHERE post_id = %d AND meta_key = %s AND CAST( meta_value AS UNSIGNED ) < %d",
+				$ad_id,
+				self::COUNT_META,
+				$cap
+			)
+		);
+
+		wp_cache_delete( $ad_id, 'post_meta' );
+
+		if ( $granted < 1 ) {
+			return false;
+		}
+
+		if ( $this->get_delivered( $ad_id ) >= $cap ) {
+			/** This action is documented in includes/Modules/Targeting/class-frequency-manager.php */
+			do_action( 'wbam_ad_cap_reached', $ad_id, $this->get_delivered( $ad_id ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Count one per-visitor view of an ad without needing the page footer.
+	 *
+	 * set_view_cookie() runs on `wp_footer` and is how server-rendered ads
+	 * record that this visitor has now seen them. An AJAX request has no
+	 * footer, so a surface that reports its impressions over AJAX never
+	 * incremented the per-visitor counter at all — which quietly made
+	 * `_wbam_session_limit` unenforceable on that surface, since get_ad_views()
+	 * stayed at zero forever.
+	 *
+	 * Writes the IP+UA transient rather than the cookie: get_ad_views() already
+	 * takes the higher of the two, and the transient is the half that a request
+	 * outside the page lifecycle can actually set.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return void
+	 */
+	public function record_session_view( $ad_id ) {
+		$ad_id        = (int) $ad_id;
+		$visitor_hash = $this->get_visitor_hash();
+
+		if ( $ad_id <= 0 || empty( $visitor_hash ) ) {
+			return;
+		}
+
+		$transient_key = 'wbam_freq_' . $visitor_hash . '_' . $ad_id;
+		$current       = get_transient( $transient_key );
+		$current       = false !== $current ? (int) $current : 0;
+
+		set_transient( $transient_key, $current + 1, self::COOKIE_EXPIRATION );
+	}
+
+	/**
+	 * Impressions this ad may still deliver, or null when uncapped.
+	 *
+	 * Lets a caller that is planning several impressions up front — an
+	 * in-stream break plan, say — avoid scheduling more of one creative than
+	 * its remaining allowance can cover.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return int|null Remaining impressions, or null for unlimited.
+	 */
+	public function remaining_cap( $ad_id ) {
+		$cap = $this->get_cap( $ad_id );
+
+		if ( $cap <= 0 ) {
+			return null;
+		}
+
+		return max( 0, $cap - $this->get_delivered( $ad_id ) );
+	}
+
+	/**
 	 * Total impression cap for an ad. 0 = unlimited.
 	 *
 	 * @param int $ad_id Ad ID.
