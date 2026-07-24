@@ -476,9 +476,19 @@
 				// Match both the canonical .wbam-ad class and the
 				// .wbam-ad-slot wrapper emitted by the placement engine,
 				// so tracking still attaches if a filter strips one class.
-				var ads = document.querySelectorAll( '.wbam-ad[data-ad-id], .wbam-ad-slot[data-ad-id]' );
+				var selector = '.wbam-ad[data-ad-id], .wbam-ad-slot[data-ad-id]';
+				var ads      = document.querySelectorAll( selector );
 
 				ads.forEach( function( ad ) {
+					// Skip nested containers. Some ad-type handlers emit their
+					// own .wbam-ad[data-ad-id] inside the placement wrapper, so
+					// the same <a> sat inside TWO matched elements and received
+					// two listeners - one click reported two clicks and every
+					// click stat was doubled. Only the outermost container binds.
+					if ( ad.parentElement && ad.parentElement.closest( selector ) ) {
+						return;
+					}
+
 					var links = ad.querySelectorAll( 'a' );
 					links.forEach( function( link ) {
 						link.addEventListener( 'click', function() {
