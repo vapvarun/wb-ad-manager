@@ -331,7 +331,7 @@ class Help_Docs {
 			<div class="wbam-doc-section">
 				<h3><?php esc_html_e( 'Developer API', 'wb-ads-rotator-with-split-test' ); ?></h3>
 				<ul>
-					<li><strong><?php esc_html_e( 'REST API:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '21 endpoints under /wp-json/wbam/v1/ covering ads, analytics, links, partnerships, and settings.', 'wb-ads-rotator-with-split-test' ); ?></li>
+					<li><strong><?php esc_html_e( 'REST API:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'Endpoints under /wp-json/wbam/v1/ covering ads, analytics, links, partnerships, settings, and email captures.', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><strong><?php esc_html_e( 'Hooks & filters:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '100+ action and filter hooks on every write operation, with custom ad-type and placement extension points.', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><strong><?php esc_html_e( 'Abilities API (WP 6.9+):', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( '15 named abilities for AI and headless consumers of the ads data.', 'wb-ads-rotator-with-split-test' ); ?></li>
 					<li><strong><?php esc_html_e( 'i18n ready:', 'wb-ads-rotator-with-split-test' ); ?></strong> <?php esc_html_e( 'POT file ships in /languages; every user-facing string is translatable.', 'wb-ads-rotator-with-split-test' ); ?></li>

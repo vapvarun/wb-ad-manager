@@ -32,7 +32,6 @@ wb-ads-rotator-with-split-test/
 │   ├── Core/                           # Core functionality
 │   │   ├── class-plugin.php            # Main plugin class
 │   │   ├── class-installer.php         # Database setup
-│   │   ├── class-cpt.php               # Custom post type
 │   │   └── trait-singleton.php         # Singleton pattern
 │   │
 │   ├── Admin/                          # Admin functionality
@@ -133,13 +132,12 @@ do_action( 'wbam_ad_impression', $ad_id, $placement );
 do_action( 'wbam_ad_clicked', $ad_id, $placement );
 
 /**
- * Fires after ad data is saved.
+ * Fires after an ad's meta is saved.
  *
  * @since 1.0.0
- * @param int   $post_id  Ad post ID.
- * @param array $ad_data  Saved ad data.
+ * @param int $post_id Ad post ID.
  */
-do_action( 'wbam_ad_saved', $post_id, $ad_data );
+do_action( 'wbam_save_ad_meta', $post_id );
 ```
 
 #### Email Capture
@@ -181,23 +179,31 @@ do_action( 'wbam_email_form_submission_after', $email, $name, $ad_id );
 
 ```php
 /**
- * Fires when a partnership inquiry is submitted.
+ * Fires when a partnership inquiry record is created.
  *
  * @since 2.3.0
- * @param int   $partnership_id Partnership record ID.
- * @param array $data           Submitted data.
+ * @param Partnership $partnership The created partnership object.
  */
-do_action( 'wbam_partnership_submitted', $partnership_id, $data );
+do_action( 'wbam_partnership_created', $partnership );
 
 /**
- * Fires when partnership status changes.
+ * Fires after the partnership inquiry form is submitted.
  *
  * @since 2.3.0
- * @param int    $partnership_id Partnership ID.
- * @param string $new_status     New status.
- * @param string $old_status     Previous status.
+ * @param Partnership $partnership The created partnership object.
+ * @param array       $data        Submitted form data.
  */
-do_action( 'wbam_partnership_status_changed', $partnership_id, $new_status, $old_status );
+do_action( 'wbam_partnership_form_submission_after', $partnership, $data );
+
+/**
+ * Status changes fire discrete actions (each passes the Partnership object):
+ * wbam_partnership_accepted, wbam_partnership_rejected, wbam_partnership_updated.
+ *
+ * @since 2.3.0
+ * @param Partnership $partnership The partnership object.
+ */
+do_action( 'wbam_partnership_accepted', $partnership );
+do_action( 'wbam_partnership_rejected', $partnership );
 ```
 
 #### System
@@ -282,16 +288,7 @@ $output = apply_filters( 'wbam_ad_output', $output, $ad_id, $placement );
  * @param array $ad_data Ad data array.
  * @param int   $post_id Ad post ID.
  */
-$ad_data = apply_filters( 'wbam_ad_data_before_save', $ad_data, $post_id );
-
-/**
- * Filter ad data after retrieval.
- *
- * @since 1.0.0
- * @param array $ad_data Ad data array.
- * @param int   $ad_id   Ad post ID.
- */
-$ad_data = apply_filters( 'wbam_ad_data', $ad_data, $ad_id );
+$ad_data = apply_filters( 'wbam_ad_data_before_save', $ad_data, $post_id, $raw_data );
 ```
 
 #### Email Capture
@@ -326,14 +323,15 @@ $message = apply_filters( 'wbam_email_capture_success_message', $message, $email
 
 ```php
 /**
- * Filter link output HTML.
+ * Filter the [wbam_link] shortcode output HTML.
  *
  * @since 2.0.0
- * @param string $html    Link HTML.
- * @param array  $link    Link data.
- * @param array  $options Rendering options.
+ * @param string $output Link HTML.
+ * @param Link   $link   Link object.
+ * @param array  $atts   Shortcode attributes.
+ * @param string $text   Anchor text.
  */
-$html = apply_filters( 'wbam_link_output', $html, $link, $options );
+$output = apply_filters( 'wbam_link_shortcode_output', $output, $link, $atts, $text );
 
 /**
  * Filter link redirect URL.
@@ -499,9 +497,9 @@ class Video_Ad implements Ad_Type_Interface {
     }
 
     /**
-     * Get ad type label.
+     * Get ad type name (shown on the Add New Ad screen).
      */
-    public function get_label() {
+    public function get_name() {
         return __( 'Video Ad', 'my-plugin' );
     }
 
@@ -520,10 +518,9 @@ class Video_Ad implements Ad_Type_Interface {
     }
 
     /**
-     * Render the admin form fields.
+     * Render the admin metabox fields. $data is the saved _wbam_ad_data array.
      */
-    public function render_fields( $ad_id ) {
-        $data = get_post_meta( $ad_id, '_wbam_ad_data', true );
+    public function render_metabox( $ad_id, $data ) {
         $video_url = isset( $data['video_url'] ) ? $data['video_url'] : '';
         ?>
         <p>
@@ -535,9 +532,9 @@ class Video_Ad implements Ad_Type_Interface {
     }
 
     /**
-     * Sanitize ad data before saving.
+     * Sanitize and persist ad data. Return the cleaned data array.
      */
-    public function sanitize( $data ) {
+    public function save( $ad_id, $data ) {
         if ( isset( $data['video_url'] ) ) {
             $data['video_url'] = esc_url_raw( $data['video_url'] );
         }
@@ -593,9 +590,9 @@ class Custom_Placement implements Placement_Interface {
     }
 
     /**
-     * Get placement label.
+     * Get placement name (shown in the placement selector).
      */
-    public function get_label() {
+    public function get_name() {
         return __( 'My Custom Placement', 'my-plugin' );
     }
 
@@ -618,6 +615,13 @@ class Custom_Placement implements Placement_Interface {
      */
     public function is_available() {
         return true; // Add conditions if needed
+    }
+
+    /**
+     * Whether to show this placement in the admin placement selector.
+     */
+    public function show_in_selector() {
+        return true;
     }
 
     /**
@@ -697,9 +701,26 @@ tracking from the frontend.
 |--------|-------|------|---------|
 | GET | `/links` | Admin | List links. Optional filters: `status`, `link_type`, `category_id`, `search`, `per_page` (max 100), `page` |
 | POST | `/links` | Admin | Create a link |
+| GET/PUT/DELETE | `/links/{id}` | Admin | Read, update, or delete a single link |
+| GET | `/links/{id}/stats` | Admin | Click totals for a link (total and unique) |
+| POST | `/links/{id}/track` | Public | Record a click on a link (writes to `wbam_link_clicks`) |
 | GET | `/links/categories` | Admin | List link categories |
 | POST | `/links/categories` | Admin | Create a category. Required: `name`. Optional: `slug`, `description` |
 | GET | `/partnerships` | Admin | List partnership inquiries. Optional filters: `status`, `per_page` (max 100), `page` |
+| PUT | `/partnerships/{id}` | Admin | Update partnership status (enum: `pending`, `accepted`, `rejected`, `spam`) |
+
+#### Settings — `includes/API/class-settings-api.php`
+
+| Method | Route | Auth | Purpose |
+|--------|-------|------|---------|
+| GET/PUT | `/settings` | Admin | Read or update plugin settings |
+| GET/PUT | `/settings/display` | Admin | Read or update display settings (`ad_label`, `ad_label_position`) |
+
+#### Email Captures — `includes/API/class-email-captures-api.php`
+
+| Method | Route | Auth | Purpose |
+|--------|-------|------|---------|
+| GET | `/email-captures` | Admin | Paginated read of Email Capture submissions (returns `X-WP-Total` / `X-WP-TotalPages`). The admin screen also exports these to CSV. |
 
 ### Example: Get a single ad
 
@@ -788,7 +809,7 @@ CREATE TABLE {prefix}wbam_email_submissions (
     id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     ad_id bigint(20) UNSIGNED NOT NULL,
     email varchar(255) NOT NULL,
-    name varchar(200) DEFAULT '',
+    name varchar(255) DEFAULT NULL,
     ip_address varchar(45) DEFAULT '',
     created_at datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
@@ -825,6 +846,25 @@ CREATE TABLE {prefix}wbam_link_partnerships (
     KEY created_at (created_at)
 );
 ```
+
+#### wbam_link_clicks
+
+Records clicks on managed links (via the `POST /links/{id}/track` endpoint and the cloaked-link redirect). The `visitor_hash` and `referrer` columns were added in DB version 1.7.0.
+
+```sql
+CREATE TABLE {prefix}wbam_link_clicks (
+    id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    link_id bigint(20) UNSIGNED NOT NULL,
+    visitor_hash varchar(64) DEFAULT '',
+    referrer varchar(255) DEFAULT '',
+    clicked_at datetime DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    KEY link_id (link_id),
+    KEY clicked_at (clicked_at)
+);
+```
+
+> The plugin also creates `wbam_links`, `wbam_link_categories`, and `wbam_rate_limits`. The `wbam_analytics` block above lists the core columns; the live table carries additional optional columns (`campaign_id`, `user_id`, `ip_hash`, `country`, `device_type`, `browser`, `referrer`, `placement`, `page_url`). See `includes/Core/class-installer.php` for the authoritative schema.
 
 ### Post Meta Keys
 
@@ -914,9 +954,9 @@ add_filter( 'wbam_ads_for_placement', function( $ad_ids, $placement_id, $origina
 ### Add Custom Field to Ad Data
 
 ```php
-// Add field to admin form
-add_action( 'wbam_ad_settings_after', function( $ad_id ) {
-    $data = get_post_meta( $ad_id, '_wbam_ad_data', true );
+// Add a field to the ad metabox. wbam_ad_metabox_options passes the WP_Post.
+add_action( 'wbam_ad_metabox_options', function( $post ) {
+    $data = get_post_meta( $post->ID, '_wbam_ad_data', true );
     $sponsor = isset( $data['sponsor'] ) ? $data['sponsor'] : '';
     ?>
     <p>
@@ -926,6 +966,9 @@ add_action( 'wbam_ad_settings_after', function( $ad_id ) {
     </p>
     <?php
 } );
+
+// The field posts inside wbam_ad_data[], so the core save routine persists it;
+// hook wbam_ad_data_before_save to sanitize it if needed.
 
 // Modify output to include sponsor
 add_filter( 'wbam_ad_output', function( $output, $ad_id, $placement ) {
@@ -974,4 +1017,4 @@ For questions about extending the plugin, check our knowledge base or contact su
 
 ---
 
-*Last updated: December 17, 2024*
+*Last updated: July 2026 (v2.10.0)*

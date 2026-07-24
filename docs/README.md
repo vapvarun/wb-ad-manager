@@ -11,10 +11,12 @@ reader opening the Markdown directly can tell at a glance.
 **Plugin root docs:**
 - [`website/`](website/) — user-facing guides.
 - [`DEVELOPER-GUIDE.md`](DEVELOPER-GUIDE.md) — Free-plugin developer reference (hooks, REST routes, ad-type and placement extension points).
+- [`pro-developer/`](pro-developer/) — WB Ad Manager Pro developer reference.
 
-**Pro developer reference** lives in the Pro repo
-(`wb-ad-manager-pro/docs/`) because it tracks a different release
-cycle: `DEVELOPER-GUIDE.md` and `HOOKS.md`.
+**Pro developer reference** lives in [`pro-developer/`](pro-developer/):
+[`DEVELOPER-GUIDE.md`](pro-developer/DEVELOPER-GUIDE.md),
+[`HOOKS.md`](pro-developer/HOOKS.md), and
+[`REST.md`](pro-developer/REST.md).
 
 ---
 
