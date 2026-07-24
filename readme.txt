@@ -207,6 +207,7 @@ Email Capture leads are now viewable and exportable, a consistent admin design a
 * Fix      - The plugin zip now bundles its vendor assets, fixing a missing-icon 404, and the Link Partnership form follows dark mode on BuddyX 5.1+ and Reign.
 * Security - The public ads REST endpoint no longer exposes disabled ads.
 * Dev      - Removed three settings toggles that did nothing (minimum content length, cache ads, lazy load) and the unused settings-filter framework; impressions are now counted atomically so caps cannot over-deliver.
+* Dev      - Added an atomic impression-claim and per-visitor view recording to the frequency manager so in-stream video players can enforce session and total-impression caps per ad break.
 * Dev      - Database: added visitor_hash and referrer columns to the link-clicks table (DB version 1.7.0, applied automatically on update); the rate-limits table is dropped on uninstall.
 * Compat   - Pairs with WB Ad Manager Pro 1.8.0. If you run Pro, update both together.
 
