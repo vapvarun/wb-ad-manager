@@ -36,7 +36,8 @@ class BP_Module {
 
 		$engine->register_placement( new BP_Activity_Placement() );
 
-		// Registers six directory positions (before/after/between members + groups).
+		// Registers four directory positions (before/after members + groups).
+		// "Between" injection is intentionally unsupported — no safe theme hook.
 		( new BP_Directory_Placement() )->register_all();
 	}
 

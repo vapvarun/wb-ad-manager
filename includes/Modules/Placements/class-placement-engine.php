@@ -408,13 +408,33 @@ class Placement_Engine {
 				$classes .= ' wbam-ad-slot--responsive';
 			}
 
+			// Ad-disclosure label. The `ad_label` / `ad_label_position` settings
+			// and the .wbam-ad-label-{above,below} CSS shipped, but nothing ever
+			// emitted the markup — so the disclosure a site owner configured
+			// never appeared. Render it here (the single wrapping point) when a
+			// non-empty label is set.
+			$label_text = trim( (string) \WBAM\Core\Settings_Helper::get( 'ad_label', '' ) );
+			$label_pos  = 'below' === \WBAM\Core\Settings_Helper::get( 'ad_label_position', 'above' ) ? 'below' : 'above';
+			$label_html = '';
+			if ( '' !== $label_text ) {
+				$label_html = sprintf(
+					'<span class="wbam-ad-label wbam-ad-label-%1$s">%2$s</span>',
+					esc_attr( $label_pos ),
+					esc_html( $label_text )
+				);
+			}
+
+			$inner = 'below' === $label_pos
+				? $output . $label_html
+				: $label_html . $output;
+
 			$output = sprintf(
 				'<div class="%1$s" data-ad-id="%2$d" data-responsive="%3$s"%4$s>%5$s</div>',
 				esc_attr( $classes ),
 				$ad_id,
 				$is_responsive ? '1' : '0',
 				$placement ? ' data-placement="' . esc_attr( $placement ) . '"' : '',
-				$output // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- rendered upstream by ad type handler.
+				$inner // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ad rendered upstream by ad type handler; label escaped above.
 			);
 		}
 

@@ -24,7 +24,7 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 * **Email Capture** - Inline newsletter/subscribe form with customizable colours, optional name field, hooks for Mailchimp / ConvertKit / webhook integrations
 * **Link Management & Cloaked URLs** - Turn long, messy URLs like `amazon.com/gp/product/B07XYZ?ref=affiliate_123` into clean, branded links on your own domain (e.g. `yoursite.com/go/book`). Every click is tracked, and you can group links into categories, set expiration dates for time-limited offers, and add SEO-correct `rel=nofollow` / `rel=sponsored` attributes. Use the cloaked URL directly in your content or drop `[wbam_link id="123"]Anchor text[/wbam_link]` in any post.
 * **Link Partnerships** - Shortcode-driven inquiry form (paid link / exchange / sponsored post) with accept / reject admin workflow and auto emails
-* **BuddyPress Integration** - Activity stream + 6 directory positions (members + groups)
+* **BuddyPress Integration** - Activity stream + 4 directory positions (members + groups)
 * **bbPress Integration** - 7 positions (forums, topics, between replies with configurable frequency)
 * **Jetonomy Integration** - 7 positions: sidebar (top / after About / bottom), after topic body, before/between/after replies (requires [Jetonomy](https://store.wbcomdesigns.com/jetonomy/) v1.3.0+)
 * **Geo-Targeting** - Target ads by country using IP geolocation (ip-api.com, ipinfo.io, ipapi.co)
@@ -213,7 +213,7 @@ Frontend dark mode that follows your active theme, plus RTL support.
 * New: Email Capture ad type documented and surfaced. Inline newsletter subscribe form with customisable colours, optional name field, and wbam_email_captured action for Mailchimp / ConvertKit / webhook integrations
 * New: Link Partnerships admin module. [wbam_partnership_inquiry] shortcode, admin list with accept/reject workflow, automatic email notifications, 24-hour duplicate-submission window
 * New: Before Archive / After Archive placements (loop_start / loop_end)
-* New: Six BuddyPress directory placements. Before / between / after members and before / between / after groups
+* New: Four BuddyPress directory placements. Before / after members and before / after groups
 * Improvement: Third-party admin notices are now suppressed on WB Ad Manager screens only (keeps your own notices intact, other admin pages unaffected)
 * Improvement: Setup wizard is now fully self-contained. Renders correctly regardless of the active theme or admin-chrome state
 * Fix: WordPress.org hardening pass. Zero PCP errors on clean dist, all admin $_POST / $_GET reads wrapped in wp_unslash() before sanitization

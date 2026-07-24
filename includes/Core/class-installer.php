@@ -26,7 +26,7 @@ class Installer {
 	 *
 	 * @var string
 	 */
-	const DB_VERSION = '1.6.0';
+	const DB_VERSION = '1.7.0';
 
 	/**
 	 * Option name for database version.
@@ -150,6 +150,16 @@ class Installer {
 		// have _wbam_ad_format set.
 		if ( version_compare( $current_version, '1.6.0', '<' ) ) {
 			$this->backfill_ad_formats();
+		}
+
+		// Migration to 1.7.0: add visitor_hash + referrer columns to
+		// wbam_link_clicks. The REST link-tracking endpoint and stats query
+		// always wrote/read these columns, but the table only had
+		// (id, link_id, clicked_at) — so every REST click INSERT silently
+		// failed and unique-click stats errored to 0. dbDelta adds the two
+		// columns in place. Safe to re-run.
+		if ( version_compare( $current_version, '1.7.0', '<' ) ) {
+			$this->create_tables();
 		}
 
 		// Phase K: backfill the `_wbam_is_demo` meta + `wbam_demo_data_ids`
@@ -412,6 +422,8 @@ class Installer {
 		$sql_clicks   = "CREATE TABLE {$table_clicks} (
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			link_id bigint(20) UNSIGNED NOT NULL,
+			visitor_hash varchar(64) DEFAULT '',
+			referrer varchar(255) DEFAULT '',
 			clicked_at datetime DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY  (id),
 			KEY link_id (link_id),

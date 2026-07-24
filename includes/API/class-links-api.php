@@ -163,7 +163,7 @@ class Links_API {
 					'status'      => array(
 						'type'              => 'string',
 						'required'          => true,
-						'enum'              => array( 'pending', 'approved', 'rejected', 'completed' ),
+						'enum'              => array( 'pending', 'accepted', 'rejected', 'spam' ),
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 					'admin_notes' => array(
@@ -625,7 +625,8 @@ class Links_API {
 				'name'        => $row->name,
 				'slug'        => $row->slug,
 				'description' => isset( $row->description ) ? $row->description : '',
-				'link_count'  => isset( $row->link_count ) ? (int) $row->link_count : 0,
+				// Column is `count` in the schema; expose it as link_count in the API.
+				'link_count'  => isset( $row->count ) ? (int) $row->count : 0,
 			);
 		}
 
@@ -661,7 +662,7 @@ class Links_API {
 				'name'        => $name,
 				'slug'        => $slug,
 				'description' => $description,
-				'link_count'  => 0,
+				'count'       => 0,
 			),
 			array( '%s', '%s', '%s', '%d' )
 		);
@@ -742,15 +743,30 @@ class Links_API {
 			);
 		}
 
-		$data = array(
-			'status' => sanitize_text_field( $request['status'] ),
-		);
+		$status = sanitize_text_field( $request['status'] );
+		$notes  = isset( $request['admin_notes'] ) ? sanitize_textarea_field( $request['admin_notes'] ) : '';
 
-		if ( isset( $request['admin_notes'] ) ) {
-			$data['admin_notes'] = sanitize_textarea_field( $request['admin_notes'] );
+		// Route status transitions through the same methods the admin workflow
+		// uses so their side effects (accept/reject emails, spam handling) fire.
+		// A bare update() would set the column but skip all of that.
+		switch ( $status ) {
+			case 'accepted':
+				$result = $manager->accept( $id, $notes );
+				break;
+			case 'rejected':
+				$result = $manager->reject( $id, $notes );
+				break;
+			case 'spam':
+				$result = $manager->mark_as_spam( $id );
+				break;
+			default:
+				$data = array( 'status' => $status );
+				if ( '' !== $notes ) {
+					$data['admin_notes'] = $notes;
+				}
+				$result = $manager->update( $id, $data );
+				break;
 		}
-
-		$result = $manager->update( $id, $data );
 
 		if ( ! $result ) {
 			return new \WP_Error(

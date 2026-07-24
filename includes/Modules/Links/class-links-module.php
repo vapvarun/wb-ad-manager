@@ -141,7 +141,7 @@ class Links_Module {
 
 		wp_localize_script(
 			'wbam-links-frontend',
-			'wbamLinksConfig',
+			'wbamLinks',
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'wbam_track_click' ),

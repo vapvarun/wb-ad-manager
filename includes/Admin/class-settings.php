@@ -43,10 +43,7 @@ class Settings {
 		'ad_label_position'        => 'above',
 		'container_class'          => '',
 		'disable_on_post_types'    => array(),
-		'min_content_length'       => 300,    // Minimum content length for paragraph ads.
 		'max_ads_per_page'         => 10,     // Sensible limit to prevent ad overload.
-		'cache_ads'                => true,   // Better performance.
-		'lazy_load'                => true,   // Better page load times.
 		'geo_primary_provider'     => 'ip-api',
 		'geo_ipinfo_key'           => '',
 		'adsense_publisher_id'     => '',
@@ -179,18 +176,6 @@ class Settings {
 			)
 		);
 
-		add_settings_field(
-			'min_content_length',
-			__( 'Minimum Content Length', 'wb-ads-rotator-with-split-test' ),
-			array( $this, 'render_number_field' ),
-			'wbam-settings',
-			'wbam_general',
-			array(
-				'label_for'   => 'wbam_setting_min_content_length',
-				'id'          => 'min_content_length',
-				'description' => __( 'Minimum characters required to show paragraph ads. Set 0 to disable.', 'wb-ads-rotator-with-split-test' ),
-			)
-		);
 
 		add_settings_field(
 			'disable_on_post_types',
@@ -266,38 +251,6 @@ class Settings {
 				'id'          => 'container_class',
 				'placeholder' => __( 'e.g., my-ad-wrapper', 'wb-ads-rotator-with-split-test' ),
 				'description' => __( 'Additional CSS class for ad containers.', 'wb-ads-rotator-with-split-test' ),
-			)
-		);
-
-		// Performance Section.
-		add_settings_section(
-			'wbam_performance',
-			__( 'Performance', 'wb-ads-rotator-with-split-test' ),
-			array( $this, 'render_performance_section' ),
-			'wbam-settings'
-		);
-
-		add_settings_field(
-			'lazy_load',
-			__( 'Lazy Load Ads', 'wb-ads-rotator-with-split-test' ),
-			array( $this, 'render_checkbox_field' ),
-			'wbam-settings',
-			'wbam_performance',
-			array(
-				'id'          => 'lazy_load',
-				'description' => __( 'Load ads only when they come into viewport.', 'wb-ads-rotator-with-split-test' ),
-			)
-		);
-
-		add_settings_field(
-			'cache_ads',
-			__( 'Cache Ad Queries', 'wb-ads-rotator-with-split-test' ),
-			array( $this, 'render_checkbox_field' ),
-			'wbam-settings',
-			'wbam_performance',
-			array(
-				'id'          => 'cache_ads',
-				'description' => __( 'Cache ad queries for better performance (uses transients).', 'wb-ads-rotator-with-split-test' ),
 			)
 		);
 
@@ -470,10 +423,7 @@ class Settings {
 		$sanitized['ad_label']              = sanitize_text_field( $input['ad_label'] ?? '' );
 		$sanitized['ad_label_position']     = in_array( $input['ad_label_position'] ?? '', array( 'above', 'below' ), true ) ? $input['ad_label_position'] : 'above';
 		$sanitized['container_class']       = sanitize_html_class( $input['container_class'] ?? '' );
-		$sanitized['min_content_length']    = absint( $input['min_content_length'] ?? 0 );
 		$sanitized['max_ads_per_page']      = absint( $input['max_ads_per_page'] ?? 0 );
-		$sanitized['cache_ads']             = ! empty( $input['cache_ads'] );
-		$sanitized['lazy_load']             = ! empty( $input['lazy_load'] );
 
 		if ( ! empty( $input['disable_on_post_types'] ) && is_array( $input['disable_on_post_types'] ) ) {
 			$sanitized['disable_on_post_types'] = array_map( 'sanitize_key', $input['disable_on_post_types'] );
@@ -568,13 +518,6 @@ class Settings {
 	 */
 	public function render_display_section() {
 		echo '<p>' . esc_html__( 'Customize how ads appear on your site.', 'wb-ads-rotator-with-split-test' ) . '</p>';
-	}
-
-	/**
-	 * Render performance section.
-	 */
-	public function render_performance_section() {
-		echo '<p>' . esc_html__( 'Optimize ad loading performance.', 'wb-ads-rotator-with-split-test' ) . '</p>';
 	}
 
 	/**
