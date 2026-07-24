@@ -133,7 +133,7 @@ module.exports = function( grunt ) {
 						'!sales-page.html',
 						'!scripts/**'
 					],
-					dest: 'dist/<%= pkg.name %>'
+					dest: 'dist/wb-ads-rotator-with-split-test'
 				} ]
 			}
 		},
@@ -142,13 +142,13 @@ module.exports = function( grunt ) {
 		compress: {
 			dist: {
 				options: {
-					archive: 'dist/<%= pkg.name %>-<%= pkg.version %>.zip',
+					archive: 'dist/wb-ads-rotator-with-split-test-<%= pkg.version %>.zip',
 					mode: 'zip'
 				},
 				files: [ {
 					expand: true,
 					cwd: 'dist',
-					src: [ '<%= pkg.name %>/**' ],
+					src: [ 'wb-ads-rotator-with-split-test/**' ],
 					dest: ''
 				} ]
 			}
