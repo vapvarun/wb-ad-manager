@@ -17,11 +17,11 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 
 **Key Features:**
 
-* **Ad Rotation & A/B Comparison** - Multiple ads rotate in same placement with weighted priority; side-by-side CTR comparison metabox with "winner" badge
+* **Ad Rotation & A/B Comparison** - Multiple ads rotate in same placement with weighted priority; side-by-side CTR comparison metabox with "winner" badge (full statistical A/B testing with traffic splitting is in Pro)
 * **5 Ad Types** - Image, Rich Content, HTML/JS Code, Google AdSense, and Email Capture
 * **16+ Placements** - Header, Footer, Content, Paragraph, Sticky, Popup, Comments, Archive, Shortcode, Widget, BuddyPress, bbPress, Jetonomy
 * **Google AdSense** - Native AdSense support with automatic script management and Auto Ads
-* **Email Capture** - Inline newsletter/subscribe form with customizable colours, optional name field, hooks for Mailchimp / ConvertKit / webhook integrations
+* **Email Capture** - Inline newsletter/subscribe form with customizable colours and optional name field; captured leads are viewable and exportable to CSV from the admin (with per-row delete for GDPR erasure), plus a `wbam_email_captured` hook for forwarding to Mailchimp / ConvertKit / webhooks
 * **Link Management & Cloaked URLs** - Turn long, messy URLs like `amazon.com/gp/product/B07XYZ?ref=affiliate_123` into clean, branded links on your own domain (e.g. `yoursite.com/go/book`). Every click is tracked, and you can group links into categories, set expiration dates for time-limited offers, and add SEO-correct `rel=nofollow` / `rel=sponsored` attributes. Use the cloaked URL directly in your content or drop `[wbam_link id="123"]Anchor text[/wbam_link]` in any post.
 * **Link Partnerships** - Shortcode-driven inquiry form (paid link / exchange / sponsored post) with accept / reject admin workflow and auto emails
 * **BuddyPress Integration** - Activity stream + 4 directory positions (members + groups)
@@ -32,7 +32,7 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 * **Scheduling** - Start/end dates, day-of-week, and time-of-day targeting
 * **Frequency Control** - Limit ad impressions per session (cookie-based)
 * **Setup Wizard** - Easy first-time configuration with sample ads + one-click demo-data cleanup
-* **REST API** - 21 endpoints for ads, analytics, links, and partnerships
+* **REST API** - Endpoints for ads, analytics, links, partnerships, and email captures
 * **Privacy & GDPR** - IP anonymization, consent-gated AdSense, opt-in delete on uninstall
 
 **Ad Types:**
@@ -69,6 +69,8 @@ WB Ad Manager is a powerful and easy-to-use ad management plugin for WordPress. 
 * User roles
 * Geographic location (country)
 * Custom scheduling
+
+**Everything listed above is included in the free plugin** — no account, no ad limit, no add-on required. The features below are part of the separate **WB Ad Manager Pro** upgrade and are not included in this free plugin.
 
 = Turn your site into a revenue engine with WB Ad Manager Pro =
 
