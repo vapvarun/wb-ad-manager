@@ -3,7 +3,7 @@ title: Settings
 persona: Operator — Free
 tier: free
 one_job: Document every setting on the free plugin's Settings page so a site owner can configure global ad behaviour.
-outcome: Reader understands General, Display, Performance, Geo Targeting, AdSense, Privacy, and Advanced settings and when to change each default.
+outcome: Reader understands General, Display, Geo Targeting, AdSense, Privacy, Advanced, and Link Cloaking settings and when to change each default.
 assumes: WordPress admin access, the free plugin activated.
 ---
 
@@ -11,8 +11,8 @@ assumes: WordPress admin access, the free plugin activated.
 
 Configure WB Ad Manager at **WB Ad Manager → Settings**.
 
-![General settings page with display, performance, geo, AdSense and privacy sections](../images/free/settings-general.png)
-*The settings page with General, Display, Performance, Geo Targeting, AdSense, Privacy, and Advanced sections*
+![General settings page with display, geo, AdSense and privacy sections](../images/free/settings-general.png)
+*The settings page with General, Display, Geo Targeting, AdSense, Privacy, Advanced, and Link Cloaking sections*
 
 ---
 
@@ -22,7 +22,6 @@ Configure WB Ad Manager at **WB Ad Manager → Settings**.
 |---------|-------------|---------|
 | **Disable for Logged-in Users** | Hide all ads from logged-in users | Off |
 | **Disable for Admins** | Hide all ads from administrators | Off |
-| **Minimum Content Length** | Minimum characters required to show paragraph ads. Set 0 to disable this check. | 300 |
 | **Disable on Post Types** | Post types where automatic placements won't show | None |
 | **Maximum Ads Per Page** | Limit how many ads display per page. Set 0 for unlimited. | 10 |
 
@@ -30,7 +29,6 @@ Configure WB Ad Manager at **WB Ad Manager → Settings**.
 
 - **Disable for Admins**: See your site without ads while testing
 - **Disable for Logged-in**: Offer an ad-free experience to members
-- **Minimum Content Length**: Prevents paragraph ads from appearing on very short posts
 - **Disable on Post Types**: Exclude certain post types from automatic placements entirely
 - **Maximum Ads Per Page**: Prevents ad overload on content-heavy pages
 
@@ -66,23 +64,15 @@ Add your own CSS class to style ads consistently across your site:
 
 ---
 
-## Performance Settings
+## Link Cloaking Settings
+
+Controls how cloaked link URLs look and how inactive or expired links behave. These apply to the Link Management module.
 
 | Setting | Description | Default |
 |---------|-------------|---------|
-| **Lazy Load Ads** | Load ads only when scrolled into view | On |
-| **Cache Ad Queries** | Cache database queries using WordPress transients | On |
-
-### Lazy Loading
-
-When enabled, ads below the fold won't load until the user scrolls to them. This improves:
-- Initial page load time
-- Core Web Vitals scores
-- User experience on slow connections
-
-### Cache Ad Queries
-
-Caches ad selection queries to reduce database load. Uses WordPress transients with automatic invalidation when ads change. Recommended for sites with many ads.
+| **Cloak Prefix** | The URL prefix for cloaked links, e.g. `yoursite.com/go/your-link`. Rewrite rules refresh automatically when you change it. | `go` |
+| **Inactive Link Action** | What happens when an inactive or expired cloaked link is opened: show the 404 page, redirect to the homepage, or redirect to a custom URL. | Show 404 page |
+| **Inactive Link URL** | The URL to redirect to, used only when Inactive Link Action is set to "Redirect to custom URL". | (empty) |
 
 ---
 
@@ -183,8 +173,6 @@ When enabled, uninstalling the plugin will permanently delete:
 
 ### For Speed
 
-- Enable lazy loading for ads below the fold
-- Enable ad query caching
 - Limit the maximum ads per page in General Settings
 - Optimize images before uploading to media library
 

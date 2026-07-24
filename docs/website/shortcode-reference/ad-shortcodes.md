@@ -198,7 +198,6 @@ To display a specific ad regardless of rotation, use `[wbam_ad id="123"]` with t
 
 1. **Optimize images** — Compress ad images before uploading
 2. **Limit ads per page** — 3–5 ad placements is optimal
-3. **Enable lazy loading** — Turn on in **WB Ad Manager → Settings → Performance** for ads below the fold
 
 ---
 

@@ -13,7 +13,7 @@ Accept inbound partnership inquiries from advertisers, bloggers, and affiliate
 partners — without email ping-pong. Visitors submit a structured form on your
 site; you review, accept, or reject each inquiry from the WordPress admin.
 
-Find it under **WB Ad Manager → Link Partnerships**.
+Find it under **WB Ad Manager → Partnerships**.
 
 ---
 
@@ -72,13 +72,13 @@ All attributes below are optional — the defaults match the table above.
 
 | Attribute | Values | Default | Effect |
 |-----------|--------|---------|--------|
-| `title` | Any text | `Partner with Us` | Heading above the form |
+| `title` | Any text | `Link Partnership Inquiry` | Heading above the form |
 | `description` | Any text | Short intro paragraph | Sub-heading |
 | `show_budget` | `yes` / `no` | `yes` | Toggles the budget min/max fields |
-| `show_target_page` | `yes` / `no` | `yes` | Toggles the "target page" dropdown |
+| `show_target_page` | `yes` / `no` | `no` | Toggles the "target page" dropdown |
 | `show_anchor` | `yes` / `no` | `yes` | Toggles the anchor-text input |
 | `show_message` | `yes` / `no` | `yes` | Toggles the message textarea |
-| `button_text` | Any text | `Send Inquiry` | Submit button label |
+| `button_text` | Any text | `Submit Inquiry` | Submit button label |
 | `class` | CSS class name | Empty | Extra class on the form wrapper |
 
 ### Anti-abuse
@@ -92,7 +92,7 @@ All attributes below are optional — the defaults match the table above.
 
 ## Step 2 — Review Incoming Inquiries
 
-Every submission creates a row in **WB Ad Manager → Link Partnerships**.
+Every submission creates a row in **WB Ad Manager → Partnerships**.
 
 The list table shows:
 

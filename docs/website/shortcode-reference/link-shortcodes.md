@@ -111,12 +111,12 @@ Display multiple links in a list or grid.
 
 **All partner links:**
 ```
-[wbam_links category="partners"]
+[wbam_links category="5"]
 ```
 
 **Inline sponsor links:**
 ```
-[wbam_links category="sponsors" limit="8" format="inline"]
+[wbam_links category="6" limit="8" format="inline"]
 ```
 
 **Random featured links:**
@@ -230,7 +230,7 @@ The form collects:
 - Website URL (required)
 - Desired anchor text
 - Message/pitch
-- Preferred link category
+- Partnership type (Paid Link, Link Exchange, or Sponsored Post)
 
 ---
 
@@ -281,7 +281,7 @@ Organize links into categories for easy filtering:
 
 1. Go to **WB Ad Manager → Links → Categories**
 2. Add new category
-3. Use category slug in shortcodes
+3. Use the category's numeric ID in shortcodes (find it in WB Ad Manager &rarr; Links &rarr; Categories)
 
 ---
 
@@ -311,7 +311,7 @@ For each link:
 <h1>Our Partners</h1>
 <p>We're proud to work with these amazing companies.</p>
 
-[wbam_links category="partners" format="grid" limit="6"]
+[wbam_links category="5" format="grid" limit="6"]
 
 <h2>Become a Partner</h2>
 [wbam_partnership_inquiry title="Apply for Partnership"]
@@ -322,7 +322,7 @@ For each link:
 ```html
 <div class="sponsors-widget">
     <h4>Our Sponsors</h4>
-    [wbam_links category="sponsors" limit="5" format="list"]
+    [wbam_links category="6" limit="5" format="list"]
 </div>
 ```
 
@@ -331,7 +331,7 @@ For each link:
 ```html
 <section class="resources">
     <h2>Helpful Resources</h2>
-    [wbam_links category="resources" limit="6" format="grid"]
+    [wbam_links category="7" limit="6" format="grid"]
 </section>
 ```
 
@@ -346,7 +346,7 @@ For each link:
 .wbam-links-container      /* Links list container */
 .wbam-links-list           /* List layout */
 .wbam-links-grid           /* Grid layout */
-.wbam-link-item            /* Individual link item */
+.wbam-links-item            /* Individual link item */
 .wbam-link-title           /* Link title text */
 .wbam-link-description     /* Link description */
 .wbam-link-icon            /* Favicon container */
@@ -357,7 +357,7 @@ For each link:
 
 ```css
 /* Partner cards */
-.wbam-links-grid .wbam-link-item {
+.wbam-links-grid .wbam-links-item {
     padding: 20px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -365,12 +365,12 @@ For each link:
     transition: box-shadow 0.2s;
 }
 
-.wbam-links-grid .wbam-link-item:hover {
+.wbam-links-grid .wbam-links-item:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 /* Sponsor list */
-.wbam-links-list .wbam-link-item {
+.wbam-links-list .wbam-links-item {
     padding: 10px 0;
     border-bottom: 1px solid #eee;
 }

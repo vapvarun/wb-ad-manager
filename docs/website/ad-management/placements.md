@@ -66,10 +66,8 @@ Registered automatically when BuddyPress is active.
 |-----------|----------|
 | **BuddyPress Activity** | Injected into the activity stream between posts |
 | **Directory — Before Members** | Top of the members directory |
-| **Directory — Between Members** | Between member cards in the members directory |
 | **Directory — After Members** | Bottom of the members directory |
 | **Directory — Before Groups** | Top of the groups directory |
-| **Directory — Between Groups** | Between group cards in the groups directory |
 | **Directory — After Groups** | Bottom of the groups directory |
 
 ### Community — bbPress

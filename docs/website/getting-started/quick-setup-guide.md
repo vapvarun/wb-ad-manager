@@ -170,7 +170,7 @@ Yes. Set start and end dates when creating an ad.
 
 ### Does it slow down my site?
 
-No. Lazy loading and query caching are enabled by default.
+No. The plugin keeps a small footprint and only queries ads for the placements actually in use.
 
 ### Can I use Google AdSense?
 

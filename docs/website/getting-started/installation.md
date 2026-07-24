@@ -67,7 +67,6 @@ Once activated, you'll see a **WB Ad Manager** menu in your WordPress admin side
 1. Go to **WB Ad Manager → Settings**
 2. Review the **General** tab:
    - Optionally hide ads from logged-in users or admins
-   - Set minimum content length for paragraph placements
    - Configure maximum ads per page
 3. Click **Save Settings**
 

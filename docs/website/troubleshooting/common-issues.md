@@ -156,17 +156,15 @@ Before diving into specific issues, try these:
 ### Pages loading slowly
 
 **Solutions:**
-1. Enable lazy loading in **WB Ad Manager → Settings → Performance**
-2. Enable cache ad queries in the same section
-3. Reduce number of ad placements per page
-4. Optimize ad images before uploading
+1. Reduce the number of ad placements per page
+2. Lower "Maximum Ads Per Page" in **WB Ad Manager → Settings → General**
+3. Optimize ad images before uploading
 
 ### High server resource usage
 
 **Solutions:**
-1. Enable ad query caching in Settings
-2. Reduce the number of active placements per page
-3. Optimize database tables (use a plugin like WP-Optimize)
+1. Reduce the number of active placements per page
+2. Optimize database tables (use a plugin like WP-Optimize)
 
 ---
 

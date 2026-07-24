@@ -163,6 +163,10 @@ Collect email addresses with a subscription form displayed inline anywhere on yo
 3. A success message (or redirect) is shown
 4. A cookie is set so the form hides for the configured number of days
 
+### Viewing and Exporting Captures
+
+Go to **WB Ad Manager → Email Captures** to browse every submission, export them all to CSV, or delete individual rows (for GDPR erasure requests). The same data is available to administrators over the REST API at `GET /wp-json/wbam/v1/email-captures`.
+
 ### Integrating with Your Email Service
 
 Use the [`wbam_email_captured`](../../DEVELOPER-GUIDE.md#email-capture) action hook to pass captured emails to Mailchimp, ConvertKit, or any other service:
