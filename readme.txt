@@ -5,7 +5,7 @@ Tags: ads, ad manager, ad rotation, split test, adsense
 Requires at least: 5.8
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.9.1
+Stable tag: 2.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -187,9 +187,28 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 
 == Changelog ==
 
-= 2.9.1 - July 2026 =
+= 2.10.0 - July 2026 =
 
-* Fix      - The Link Partnership form now follows dark mode on BuddyX 5.1+ and Reign, including the Partnership Type dropdown, which now shows a single readable arrow on a dark field instead of staying light.
+Email Capture leads are now viewable and exportable, a consistent admin design across every screen, an impression cap for ads, and a batch of half-cooked-feature fixes.
+
+* New      - Email Captures admin screen: view, export to CSV, and delete (for GDPR erasure) the leads collected by the Email Capture ad type, plus a GET /wbam/v1/email-captures REST endpoint. Previously the captured names and emails were stored with no way to see or remove them.
+* New      - Link Cloaking settings section lets you set the cloak URL prefix and choose what happens to inactive or expired links (404, homepage, or a custom URL). These were read at runtime but had no way to configure them before.
+* New      - Total impression cap on the ad Schedule, so an ad automatically stops serving after a set number of impressions.
+* New      - Ad disclosure label now renders above or below each ad when a label is set in Display settings.
+* Improve  - Redesigned admin: every screen now shares one consistent design system (cards, tokens, buttons), and the WB Ad Manager submenu is grouped into labelled sections.
+* Improve  - Link Manager is now an optional module you can turn off if you only need ad rotation.
+* Improve  - Accessibility: admin form fields are properly labelled and controls show a visible focus outline.
+* Fix      - Link click tracking now works again for non-cloaked links (a script variable mismatch stopped clicks from recording), and the REST link tracking and category endpoints record and count correctly.
+* Fix      - Cloaked links reach external destinations again instead of being blocked as unsafe redirects.
+* Fix      - An ad now goes live when you publish it, without needing a second save.
+* Fix      - Resolved HTTP 500 errors on the placements and ad-types REST endpoints, and invisible icons in the Setup Wizard.
+* Fix      - Links admin screens now link to the correct menu parent instead of a 403 page.
+* Fix      - Settings fields no longer touch their card border, and the BuddyPress directory placement count is corrected to 4 (before and after members and groups).
+* Fix      - The plugin zip now bundles its vendor assets, fixing a missing-icon 404, and the Link Partnership form follows dark mode on BuddyX 5.1+ and Reign.
+* Security - The public ads REST endpoint no longer exposes disabled ads.
+* Dev      - Removed three settings toggles that did nothing (minimum content length, cache ads, lazy load) and the unused settings-filter framework; impressions are now counted atomically so caps cannot over-deliver.
+* Dev      - Database: added visitor_hash and referrer columns to the link-clicks table (DB version 1.7.0, applied automatically on update); the rate-limits table is dropped on uninstall.
+* Compat   - Pairs with WB Ad Manager Pro 1.8.0. If you run Pro, update both together.
 
 = 2.9.0 - June 2026 =
 
