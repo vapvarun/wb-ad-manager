@@ -646,12 +646,7 @@
 }
 
 .wbam-settings-form table.form-table th {
-	padding-left: 0;
 	font-weight: 500;
-}
-
-.wbam-settings-form table.form-table td {
-	padding-right: 0;
 }
 
 .wbam-settings-form .submit {

@@ -546,7 +546,7 @@ class Settings {
 			\WBAM\Admin\UX::page_header(
 				array(
 					'title' => get_admin_page_title(),
-					'desc'  => __( 'Ad display, performance, privacy and features.', 'wb-ads-rotator-with-split-test' ),
+					'desc'  => __( 'Ad display, geo-targeting, privacy, link cloaking and more.', 'wb-ads-rotator-with-split-test' ),
 				)
 			);
 			settings_errors( 'wbam_messages' );

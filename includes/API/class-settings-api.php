@@ -33,14 +33,14 @@ class Settings_API {
 	 * @var array
 	 */
 	private $display_keys = array(
-		'disable_frontend_css',
-		'lazy_load_ads',
+		// Only keys the runtime actually consumes. The rest of the original
+		// list (disable_frontend_css, lazy_load_ads, ad_label_text,
+		// ad_container_class, responsive_ads, hide_on_mobile, hide_on_tablet)
+		// had zero consumers in Free or Pro — the endpoint accepted and echoed
+		// them but nothing rendered them. ad_label / ad_label_position are the
+		// live disclosure-label settings (rendered by Placement_Engine).
 		'ad_label',
-		'ad_label_text',
-		'ad_container_class',
-		'responsive_ads',
-		'hide_on_mobile',
-		'hide_on_tablet',
+		'ad_label_position',
 	);
 
 	/**
