@@ -15,7 +15,7 @@ Legend: `[ ]` untested · `[x]` verified pass · `[!]` fail / regression · `[~]
 
 | # | Card | Client-reported problem | How to verify | Result |
 |---|------|-------------------------|---------------|--------|
-| 1 | 10108932534 | Wallet ledger: cents truncated on charge/credit, refunds use wrong price, credits show as red debits | Admin → Transactions: top-up shows positive/green, deduction negative/red. Advertiser list shows live balance + total spent | `[~]` **PASS (display)** - top-ups green `+$3,000.00`, deductions red `-$2,500.00`. Integer-ledger point remains by-design (Part 5) |
+| 1 | 10108932534 | Wallet ledger: cents truncated on charge/credit, refunds use wrong price, credits show as red debits | Admin → Transactions: top-up shows positive/green, deduction negative/red. Advertiser list shows live balance + total spent | `[x]` **PASS** - cents no longer truncated (147.35 stores as -14735, balance 4908 -> 4760.65 exactly); top-ups green `+$3,000.00`, deductions red `-$2,500.00` |
 | 2 | 10108932626 | Public `/ads` endpoint exposes disabled ads; classified inquiry/report endpoints unthrottled | `GET /wp-json/wbam/v1/ads` as anon returns only enabled ads; inquiry/report endpoints rate-limited | `[x]` **PASS** - 7 published / 6 enabled; anon `/ads` returned exactly 6 |
 | 3 | 10108161487 | Share of Voice: needs a disable setting and must exclude house ads | Pro Settings shows SoV toggle; SoV denominator excludes advertiser-less (house) ads | `[x]` **PASS** - SoV off-switch present; house ads excluded via filter (default on) |
 | 4 | 10108932340 | A/B variant swap silently blanks that ad's OTHER placements on the same page | Page with the same ad in 2 placements + a running A/B test: both slots render | `[x]` **PASS** - variant swap passes allow_duplicate; other placements render |
@@ -63,7 +63,7 @@ The flow the client will watch on screen.
 
 ---
 
-## Part 6 — Findings from the 2026-07-24 run
+## Part 5 — Findings from the 2026-07-24 run
 
 **Fixed during this run:**
 
@@ -96,13 +96,20 @@ The flow the client will watch on screen.
 
 ---
 
-## Part 5 — Known / by-design (state these openly in the demo)
+## Part 6 — Resolved since the first demo
 
-- **Wallet ledger stores whole credits, not cents.** The Credits SDK ledger is
-  integer-by-design (`amount INT`). The client's "cents truncated" point is a
-  product decision, not a bug to patch in this plugin: fractional pricing needs
-  a decision on the credit unit. The display bugs from that card (top-ups shown
-  as red debits, stale balances) ARE fixed.
+- **Wallet ledger now keeps cents (FIXED).** Money is stored in minor units of
+  the configured currency, so a 147.35 charge is exact rather than truncated to
+  147. This needed no change to the shared Credits SDK - the SDK's own gateway
+  layer already denominates money in minor units - so the bundled SDK and every
+  other Wbcom product using it are untouched. Existing balances are converted
+  automatically on update (DB 4.2.0).
+- **Currency precision is uniform (FIXED).** One helper
+  (`wbam_get_currency_decimals()`, filter `wbam_currency_decimals`) now drives
+  both display and storage, so zero-decimal currencies (JPY, KRW, VND) are not
+  padded and three-decimal ones (KWD, BHD, OMR, TND) are not truncated. Any
+  bridge that fills credits - WooCommerce, WC Subscriptions/Memberships, PMPro,
+  MemberPress - maps onto that same denomination.
 
 ---
 
