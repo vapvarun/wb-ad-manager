@@ -12,6 +12,10 @@ parameters:
         - plan/*
         - plans/*
         - marketing/*
+    scanFiles:
+        # BuddyPress is an optional runtime dependency — resolved for static
+        # analysis only so its guarded call sites aren't reported "not found".
+        - tests/stubs/buddypress.php
     bootstrapFiles:
         - phpstan-bootstrap.php
     treatPhpDocTypesAsCertain: false

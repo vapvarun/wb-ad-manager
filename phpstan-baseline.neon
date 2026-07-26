@@ -41,6 +41,46 @@ parameters:
 			path: includes/API/class-analytics-api.php
 
 		-
+			message: "#^Access to an undefined property object\\:\\:\\$ad_id\\.$#"
+			count: 2
+			path: includes/API/class-email-captures-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$created_at\\.$#"
+			count: 1
+			path: includes/API/class-email-captures-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$email\\.$#"
+			count: 1
+			path: includes/API/class-email-captures-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 1
+			path: includes/API/class-email-captures-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$ip_address\\.$#"
+			count: 1
+			path: includes/API/class-email-captures-api.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$name\\.$#"
+			count: 1
+			path: includes/API/class-email-captures-api.php
+
+		-
+			message: "#^Method WBAM\\\\API\\\\Email_Captures_API\\:\\:register_routes\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/API/class-email-captures-api.php
+
+		-
+			message: "#^Parameter \\#2 \\$value of method WP_HTTP_Response\\:\\:header\\(\\) expects string, int given\\.$#"
+			count: 2
+			path: includes/API/class-email-captures-api.php
+
+		-
 			message: "#^Access to an undefined property object\\:\\:\\$admin_notes\\.$#"
 			count: 1
 			path: includes/API/class-links-api.php
@@ -161,6 +201,16 @@ parameters:
 			path: includes/Admin/class-admin.php
 
 		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:enable_on_publish\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:enqueue_admin_tokens\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
 			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:enqueue_assets\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-admin.php
@@ -172,6 +222,16 @@ parameters:
 
 		-
 			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:print_menu_section_css\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:regroup_submenu\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-admin.php
 
@@ -197,6 +257,11 @@ parameters:
 
 		-
 			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:render_status_metabox\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-admin.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Admin\\:\\:reorder_submenu_into_sections\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-admin.php
 
@@ -351,6 +416,71 @@ parameters:
 			path: includes/Admin/class-display-options.php
 
 		-
+			message: "#^Access to an undefined property object\\:\\:\\$ad_id\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$created_at\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$email\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$id\\.$#"
+			count: 2
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$ip_address\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$name\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Email_Captures\\:\\:handle_delete\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Email_Captures\\:\\:handle_export\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Email_Captures\\:\\:init\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Email_Captures\\:\\:register_menu\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Email_Captures\\:\\:render_page\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Parameter \\#1 \\$fp of function fclose expects resource, resource\\|false given\\.$#"
+			count: 1
+			path: includes/Admin/class-email-captures.php
+
+		-
+			message: "#^Parameter \\#1 \\$fp of function fputcsv expects resource, resource\\|false given\\.$#"
+			count: 2
+			path: includes/Admin/class-email-captures.php
+
+		-
 			message: "#^Method WBAM\\\\Admin\\\\Field_Tooltips\\:\\:enqueue\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-field-tooltips.php
@@ -471,6 +601,16 @@ parameters:
 			path: includes/Admin/class-settings.php
 
 		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:register_feature_settings\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:register_general_settings\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
 			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:register_settings\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-settings.php
@@ -501,6 +641,11 @@ parameters:
 			path: includes/Admin/class-settings.php
 
 		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_features_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
 			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_general_section\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-settings.php
@@ -521,6 +666,21 @@ parameters:
 			path: includes/Admin/class-settings.php
 
 		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_links_section\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_module_field\\(\\) has no return type specified\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_module_field\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-settings.php
+
+		-
 			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_number_field\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-settings.php
@@ -532,11 +692,6 @@ parameters:
 
 		-
 			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_page\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: includes/Admin/class-settings.php
-
-		-
-			message: "#^Method WBAM\\\\Admin\\\\Settings\\:\\:render_performance_section\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-settings.php
 
@@ -704,6 +859,26 @@ parameters:
 			message: "#^Method WBAM\\\\Admin\\\\Upgrade_Pro\\:\\:render_page\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: includes/Admin/class-upgrade-pro.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\UX\\:\\:empty_state\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-ux.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\UX\\:\\:empty_state\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: includes/Admin/class-ux.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\UX\\:\\:page_header\\(\\) has parameter \\$args with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: includes/Admin/class-ux.php
+
+		-
+			message: "#^Method WBAM\\\\Admin\\\\UX\\:\\:page_header\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: includes/Admin/class-ux.php
 
 		-
 			message: "#^Cannot access property \\$ID on int\\|WP_Post\\.$#"
@@ -2014,26 +2189,6 @@ parameters:
 			message: "#^Parameter \\#1 \\$text of function esc_attr expects string, int given\\.$#"
 			count: 1
 			path: includes/Modules/Links/class-links-list-table.php
-
-		-
-			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_fields\\(\\) has parameter \\$fields with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-links-module.php
-
-		-
-			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_fields\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-links-module.php
-
-		-
-			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_tab\\(\\) has parameter \\$tabs with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-links-module.php
-
-		-
-			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:add_settings_tab\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: includes/Modules/Links/class-links-module.php
 
 		-
 			message: "#^Method WBAM\\\\Modules\\\\Links\\\\Links_Module\\:\\:ajax_track_click\\(\\) has no return type specified\\.$#"
