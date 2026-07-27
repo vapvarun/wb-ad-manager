@@ -739,6 +739,25 @@ class Admin {
 				wp_localize_script( 'wbam-admin', 'wbamCodeEditor', $settings );
 			}
 		}
+
+		wp_enqueue_script(
+			'wbam-placement-settings',
+			WBAM_URL . 'assets/js/admin-placement-settings.js',
+			array(),
+			WBAM_VERSION,
+			true
+		);
+		wp_localize_script(
+			'wbam-placement-settings',
+			'wbamPlacementSettings',
+			array(
+				/* translators: %d is replaced client-side with the active ad count for the slot being closed. */
+				'confirmDisable' => __(
+					'%d active ad(s) will stop rendering in this slot. Continue?',
+					'wb-ads-rotator-with-split-test'
+				),
+			)
+		);
 	}
 
 	/**

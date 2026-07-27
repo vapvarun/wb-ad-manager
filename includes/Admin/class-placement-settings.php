@@ -83,4 +83,98 @@ class Placement_Settings {
 	public static function clear_count_cache() {
 		wp_cache_delete( 'wbam_placement_ad_counts', 'wbam' );
 	}
+
+	/**
+	 * Render the two-gate placement matrix.
+	 *
+	 * Lists EVERY registered placement, not just selectable ones — an
+	 * admin must be able to re-open a slot the site gate has closed, and
+	 * a closed slot is absent from get_selectable_placements() by design.
+	 *
+	 * @since 2.11.0
+	 * @return void
+	 */
+	public static function render_table() {
+		$engine     = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+		$counts     = self::get_ad_counts();
+		$site       = \WBAM\Core\Settings_Helper::enabled_placements();
+		$advertiser = \WBAM\Core\Settings_Helper::advertiser_placements();
+		$all_open   = empty( $site );
+		$grouped    = $engine->get_placements_grouped();
+		$option     = \WBAM\Admin\Settings::OPTION_NAME;
+		?>
+		<table class="widefat wbam-placement-matrix">
+			<thead>
+				<tr>
+					<th scope="col"><?php esc_html_e( 'Slot', 'wb-ads-rotator-with-split-test' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Site', 'wb-ads-rotator-with-split-test' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Advertisers', 'wb-ads-rotator-with-split-test' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Active ads', 'wb-ads-rotator-with-split-test' ); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach ( $grouped as $group => $placements ) : ?>
+				<tr class="wbam-placement-matrix__group">
+					<th colspan="4" scope="colgroup"><?php echo esc_html( ucfirst( (string) $group ) ); ?></th>
+				</tr>
+				<?php
+				foreach ( $placements as $id => $placement ) :
+					if ( ! $placement->show_in_selector() ) {
+						continue;
+					}
+					$count       = isset( $counts[ $id ] ) ? (int) $counts[ $id ] : 0;
+					$site_on     = $all_open || in_array( $id, $site, true );
+					$adv_on      = empty( $advertiser ) || in_array( $id, $advertiser, true );
+					$unavailable = ! $placement->is_available();
+					?>
+					<tr<?php echo $unavailable ? ' class="wbam-placement-matrix__row--unavailable"' : ''; ?>>
+						<td>
+							<strong><?php echo esc_html( $placement->get_name() ); ?></strong>
+							<span class="description"><?php echo esc_html( $placement->get_description() ); ?></span>
+							<?php if ( $unavailable ) : ?>
+								<em><?php esc_html_e( 'Integration inactive', 'wb-ads-rotator-with-split-test' ); ?></em>
+							<?php endif; ?>
+						</td>
+						<td>
+							<label>
+								<span class="screen-reader-text">
+									<?php
+									/* translators: %s: placement name. */
+									echo esc_html( sprintf( __( 'Use %s on this site', 'wb-ads-rotator-with-split-test' ), $placement->get_name() ) );
+									?>
+								</span>
+								<input type="checkbox"
+									class="wbam-gate-site"
+									data-placement="<?php echo esc_attr( $id ); ?>"
+									data-count="<?php echo esc_attr( (string) $count ); ?>"
+									name="<?php echo esc_attr( $option . '[enabled_placements][]' ); ?>"
+									value="<?php echo esc_attr( $id ); ?>"
+									<?php checked( $site_on ); ?> />
+							</label>
+						</td>
+						<td>
+							<label>
+								<span class="screen-reader-text">
+									<?php
+									/* translators: %s: placement name. */
+									echo esc_html( sprintf( __( 'Sell %s to advertisers', 'wb-ads-rotator-with-split-test' ), $placement->get_name() ) );
+									?>
+								</span>
+								<input type="checkbox"
+									class="wbam-gate-advertiser"
+									data-placement="<?php echo esc_attr( $id ); ?>"
+									name="<?php echo esc_attr( $option . '[advertiser_placements][]' ); ?>"
+									value="<?php echo esc_attr( $id ); ?>"
+									<?php checked( $adv_on ); ?>
+									<?php disabled( ! $site_on ); ?> />
+							</label>
+						</td>
+						<td><?php echo esc_html( (string) $count ); ?></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
+	}
 }

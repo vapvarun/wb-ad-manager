@@ -263,6 +263,22 @@ class Settings {
 			)
 		);
 
+		// Placements Section.
+		add_settings_section(
+			'wbam_placements',
+			__( 'Placements', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_placements_section' ),
+			'wbam-settings'
+		);
+
+		add_settings_field(
+			'placement_gates',
+			__( 'Available Slots', 'wb-ads-rotator-with-split-test' ),
+			array( '\WBAM\Admin\Placement_Settings', 'render_table' ),
+			'wbam-settings',
+			'wbam_placements'
+		);
+
 		// Geo Targeting Section.
 		add_settings_section(
 			'wbam_geo',
@@ -618,6 +634,16 @@ class Settings {
 	 */
 	public function render_display_section() {
 		echo '<p>' . esc_html__( 'Customize how ads appear on your site.', 'wb-ads-rotator-with-split-test' ) . '</p>';
+	}
+
+	/**
+	 * Placements section description.
+	 */
+	public function render_placements_section(): void {
+		echo '<p>' . esc_html__(
+			'Choose which slots this site uses, and which of those advertisers may buy. Unticking Site stops ads rendering in that slot. Unticking Advertisers only removes it from the advertiser portal — creatives already assigned keep running.',
+			'wb-ads-rotator-with-split-test'
+		) . '</p>';
 	}
 
 	/**

@@ -730,6 +730,102 @@
 }
 
 /* ==========================================================================
+   Placement Matrix (Settings > Placements)
+   ========================================================================== */
+
+/* The table scrolls inside itself on narrow viewports instead of pushing the
+   page body wider. `width: 0` (overridden below by min-width) is the
+   standard trick to stop this element's intrinsic content width from
+   bubbling up through the Settings API's outer form-table <td> - a plain
+   `width: 100%` still lets the table's own min-content size inflate that
+   ancestor cell, widening the whole page. thead/tbody get their own
+   display:table + min-width so the columns still line up and only THIS
+   box scrolls once its content is wider than the space it was given. */
+.wbam-placement-matrix {
+	display: block;
+	width: 0;
+	min-width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	border-collapse: collapse;
+}
+
+.wbam-placement-matrix thead,
+.wbam-placement-matrix tbody {
+	display: table;
+	width: 100%;
+	min-width: 640px;
+	table-layout: fixed;
+}
+
+/* WordPress core (wp-admin/css/forms.css `.form-table th, .form-table td`)
+   and this plugin's own admin-family.css (`.wbam-settings-page .form-table
+   th/td`) both force EVERY form-table cell to `display: block` below
+   782px/640px for their own stacked-label mobile layout. That cascade also
+   matches this table's cells, since add_settings_field() renders this whole
+   table inside a `<td>` of the outer Settings API form-table - "descendant
+   of .form-table" is true for our cells too, however deeply nested. Left
+   alone, that turns this table into unlabeled stacked blocks instead of the
+   horizontally-scrolling table the layout above is built for. Restore real
+   table roles, scoped to this table only; !important is needed because the
+   plugin rule (0,2,1 specificity) already outweighs a plain
+   `.wbam-placement-matrix td` selector and load order is not guaranteed. */
+.wbam-placement-matrix tr {
+	display: table-row !important;
+}
+
+.wbam-placement-matrix th,
+.wbam-placement-matrix td {
+	display: table-cell !important;
+	width: auto !important;
+	padding: var(--wbam-space-3) var(--wbam-space-4);
+	text-align: left;
+	vertical-align: middle;
+	border-bottom: 1px solid var(--wbam-border);
+}
+
+.wbam-placement-matrix thead th {
+	font-weight: var(--wbam-weight-semibold);
+	border-bottom: 1px solid var(--wbam-border-strong);
+}
+
+.wbam-placement-matrix__group th {
+	background: var(--wbam-surface);
+	font-size: var(--wbam-font-size-xs);
+	font-weight: var(--wbam-weight-semibold);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--wbam-text-muted);
+}
+
+.wbam-placement-matrix__row--unavailable {
+	opacity: 0.6;
+}
+
+.wbam-placement-matrix__row--unavailable em {
+	display: block;
+	font-size: var(--wbam-font-size-xs);
+	color: var(--wbam-text-subtle);
+}
+
+.wbam-placement-matrix td .description {
+	display: block;
+	font-size: var(--wbam-font-size-xs);
+	color: var(--wbam-text-muted);
+}
+
+.wbam-placement-matrix input[type="checkbox"]:disabled {
+	opacity: 0.5;
+}
+
+@media screen and (max-width: 782px) {
+	.wbam-placement-matrix thead,
+	.wbam-placement-matrix tbody {
+		min-width: 560px;
+	}
+}
+
+/* ==========================================================================
    Display Rules Metabox
    ========================================================================== */
 
