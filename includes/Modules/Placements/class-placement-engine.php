@@ -188,6 +188,55 @@ class Placement_Engine {
 	}
 
 	/**
+	 * Placements an ad may be assigned to on this site.
+	 *
+	 * Applies, in order: is_available(), show_in_selector(), and the site
+	 * allowlist. This is the ONLY method admin UI and the portal registry
+	 * may use to build a placement list. Reading $this->placements
+	 * directly reintroduces the drift this method exists to remove — the
+	 * ad edit metabox and the advertiser portal previously read two
+	 * different lists, so filtering one silently missed the other.
+	 *
+	 * @since 2.11.0
+	 * @return Placement_Interface[] Keyed by placement ID.
+	 */
+	public function get_selectable_placements() {
+		$allowed = \WBAM\Core\Settings_Helper::enabled_placements();
+		$out     = array();
+
+		foreach ( $this->placements as $id => $placement ) {
+			if ( ! $placement->is_available() || ! $placement->show_in_selector() ) {
+				continue;
+			}
+
+			// Empty allowlist means all placements (see Settings_Helper).
+			if ( ! empty( $allowed ) && ! in_array( $id, $allowed, true ) ) {
+				continue;
+			}
+
+			$out[ $id ] = $placement;
+		}
+
+		return $out;
+	}
+
+	/**
+	 * get_selectable_placements() grouped by Placement_Interface::get_group().
+	 *
+	 * @since 2.11.0
+	 * @return array<string, Placement_Interface[]>
+	 */
+	public function get_selectable_placements_grouped() {
+		$grouped = array();
+
+		foreach ( $this->get_selectable_placements() as $id => $placement ) {
+			$grouped[ $placement->get_group() ][ $id ] = $placement;
+		}
+
+		return $grouped;
+	}
+
+	/**
 	 * Get ads for a placement.
 	 *
 	 * Uses object caching to avoid repeated LIKE queries on serialized meta.

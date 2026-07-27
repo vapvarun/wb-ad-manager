@@ -67,4 +67,35 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 		$this->assertSame( array( 'footer' ), Settings_Helper::enabled_placements() );
 		remove_all_filters( 'wbam_enabled_placements' );
 	}
+
+	public function test_selectable_placements_respects_site_gate(): void {
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+
+		update_option( 'wbam_settings', array( 'enabled_placements' => array( 'header' ) ) );
+		$ids = array_keys( $engine->get_selectable_placements() );
+
+		$this->assertContains( 'header', $ids );
+		$this->assertNotContains( 'footer', $ids );
+	}
+
+	public function test_selectable_placements_empty_gate_returns_all_visible(): void {
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+
+		update_option( 'wbam_settings', array( 'enabled_placements' => array() ) );
+		$ids = array_keys( $engine->get_selectable_placements() );
+
+		$this->assertContains( 'header', $ids );
+		$this->assertContains( 'footer', $ids );
+	}
+
+	public function test_selectable_placements_excludes_non_selector_placements(): void {
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+
+		update_option( 'wbam_settings', array() );
+		$ids = array_keys( $engine->get_selectable_placements() );
+
+		// Shortcode_Placement::show_in_selector() returns false — it is
+		// used manually via [wbam_ad], never assigned to an ad.
+		$this->assertNotContains( 'shortcode', $ids );
+	}
 }
