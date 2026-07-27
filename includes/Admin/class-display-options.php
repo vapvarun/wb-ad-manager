@@ -418,11 +418,36 @@ class Display_Options {
 				<div class="wbam-checkbox-list wbam-inline">
 					<?php
 					$available_roles = wp_roles()->get_names();
+
+					// A4 fix: two role SLUGS can register the same display
+					// NAME - e.g. a companion plugin's own role labeled
+					// "Subscriber" alongside WordPress core's own
+					// 'subscriber' role (confirmed on this install: Learnomy
+					// registers 'lrn_student' with name => 'Subscriber').
+					// wp_roles()->get_names() is keyed by slug, so both are
+					// real, independently-assignable roles - rendering only
+					// one checkbox would silently drop the other from
+					// `_wbam_visitor_conditions.user_roles` on the next save
+					// of any ad that already targets it (no checkbox = never
+					// posted = the sanitizer treats it as unticked). Instead
+					// of dropping a role, disambiguate: append the slug to
+					// every label that collides with another role's label,
+					// so two checkboxes never read identically.
+					$label_counts = array_count_values( $available_roles );
+
 					foreach ( $available_roles as $role_key => $role_name ) :
+						$role_label = $label_counts[ $role_name ] > 1
+							? sprintf(
+								/* translators: 1: role display name, 2: role slug (shown only when two roles share the same display name). */
+								__( '%1$s (%2$s)', 'wb-ads-rotator-with-split-test' ),
+								$role_name,
+								$role_key
+							)
+							: $role_name;
 						?>
 						<label>
 							<input type="checkbox" name="wbam_visitor_conditions[user_roles][]" value="<?php echo esc_attr( $role_key ); ?>" <?php checked( in_array( $role_key, $user_roles, true ) ); ?> />
-							<?php echo esc_html( $role_name ); ?>
+							<?php echo esc_html( $role_label ); ?>
 						</label>
 					<?php endforeach; ?>
 				</div>

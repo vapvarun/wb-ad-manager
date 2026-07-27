@@ -118,21 +118,29 @@ class Placement_Settings {
 		$grouped    = $engine->get_placements_grouped();
 		$option     = \WBAM\Admin\Settings::OPTION_NAME;
 		$offered    = array();
+
+		// Column header text is reused as the mobile card's row label (via
+		// the `data-label` attribute + a CSS `content: attr()` rule below
+		// 782px — see .wbam-placement-matrix in assets/css/admin.css).
+		// Fetched once so the <thead> and every stacked row agree.
+		$label_site = __( 'Site', 'wb-ads-rotator-with-split-test' );
+		$label_adv  = __( 'Advertisers', 'wb-ads-rotator-with-split-test' );
+		$label_ads  = __( 'Active ads', 'wb-ads-rotator-with-split-test' );
 		?>
 		<div class="wbam-placement-matrix__scroll">
-		<table class="widefat wbam-placement-matrix">
-			<thead>
-				<tr>
-					<th scope="col"><?php esc_html_e( 'Slot', 'wb-ads-rotator-with-split-test' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Site', 'wb-ads-rotator-with-split-test' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Advertisers', 'wb-ads-rotator-with-split-test' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Active ads', 'wb-ads-rotator-with-split-test' ); ?></th>
+		<table class="widefat wbam-placement-matrix" role="table">
+			<thead role="rowgroup">
+				<tr role="row">
+					<th scope="col" role="columnheader"><?php esc_html_e( 'Slot', 'wb-ads-rotator-with-split-test' ); ?></th>
+					<th scope="col" role="columnheader"><?php echo esc_html( $label_site ); ?></th>
+					<th scope="col" role="columnheader"><?php echo esc_html( $label_adv ); ?></th>
+					<th scope="col" role="columnheader"><?php echo esc_html( $label_ads ); ?></th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody role="rowgroup">
 			<?php foreach ( $grouped as $group => $placements ) : ?>
-				<tr class="wbam-placement-matrix__group">
-					<th colspan="4" scope="colgroup"><?php echo esc_html( ucfirst( (string) $group ) ); ?></th>
+				<tr class="wbam-placement-matrix__group" role="row">
+					<th colspan="4" scope="colgroup" role="columnheader"><?php echo esc_html( ucfirst( (string) $group ) ); ?></th>
 				</tr>
 				<?php
 				foreach ( $placements as $id => $placement ) :
@@ -145,15 +153,15 @@ class Placement_Settings {
 					$adv_on      = empty( $advertiser ) || in_array( $id, $advertiser, true );
 					$unavailable = ! $placement->is_available();
 					?>
-					<tr<?php echo $unavailable ? ' class="wbam-placement-matrix__row--unavailable"' : ''; ?>>
-						<td>
+					<tr role="row"<?php echo $unavailable ? ' class="wbam-placement-matrix__row--unavailable"' : ''; ?>>
+						<td role="cell">
 							<strong><?php echo esc_html( $placement->get_name() ); ?></strong>
 							<span class="description"><?php echo esc_html( $placement->get_description() ); ?></span>
 							<?php if ( $unavailable ) : ?>
 								<em><?php esc_html_e( 'Integration inactive', 'wb-ads-rotator-with-split-test' ); ?></em>
 							<?php endif; ?>
 						</td>
-						<td>
+						<td role="cell" data-label="<?php echo esc_attr( $label_site ); ?>">
 							<label>
 								<span class="screen-reader-text">
 									<?php
@@ -170,7 +178,7 @@ class Placement_Settings {
 									<?php checked( $site_on ); ?> />
 							</label>
 						</td>
-						<td>
+						<td role="cell" data-label="<?php echo esc_attr( $label_adv ); ?>">
 							<label>
 								<span class="screen-reader-text">
 									<?php
@@ -187,7 +195,7 @@ class Placement_Settings {
 									<?php disabled( ! $site_on ); ?> />
 							</label>
 						</td>
-						<td><?php echo esc_html( (string) $count ); ?></td>
+						<td role="cell" data-label="<?php echo esc_attr( $label_ads ); ?>"><?php echo esc_html( (string) $count ); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endforeach; ?>
