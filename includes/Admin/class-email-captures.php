@@ -84,7 +84,7 @@ class Email_Captures {
 		$per_page = max( 1, min( 200, (int) $per_page ) );
 		$offset   = ( $page - 1 ) * $per_page;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table name from $wpdb->prefix; LIMIT/OFFSET are prepared.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table name from $wpdb->prefix (identifier, not a value; no user input reaches it); LIMIT/OFFSET are prepared below.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT id, ad_id, email, name, ip_address, created_at
@@ -95,6 +95,7 @@ class Email_Captures {
 				$offset
 			)
 		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 		return is_array( $rows ) ? $rows : array();
 	}
@@ -152,7 +153,7 @@ class Email_Captures {
 					<tbody>
 						<?php foreach ( $rows as $row ) : ?>
 							<?php
-							$ad_title  = $row->ad_id ? get_the_title( (int) $row->ad_id ) : '';
+							$ad_title   = $row->ad_id ? get_the_title( (int) $row->ad_id ) : '';
 							$delete_url = wp_nonce_url(
 								admin_url( 'admin-post.php?action=wbam_delete_email_capture&id=' . (int) $row->id . '&paged=' . $page ),
 								'wbam_delete_email_capture_' . (int) $row->id
