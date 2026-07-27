@@ -30,6 +30,13 @@ class Placement_Settings {
 	 * in SQL. We fetch the enabled ads' meta in one IN() query and tally
 	 * in PHP. Ad counts are in the hundreds at most, never the thousands.
 	 *
+	 * Only published ads count. This number is what the close-a-slot
+	 * confirm quotes ("N active ad(s) will stop rendering"), and delivery
+	 * runs through Placement_Engine::get_ads_for_placement(), whose
+	 * get_posts() call defaults to post_status=publish. Counting drafts,
+	 * pending, private or scheduled ads here would overstate the damage and
+	 * make the warning untrustworthy.
+	 *
 	 * @since 2.11.0
 	 * @return array<string,int> Placement ID => enabled ad count.
 	 */
@@ -53,7 +60,7 @@ class Placement_Settings {
 			   JOIN {$wpdb->posts} p
 			     ON p.ID = pm.post_id
 			    AND p.post_type = 'wbam-ad'
-			    AND p.post_status != 'trash'
+			    AND p.post_status = 'publish'
 			  WHERE pm.meta_key = '_wbam_placements'"
 		);
 		// phpcs:enable WordPress.DB.DirectDatabaseQuery
@@ -91,6 +98,14 @@ class Placement_Settings {
 	 * admin must be able to re-open a slot the site gate has closed, and
 	 * a closed slot is absent from get_selectable_placements() by design.
 	 *
+	 * Emits two transport-only hidden fields after the table:
+	 * `placement_gates_submitted` says the matrix was part of this request,
+	 * and `placement_gates_offered` lists the exact rows it drew. Without
+	 * them Settings::sanitize_settings() cannot tell "the admin unticked
+	 * everything" from "this POST never contained the matrix" — an
+	 * unticked checkbox posts nothing either way. Neither field is stored;
+	 * see Settings_Helper::GATE_NONE for the encoding they feed.
+	 *
 	 * @since 2.11.0
 	 * @return void
 	 */
@@ -102,6 +117,7 @@ class Placement_Settings {
 		$all_open   = empty( $site );
 		$grouped    = $engine->get_placements_grouped();
 		$option     = \WBAM\Admin\Settings::OPTION_NAME;
+		$offered    = array();
 		?>
 		<div class="wbam-placement-matrix__scroll">
 		<table class="widefat wbam-placement-matrix">
@@ -123,6 +139,7 @@ class Placement_Settings {
 					if ( ! $placement->show_in_selector() ) {
 						continue;
 					}
+					$offered[]   = (string) $id;
 					$count       = isset( $counts[ $id ] ) ? (int) $counts[ $id ] : 0;
 					$site_on     = $all_open || in_array( $id, $site, true );
 					$adv_on      = empty( $advertiser ) || in_array( $id, $advertiser, true );
@@ -177,6 +194,8 @@ class Placement_Settings {
 			</tbody>
 		</table>
 		</div>
+		<input type="hidden" name="<?php echo esc_attr( $option . '[placement_gates_submitted]' ); ?>" value="1" />
+		<input type="hidden" name="<?php echo esc_attr( $option . '[placement_gates_offered]' ); ?>" value="<?php echo esc_attr( implode( ',', $offered ) ); ?>" />
 		<?php
 	}
 }

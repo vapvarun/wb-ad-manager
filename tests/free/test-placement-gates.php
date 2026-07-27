@@ -99,13 +99,43 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 		$this->assertNotContains( 'shortcode', $ids );
 	}
 
+	/**
+	 * Build a matrix POST the way Placement_Settings::render_table() would.
+	 *
+	 * @param string[] $offered   Rows the matrix drew.
+	 * @param string[] $site      Site boxes ticked.
+	 * @param string[]|null $adv  Advertiser boxes ticked. Null = same as site.
+	 * @return array
+	 */
+	private function matrix_post( array $offered, array $site, ?array $adv = null ): array {
+		$post = array(
+			'placement_gates_submitted' => '1',
+			'placement_gates_offered'   => implode( ',', $offered ),
+		);
+
+		// An unticked checkbox posts nothing, so an empty tick list means
+		// the key is absent entirely — that is the whole reason the two
+		// hidden fields above exist.
+		if ( ! empty( $site ) ) {
+			$post['enabled_placements'] = $site;
+		}
+
+		$adv = null === $adv ? $site : $adv;
+		if ( ! empty( $adv ) ) {
+			$post['advertiser_placements'] = $adv;
+		}
+
+		return $post;
+	}
+
 	public function test_sanitizer_preserves_placement_gates(): void {
 		$settings = new \WBAM\Admin\Settings();
 
 		$out = $settings->sanitize_settings(
-			array(
-				'enabled_placements'    => array( 'header', 'footer' ),
-				'advertiser_placements' => array( 'header' ),
+			$this->matrix_post(
+				array( 'header', 'footer', 'popup' ),
+				array( 'header', 'footer' ),
+				array( 'header' )
 			)
 		);
 
@@ -118,13 +148,21 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 
 		// A crafted POST claiming a slot the site gate does not allow.
 		$out = $settings->sanitize_settings(
-			array(
-				'enabled_placements'    => array( 'header' ),
-				'advertiser_placements' => array( 'header', 'popup' ),
+			$this->matrix_post(
+				array( 'header', 'footer', 'popup' ),
+				array( 'header' ),
+				array( 'header', 'popup' )
 			)
 		);
 
-		$this->assertSame( array( 'header' ), $out['advertiser_placements'] );
+		$this->assertSame( array( 'header' ), $out['enabled_placements'] );
+
+		// 'popup' is dropped at write time because it is not sellable, which
+		// leaves every sellable row ticked - so the gate stores "all", and
+		// "all" for advertisers resolves to the site list. Assert on that
+		// resolved value; the raw encoding is an implementation detail.
+		update_option( 'wbam_settings', $out );
+		$this->assertSame( array( 'header' ), Settings_Helper::advertiser_placements() );
 	}
 
 	public function test_sanitizer_defaults_gates_to_empty_arrays(): void {
@@ -133,6 +171,149 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 
 		$this->assertSame( array(), $out['enabled_placements'] );
 		$this->assertSame( array(), $out['advertiser_placements'] );
+	}
+
+	/**
+	 * CRITICAL 2 regression.
+	 *
+	 * Every box ticked must store "all" (array()), never a snapshot of the
+	 * placements that happened to be registered at save time. Otherwise one
+	 * unrelated Settings save silently closes every slot a companion plugin
+	 * registers afterwards.
+	 */
+	public function test_sanitizer_stores_all_when_every_row_is_ticked(): void {
+		$settings = new \WBAM\Admin\Settings();
+		$offered  = array( 'header', 'footer', 'popup', 'sticky' );
+
+		$out = $settings->sanitize_settings( $this->matrix_post( $offered, $offered ) );
+
+		$this->assertSame( array(), $out['enabled_placements'], 'A fully-ticked matrix must store "all", not a frozen allowlist.' );
+		$this->assertSame( array(), $out['advertiser_placements'] );
+
+		// And "all" really does stay open for a placement registered later.
+		update_option( 'wbam_settings', $out );
+		$this->assertTrue( Settings_Helper::is_placement_open( 'a_slot_registered_after_that_save' ) );
+	}
+
+	/**
+	 * CRITICAL 1 regression.
+	 *
+	 * Unticking every box must store an explicit "none" and actually stop
+	 * delivery. Storing array() would mean "all" and re-open everything the
+	 * admin just clicked through a confirm to close.
+	 */
+	public function test_sanitizer_stores_explicit_none_when_nothing_is_ticked(): void {
+		$ad_id = self::factory()->post->create( array( 'post_type' => 'wbam-ad' ) );
+		update_post_meta( $ad_id, '_wbam_enabled', '1' );
+		update_post_meta( $ad_id, '_wbam_placements', array( 'footer' ) );
+
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+		wp_cache_flush();
+		$this->assertNotEmpty( $engine->get_ads_for_placement( 'footer' ), 'Precondition: the slot is open.' );
+
+		$settings = new \WBAM\Admin\Settings();
+		$out      = $settings->sanitize_settings(
+			$this->matrix_post( array( 'header', 'footer', 'popup' ), array() )
+		);
+
+		$this->assertSame( array( Settings_Helper::GATE_NONE ), $out['enabled_placements'] );
+
+		update_option( 'wbam_settings', $out );
+		wp_cache_flush();
+
+		$this->assertNotSame( array(), Settings_Helper::enabled_placements(), 'Stored "none" must not read back as "all".' );
+		// Nothing is sellable when nothing is open, whatever the advertiser
+		// gate stores - the site gate wins.
+		$this->assertSame( array( Settings_Helper::GATE_NONE ), Settings_Helper::advertiser_placements() );
+		$this->assertFalse( Settings_Helper::is_placement_open( 'footer' ) );
+		$this->assertSame( array(), $engine->get_ads_for_placement( 'footer' ), 'A closed site gate must stop delivery.' );
+		$this->assertSame( array(), $engine->get_selectable_placements() );
+	}
+
+	/**
+	 * Unticking every Advertisers box must not fall back to the site list.
+	 */
+	public function test_advertiser_gate_stores_explicit_none(): void {
+		$settings = new \WBAM\Admin\Settings();
+
+		$out = $settings->sanitize_settings(
+			$this->matrix_post( array( 'header', 'footer' ), array( 'header' ), array() )
+		);
+
+		$this->assertSame( array( 'header' ), $out['enabled_placements'] );
+		$this->assertSame( array( Settings_Helper::GATE_NONE ), $out['advertiser_placements'] );
+
+		update_option( 'wbam_settings', $out );
+		$this->assertSame( array( Settings_Helper::GATE_NONE ), Settings_Helper::advertiser_placements() );
+	}
+
+	/**
+	 * A save that never rendered the matrix must not rewrite the gates.
+	 */
+	public function test_settings_save_without_the_matrix_leaves_gates_alone(): void {
+		update_option(
+			'wbam_settings',
+			array(
+				'enabled_placements'    => array( 'header' ),
+				'advertiser_placements' => array( 'header' ),
+			)
+		);
+
+		$settings = new \WBAM\Admin\Settings();
+		$out      = $settings->sanitize_settings( array( 'ad_label' => 'Sponsored' ) );
+
+		$this->assertSame( array( 'header' ), $out['enabled_placements'] );
+		$this->assertSame( array( 'header' ), $out['advertiser_placements'] );
+	}
+
+	/**
+	 * A slot the matrix never drew a row for keeps its stored state.
+	 */
+	public function test_gate_carries_over_placements_the_matrix_never_offered(): void {
+		update_option(
+			'wbam_settings',
+			array( 'enabled_placements' => array( 'header', 'frontend_only_slot' ) )
+		);
+
+		$settings = new \WBAM\Admin\Settings();
+		$out      = $settings->sanitize_settings(
+			$this->matrix_post( array( 'header', 'footer' ), array( 'header' ) )
+		);
+
+		$this->assertContains( 'header', $out['enabled_placements'] );
+		$this->assertContains( 'frontend_only_slot', $out['enabled_placements'], 'A slot the UI never offered must not be closed by a save.' );
+		$this->assertNotContains( 'footer', $out['enabled_placements'] );
+	}
+
+	/**
+	 * IMPORTANT 3 regression.
+	 *
+	 * Closing a slot must not destroy the ads already assigned to it.
+	 */
+	public function test_ad_save_keeps_assignments_the_form_did_not_offer(): void {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+
+		$ad_id = self::factory()->post->create( array( 'post_type' => 'wbam-ad' ) );
+		update_post_meta( $ad_id, '_wbam_placements', array( 'popup', 'footer' ) );
+
+		// The admin closes 'popup' at site level, so the metabox stops
+		// drawing a checkbox for it.
+		update_option( 'wbam_settings', array( 'enabled_placements' => array( 'footer', 'header' ) ) );
+
+		$original = $_POST;
+		$_POST    = array(
+			'wbam_nonce'      => wp_create_nonce( 'wbam_save_ad' ),
+			'wbam_placements' => array( 'footer' ),
+		);
+
+		\WBAM\Admin\Admin::get_instance()->save_meta( $ad_id, get_post( $ad_id ) );
+
+		$_POST = $original;
+
+		$saved = get_post_meta( $ad_id, '_wbam_placements', true );
+
+		$this->assertContains( 'footer', (array) $saved );
+		$this->assertContains( 'popup', (array) $saved, 'A closed slot must keep its assignment across an unrelated ad edit.' );
 	}
 
 	public function test_closed_placement_returns_no_ads(): void {

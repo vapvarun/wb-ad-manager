@@ -755,7 +755,10 @@
 .wbam-placement-matrix th,
 .wbam-placement-matrix td {
 	padding: var(--wbam-space-3) var(--wbam-space-4);
-	text-align: left;
+	/* `start`, not `left` - this stylesheet has no RTL companion, so a
+	   hard-coded physical direction would leave the matrix the only
+	   left-aligned table on an RTL admin. */
+	text-align: start;
 	vertical-align: middle;
 	border-bottom: 1px solid var(--wbam-border);
 }

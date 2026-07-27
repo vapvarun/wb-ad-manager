@@ -1753,7 +1753,26 @@ class Admin {
 		update_post_meta( $post_id, '_wbam_ad_height', $resolved['height'] );
 
 		// Save placements.
-		$placements = isset( $_POST['wbam_placements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) ) : array();
+		//
+		// The metabox only draws checkboxes for get_selectable_placements(),
+		// so a slug the site gate has closed - or one whose integration is
+		// switched off right now, e.g. BuddyPress deactivated - is simply
+		// absent from the form. Replacing the meta wholesale would then
+		// DESTROY that assignment the next time anyone edits the ad for an
+		// unrelated reason, and re-opening the slot would not bring it back.
+		// So: union the posted list with the stored slugs the form never
+		// offered. The admin can only ever change what they were shown.
+		$posted_placements = isset( $_POST['wbam_placements'] ) && is_array( $_POST['wbam_placements'] )
+			? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) )
+			: array();
+
+		$stored_placements = get_post_meta( $post_id, '_wbam_placements', true );
+		$stored_placements = is_array( $stored_placements ) ? $stored_placements : array();
+
+		$offered_placements = array_keys( Placement_Engine::get_instance()->get_selectable_placements() );
+		$unoffered          = array_values( array_diff( $stored_placements, $offered_placements ) );
+
+		$placements = array_values( array_unique( array_merge( $posted_placements, $unoffered ) ) );
 		update_post_meta( $post_id, '_wbam_placements', $placements );
 
 		// Save ad data.

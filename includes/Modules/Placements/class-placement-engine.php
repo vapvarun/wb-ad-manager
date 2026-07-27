@@ -71,6 +71,10 @@ class Placement_Engine {
 		add_action( 'wbam_save_ad_meta', array( $this, 'clear_placement_cache' ) );
 		add_action( 'delete_post', array( $this, 'maybe_clear_cache_on_delete' ) );
 		add_action( 'trashed_post', array( $this, 'maybe_clear_cache_on_delete' ) );
+		// Restoring from trash must invalidate too, or the restored ad stays
+		// out of rotation for up to the 5-minute cache TTL. Mirrors the same
+		// hook on the ad-count cache (Plugin::init_hooks()).
+		add_action( 'untrashed_post', array( $this, 'maybe_clear_cache_on_delete' ) );
 
 		do_action( 'wbam_placements_init', $this );
 	}
@@ -201,16 +205,14 @@ class Placement_Engine {
 	 * @return Placement_Interface[] Keyed by placement ID.
 	 */
 	public function get_selectable_placements() {
-		$allowed = \WBAM\Core\Settings_Helper::enabled_placements();
-		$out     = array();
+		$out = array();
 
 		foreach ( $this->placements as $id => $placement ) {
 			if ( ! $placement->is_available() || ! $placement->show_in_selector() ) {
 				continue;
 			}
 
-			// Empty allowlist means all placements (see Settings_Helper).
-			if ( ! empty( $allowed ) && ! in_array( $id, $allowed, true ) ) {
+			if ( ! \WBAM\Core\Settings_Helper::is_placement_open( $id ) ) {
 				continue;
 			}
 
@@ -254,8 +256,7 @@ class Placement_Engine {
 		// The advertiser gate is deliberately NOT applied here: closing a
 		// slot for sale must never dark-drop a creative an advertiser has
 		// already paid for. See plan/ad-slot-control.md §2.
-		$allowed = \WBAM\Core\Settings_Helper::enabled_placements();
-		if ( ! empty( $allowed ) && ! in_array( $placement_id, $allowed, true ) ) {
+		if ( ! \WBAM\Core\Settings_Helper::is_placement_open( $placement_id ) ) {
 			return array();
 		}
 

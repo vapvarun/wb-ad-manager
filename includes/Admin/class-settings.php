@@ -543,24 +543,151 @@ class Settings {
 		// Placement gates. sanitize_settings() rebuilds the option from
 		// scratch, so these must be written explicitly or every save on
 		// this screen would wipe them.
-		$sanitized['enabled_placements'] = ( ! empty( $input['enabled_placements'] ) && is_array( $input['enabled_placements'] ) )
-			? array_values( array_unique( array_filter( array_map( 'sanitize_key', $input['enabled_placements'] ) ) ) )
-			: array();
-
-		$advertiser = ( ! empty( $input['advertiser_placements'] ) && is_array( $input['advertiser_placements'] ) )
-			? array_values( array_unique( array_filter( array_map( 'sanitize_key', $input['advertiser_placements'] ) ) ) )
-			: array();
-
-		// A slot closed at site level can never be sellable, whatever the
-		// client posted. Enforced server-side; the JS coupling in
-		// admin-placement-settings.js is a convenience, not the guard.
-		if ( ! empty( $advertiser ) && ! empty( $sanitized['enabled_placements'] ) ) {
-			$advertiser = array_values( array_intersect( $advertiser, $sanitized['enabled_placements'] ) );
-		}
-
-		$sanitized['advertiser_placements'] = $advertiser;
+		$sanitized = array_merge( $sanitized, $this->sanitize_placement_gates( $input ) );
 
 		return $sanitized;
+	}
+
+	/**
+	 * Resolve both placement gates from a settings POST.
+	 *
+	 * The stored value has three states (all / none / explicit list) and a
+	 * checkbox column has one (the ticks that happened to be on). The two
+	 * transport-only hidden fields the matrix emits close that gap. See
+	 * Settings_Helper::GATE_NONE for the canonical encoding; this method is
+	 * the only writer of it.
+	 *
+	 * Decision table:
+	 *
+	 *  | `placement_gates_submitted` | ticks           | stored               |
+	 *  |-----------------------------|-----------------|----------------------|
+	 *  | absent                      | (irrelevant)    | previous value, kept |
+	 *  | present                     | every row       | array()  = ALL       |
+	 *  | present                     | none            | array( GATE_NONE )   |
+	 *  | present                     | some            | exactly those        |
+	 *
+	 * Row 1 is what stops another settings tab, or a programmatic
+	 * `update_option()`, from clobbering gates it never rendered. Row 2 is
+	 * why a save cannot freeze "all" into a snapshot of the placements
+	 * registered at that instant — a later integration's slots must stay
+	 * open, since the admin never chose to close them.
+	 *
+	 * Known limitation: once the gate is an explicit list (row 4), a slot
+	 * registered afterwards IS closed until an admin ticks it. That is
+	 * inherent to an allowlist, and it is the state an admin opted into.
+	 *
+	 * @since 2.11.0
+	 * @param array<string,mixed> $input Raw settings POST.
+	 * @return array<string,string[]> `enabled_placements` and `advertiser_placements`.
+	 */
+	private function sanitize_placement_gates( $input ) {
+		$stored      = get_option( self::OPTION_NAME, array() );
+		$stored      = is_array( $stored ) ? $stored : array();
+		$stored_site = self::sanitize_placement_ids( $stored['enabled_placements'] ?? array() );
+		$stored_adv  = self::sanitize_placement_ids( $stored['advertiser_placements'] ?? array() );
+
+		if ( empty( $input['placement_gates_submitted'] ) ) {
+			return array(
+				'enabled_placements'    => $stored_site,
+				'advertiser_placements' => $stored_adv,
+			);
+		}
+
+		$offered = self::sanitize_placement_ids(
+			explode( ',', isset( $input['placement_gates_offered'] ) && is_string( $input['placement_gates_offered'] ) ? $input['placement_gates_offered'] : '' )
+		);
+
+		$site = self::resolve_gate(
+			self::sanitize_placement_ids( $input['enabled_placements'] ?? array() ),
+			$offered,
+			$stored_site
+		);
+
+		// The Advertisers column only offers rows whose Site box is ticked —
+		// the rest render disabled, and a disabled checkbox posts nothing.
+		// Narrowing the offered set the same way is what enforces
+		// "advertiser ⊆ site" at write time. Settings_Helper enforces it
+		// again on read, because a crafted POST is not the only way a bad
+		// pair could reach the option.
+		$sellable = empty( $site ) ? $offered : array_values( array_intersect( $offered, $site ) );
+
+		$advertiser = self::resolve_gate(
+			self::sanitize_placement_ids( $input['advertiser_placements'] ?? array() ),
+			$sellable,
+			$stored_adv
+		);
+
+		return array(
+			'enabled_placements'    => $site,
+			'advertiser_placements' => $advertiser,
+		);
+	}
+
+	/**
+	 * Encode one gate from a posted tick list.
+	 *
+	 * Stored IDs the matrix did NOT offer are carried through unchanged.
+	 * A slot can be registered on the front end only, or belong to an
+	 * integration that is deactivated right now; the admin was never shown
+	 * it, so a save must not silently close it.
+	 *
+	 * @since 2.11.0
+	 * @param string[] $ticked  Sanitized IDs the admin ticked.
+	 * @param string[] $offered Sanitized IDs the matrix drew a row for.
+	 * @param string[] $stored  Currently stored value of this gate.
+	 * @return string[] Encoded gate: array() means all, array( GATE_NONE ) means none.
+	 */
+	private static function resolve_gate( array $ticked, array $offered, array $stored ) {
+		if ( empty( $offered ) ) {
+			// Nothing was on offer, so nothing was decided.
+			return $stored;
+		}
+
+		$ticked = array_values( array_intersect( $ticked, $offered ) );
+
+		// Empty whenever the stored gate is "all" or "none".
+		$unseen = array_values( array_diff( $stored, $offered, array( \WBAM\Core\Settings_Helper::GATE_NONE ) ) );
+
+		if ( ! array_diff( $offered, $ticked ) ) {
+			// Every offered row ticked: "all", not a frozen allowlist.
+			return array();
+		}
+
+		if ( empty( $ticked ) && empty( $unseen ) ) {
+			return array( \WBAM\Core\Settings_Helper::GATE_NONE );
+		}
+
+		return array_values( array_unique( array_merge( $ticked, $unseen ) ) );
+	}
+
+	/**
+	 * Sanitize an arbitrary list into placement IDs.
+	 *
+	 * `strlen` rather than the default array_filter() callback so a slug
+	 * that sanitizes to "0" survives; non-scalars are dropped rather than
+	 * cast, since a crafted POST can nest arrays anywhere.
+	 *
+	 * @since 2.11.0
+	 * @param mixed $ids Raw list.
+	 * @return string[]
+	 */
+	private static function sanitize_placement_ids( $ids ) {
+		$out = array();
+
+		foreach ( (array) $ids as $id ) {
+			if ( ! is_scalar( $id ) ) {
+				continue;
+			}
+
+			$id = sanitize_key( (string) $id );
+			if ( '' === $id ) {
+				continue;
+			}
+
+			$out[] = $id;
+		}
+
+		return array_values( array_unique( $out ) );
 	}
 
 	/**
