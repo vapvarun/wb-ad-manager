@@ -246,6 +246,19 @@ class Placement_Engine {
 	 * @return array
 	 */
 	public function get_ads_for_placement( $placement_id ) {
+		// Site gate. A slot the admin has closed delivers nothing, so
+		// unticking it in Settings actually stops the ads rather than
+		// only hiding the checkbox. Checked before the cache lookup so a
+		// warm cache cannot serve a closed slot.
+		//
+		// The advertiser gate is deliberately NOT applied here: closing a
+		// slot for sale must never dark-drop a creative an advertiser has
+		// already paid for. See plan/ad-slot-control.md §2.
+		$allowed = \WBAM\Core\Settings_Helper::enabled_placements();
+		if ( ! empty( $allowed ) && ! in_array( $placement_id, $allowed, true ) ) {
+			return array();
+		}
+
 		// Try to get cached ad IDs for this placement.
 		$cache_key = 'wbam_placement_ads_' . sanitize_key( $placement_id );
 		$ad_ids    = wp_cache_get( $cache_key, 'wbam' );

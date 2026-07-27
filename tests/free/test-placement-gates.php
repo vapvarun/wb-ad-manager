@@ -134,4 +134,22 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 		$this->assertSame( array(), $out['enabled_placements'] );
 		$this->assertSame( array(), $out['advertiser_placements'] );
 	}
+
+	public function test_closed_placement_returns_no_ads(): void {
+		$ad_id = self::factory()->post->create( array( 'post_type' => 'wbam-ad' ) );
+		update_post_meta( $ad_id, '_wbam_enabled', '1' );
+		update_post_meta( $ad_id, '_wbam_placements', array( 'footer' ) );
+
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+
+		// Open: the ad is deliverable.
+		update_option( 'wbam_settings', array( 'enabled_placements' => array( 'footer' ) ) );
+		wp_cache_flush();
+		$this->assertNotEmpty( $engine->get_ads_for_placement( 'footer' ) );
+
+		// Closed: delivery stops.
+		update_option( 'wbam_settings', array( 'enabled_placements' => array( 'header' ) ) );
+		wp_cache_flush();
+		$this->assertSame( array(), $engine->get_ads_for_placement( 'footer' ) );
+	}
 }
