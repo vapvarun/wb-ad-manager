@@ -263,20 +263,16 @@ class Settings {
 			)
 		);
 
-		// Placements Section.
+		// Placements Section. The matrix is section-level content, not a
+		// settings field - it renders from render_placements_section() below
+		// so it gets the full content width instead of being squeezed into
+		// the Settings API's <td> next to a <th> label column. See
+		// render_placements_section() for why.
 		add_settings_section(
 			'wbam_placements',
 			__( 'Placements', 'wb-ads-rotator-with-split-test' ),
 			array( $this, 'render_placements_section' ),
 			'wbam-settings'
-		);
-
-		add_settings_field(
-			'placement_gates',
-			__( 'Available Slots', 'wb-ads-rotator-with-split-test' ),
-			array( '\WBAM\Admin\Placement_Settings', 'render_table' ),
-			'wbam-settings',
-			'wbam_placements'
 		);
 
 		// Geo Targeting Section.
@@ -637,13 +633,23 @@ class Settings {
 	}
 
 	/**
-	 * Placements section description.
+	 * Placements section description, plus the placement matrix itself.
+	 *
+	 * The matrix is rendered here rather than via add_settings_field()
+	 * because add_settings_field() wraps its output in the Settings API's
+	 * form-table <td>, next to a <th> label column that eats ~500px. A
+	 * 4-column matrix squeezed into what's left forces a horizontal
+	 * scrollbar even on a wide desktop screen. Rendering it from the
+	 * section callback instead - which fires before that form-table opens -
+	 * gives it the full content width and no label column.
 	 */
 	public function render_placements_section(): void {
 		echo '<p>' . esc_html__(
 			'Choose which slots this site uses, and which of those advertisers may buy. Unticking Site stops ads rendering in that slot. Unticking Advertisers only removes it from the advertiser portal — creatives already assigned keep running.',
 			'wb-ads-rotator-with-split-test'
 		) . '</p>';
+
+		\WBAM\Admin\Placement_Settings::render_table();
 	}
 
 	/**

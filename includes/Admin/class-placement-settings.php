@@ -103,6 +103,7 @@ class Placement_Settings {
 		$grouped    = $engine->get_placements_grouped();
 		$option     = \WBAM\Admin\Settings::OPTION_NAME;
 		?>
+		<div class="wbam-placement-matrix__scroll">
 		<table class="widefat wbam-placement-matrix">
 			<thead>
 				<tr>
@@ -175,6 +176,7 @@ class Placement_Settings {
 			<?php endforeach; ?>
 			</tbody>
 		</table>
+		</div>
 		<?php
 	}
 }
