@@ -351,4 +351,76 @@ class Ad_Formats {
 
 		return array_values( array_filter( array_map( 'strval', (array) $entry['accepted_formats'] ) ) );
 	}
+
+	/**
+	 * Intersect a placement registry's format-compatible slugs with a
+	 * specific list of "selected" (ticked) placement slugs.
+	 *
+	 * Backs the ad-edit screen's sizing "compatibility" summary (A1 fix:
+	 * that summary used to answer "which placements accept this format"
+	 * while claiming "Will render in:" — misleading when the admin had
+	 * only ticked a subset of placements in the metabox below, or none at
+	 * all). Pure computation — no WP calls, no DB reads — so it is
+	 * unit-testable in isolation from both `render_status_metabox()`
+	 * (initial server-rendered value) and the client-side live recompute
+	 * (`collect_format_js_data()` payload consumed by the inline script).
+	 *
+	 * Matching rule: a placement matches when $format is 'responsive' OR
+	 * appears in that placement's accepted_formats list. An empty
+	 * accepted_formats list does NOT match a non-responsive format here —
+	 * deliberately not Ad_Formats::fits()'s permissive-on-empty behaviour,
+	 * to keep this summary's output unchanged for placements that have
+	 * not declared formats yet (same restrictive rule the summary already
+	 * used before this fix).
+	 *
+	 * @since 2.11.1
+	 * @param array<string,array{name?:string,accepted_formats?:array<int,string>}> $registry Placement registry (already site-gated, e.g. via the wbam_get_placements filter).
+	 * @param string   $format   Resolved format slug for the ad being edited.
+	 * @param string[] $selected Placement slugs currently ticked in the Placements metabox.
+	 * @return array{compatible:string[], match:string[], mismatch:string[]} `compatible` is every
+	 *         registry slug whose accepted formats include $format; `match` is the subset of
+	 *         $selected that is also in `compatible`; `mismatch` is the subset of $selected that
+	 *         is not. Selected slugs absent from $registry are ignored — no checkbox can exist
+	 *         for a placement the registry doesn't expose (get_selectable_placements() is the
+	 *         only source for those checkboxes).
+	 */
+	public static function summarize_placement_compat( array $registry, $format, array $selected ) {
+		$format     = (string) $format;
+		$compatible = array();
+
+		foreach ( $registry as $slug => $entry ) {
+			if ( ! is_array( $entry ) ) {
+				continue;
+			}
+
+			$accepted = isset( $entry['accepted_formats'] ) ? array_map( 'strval', (array) $entry['accepted_formats'] ) : array();
+
+			if ( self::RESPONSIVE === $format || in_array( $format, $accepted, true ) ) {
+				$compatible[] = (string) $slug;
+			}
+		}
+
+		$match    = array();
+		$mismatch = array();
+
+		foreach ( $selected as $slug ) {
+			$slug = (string) $slug;
+
+			if ( ! isset( $registry[ $slug ] ) ) {
+				continue;
+			}
+
+			if ( in_array( $slug, $compatible, true ) ) {
+				$match[] = $slug;
+			} else {
+				$mismatch[] = $slug;
+			}
+		}
+
+		return array(
+			'compatible' => $compatible,
+			'match'      => $match,
+			'mismatch'   => $mismatch,
+		);
+	}
 }

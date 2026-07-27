@@ -905,6 +905,49 @@ class Admin {
 		</div>
 		<script>
 		jQuery(function($) {
+			function readTypeList(rawAttr) {
+				try {
+					var parsed = JSON.parse(rawAttr || '[]');
+					return $.isArray(parsed) ? parsed : [];
+				} catch (e) {
+					return [];
+				}
+			}
+
+			// A3 fix: some ad types (e.g. Pro's video type) don't use a
+			// placement or a fixed size at all — Sizing (Ad Status metabox)
+			// and Placements (its own metabox) both hide/disable themselves
+			// for those types, driven by the same `data-no-*-types` lists
+			// the two panels were rendered with, so switching tabs without
+			// a page reload keeps both consistent.
+			function syncTypeDependentPanels(typeId) {
+				var $sizing         = $('.wbam-sizing-section'),
+					$sizingNote     = $('.wbam-sizing-unavailable-notice'),
+					$placementsWrap = $('.wbam-placements-metabox'),
+					$placements     = $placementsWrap.find('.wbam-placements-fields'),
+					$placementsNote = $('.wbam-placements-unavailable-notice');
+
+				if ( ! $sizing.length && ! $placementsWrap.length ) {
+					return;
+				}
+
+				var hideSizing     = readTypeList( $sizing.attr('data-no-sizing-types') ).indexOf(typeId) !== -1,
+					hidePlacements = readTypeList( $placementsWrap.attr('data-no-placement-types') ).indexOf(typeId) !== -1;
+
+				$sizing.prop('hidden', hideSizing);
+				$sizingNote.prop('hidden', ! hideSizing);
+
+				// `hidden` only (never `disabled`): a disabled checkbox is
+				// dropped from the POST entirely, and the save handler's
+				// "union posted with whatever the form didn't offer" logic
+				// keys off get_selectable_placements() - a site-wide list
+				// that has no notion of "not offered for this ad's type".
+				// Disabling would make a video-ad save silently wipe
+				// _wbam_placements instead of leaving it untouched.
+				$placements.prop('hidden', hidePlacements);
+				$placementsNote.prop('hidden', ! hidePlacements);
+			}
+
 			$('.wbam-adtype-tab').on('click', function(e) {
 				e.preventDefault();
 				var typeId = $(this).data('type');
@@ -913,7 +956,12 @@ class Admin {
 				$(this).addClass('wbam-adtype-tab-active');
 				$('.wbam-adtype-content').hide();
 				$('.wbam-adtype-content[data-type="' + typeId + '"]').show();
+				syncTypeDependentPanels( String( typeId ) );
 			});
+
+			// Re-assert on load: matches the PHP-rendered initial hidden
+			// state (belt-and-braces — the two must never disagree).
+			syncTypeDependentPanels( String( $('.wbam-adtype-radio:checked').val() || '' ) );
 		});
 		</script>
 		<?php
@@ -936,10 +984,32 @@ class Admin {
 		$after_posts      = isset( $data['after_posts'] ) ? absint( $data['after_posts'] ) : 3;
 		$posts_repeat     = isset( $data['posts_repeat'] ) ? $data['posts_repeat'] : false;
 
+		// A3 fix: an ad type that bypasses placements entirely (video ads
+		// are selected by `_wbam_ad_type` and delivered in-stream, not
+		// through this metabox) must not leave a fully-interactive but
+		// functionally inert Placements panel. See self::ad_types_without_placements().
+		//
+		// Hidden only - deliberately NOT `disabled`. A disabled checkbox is
+		// dropped from the POST entirely, and save_meta()'s "union posted
+		// placements with whatever the form didn't offer" logic keys off
+		// Placement_Engine::get_selectable_placements() - a site-wide list
+		// with no notion of "not offered for this ad's type". Disabling
+		// would make saving a video ad silently wipe its stored
+		// `_wbam_placements`, instead of leaving it untouched for if the
+		// admin ever switches the ad back to a placement-based type.
+		$ad_type            = is_array( $data ) && ! empty( $data['type'] ) ? (string) $data['type'] : 'image';
+		$no_placement_types = self::ad_types_without_placements();
+		$placements_hidden  = in_array( $ad_type, $no_placement_types, true );
+
 		$engine     = Placement_Engine::get_instance();
 		$all_places = $engine->get_selectable_placements_grouped();
 		?>
-		<div class="wbam-metabox">
+		<div class="wbam-metabox wbam-placements-metabox" data-no-placement-types="<?php echo esc_attr( (string) wp_json_encode( array_values( $no_placement_types ) ) ); ?>">
+			<p class="wbam-placements-unavailable-notice"<?php echo $placements_hidden ? '' : ' hidden'; ?>>
+				<?php esc_html_e( 'This ad type is not assigned to a placement. It plays inside protected lesson videos (pre-roll, mid-roll, post-roll) or as a standalone player, delivered by the video engine — ticking boxes below has no effect.', 'wb-ads-rotator-with-split-test' ); ?>
+			</p>
+
+			<div class="wbam-placements-fields"<?php echo $placements_hidden ? ' hidden' : ''; ?>>
 			<?php foreach ( $all_places as $group => $group_placements ) : ?>
 				<div class="wbam-placement-group">
 					<h4><?php echo esc_html( ucfirst( $group ) ); ?> <?php esc_html_e( 'Placements', 'wb-ads-rotator-with-split-test' ); ?></h4>
@@ -998,8 +1068,47 @@ class Admin {
 					</label>
 				</div>
 			</div>
+			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Ad type IDs whose ads are not assigned to a placement.
+	 *
+	 * Video ads (Pro's `video` type, id registered via the free
+	 * `wbam_register_ad_types` action) are selected by `_wbam_ad_type` and
+	 * delivered in-stream by MediaShield/the standalone player — they
+	 * bypass Placement_Engine::get_ads_for_placement() entirely, so the
+	 * Placements metabox and the Sizing section are both inert for them.
+	 * Listing 'video' here is safe even when Pro is not installed: free
+	 * never registers a type with that id, so the check is a no-op until
+	 * Pro's Video_Ad type is present.
+	 *
+	 * Filterable so a future ad type (free or Pro) that doesn't use
+	 * placements can opt in without another core change.
+	 *
+	 * @since 2.11.1
+	 * @return string[]
+	 */
+	private static function ad_types_without_placements() {
+		return (array) apply_filters( 'wbam_ad_types_without_placements', array( 'video' ) );
+	}
+
+	/**
+	 * Ad type IDs whose ads have no fixed width/height to configure.
+	 *
+	 * Kept as a separate filter from ad_types_without_placements() because
+	 * the two concerns are independent in principle (a future type could
+	 * skip one but not the other) even though 'video' opts out of both
+	 * today. See ad_types_without_placements() for why 'video' is a safe
+	 * default with or without Pro installed.
+	 *
+	 * @since 2.11.1
+	 * @return string[]
+	 */
+	private static function ad_types_without_sizing() {
+		return (array) apply_filters( 'wbam_ad_types_without_sizing', array( 'video' ) );
 	}
 
 	/**
@@ -1019,6 +1128,32 @@ class Admin {
 		$ad_width      = (int) get_post_meta( $post->ID, '_wbam_ad_width', true );
 		$ad_height     = (int) get_post_meta( $post->ID, '_wbam_ad_height', true );
 		$format_labels = \WBAM\Core\Ad_Formats::all();
+
+		// A1 fix: the sizing summary must answer "will THIS ad render in
+		// the placements the admin actually ticked", not "which placements
+		// accept this format" — see self::render_compat_summary().
+		$assigned_placements = get_post_meta( $post->ID, '_wbam_placements', true );
+		$assigned_placements = is_array( $assigned_placements ) ? array_map( 'strval', $assigned_placements ) : array();
+
+		$placement_registry = apply_filters( 'wbam_get_placements', array() );
+		$placement_registry = is_array( $placement_registry ) ? $placement_registry : array();
+
+		$sizing_compat = self::initial_compat_summary(
+			$placement_registry,
+			$assigned_placements,
+			(string) $is_responsive,
+			(string) $ad_format,
+			$ad_width,
+			$ad_height
+		);
+
+		// A3 fix: an ad type that doesn't use fixed dimensions (video ads —
+		// see self::ad_types_without_placements()) hides Sizing the same
+		// way it hides Placements, driven by the same live ad-type switch
+		// in render_settings_metabox()'s inline script.
+		$ad_data_for_type = get_post_meta( $post->ID, '_wbam_ad_data', true );
+		$current_ad_type  = is_array( $ad_data_for_type ) && ! empty( $ad_data_for_type['type'] ) ? (string) $ad_data_for_type['type'] : 'image';
+		$sizing_hidden    = in_array( $current_ad_type, self::ad_types_without_sizing(), true );
 		?>
 		<div class="wbam-metabox">
 			<div class="wbam-status-options">
@@ -1048,7 +1183,11 @@ class Admin {
 				<p class="description"><?php esc_html_e( 'Max views per visitor session. Leave empty for unlimited.', 'wb-ads-rotator-with-split-test' ); ?></p>
 			</div>
 
-			<div class="wbam-sizing-section">
+			<p class="wbam-sizing-unavailable-notice"<?php echo $sizing_hidden ? '' : ' hidden'; ?>>
+				<?php esc_html_e( 'This ad type has no fixed size — it plays inside protected lesson videos or as a standalone player, not in a sized slot.', 'wb-ads-rotator-with-split-test' ); ?>
+			</p>
+
+			<div class="wbam-sizing-section" data-no-sizing-types="<?php echo esc_attr( (string) wp_json_encode( array_values( self::ad_types_without_sizing() ) ) ); ?>"<?php echo $sizing_hidden ? ' hidden' : ''; ?>>
 				<div class="wbam-sizing-section__head">
 					<h3 class="wbam-sizing-section__title"><?php esc_html_e( 'Sizing', 'wb-ads-rotator-with-split-test' ); ?><?php echo Field_Tooltips::tip_for( 'sizing_mode' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped HTML. ?></h3>
 					<span class="wbam-sizing-section__hint"><?php esc_html_e( 'Controls where this ad can render.', 'wb-ads-rotator-with-split-test' ); ?></span>
@@ -1095,8 +1234,8 @@ class Admin {
 				</div>
 
 				<div class="wbam-sizing-compat" aria-live="polite">
-					<span class="wbam-sizing-compat__label"><?php esc_html_e( 'Will render in:', 'wb-ads-rotator-with-split-test' ); ?></span>
-					<span class="wbam-sizing-compat__value"><?php esc_html_e( 'Calculating...', 'wb-ads-rotator-with-split-test' ); ?></span>
+					<span class="wbam-sizing-compat__label"><?php echo esc_html( $sizing_compat['label'] ); ?></span>
+					<span class="wbam-sizing-compat__value"><?php echo esc_html( $sizing_compat['value'] ); ?></span>
 				</div>
 			</div>
 
@@ -1176,20 +1315,53 @@ class Admin {
 				updateCompat();
 			}
 
-			// Compute the compatible placement names locally from the
-			// data emitted in wbamFormatData (populated via wp_localize).
-			// No AJAX round-trip — the match logic is pure and fast.
+			var $compatLabel = $('.wbam-sizing-compat__label');
+
+			// Placements ticked in the (separate) Placements metabox on this
+			// same screen. Read live via selector rather than cached at load
+			// time so ticking/unticking a box updates the summary below
+			// without a page reload.
+			function selectedPlacementSlugs() {
+				var ids = [];
+				$('input[name="wbam_placements[]"]:checked').each(function() {
+					ids.push( String( this.value ) );
+				});
+				return ids;
+			}
+
+			function placementName( slug ) {
+				var entry = wbamFormatData.placements[ slug ];
+				return entry && entry.name ? entry.name : slug;
+			}
+
+			function namesFor( slugs ) {
+				return $.map( slugs, placementName );
+			}
+
+			// A1 fix: this summary must answer "will THIS ad render in the
+			// placements the admin ticked", not "which placements accept
+			// this ad's format" — and it must say so honestly when nothing
+			// is ticked yet, or when a ticked placement's format doesn't
+			// match. Mirrors Ad_Formats::summarize_placement_compat() (PHP)
+			// used for the initial server-rendered value; kept in sync by
+			// hand since the live recompute here has no AJAX round-trip.
+			//
+			// No AJAX round-trip — the match logic is pure and fast, driven
+			// entirely by data emitted in wbamFormatData (populated via
+			// wp_localize).
 			function updateCompat() {
 				if ( typeof window.wbamFormatData === 'undefined' ) {
 					$compat.text('');
 					return;
 				}
 
-				var mode   = currentMode(),
+				var i18n   = wbamFormatData.i18n,
+					mode   = currentMode(),
 					format = mode === 'responsive' ? 'responsive' : ($format.val() || 'auto');
 
 				if ( mode === 'fixed' && format === 'auto' ) {
-					$compat.text( wbamFormatData.i18n.autoDetect );
+					$compatLabel.text( i18n.labelPending );
+					$compat.text( i18n.autoDetect );
 					return;
 				}
 
@@ -1197,32 +1369,72 @@ class Admin {
 					var w = parseInt($customDims.find('input[name="wbam_ad_width"]').val(), 10) || 0,
 						h = parseInt($customDims.find('input[name="wbam_ad_height"]').val(), 10) || 0;
 					if ( w <= 0 || h <= 0 ) {
-						$compat.text( wbamFormatData.i18n.enterDims );
+						$compatLabel.text( i18n.labelPending );
+						$compat.text( i18n.enterDims );
 						return;
 					}
 					format = detectFormat(w, h);
 					if ( format === 'custom' ) {
-						$compat.text( wbamFormatData.i18n.noMatch );
+						$compatLabel.text( i18n.labelPending );
+						$compat.text( i18n.noMatch );
 						return;
 					}
 				}
 
-				var matches = [];
+				var compatible = [];
 				$.each( wbamFormatData.placements, function( slug, entry ) {
 					if ( format === 'responsive' || (entry.accepted || []).indexOf( format ) !== -1 ) {
-						matches.push( entry.name );
+						compatible.push( slug );
 					}
 				} );
 
-				if ( matches.length === 0 ) {
-					$compat.text( wbamFormatData.i18n.noMatch );
+				var selected = selectedPlacementSlugs();
+
+				// Nothing ticked yet in the Placements metabox: this ad
+				// will not render anywhere regardless of format, so we
+				// describe capability ("could render in"), never a promise
+				// ("will render in").
+				if ( selected.length === 0 ) {
+					$compatLabel.text( i18n.labelPotential );
+
+					if ( compatible.length === 0 ) {
+						$compat.text( i18n.noMatch );
+					} else if ( compatible.length === Object.keys(wbamFormatData.placements).length ) {
+						$compat.text( i18n.every + ' ' + i18n.untickedHint );
+					} else {
+						$compat.text( namesFor(compatible).join(', ') + ' ' + i18n.untickedHint );
+					}
 					return;
 				}
-				if ( matches.length === Object.keys(wbamFormatData.placements).length ) {
-					$compat.text( wbamFormatData.i18n.every );
-					return;
+
+				// Intersect the ticked placements with the format-compatible
+				// ones so a mismatch (ticked, but wrong size for this
+				// placement) is surfaced explicitly instead of silently
+				// listed alongside placements that actually match.
+				var willRender = [],
+					mismatched = [];
+				$.each( selected, function( i, slug ) {
+					if ( ! wbamFormatData.placements.hasOwnProperty( slug ) ) {
+						return; // No checkbox exists for an unregistered slug.
+					}
+					if ( compatible.indexOf( slug ) !== -1 ) {
+						willRender.push( slug );
+					} else {
+						mismatched.push( slug );
+					}
+				} );
+
+				$compatLabel.text( i18n.labelWillRender );
+
+				if ( willRender.length > 0 ) {
+					var text = namesFor(willRender).join(', ');
+					if ( mismatched.length > 0 ) {
+						text += ' ' + i18n.mismatchPrefix + ' ' + namesFor(mismatched).join(', ') + '.';
+					}
+					$compat.text( text );
+				} else {
+					$compat.text( i18n.noneOfSelected + ' ' + namesFor(mismatched).join(', ') + '.' );
 				}
-				$compat.text( matches.join(', ') );
 			}
 
 			function detectFormat(w, h) {
@@ -1239,6 +1451,10 @@ class Admin {
 			$modeRadios.on('change', syncMode);
 			$format.on('change', syncCustomDims);
 			$customDims.on('input', 'input[type="number"]', updateCompat);
+			// Placements metabox lives outside this metabox's DOM subtree,
+			// so delegate on document — works regardless of metabox render
+			// order or drag-reordering.
+			$(document).on('change', 'input[name="wbam_placements[]"]', updateCompat);
 
 			syncMode();
 			syncCustomDims();
@@ -1754,26 +1970,45 @@ class Admin {
 
 		// Save placements.
 		//
-		// The metabox only draws checkboxes for get_selectable_placements(),
-		// so a slug the site gate has closed - or one whose integration is
-		// switched off right now, e.g. BuddyPress deactivated - is simply
-		// absent from the form. Replacing the meta wholesale would then
-		// DESTROY that assignment the next time anyone edits the ad for an
-		// unrelated reason, and re-opening the slot would not bring it back.
-		// So: union the posted list with the stored slugs the form never
-		// offered. The admin can only ever change what they were shown.
-		$posted_placements = isset( $_POST['wbam_placements'] ) && is_array( $_POST['wbam_placements'] )
-			? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) )
-			: array();
+		// A3 fix: an ad type with no Placements UI at all (see
+		// self::ad_types_without_placements(), e.g. Pro's video type) must
+		// not have this section touch `_wbam_placements`. The metabox's
+		// checkboxes are hidden-not-disabled specifically so a normal save
+		// still posts whatever was already checked (see the render-side
+		// comment in render_placements_metabox()) - but ANY other write
+		// path that omits the field entirely (Quick Edit, a bulk action, a
+		// REST/WP-CLI update that doesn't touch placements) would otherwise
+		// fall through to the "form didn't offer it" fallback below, which
+		// has no notion of "not offered because of this ad's type" - only
+		// "not offered because the site gate/an integration closed it".
+		// Skipping the whole write for these types is simpler and safer
+		// than teaching that fallback a second kind of exclusion.
+		$submitted_ad_type = isset( $_POST['wbam_data']['type'] )
+			? sanitize_text_field( wp_unslash( $_POST['wbam_data']['type'] ) )
+			: '';
 
-		$stored_placements = get_post_meta( $post_id, '_wbam_placements', true );
-		$stored_placements = is_array( $stored_placements ) ? $stored_placements : array();
+		if ( ! in_array( $submitted_ad_type, self::ad_types_without_placements(), true ) ) {
+			// The metabox only draws checkboxes for get_selectable_placements(),
+			// so a slug the site gate has closed - or one whose integration is
+			// switched off right now, e.g. BuddyPress deactivated - is simply
+			// absent from the form. Replacing the meta wholesale would then
+			// DESTROY that assignment the next time anyone edits the ad for an
+			// unrelated reason, and re-opening the slot would not bring it back.
+			// So: union the posted list with the stored slugs the form never
+			// offered. The admin can only ever change what they were shown.
+			$posted_placements = isset( $_POST['wbam_placements'] ) && is_array( $_POST['wbam_placements'] )
+				? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) )
+				: array();
 
-		$offered_placements = array_keys( Placement_Engine::get_instance()->get_selectable_placements() );
-		$unoffered          = array_values( array_diff( $stored_placements, $offered_placements ) );
+			$stored_placements = get_post_meta( $post_id, '_wbam_placements', true );
+			$stored_placements = is_array( $stored_placements ) ? $stored_placements : array();
 
-		$placements = array_values( array_unique( array_merge( $posted_placements, $unoffered ) ) );
-		update_post_meta( $post_id, '_wbam_placements', $placements );
+			$offered_placements = array_keys( Placement_Engine::get_instance()->get_selectable_placements() );
+			$unoffered          = array_values( array_diff( $stored_placements, $offered_placements ) );
+
+			$placements = array_values( array_unique( array_merge( $posted_placements, $unoffered ) ) );
+			update_post_meta( $post_id, '_wbam_placements', $placements );
+		}
 
 		// Save ad data.
 		if ( isset( $_POST['wbam_data'] ) ) {
@@ -1825,8 +2060,8 @@ class Admin {
 	}
 
 	/**
-	 * Build the JS-side payload consumed by the sizing section's
-	 * "Will render in:" live compatibility summary.
+	 * Build the JS-side payload consumed by the sizing section's live
+	 * placement-compatibility summary.
 	 *
 	 * @since 2.8.1
 	 * @return array
@@ -1861,12 +2096,127 @@ class Admin {
 		return array(
 			'formats'    => $formats_out,
 			'placements' => $placements_out,
-			'i18n'       => array(
-				'autoDetect' => __( 'Auto-detected from your image on save.', 'wb-ads-rotator-with-split-test' ),
-				'enterDims'  => __( 'Enter width x height to see matches.', 'wb-ads-rotator-with-split-test' ),
-				'noMatch'    => __( 'No placements match this size yet.', 'wb-ads-rotator-with-split-test' ),
-				'every'      => __( 'Every placement.', 'wb-ads-rotator-with-split-test' ),
-			),
+			'i18n'       => self::compat_i18n(),
+		);
+	}
+
+	/**
+	 * Shared i18n strings for the sizing "compatibility" summary.
+	 *
+	 * Used both by the initial server-rendered value
+	 * (self::initial_compat_summary(), no-JS paint) and by the live
+	 * client-side recompute (collect_format_js_data() -> wbamFormatData.i18n
+	 * consumed by the inline script in render_status_metabox()).
+	 * Centralized so wording never drifts between the two.
+	 *
+	 * @since 2.11.1
+	 * @return array<string,string>
+	 */
+	private static function compat_i18n() {
+		return array(
+			'autoDetect'      => __( 'Auto-detected from your image on save.', 'wb-ads-rotator-with-split-test' ),
+			'enterDims'       => __( 'Enter width x height to see matches.', 'wb-ads-rotator-with-split-test' ),
+			'noMatch'         => __( 'No placements match this size yet.', 'wb-ads-rotator-with-split-test' ),
+			'every'           => __( 'Every placement.', 'wb-ads-rotator-with-split-test' ),
+			// Ad has at least one placement ticked: the summary now names
+			// an outcome, so it may say "Will render in:".
+			'labelWillRender' => __( 'Will render in:', 'wb-ads-rotator-with-split-test' ),
+			// Ad has NO placement ticked yet: it will not render anywhere
+			// regardless of format, so the label must not claim it will.
+			'labelPotential'  => __( 'Could render in:', 'wb-ads-rotator-with-split-test' ),
+			// Format itself isn't resolved yet (auto-detect pending, custom
+			// dims not entered, or dims don't map to any known format).
+			'labelPending'    => __( 'Placement fit:', 'wb-ads-rotator-with-split-test' ),
+			'untickedHint'    => __( 'Tick a placement below to enable rendering.', 'wb-ads-rotator-with-split-test' ),
+			'mismatchPrefix'  => __( 'Wrong size for:', 'wb-ads-rotator-with-split-test' ),
+			'noneOfSelected'  => __( 'None of the selected placements accept this size:', 'wb-ads-rotator-with-split-test' ),
+		);
+	}
+
+	/**
+	 * Build the { label, value } pair for the sizing section's
+	 * placement-compatibility summary, given an ad's currently persisted
+	 * sizing fields and its ticked placements.
+	 *
+	 * Mirrors the client-side recompute in render_status_metabox()'s
+	 * inline script so the initial (pre-JS) paint and the first live
+	 * update never disagree. Delegates the actual set logic to
+	 * Ad_Formats::summarize_placement_compat() (pure, unit-tested).
+	 *
+	 * @since 2.11.1
+	 * @param array<string,array{name?:string,accepted_formats?:array<int,string>}> $registry   Placement registry (wbam_get_placements shape).
+	 * @param string[]            $selected   Placement slugs ticked in the Placements metabox.
+	 * @param string               $responsive '1' when the Responsive sizing mode is selected.
+	 * @param string               $ad_format  Raw `_wbam_ad_format` meta value ('' = auto-detect, 'custom', or a named slug).
+	 * @param int                  $ad_width   Persisted custom width, if any.
+	 * @param int                  $ad_height  Persisted custom height, if any.
+	 * @return array{label:string, value:string}
+	 */
+	private static function initial_compat_summary( array $registry, array $selected, $responsive, $ad_format, $ad_width, $ad_height ) {
+		$i18n = self::compat_i18n();
+
+		if ( '1' === (string) $responsive ) {
+			$format = \WBAM\Core\Ad_Formats::RESPONSIVE;
+		} elseif ( '' === (string) $ad_format ) {
+			return array(
+				'label' => $i18n['labelPending'],
+				'value' => $i18n['autoDetect'],
+			);
+		} elseif ( \WBAM\Core\Ad_Formats::CUSTOM === $ad_format ) {
+			if ( $ad_width <= 0 || $ad_height <= 0 ) {
+				return array(
+					'label' => $i18n['labelPending'],
+					'value' => $i18n['enterDims'],
+				);
+			}
+
+			$detected = \WBAM\Core\Ad_Formats::detect_by_dimensions( $ad_width, $ad_height );
+			if ( \WBAM\Core\Ad_Formats::CUSTOM === $detected ) {
+				return array(
+					'label' => $i18n['labelPending'],
+					'value' => $i18n['noMatch'],
+				);
+			}
+
+			$format = $detected;
+		} else {
+			$format = $ad_format;
+		}
+
+		$compat  = \WBAM\Core\Ad_Formats::summarize_placement_compat( $registry, $format, $selected );
+		$name_of = function ( $slug ) use ( $registry ) {
+			return isset( $registry[ $slug ]['name'] ) ? (string) $registry[ $slug ]['name'] : $slug;
+		};
+
+		if ( empty( $selected ) ) {
+			$total = count( $registry );
+
+			if ( empty( $compat['compatible'] ) ) {
+				$value = $i18n['noMatch'];
+			} elseif ( $total > 0 && count( $compat['compatible'] ) === $total ) {
+				$value = $i18n['every'] . ' ' . $i18n['untickedHint'];
+			} else {
+				$value = implode( ', ', array_map( $name_of, $compat['compatible'] ) ) . ' ' . $i18n['untickedHint'];
+			}
+
+			return array(
+				'label' => $i18n['labelPotential'],
+				'value' => $value,
+			);
+		}
+
+		if ( ! empty( $compat['match'] ) ) {
+			$value = implode( ', ', array_map( $name_of, $compat['match'] ) );
+			if ( ! empty( $compat['mismatch'] ) ) {
+				$value .= ' ' . $i18n['mismatchPrefix'] . ' ' . implode( ', ', array_map( $name_of, $compat['mismatch'] ) ) . '.';
+			}
+		} else {
+			$value = $i18n['noneOfSelected'] . ' ' . implode( ', ', array_map( $name_of, $compat['mismatch'] ) ) . '.';
+		}
+
+		return array(
+			'label' => $i18n['labelWillRender'],
+			'value' => $value,
 		);
 	}
 
