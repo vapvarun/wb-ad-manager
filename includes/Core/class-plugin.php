@@ -222,10 +222,14 @@ class Plugin {
 		// Invalidate the per-placement ad-count cache (Settings screen,
 		// Task 7) on the same triggers Placement_Engine already uses to
 		// invalidate its own placement cache — see
-		// Placement_Engine::init().
+		// Placement_Engine::init(). Also covers untrashed_post: the
+		// count query excludes trashed ads, so restoring one re-enters
+		// it into the count and the cache must drop or the settings
+		// screen undercounts for up to the 5-minute TTL.
 		add_action( 'wbam_save_ad_meta', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
 		add_action( 'delete_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
 		add_action( 'trashed_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
+		add_action( 'untrashed_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
 	}
 
 	/**
