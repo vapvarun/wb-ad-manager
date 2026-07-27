@@ -136,4 +136,66 @@ class Settings_Helper {
 		 */
 		return (bool) apply_filters( 'wbam_is_module_enabled', $enabled, $slug );
 	}
+
+	/**
+	 * Placement IDs usable on this site.
+	 *
+	 * An empty array means "all placements" — that is what keeps existing
+	 * installs behaving identically after upgrade. It must never be
+	 * reinterpreted as "none".
+	 *
+	 * @since 2.11.0
+	 * @return string[] Placement IDs, or empty for all.
+	 */
+	public static function enabled_placements() {
+		$settings = get_option( 'wbam_settings', array() );
+		$ids      = isset( $settings['enabled_placements'] ) && is_array( $settings['enabled_placements'] )
+			? $settings['enabled_placements']
+			: array();
+
+		$ids = array_values( array_unique( array_filter( array_map( 'sanitize_key', $ids ) ) ) );
+
+		/**
+		 * Filter the placements usable on this site.
+		 *
+		 * @since 2.11.0
+		 * @param string[] $ids Placement IDs. Empty array means all.
+		 */
+		return (array) apply_filters( 'wbam_enabled_placements', $ids );
+	}
+
+	/**
+	 * Placement IDs that may be sold to advertisers.
+	 *
+	 * Always a subset of enabled_placements(): a slot the site has closed
+	 * can never be sellable, whatever the stored value says. An empty
+	 * stored value falls back to the site gate rather than to "none", so
+	 * an admin who never opens this screen keeps today's behaviour.
+	 *
+	 * @since 2.11.0
+	 * @return string[] Placement IDs, or empty for all.
+	 */
+	public static function advertiser_placements() {
+		$settings = get_option( 'wbam_settings', array() );
+		$ids      = isset( $settings['advertiser_placements'] ) && is_array( $settings['advertiser_placements'] )
+			? $settings['advertiser_placements']
+			: array();
+
+		$ids  = array_values( array_unique( array_filter( array_map( 'sanitize_key', $ids ) ) ) );
+		$site = self::enabled_placements();
+
+		if ( empty( $ids ) ) {
+			$ids = $site;
+		} elseif ( ! empty( $site ) ) {
+			$ids = array_values( array_intersect( $ids, $site ) );
+		}
+
+		/**
+		 * Filter the placements sellable to advertisers.
+		 *
+		 * @since 2.11.0
+		 * @param string[] $ids Placement IDs. Empty array means all.
+		 */
+		return (array) apply_filters( 'wbam_advertiser_placements', $ids );
+	}
 }
