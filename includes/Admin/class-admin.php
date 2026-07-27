@@ -739,6 +739,25 @@ class Admin {
 				wp_localize_script( 'wbam-admin', 'wbamCodeEditor', $settings );
 			}
 		}
+
+		wp_enqueue_script(
+			'wbam-placement-settings',
+			WBAM_URL . 'assets/js/admin-placement-settings.js',
+			array(),
+			WBAM_VERSION,
+			true
+		);
+		wp_localize_script(
+			'wbam-placement-settings',
+			'wbamPlacementSettings',
+			array(
+				/* translators: %d is replaced client-side with the active ad count for the slot being closed. */
+				'confirmDisable' => __(
+					'%d active ad(s) will stop rendering in this slot. Continue?',
+					'wb-ads-rotator-with-split-test'
+				),
+			)
+		);
 	}
 
 	/**
@@ -918,7 +937,7 @@ class Admin {
 		$posts_repeat     = isset( $data['posts_repeat'] ) ? $data['posts_repeat'] : false;
 
 		$engine     = Placement_Engine::get_instance();
-		$all_places = $engine->get_placements_grouped();
+		$all_places = $engine->get_selectable_placements_grouped();
 		?>
 		<div class="wbam-metabox">
 			<?php foreach ( $all_places as $group => $group_placements ) : ?>
@@ -926,10 +945,6 @@ class Admin {
 					<h4><?php echo esc_html( ucfirst( $group ) ); ?> <?php esc_html_e( 'Placements', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<div class="wbam-placement-options">
 						<?php foreach ( $group_placements as $placement ) : ?>
-							<?php
-							if ( ! $placement->is_available() || ! $placement->show_in_selector() ) {
-								continue;}
-							?>
 							<label class="wbam-placement-option">
 								<input type="checkbox" name="wbam_placements[]" value="<?php echo esc_attr( $placement->get_id() ); ?>" <?php checked( in_array( $placement->get_id(), $placements, true ) ); ?> />
 								<span class="wbam-option-body">
@@ -1738,7 +1753,26 @@ class Admin {
 		update_post_meta( $post_id, '_wbam_ad_height', $resolved['height'] );
 
 		// Save placements.
-		$placements = isset( $_POST['wbam_placements'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) ) : array();
+		//
+		// The metabox only draws checkboxes for get_selectable_placements(),
+		// so a slug the site gate has closed - or one whose integration is
+		// switched off right now, e.g. BuddyPress deactivated - is simply
+		// absent from the form. Replacing the meta wholesale would then
+		// DESTROY that assignment the next time anyone edits the ad for an
+		// unrelated reason, and re-opening the slot would not bring it back.
+		// So: union the posted list with the stored slugs the form never
+		// offered. The admin can only ever change what they were shown.
+		$posted_placements = isset( $_POST['wbam_placements'] ) && is_array( $_POST['wbam_placements'] )
+			? array_map( 'sanitize_text_field', wp_unslash( $_POST['wbam_placements'] ) )
+			: array();
+
+		$stored_placements = get_post_meta( $post_id, '_wbam_placements', true );
+		$stored_placements = is_array( $stored_placements ) ? $stored_placements : array();
+
+		$offered_placements = array_keys( Placement_Engine::get_instance()->get_selectable_placements() );
+		$unoffered          = array_values( array_diff( $stored_placements, $offered_placements ) );
+
+		$placements = array_values( array_unique( array_merge( $posted_placements, $unoffered ) ) );
 		update_post_meta( $post_id, '_wbam_placements', $placements );
 
 		// Save ad data.

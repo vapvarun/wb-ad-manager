@@ -71,6 +71,10 @@ class Placement_Engine {
 		add_action( 'wbam_save_ad_meta', array( $this, 'clear_placement_cache' ) );
 		add_action( 'delete_post', array( $this, 'maybe_clear_cache_on_delete' ) );
 		add_action( 'trashed_post', array( $this, 'maybe_clear_cache_on_delete' ) );
+		// Restoring from trash must invalidate too, or the restored ad stays
+		// out of rotation for up to the 5-minute cache TTL. Mirrors the same
+		// hook on the ad-count cache (Plugin::init_hooks()).
+		add_action( 'untrashed_post', array( $this, 'maybe_clear_cache_on_delete' ) );
 
 		do_action( 'wbam_placements_init', $this );
 	}
@@ -188,6 +192,53 @@ class Placement_Engine {
 	}
 
 	/**
+	 * Placements an ad may be assigned to on this site.
+	 *
+	 * Applies, in order: is_available(), show_in_selector(), and the site
+	 * allowlist. This is the ONLY method admin UI and the portal registry
+	 * may use to build a placement list. Reading $this->placements
+	 * directly reintroduces the drift this method exists to remove — the
+	 * ad edit metabox and the advertiser portal previously read two
+	 * different lists, so filtering one silently missed the other.
+	 *
+	 * @since 2.11.0
+	 * @return Placement_Interface[] Keyed by placement ID.
+	 */
+	public function get_selectable_placements() {
+		$out = array();
+
+		foreach ( $this->placements as $id => $placement ) {
+			if ( ! $placement->is_available() || ! $placement->show_in_selector() ) {
+				continue;
+			}
+
+			if ( ! \WBAM\Core\Settings_Helper::is_placement_open( $id ) ) {
+				continue;
+			}
+
+			$out[ $id ] = $placement;
+		}
+
+		return $out;
+	}
+
+	/**
+	 * get_selectable_placements() grouped by Placement_Interface::get_group().
+	 *
+	 * @since 2.11.0
+	 * @return array<string, Placement_Interface[]>
+	 */
+	public function get_selectable_placements_grouped() {
+		$grouped = array();
+
+		foreach ( $this->get_selectable_placements() as $id => $placement ) {
+			$grouped[ $placement->get_group() ][ $id ] = $placement;
+		}
+
+		return $grouped;
+	}
+
+	/**
 	 * Get ads for a placement.
 	 *
 	 * Uses object caching to avoid repeated LIKE queries on serialized meta.
@@ -197,6 +248,18 @@ class Placement_Engine {
 	 * @return array
 	 */
 	public function get_ads_for_placement( $placement_id ) {
+		// Site gate. A slot the admin has closed delivers nothing, so
+		// unticking it in Settings actually stops the ads rather than
+		// only hiding the checkbox. Checked before the cache lookup so a
+		// warm cache cannot serve a closed slot.
+		//
+		// The advertiser gate is deliberately NOT applied here: closing a
+		// slot for sale must never dark-drop a creative an advertiser has
+		// already paid for. See plan/ad-slot-control.md §2.
+		if ( ! \WBAM\Core\Settings_Helper::is_placement_open( $placement_id ) ) {
+			return array();
+		}
+
 		// Try to get cached ad IDs for this placement.
 		$cache_key = 'wbam_placement_ads_' . sanitize_key( $placement_id );
 		$ad_ids    = wp_cache_get( $cache_key, 'wbam' );

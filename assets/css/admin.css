@@ -622,6 +622,13 @@
 }
 
 .wbam-settings-form {
+	/* Grid items default to `min-width: auto`, which expands to the
+	   min-content size of their descendants - including the placement
+	   matrix's mobile min-width (below), even though that table sits inside
+	   its own overflow-x:auto wrapper. Without this, the grid item itself
+	   grows past the track width and the whole PAGE gains a horizontal
+	   scrollbar at phone widths instead of just the matrix's own wrapper. */
+	min-width: 0;
 	background: var(--wbam-bg);
 	border: 1px solid var(--wbam-border-strong);
 	border-radius: 4px;
@@ -726,6 +733,100 @@
 
 	.wbam-settings-sidebar {
 		position: static;
+	}
+}
+
+/* ==========================================================================
+   Placement Matrix (Settings > Placements)
+   ========================================================================== */
+
+/* The matrix is rendered from the Placements section callback (see
+   Settings::render_placements_section()), NOT via add_settings_field(), so
+   it is never nested inside the Settings API's form-table <td> next to a
+   <th> label column. That means it gets the page's full content width on
+   its own - an ordinary full-width table, no scroll hack needed at desktop
+   or tablet widths. */
+.wbam-placement-matrix {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+.wbam-placement-matrix th,
+.wbam-placement-matrix td {
+	padding: var(--wbam-space-3) var(--wbam-space-4);
+	/* `start`, not `left` - this stylesheet has no RTL companion, so a
+	   hard-coded physical direction would leave the matrix the only
+	   left-aligned table on an RTL admin. */
+	text-align: start;
+	vertical-align: middle;
+	border-bottom: 1px solid var(--wbam-border);
+}
+
+.wbam-placement-matrix thead th {
+	font-weight: var(--wbam-weight-semibold);
+	border-bottom: 1px solid var(--wbam-border-strong);
+}
+
+/* Slot takes the remaining space; the three gate/count columns are narrow
+   and centred so they don't sprawl across the now-full-width table. */
+.wbam-placement-matrix thead th:nth-child(2),
+.wbam-placement-matrix thead th:nth-child(3),
+.wbam-placement-matrix thead th:nth-child(4) {
+	width: 14ch;
+	text-align: center;
+}
+
+.wbam-placement-matrix tbody td:nth-child(2),
+.wbam-placement-matrix tbody td:nth-child(3),
+.wbam-placement-matrix tbody td:nth-child(4) {
+	text-align: center;
+}
+
+.wbam-placement-matrix__group th {
+	background: var(--wbam-surface);
+	font-size: var(--wbam-font-size-xs);
+	font-weight: var(--wbam-weight-semibold);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--wbam-text-muted);
+}
+
+.wbam-placement-matrix__row--unavailable {
+	opacity: 0.6;
+}
+
+.wbam-placement-matrix__row--unavailable em {
+	display: block;
+	font-size: var(--wbam-font-size-xs);
+	color: var(--wbam-text-subtle);
+}
+
+.wbam-placement-matrix td .description {
+	display: block;
+	font-size: var(--wbam-font-size-xs);
+	color: var(--wbam-text-muted);
+}
+
+.wbam-placement-matrix input[type="checkbox"]:disabled {
+	opacity: 0.5;
+}
+
+/* Mobile only: four columns still can't comfortably wrap at phone widths,
+   so the TABLE'S WRAPPER (not the table itself) scrolls horizontally. This
+   is a real wrapping <div> around the <table> (see
+   Placement_Settings::render_table()) with overflow-x on the div, so table
+   semantics (display:table/table-row/table-cell) stay intact - unlike the
+   old block-hack, which set display:block on the <table> itself and forced
+   every cell to display:table-cell !important to undo it. */
+@media screen and (max-width: 782px) {
+	.wbam-placement-matrix__scroll {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.wbam-placement-matrix {
+		min-width: 560px;
 	}
 }
 

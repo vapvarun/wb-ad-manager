@@ -57,6 +57,10 @@ class Settings {
 		'link_cloak_prefix'        => 'go',
 		'link_inactive_action'     => '404',
 		'link_inactive_url'        => '',
+		// Placement gates. Empty array means ALL placements — never "none".
+		// See Settings_Helper::enabled_placements().
+		'enabled_placements'       => array(),
+		'advertiser_placements'    => array(),
 	);
 
 	/**
@@ -182,7 +186,6 @@ class Settings {
 			)
 		);
 
-
 		add_settings_field(
 			'disable_on_post_types',
 			__( 'Disable on Post Types', 'wb-ads-rotator-with-split-test' ),
@@ -258,6 +261,18 @@ class Settings {
 				'placeholder' => __( 'e.g., my-ad-wrapper', 'wb-ads-rotator-with-split-test' ),
 				'description' => __( 'Additional CSS class for ad containers.', 'wb-ads-rotator-with-split-test' ),
 			)
+		);
+
+		// Placements Section. The matrix is section-level content, not a
+		// settings field - it renders from render_placements_section() below
+		// so it gets the full content width instead of being squeezed into
+		// the Settings API's <td> next to a <th> label column. See
+		// render_placements_section() for why.
+		add_settings_section(
+			'wbam_placements',
+			__( 'Placements', 'wb-ads-rotator-with-split-test' ),
+			array( $this, 'render_placements_section' ),
+			'wbam-settings'
 		);
 
 		// Geo Targeting Section.
@@ -497,10 +512,10 @@ class Settings {
 
 		// Link cloaking. sanitize_title keeps the prefix rewrite-safe (matches
 		// Link_Cloaker::get_cloak_prefix); default back to 'go' if emptied.
-		$cloak_prefix                       = sanitize_title( $input['link_cloak_prefix'] ?? '' );
-		$sanitized['link_cloak_prefix']     = '' !== $cloak_prefix ? $cloak_prefix : 'go';
-		$sanitized['link_inactive_action']  = in_array( $input['link_inactive_action'] ?? '', array( '404', 'home', 'custom' ), true ) ? $input['link_inactive_action'] : '404';
-		$sanitized['link_inactive_url']     = esc_url_raw( $input['link_inactive_url'] ?? '' );
+		$cloak_prefix                      = sanitize_title( $input['link_cloak_prefix'] ?? '' );
+		$sanitized['link_cloak_prefix']    = '' !== $cloak_prefix ? $cloak_prefix : 'go';
+		$sanitized['link_inactive_action'] = in_array( $input['link_inactive_action'] ?? '', array( '404', 'home', 'custom' ), true ) ? $input['link_inactive_action'] : '404';
+		$sanitized['link_inactive_url']    = esc_url_raw( $input['link_inactive_url'] ?? '' );
 
 		if ( ! empty( $input['disable_on_post_types'] ) && is_array( $input['disable_on_post_types'] ) ) {
 			$sanitized['disable_on_post_types'] = array_map( 'sanitize_key', $input['disable_on_post_types'] );
@@ -525,7 +540,217 @@ class Settings {
 		// Advanced settings.
 		$sanitized['delete_data_on_uninstall'] = ! empty( $input['delete_data_on_uninstall'] );
 
+		// Placement gates. sanitize_settings() rebuilds the option from
+		// scratch, so these must be written explicitly or every save on
+		// this screen would wipe them.
+		$sanitized = array_merge( $sanitized, $this->sanitize_placement_gates( $input ) );
+
 		return $sanitized;
+	}
+
+	/**
+	 * Resolve both placement gates from a settings POST.
+	 *
+	 * The stored value has three states (all / none / explicit list) and a
+	 * checkbox column has one (the ticks that happened to be on). The two
+	 * transport-only hidden fields the matrix emits close that gap. See
+	 * Settings_Helper::GATE_NONE for the canonical encoding; this method is
+	 * the only writer of it.
+	 *
+	 * Decision table:
+	 *
+	 *  | `placement_gates_submitted` | ticks           | stored               |
+	 *  |-----------------------------|-----------------|----------------------|
+	 *  | absent                      | (irrelevant)    | previous value, kept |
+	 *  | present                     | every row       | array()  = ALL       |
+	 *  | present                     | none            | array( GATE_NONE )   |
+	 *  | present                     | some            | exactly those        |
+	 *
+	 * Row 1 is what stops another settings tab, or a programmatic
+	 * `update_option()`, from clobbering gates it never rendered. Row 2 is
+	 * why a save cannot freeze "all" into a snapshot of the placements
+	 * registered at that instant — a later integration's slots must stay
+	 * open, since the admin never chose to close them.
+	 *
+	 * Known limitation: once the gate is an explicit list (row 4), a slot
+	 * registered afterwards IS closed until an admin ticks it. That is
+	 * inherent to an allowlist, and it is the state an admin opted into.
+	 *
+	 * @since 2.11.0
+	 * @param array<string,mixed> $input Raw settings POST.
+	 * @return array<string,string[]> `enabled_placements` and `advertiser_placements`.
+	 */
+	private function sanitize_placement_gates( $input ) {
+		$stored      = get_option( self::OPTION_NAME, array() );
+		$stored      = is_array( $stored ) ? $stored : array();
+		$stored_site = self::sanitize_placement_ids( $stored['enabled_placements'] ?? array() );
+		$stored_adv  = self::sanitize_placement_ids( $stored['advertiser_placements'] ?? array() );
+
+		if ( empty( $input['placement_gates_submitted'] ) ) {
+			// No matrix in this write. Two cases, and they are NOT the same.
+			//
+			// A caller that names a gate key explicitly - the REST settings
+			// route, WP-CLI, a migration - is unambiguous: it passed the array
+			// it wants stored, so honour it verbatim. The form's "unticked
+			// everything" ambiguity that GATE_NONE exists to solve cannot arise
+			// here, because a programmatic caller CAN send an empty array and
+			// mean the documented "all".
+			//
+			// A write that mentions neither key is some other settings form or
+			// an unrelated update_option(); preserve what is stored so it
+			// cannot clobber the gates as a side effect.
+			$writes_site = array_key_exists( 'enabled_placements', $input );
+			$writes_adv  = array_key_exists( 'advertiser_placements', $input );
+
+			if ( ! $writes_site && ! $writes_adv ) {
+				return array(
+					'enabled_placements'    => $stored_site,
+					'advertiser_placements' => $stored_adv,
+				);
+			}
+
+			$site = $writes_site
+				? self::sanitize_placement_ids( $input['enabled_placements'] )
+				: $stored_site;
+			$adv  = $writes_adv
+				? self::sanitize_placement_ids( $input['advertiser_placements'] )
+				: $stored_adv;
+
+			return array(
+				'enabled_placements'    => $site,
+				'advertiser_placements' => self::intersect_advertiser_gate( $adv, $site ),
+			);
+		}
+
+		$offered = self::sanitize_placement_ids(
+			explode( ',', isset( $input['placement_gates_offered'] ) && is_string( $input['placement_gates_offered'] ) ? $input['placement_gates_offered'] : '' )
+		);
+
+		$site = self::resolve_gate(
+			self::sanitize_placement_ids( $input['enabled_placements'] ?? array() ),
+			$offered,
+			$stored_site
+		);
+
+		// The Advertisers column only offers rows whose Site box is ticked —
+		// the rest render disabled, and a disabled checkbox posts nothing.
+		// Narrowing the offered set the same way is what enforces
+		// "advertiser ⊆ site" at write time. Settings_Helper enforces it
+		// again on read, because a crafted POST is not the only way a bad
+		// pair could reach the option.
+		$sellable = empty( $site ) ? $offered : array_values( array_intersect( $offered, $site ) );
+
+		$advertiser = self::resolve_gate(
+			self::sanitize_placement_ids( $input['advertiser_placements'] ?? array() ),
+			$sellable,
+			$stored_adv
+		);
+
+		return array(
+			'enabled_placements'    => $site,
+			'advertiser_placements' => $advertiser,
+		);
+	}
+
+	/**
+	 * Enforce "advertiser subset of site" on a programmatic write.
+	 *
+	 * The matrix path gets this for free by narrowing the offered set, but a
+	 * REST or WP-CLI caller can name any pair it likes, so the relationship
+	 * has to be imposed here too. Settings_Helper enforces it a third time on
+	 * read - a crafted write is not the only way a bad pair could land.
+	 *
+	 * @since 2.11.0
+	 * @param string[] $advertiser Sanitized advertiser gate.
+	 * @param string[] $site       Sanitized site gate.
+	 * @return string[] Advertiser gate, never wider than the site gate.
+	 */
+	private static function intersect_advertiser_gate( array $advertiser, array $site ) {
+		$none = \WBAM\Core\Settings_Helper::GATE_NONE;
+
+		// Site closed entirely: nothing can be sellable.
+		if ( in_array( $none, $site, true ) ) {
+			return array( $none );
+		}
+
+		// Either side means "all", or the advertiser gate is an explicit
+		// "none" - all three pass through untouched.
+		if ( empty( $advertiser ) || empty( $site ) || in_array( $none, $advertiser, true ) ) {
+			return $advertiser;
+		}
+
+		$intersected = array_values( array_intersect( $advertiser, $site ) );
+
+		// An advertiser list that shares nothing with the site list is a
+		// closed gate, not an accidental "all".
+		return empty( $intersected ) ? array( $none ) : $intersected;
+	}
+
+	/**
+	 * Encode one gate from a posted tick list.
+	 *
+	 * Stored IDs the matrix did NOT offer are carried through unchanged.
+	 * A slot can be registered on the front end only, or belong to an
+	 * integration that is deactivated right now; the admin was never shown
+	 * it, so a save must not silently close it.
+	 *
+	 * @since 2.11.0
+	 * @param string[] $ticked  Sanitized IDs the admin ticked.
+	 * @param string[] $offered Sanitized IDs the matrix drew a row for.
+	 * @param string[] $stored  Currently stored value of this gate.
+	 * @return string[] Encoded gate: array() means all, array( GATE_NONE ) means none.
+	 */
+	private static function resolve_gate( array $ticked, array $offered, array $stored ) {
+		if ( empty( $offered ) ) {
+			// Nothing was on offer, so nothing was decided.
+			return $stored;
+		}
+
+		$ticked = array_values( array_intersect( $ticked, $offered ) );
+
+		// Empty whenever the stored gate is "all" or "none".
+		$unseen = array_values( array_diff( $stored, $offered, array( \WBAM\Core\Settings_Helper::GATE_NONE ) ) );
+
+		if ( ! array_diff( $offered, $ticked ) ) {
+			// Every offered row ticked: "all", not a frozen allowlist.
+			return array();
+		}
+
+		if ( empty( $ticked ) && empty( $unseen ) ) {
+			return array( \WBAM\Core\Settings_Helper::GATE_NONE );
+		}
+
+		return array_values( array_unique( array_merge( $ticked, $unseen ) ) );
+	}
+
+	/**
+	 * Sanitize an arbitrary list into placement IDs.
+	 *
+	 * `strlen` rather than the default array_filter() callback so a slug
+	 * that sanitizes to "0" survives; non-scalars are dropped rather than
+	 * cast, since a crafted POST can nest arrays anywhere.
+	 *
+	 * @since 2.11.0
+	 * @param mixed $ids Raw list.
+	 * @return string[]
+	 */
+	private static function sanitize_placement_ids( $ids ) {
+		$out = array();
+
+		foreach ( (array) $ids as $id ) {
+			if ( ! is_scalar( $id ) ) {
+				continue;
+			}
+
+			$id = sanitize_key( (string) $id );
+			if ( '' === $id ) {
+				continue;
+			}
+
+			$out[] = $id;
+		}
+
+		return array_values( array_unique( $out ) );
 	}
 
 	/**
@@ -595,6 +820,26 @@ class Settings {
 	 */
 	public function render_display_section() {
 		echo '<p>' . esc_html__( 'Customize how ads appear on your site.', 'wb-ads-rotator-with-split-test' ) . '</p>';
+	}
+
+	/**
+	 * Placements section description, plus the placement matrix itself.
+	 *
+	 * The matrix is rendered here rather than via add_settings_field()
+	 * because add_settings_field() wraps its output in the Settings API's
+	 * form-table <td>, next to a <th> label column that eats ~500px. A
+	 * 4-column matrix squeezed into what's left forces a horizontal
+	 * scrollbar even on a wide desktop screen. Rendering it from the
+	 * section callback instead - which fires before that form-table opens -
+	 * gives it the full content width and no label column.
+	 */
+	public function render_placements_section(): void {
+		echo '<p>' . esc_html__(
+			'Choose which slots this site uses, and which of those advertisers may buy. Unticking Site stops ads rendering in that slot. Unticking Advertisers only removes it from the advertiser portal — creatives already assigned keep running.',
+			'wb-ads-rotator-with-split-test'
+		) . '</p>';
+
+		\WBAM\Admin\Placement_Settings::render_table();
 	}
 
 	/**
