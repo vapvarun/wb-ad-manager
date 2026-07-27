@@ -98,4 +98,40 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 		// used manually via [wbam_ad], never assigned to an ad.
 		$this->assertNotContains( 'shortcode', $ids );
 	}
+
+	public function test_sanitizer_preserves_placement_gates(): void {
+		$settings = new \WBAM\Admin\Settings();
+
+		$out = $settings->sanitize_settings(
+			array(
+				'enabled_placements'    => array( 'header', 'footer' ),
+				'advertiser_placements' => array( 'header' ),
+			)
+		);
+
+		$this->assertSame( array( 'header', 'footer' ), $out['enabled_placements'] );
+		$this->assertSame( array( 'header' ), $out['advertiser_placements'] );
+	}
+
+	public function test_sanitizer_intersects_advertiser_with_site(): void {
+		$settings = new \WBAM\Admin\Settings();
+
+		// A crafted POST claiming a slot the site gate does not allow.
+		$out = $settings->sanitize_settings(
+			array(
+				'enabled_placements'    => array( 'header' ),
+				'advertiser_placements' => array( 'header', 'popup' ),
+			)
+		);
+
+		$this->assertSame( array( 'header' ), $out['advertiser_placements'] );
+	}
+
+	public function test_sanitizer_defaults_gates_to_empty_arrays(): void {
+		$settings = new \WBAM\Admin\Settings();
+		$out      = $settings->sanitize_settings( array() );
+
+		$this->assertSame( array(), $out['enabled_placements'] );
+		$this->assertSame( array(), $out['advertiser_placements'] );
+	}
 }

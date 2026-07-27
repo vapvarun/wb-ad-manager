@@ -57,6 +57,10 @@ class Settings {
 		'link_cloak_prefix'        => 'go',
 		'link_inactive_action'     => '404',
 		'link_inactive_url'        => '',
+		// Placement gates. Empty array means ALL placements — never "none".
+		// See Settings_Helper::enabled_placements().
+		'enabled_placements'       => array(),
+		'advertiser_placements'    => array(),
 	);
 
 	/**
@@ -181,7 +185,6 @@ class Settings {
 				'description' => __( 'Hide ads for administrators.', 'wb-ads-rotator-with-split-test' ),
 			)
 		);
-
 
 		add_settings_field(
 			'disable_on_post_types',
@@ -497,10 +500,10 @@ class Settings {
 
 		// Link cloaking. sanitize_title keeps the prefix rewrite-safe (matches
 		// Link_Cloaker::get_cloak_prefix); default back to 'go' if emptied.
-		$cloak_prefix                       = sanitize_title( $input['link_cloak_prefix'] ?? '' );
-		$sanitized['link_cloak_prefix']     = '' !== $cloak_prefix ? $cloak_prefix : 'go';
-		$sanitized['link_inactive_action']  = in_array( $input['link_inactive_action'] ?? '', array( '404', 'home', 'custom' ), true ) ? $input['link_inactive_action'] : '404';
-		$sanitized['link_inactive_url']     = esc_url_raw( $input['link_inactive_url'] ?? '' );
+		$cloak_prefix                      = sanitize_title( $input['link_cloak_prefix'] ?? '' );
+		$sanitized['link_cloak_prefix']    = '' !== $cloak_prefix ? $cloak_prefix : 'go';
+		$sanitized['link_inactive_action'] = in_array( $input['link_inactive_action'] ?? '', array( '404', 'home', 'custom' ), true ) ? $input['link_inactive_action'] : '404';
+		$sanitized['link_inactive_url']    = esc_url_raw( $input['link_inactive_url'] ?? '' );
 
 		if ( ! empty( $input['disable_on_post_types'] ) && is_array( $input['disable_on_post_types'] ) ) {
 			$sanitized['disable_on_post_types'] = array_map( 'sanitize_key', $input['disable_on_post_types'] );
@@ -524,6 +527,26 @@ class Settings {
 
 		// Advanced settings.
 		$sanitized['delete_data_on_uninstall'] = ! empty( $input['delete_data_on_uninstall'] );
+
+		// Placement gates. sanitize_settings() rebuilds the option from
+		// scratch, so these must be written explicitly or every save on
+		// this screen would wipe them.
+		$sanitized['enabled_placements'] = ( ! empty( $input['enabled_placements'] ) && is_array( $input['enabled_placements'] ) )
+			? array_values( array_unique( array_filter( array_map( 'sanitize_key', $input['enabled_placements'] ) ) ) )
+			: array();
+
+		$advertiser = ( ! empty( $input['advertiser_placements'] ) && is_array( $input['advertiser_placements'] ) )
+			? array_values( array_unique( array_filter( array_map( 'sanitize_key', $input['advertiser_placements'] ) ) ) )
+			: array();
+
+		// A slot closed at site level can never be sellable, whatever the
+		// client posted. Enforced server-side; the JS coupling in
+		// admin-placement-settings.js is a convenience, not the guard.
+		if ( ! empty( $advertiser ) && ! empty( $sanitized['enabled_placements'] ) ) {
+			$advertiser = array_values( array_intersect( $advertiser, $sanitized['enabled_placements'] ) );
+		}
+
+		$sanitized['advertiser_placements'] = $advertiser;
 
 		return $sanitized;
 	}
