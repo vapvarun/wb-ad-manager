@@ -69,17 +69,16 @@ class Placement_Format_Map {
 		}
 
 		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
-		if ( ! is_object( $engine ) || ! method_exists( $engine, 'get_placements' ) ) {
+
+		// Single source of truth — get_selectable_placements() already
+		// applies is_available(), show_in_selector() and the site gate.
+		// Duplicating those checks here is what let this registry drift
+		// from the ad edit metabox.
+		if ( ! is_object( $engine ) || ! method_exists( $engine, 'get_selectable_placements' ) ) {
 			return $registry;
 		}
 
-		foreach ( $engine->get_placements() as $placement ) {
-			if ( ! $placement->is_available() || ! $placement->show_in_selector() ) {
-				continue;
-			}
-
-			$slug = $placement->get_id();
-
+		foreach ( $engine->get_selectable_placements() as $slug => $placement ) {
 			// Don't overwrite an entry a higher-priority filter already
 			// provided (mu-plugin, third-party customization, test mock).
 			if ( isset( $registry[ $slug ] ) && is_array( $registry[ $slug ] ) ) {

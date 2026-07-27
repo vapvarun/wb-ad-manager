@@ -918,7 +918,7 @@ class Admin {
 		$posts_repeat     = isset( $data['posts_repeat'] ) ? $data['posts_repeat'] : false;
 
 		$engine     = Placement_Engine::get_instance();
-		$all_places = $engine->get_placements_grouped();
+		$all_places = $engine->get_selectable_placements_grouped();
 		?>
 		<div class="wbam-metabox">
 			<?php foreach ( $all_places as $group => $group_placements ) : ?>
@@ -926,10 +926,6 @@ class Admin {
 					<h4><?php echo esc_html( ucfirst( $group ) ); ?> <?php esc_html_e( 'Placements', 'wb-ads-rotator-with-split-test' ); ?></h4>
 					<div class="wbam-placement-options">
 						<?php foreach ( $group_placements as $placement ) : ?>
-							<?php
-							if ( ! $placement->is_available() || ! $placement->show_in_selector() ) {
-								continue;}
-							?>
 							<label class="wbam-placement-option">
 								<input type="checkbox" name="wbam_placements[]" value="<?php echo esc_attr( $placement->get_id() ); ?>" <?php checked( in_array( $placement->get_id(), $placements, true ) ); ?> />
 								<span class="wbam-option-body">
