@@ -1135,14 +1135,20 @@ class Abilities {
 	 */
 	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by Abilities contract.
 	public function execute_list_placements( $input ) {
-		$engine     = \WBAM\Modules\Placements\Placement_Engine::get_instance();
-		$placements = $engine->get_placements();
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+		// This ability is registered with permission_callback __return_true,
+		// so it is public. Listing closed slots here would leak the site's
+		// full inventory to anonymous callers.
+		$placements = $engine->get_selectable_placements();
 
 		$items = array();
 		foreach ( $placements as $placement ) {
 			$items[] = array(
 				'id'          => $placement->get_id(),
-				'label'       => $placement->get_label(),
+				// Placement_Interface exposes get_name(), not get_label() —
+				// the call to a non-existent method fataled every invocation
+				// of this ability before this fix.
+				'label'       => $placement->get_name(),
 				'description' => method_exists( $placement, 'get_description' ) ? $placement->get_description() : '',
 			);
 		}

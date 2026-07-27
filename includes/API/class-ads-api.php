@@ -663,8 +663,10 @@ class Ads_API {
 	 */
 	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Signature required by REST callback contract.
 	public function get_placement_types( $request ) {
-		$engine     = \WBAM\Modules\Placements\Placement_Engine::get_instance();
-		$placements = $engine->get_placements();
+		$engine = \WBAM\Modules\Placements\Placement_Engine::get_instance();
+		// Single source of truth — a slot the admin has closed must not be
+		// advertised over the API. See plan/ad-slot-control.md §3.1.
+		$placements = $engine->get_selectable_placements();
 
 		$data = array();
 		foreach ( $placements as $placement ) {

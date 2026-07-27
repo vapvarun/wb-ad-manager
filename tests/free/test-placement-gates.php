@@ -174,4 +174,29 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 		$this->assertSame( 1, $counts['footer'] ?? 0 );
 		$this->assertSame( 0, $counts['popup'] ?? 0 );
 	}
+
+	public function test_rest_placement_types_respects_site_gate(): void {
+		update_option( 'wbam_settings', array( 'enabled_placements' => array( 'header' ) ) );
+
+		$api      = new \WBAM\API\Ads_API();
+		$response = $api->get_placement_types( new \WP_REST_Request( 'GET', '/wbam/v1/placement-types' ) );
+		$ids      = wp_list_pluck( $response->get_data()['placements'], 'id' );
+
+		$this->assertContains( 'header', $ids );
+		$this->assertNotContains( 'footer', $ids, 'A closed slot must not be listed over REST.' );
+		$this->assertNotContains( 'shortcode', $ids, 'A non-selector placement must not be listed over REST.' );
+	}
+
+	public function test_abilities_list_placements_respects_site_gate(): void {
+		update_option( 'wbam_settings', array( 'enabled_placements' => array( 'header' ) ) );
+
+		$abilities = new \WBAM\Core\Abilities();
+		$result    = $abilities->execute_list_placements( array() );
+		// execute_list_placements() returns a flat list (its output_schema
+		// declares type=array of objects, not a {placements:[]} wrapper).
+		$ids       = wp_list_pluck( $result, 'id' );
+
+		$this->assertContains( 'header', $ids );
+		$this->assertNotContains( 'footer', $ids, 'A closed slot must not be listed over the Abilities API.' );
+	}
 }
