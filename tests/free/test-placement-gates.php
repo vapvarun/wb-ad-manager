@@ -152,4 +152,26 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 		wp_cache_flush();
 		$this->assertSame( array(), $engine->get_ads_for_placement( 'footer' ) );
 	}
+
+	public function test_ad_counts_are_grouped_per_placement(): void {
+		$a = self::factory()->post->create( array( 'post_type' => 'wbam-ad' ) );
+		update_post_meta( $a, '_wbam_enabled', '1' );
+		update_post_meta( $a, '_wbam_placements', array( 'header', 'footer' ) );
+
+		$b = self::factory()->post->create( array( 'post_type' => 'wbam-ad' ) );
+		update_post_meta( $b, '_wbam_enabled', '1' );
+		update_post_meta( $b, '_wbam_placements', array( 'header' ) );
+
+		// Disabled ads must not be counted.
+		$c = self::factory()->post->create( array( 'post_type' => 'wbam-ad' ) );
+		update_post_meta( $c, '_wbam_enabled', '0' );
+		update_post_meta( $c, '_wbam_placements', array( 'header' ) );
+
+		\WBAM\Admin\Placement_Settings::clear_count_cache();
+		$counts = \WBAM\Admin\Placement_Settings::get_ad_counts();
+
+		$this->assertSame( 2, $counts['header'] ?? 0 );
+		$this->assertSame( 1, $counts['footer'] ?? 0 );
+		$this->assertSame( 0, $counts['popup'] ?? 0 );
+	}
 }

@@ -218,6 +218,14 @@ class Plugin {
 		add_action( 'admin_init', array( $this, 'activation_redirect' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'wp_ajax_wbam_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
+
+		// Invalidate the per-placement ad-count cache (Settings screen,
+		// Task 7) on the same triggers Placement_Engine already uses to
+		// invalidate its own placement cache — see
+		// Placement_Engine::init().
+		add_action( 'wbam_save_ad_meta', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
+		add_action( 'delete_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
+		add_action( 'trashed_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
 	}
 
 	/**
