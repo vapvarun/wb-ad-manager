@@ -587,9 +587,38 @@ class Settings {
 		$stored_adv  = self::sanitize_placement_ids( $stored['advertiser_placements'] ?? array() );
 
 		if ( empty( $input['placement_gates_submitted'] ) ) {
+			// No matrix in this write. Two cases, and they are NOT the same.
+			//
+			// A caller that names a gate key explicitly - the REST settings
+			// route, WP-CLI, a migration - is unambiguous: it passed the array
+			// it wants stored, so honour it verbatim. The form's "unticked
+			// everything" ambiguity that GATE_NONE exists to solve cannot arise
+			// here, because a programmatic caller CAN send an empty array and
+			// mean the documented "all".
+			//
+			// A write that mentions neither key is some other settings form or
+			// an unrelated update_option(); preserve what is stored so it
+			// cannot clobber the gates as a side effect.
+			$writes_site = array_key_exists( 'enabled_placements', $input );
+			$writes_adv  = array_key_exists( 'advertiser_placements', $input );
+
+			if ( ! $writes_site && ! $writes_adv ) {
+				return array(
+					'enabled_placements'    => $stored_site,
+					'advertiser_placements' => $stored_adv,
+				);
+			}
+
+			$site = $writes_site
+				? self::sanitize_placement_ids( $input['enabled_placements'] )
+				: $stored_site;
+			$adv  = $writes_adv
+				? self::sanitize_placement_ids( $input['advertiser_placements'] )
+				: $stored_adv;
+
 			return array(
-				'enabled_placements'    => $stored_site,
-				'advertiser_placements' => $stored_adv,
+				'enabled_placements'    => $site,
+				'advertiser_placements' => self::intersect_advertiser_gate( $adv, $site ),
 			);
 		}
 
@@ -621,6 +650,40 @@ class Settings {
 			'enabled_placements'    => $site,
 			'advertiser_placements' => $advertiser,
 		);
+	}
+
+	/**
+	 * Enforce "advertiser subset of site" on a programmatic write.
+	 *
+	 * The matrix path gets this for free by narrowing the offered set, but a
+	 * REST or WP-CLI caller can name any pair it likes, so the relationship
+	 * has to be imposed here too. Settings_Helper enforces it a third time on
+	 * read - a crafted write is not the only way a bad pair could land.
+	 *
+	 * @since 2.11.0
+	 * @param string[] $advertiser Sanitized advertiser gate.
+	 * @param string[] $site       Sanitized site gate.
+	 * @return string[] Advertiser gate, never wider than the site gate.
+	 */
+	private static function intersect_advertiser_gate( array $advertiser, array $site ) {
+		$none = \WBAM\Core\Settings_Helper::GATE_NONE;
+
+		// Site closed entirely: nothing can be sellable.
+		if ( in_array( $none, $site, true ) ) {
+			return array( $none );
+		}
+
+		// Either side means "all", or the advertiser gate is an explicit
+		// "none" - all three pass through untouched.
+		if ( empty( $advertiser ) || empty( $site ) || in_array( $none, $advertiser, true ) ) {
+			return $advertiser;
+		}
+
+		$intersected = array_values( array_intersect( $advertiser, $site ) );
+
+		// An advertiser list that shares nothing with the site list is a
+		// closed gate, not an accidental "all".
+		return empty( $intersected ) ? array( $none ) : $intersected;
 	}
 
 	/**

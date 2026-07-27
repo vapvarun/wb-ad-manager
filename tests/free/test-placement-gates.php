@@ -380,4 +380,48 @@ class Test_Placement_Gates extends WP_UnitTestCase {
 		$this->assertContains( 'header', $ids );
 		$this->assertNotContains( 'footer', $ids, 'A closed slot must not be listed over the Abilities API.' );
 	}
+
+	/**
+	 * Regression: a programmatic write (REST settings route, WP-CLI, a
+	 * migration) names the gate key explicitly and carries no matrix
+	 * transport marker. Gating every gate-write on that marker made
+	 * PUT /wbam/v1/settings silently discard the value while still
+	 * reporting success — saved but not applied.
+	 */
+	public function test_programmatic_write_without_matrix_marker_is_honoured(): void {
+		update_option( 'wbam_settings', array( 'enabled_placements' => array( 'footer' ) ) );
+
+		$settings = new \WBAM\Admin\Settings();
+		$out      = $settings->sanitize_settings( array( 'enabled_placements' => array( 'header' ) ) );
+
+		$this->assertSame( array( 'header' ), $out['enabled_placements'] );
+	}
+
+	public function test_write_naming_neither_gate_preserves_both(): void {
+		update_option(
+			'wbam_settings',
+			array(
+				'enabled_placements'    => array( 'header' ),
+				'advertiser_placements' => array( 'header' ),
+			)
+		);
+
+		$settings = new \WBAM\Admin\Settings();
+		$out      = $settings->sanitize_settings( array( 'ad_label' => 'Sponsored' ) );
+
+		$this->assertSame( array( 'header' ), $out['enabled_placements'] );
+		$this->assertSame( array( 'header' ), $out['advertiser_placements'] );
+	}
+
+	public function test_programmatic_advertiser_gate_cannot_exceed_site_gate(): void {
+		$settings = new \WBAM\Admin\Settings();
+		$out      = $settings->sanitize_settings(
+			array(
+				'enabled_placements'    => array( 'header' ),
+				'advertiser_placements' => array( 'header', 'popup' ),
+			)
+		);
+
+		$this->assertSame( array( 'header' ), $out['advertiser_placements'] );
+	}
 }
