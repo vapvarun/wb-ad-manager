@@ -120,21 +120,25 @@ class Email_Captures {
 		);
 		?>
 		<div class="wrap wbam-admin wbam-email-captures">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Email Captures', 'wb-ads-rotator-with-split-test' ); ?></h1>
-			<?php if ( $total > 0 ) : ?>
-				<a href="<?php echo esc_url( $export_url ); ?>" class="page-title-action"><?php esc_html_e( 'Export CSV', 'wb-ads-rotator-with-split-test' ); ?></a>
-			<?php endif; ?>
-			<hr class="wp-header-end" />
-
-			<p class="description">
-				<?php
-				printf(
-					/* translators: %s: number of captured emails */
-					esc_html( _n( '%s captured email address.', '%s captured email addresses.', $total, 'wb-ads-rotator-with-split-test' ) ),
-					esc_html( number_format_i18n( $total ) )
-				);
-				?>
-			</p>
+			<?php
+			// Every other screen in the plugin renders its heading through
+			// UX::page_header(). This one hand-rolled a wp-heading-inline, so it
+			// was the one screen with WordPress's default heading treatment
+			// sitting next to siblings using the branded one.
+			\WBAM\Admin\UX::page_header(
+				array(
+					'title'   => __( 'Email Captures', 'wb-ads-rotator-with-split-test' ),
+					'desc'    => sprintf(
+						/* translators: %s: number of captured emails */
+						esc_html( _n( '%s captured email address.', '%s captured email addresses.', $total, 'wb-ads-rotator-with-split-test' ) ),
+						esc_html( number_format_i18n( $total ) )
+					),
+					'actions' => $total > 0
+						? '<a href="' . esc_url( $export_url ) . '" class="wbam-admin-btn wbam-admin-btn--primary">' . esc_html__( 'Export CSV', 'wb-ads-rotator-with-split-test' ) . '</a>'
+						: '',
+				)
+			);
+			?>
 
 			<?php if ( empty( $rows ) ) : ?>
 				<div class="notice notice-info inline"><p><?php esc_html_e( 'No email captures yet. Submissions from the Email Capture ad type appear here.', 'wb-ads-rotator-with-split-test' ); ?></p></div>
