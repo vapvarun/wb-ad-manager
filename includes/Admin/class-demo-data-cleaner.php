@@ -232,26 +232,24 @@ class Demo_Data_Cleaner {
 			$label = __( 'Remove demo data', 'wb-ads-rotator-with-split-test' );
 		}
 
-		$confirm = esc_js(
-			sprintf(
-				/* translators: %d: number of demo items that will be removed. */
-				_n(
-					'Remove %d demo item created by the setup wizard? This cannot be undone.',
-					'Remove %d demo items created by the setup wizard? This cannot be undone.',
-					$total,
-					'wb-ads-rotator-with-split-test'
-				),
-				$total
-			)
+		$confirm = sprintf(
+			/* translators: %d: number of demo items that will be removed. */
+			_n(
+				'Remove %d demo item created by the setup wizard? This cannot be undone.',
+				'Remove %d demo items created by the setup wizard? This cannot be undone.',
+				$total,
+				'wb-ads-rotator-with-split-test'
+			),
+			$total
 		);
 		?>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline-block;margin-left:8px;" onsubmit="return confirm('<?php echo $confirm; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- esc_js already applied. ?>');">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="wbam-demo-clear-form">
 			<input type="hidden" name="action" value="wbam_clear_demo_data" />
 			<?php wp_nonce_field( self::NONCE_ACTION ); ?>
-			<button type="submit" class="button">
+			<button type="submit" class="button" data-wbam-confirm="<?php echo esc_attr( $confirm ); ?>" data-wbam-confirm-tone="danger">
 				<?php echo wbam_icon( 'trash-2', array( 'size' => 'sm' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Helper returns pre-escaped markup. ?>
 				<?php echo esc_html( $label ); ?>
-				<span class="wbam-demo-count" style="opacity:.7;margin-left:4px;">(<?php echo esc_html( (string) $total ); ?>)</span>
+				<span class="wbam-demo-count">(<?php echo esc_html( (string) $total ); ?>)</span>
 			</button>
 		</form>
 		<?php

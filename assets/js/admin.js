@@ -24,7 +24,7 @@
 
 			// Check if wp.media is available.
 			if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-				alert('Media library not loaded. Please refresh the page.');
+				window.wbamToast.error('Media library not loaded. Please refresh the page.');
 				return;
 			}
 
@@ -148,7 +148,7 @@
 					$btn.html(originalHtml);
 				}, 1500);
 			} catch (err) {
-				alert('Copy failed. URL: ' + text);
+				window.wbamToast.error('Copy failed. URL: ' + text);
 			}
 			$temp.remove();
 		}

@@ -25,19 +25,33 @@
 			'.wbam-gate-advertiser[data-placement="' + id + '"]'
 		);
 
-		if ( ! box.checked && count > 0 ) {
-			var message = window.wbamPlacementSettings.confirmDisable.replace( '%d', count );
-			if ( ! window.confirm( message ) ) {
-				box.checked = true;
-				return;
+		function applyGate() {
+			if ( advertiser ) {
+				advertiser.disabled = ! box.checked;
+				if ( ! box.checked ) {
+					advertiser.checked = false;
+				}
 			}
 		}
 
-		if ( advertiser ) {
-			advertiser.disabled = ! box.checked;
-			if ( ! box.checked ) {
-				advertiser.checked = false;
-			}
+		// window.confirm() is synchronous — its return value decided
+		// in-line whether to revert the checkbox. wbamToast.confirm() is
+		// callback-based, so the checkbox is left in its already-toggled
+		// (unchecked) state while the dialog is open, and the two possible
+		// outcomes are handled explicitly: confirmed applies the gate to
+		// the advertiser checkbox exactly as before; cancelled restores
+		// the site checkbox to checked and leaves the advertiser checkbox
+		// untouched, matching the original revert-on-cancel behaviour.
+		if ( ! box.checked && count > 0 ) {
+			var message = window.wbamPlacementSettings.confirmDisable.replace( '%d', count );
+			window.wbamToast.confirm( message, function () {
+				applyGate();
+			}, function () {
+				box.checked = true;
+			} );
+			return;
 		}
+
+		applyGate();
 	} );
 }() );

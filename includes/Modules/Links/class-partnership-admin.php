@@ -452,10 +452,10 @@ class Partnership_Admin {
 
 		// Delete.
 		$actions['delete'] = sprintf(
-			'<a href="%s" title="%s" class="wbam-icon-link wbam-action-delete" onclick="return confirm(\'%s\');">%s</a>',
+			'<a href="%s" title="%s" class="wbam-icon-link wbam-action-delete" data-wbam-confirm="%s" data-wbam-confirm-tone="danger">%s</a>',
 			esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-partnerships&action=delete&partnership_id=' . $partnership->id ), 'wbam_partnership_delete_' . $partnership->id ) ),
 			esc_attr__( 'Delete', 'wb-ads-rotator-with-split-test' ),
-			esc_js( __( 'Are you sure you want to delete this inquiry?', 'wb-ads-rotator-with-split-test' ) ),
+			esc_attr__( 'Are you sure you want to delete this inquiry?', 'wb-ads-rotator-with-split-test' ),
 			wbam_icon( 'trash-2', array( 'size' => 'sm' ) )
 		);
 

@@ -831,7 +831,7 @@ class Links_Admin {
 									<?php esc_html_e( 'Edit', 'wb-ads-rotator-with-split-test' ); ?>
 								</a> |
 								<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=wbam-link-categories&action=delete_category&category_id=' . $category->id ), 'wbam_delete_category_' . $category->id ) ); ?>"
-									onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to delete this category?', 'wb-ads-rotator-with-split-test' ); ?>');" class="delete">
+									data-wbam-confirm="<?php echo esc_attr__( 'Are you sure you want to delete this category?', 'wb-ads-rotator-with-split-test' ); ?>" data-wbam-confirm-tone="danger" class="delete">
 									<?php esc_html_e( 'Delete', 'wb-ads-rotator-with-split-test' ); ?>
 								</a>
 							</td>

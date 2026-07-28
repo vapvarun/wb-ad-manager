@@ -463,6 +463,14 @@ class Admin {
 
 		if ( $this->is_wbam_admin_screen( $hook ) ) {
 			wp_enqueue_style( 'wbam-admin-family' );
+
+			// Shared toast/confirm toolkit (handle registered by
+			// `Plugin::register_shared_assets()` on init@1, before this
+			// runs). Loaded on every WB Ad Manager admin screen because the
+			// delegated `[data-wbam-confirm]` listener lives inside it —
+			// any admin screen that renders a confirm link/button needs it.
+			wp_enqueue_style( 'wbam-toast' );
+			wp_enqueue_script( 'wbam-toast' );
 		}
 	}
 
@@ -706,7 +714,7 @@ class Admin {
 		wp_enqueue_script(
 			'wbam-admin',
 			WBAM_URL . 'assets/js/admin' . $suffix . '.js',
-			array( 'jquery', 'media-editor' ),
+			array( 'jquery', 'media-editor', 'wbam-toast' ),
 			WBAM_VERSION,
 			true
 		);
@@ -743,7 +751,7 @@ class Admin {
 		wp_enqueue_script(
 			'wbam-placement-settings',
 			WBAM_URL . 'assets/js/admin-placement-settings.js',
-			array(),
+			array( 'wbam-toast' ),
 			WBAM_VERSION,
 			true
 		);
@@ -1871,7 +1879,8 @@ class Admin {
 							<?php if ( ! $stat['is_current'] && $winner_id !== $stat['id'] ) : ?>
 								<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'post.php?post=' . $stat['id'] . '&action=edit&wbam_disable=1' ), 'wbam_disable_ad_' . $stat['id'] ) ); ?>"
 									class="wbam-disable-btn"
-									onclick="return confirm('<?php esc_attr_e( 'Disable this underperforming ad?', 'wb-ads-rotator-with-split-test' ); ?>');">
+									data-wbam-confirm="<?php echo esc_attr__( 'Disable this underperforming ad?', 'wb-ads-rotator-with-split-test' ); ?>"
+									data-wbam-confirm-tone="warning">
 									<?php esc_html_e( 'Disable', 'wb-ads-rotator-with-split-test' ); ?>
 								</a>
 							<?php endif; ?>

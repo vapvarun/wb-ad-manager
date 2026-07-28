@@ -368,3 +368,18 @@
 		border-bottom: 0;
 	}
 }
+
+/* Demo_Data_Cleaner::render_clear_button() — the form sits inline next to
+   whatever button/text precedes it, and the tracked-item count reads as a
+   subdued suffix on the button label. Lives here (not admin.css) because
+   the button can render on any WB Ad Manager admin screen, not just the
+   ad-edit screen. */
+.wbam-demo-clear-form {
+	display: inline-block;
+	margin-inline-start: var(--wbam-space-2);
+}
+
+.wbam-demo-count {
+	opacity: 0.7;
+	margin-inline-start: var(--wbam-space-1);
+}

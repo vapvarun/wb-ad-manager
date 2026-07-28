@@ -166,7 +166,7 @@ class Email_Captures {
 								<td><?php echo esc_html( $row->ip_address ); ?></td>
 								<td><?php echo esc_html( $row->created_at ); ?></td>
 								<td>
-									<a href="<?php echo esc_url( $delete_url ); ?>" class="submitdelete" onclick="return confirm('<?php echo esc_js( __( 'Delete this capture? This cannot be undone.', 'wb-ads-rotator-with-split-test' ) ); ?>');">
+									<a href="<?php echo esc_url( $delete_url ); ?>" class="submitdelete" data-wbam-confirm="<?php echo esc_attr__( 'Delete this capture? This cannot be undone.', 'wb-ads-rotator-with-split-test' ); ?>" data-wbam-confirm-tone="danger">
 										<?php esc_html_e( 'Delete', 'wb-ads-rotator-with-split-test' ); ?>
 									</a>
 								</td>
