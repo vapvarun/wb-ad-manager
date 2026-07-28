@@ -61,7 +61,17 @@ table_check "wbam_links table exists"           "wbam_links"
 if eval "$WP plugin is-active wb-ad-manager-pro" >/dev/null 2>&1; then
 	echo
 	echo "-- Pro plugin detected --"
-	check "wbam-classified CPT registered"       "$WP eval 'echo post_type_exists(\"wbam-classified\") ? \"yes\" : \"no\";'" "yes"
+	# Classifieds is an optional module. Asserting its CPT unconditionally fails
+	# on every site that has the module switched off - which is a supported
+	# configuration, not a broken install. Ask the module flag first and assert
+	# the CPT matches it, so the check is meaningful either way: registered when
+	# on, absent when off.
+	CLASSIFIEDS_ON=$(eval "$WP eval 'echo \WBAM_Pro\Core\Settings_Helper::is_module_enabled(\"classifieds\") ? \"yes\" : \"no\";'" 2>/dev/null | tr -d '[:space:]')
+	if [ "$CLASSIFIEDS_ON" = "yes" ]; then
+		check "wbam-classified CPT registered"   "$WP eval 'echo post_type_exists(\"wbam-classified\") ? \"yes\" : \"no\";'" "yes"
+	else
+		check "wbam-classified CPT absent (module off)" "$WP eval 'echo post_type_exists(\"wbam-classified\") ? \"yes\" : \"no\";'" "no"
+	fi
 	check "wbam_pro_db_version option set"       "$WP option get wbam_pro_db_version"                                       "."
 	# Credits SDK prefixes its tables with the consumer prefix ('wbam')
 	# then a type suffix, e.g. wbam_credit_ledger.
