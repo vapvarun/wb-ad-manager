@@ -118,6 +118,12 @@ jobs:
         working-directory: wp-content/plugins/wb-ads-rotator-with-split-test
         run: composer install --no-interaction --prefer-dist --no-progress
 
+      # install-wp-tests.sh pulls the test suite over Subversion, and
+      # ubuntu-latest images no longer ship it - the scaffold step fails with
+      # "svn: command not found" (exit 127) without this.
+      - name: Install Subversion (required by install-wp-tests.sh)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq subversion
+
       - name: Install WordPress test scaffold
         working-directory: wp-content/plugins/wb-ads-rotator-with-split-test
         run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 latest
