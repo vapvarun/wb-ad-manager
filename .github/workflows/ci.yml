@@ -66,3 +66,74 @@ jobs:
 
       - name: Run PHPStan
         run: composer phpstan
+
+  phpunit:
+    name: PHPUnit (free + pro)
+    runs-on: ubuntu-latest
+
+    # This job is the reason the others exist. Until it was added, CI linted and
+    # type-checked but ran none of the 100+ tests in this repo - so a green tick
+    # meant "it parses", not "it works". Regressions in billing, authorization
+    # and placement gating could all reach main unchallenged.
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports: [ '3306:3306' ]
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout FREE
+        uses: actions/checkout@v4
+        with:
+          path: wp-content/plugins/wb-ads-rotator-with-split-test
+
+      # The pro suite lives in this repo but exercises the pro plugin, so pro
+      # has to be present as the sibling the bootstrap expects. It is a private
+      # repo, so this needs a token; without one the pro suite skips itself
+      # rather than failing, and the free suite still runs.
+      - name: Checkout PRO (sibling — enables the pro suite)
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          repository: vapvarun/wb-ad-manager-pro
+          token: ${{ secrets.PRO_REPO_TOKEN }}
+          path: wp-content/plugins/wb-ad-manager-pro
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+          extensions: mysqli
+
+      - name: Install dependencies
+        working-directory: wp-content/plugins/wb-ads-rotator-with-split-test
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install WordPress test scaffold
+        working-directory: wp-content/plugins/wb-ads-rotator-with-split-test
+        run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 latest
+
+      - name: Free suite
+        working-directory: wp-content/plugins/wb-ads-rotator-with-split-test
+        run: composer test-free
+
+      # Runs only when the PRO checkout above succeeded. Guarded so a missing or
+      # expired token degrades to "free suite only" instead of a red build that
+      # says nothing about the code.
+      - name: Pro suite
+        working-directory: wp-content/plugins/wb-ads-rotator-with-split-test
+        run: |
+          if [ -f ../wb-ad-manager-pro/wb-ad-manager-pro.php ]; then
+            composer test-pro
+          else
+            echo "PRO not checked out (no token) - skipping the pro suite."
+          fi
