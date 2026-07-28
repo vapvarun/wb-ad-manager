@@ -24,6 +24,24 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class Links_List_Table extends \WP_List_Table {
 
 	/**
+	 * Table classes, with the shared admin-family class.
+	 *
+	 * Guarded because PRO ships this file too and can boot against an older
+	 * FREE that predates the helper; falling back to WordPress's own list keeps
+	 * the table looking stock rather than fataling.
+	 *
+	 * @since 2.10.1
+	 * @return string[]
+	 */
+	protected function get_table_classes() {
+		if ( class_exists( '\\WBAM\\Admin\\Table_Classes' ) ) {
+			return \WBAM\Admin\Table_Classes::get( isset( $this->_args['plural'] ) ? $this->_args['plural'] : '' );
+		}
+
+		return parent::get_table_classes();
+	}
+
+	/**
 	 * Link Manager instance.
 	 *
 	 * @var Link_Manager

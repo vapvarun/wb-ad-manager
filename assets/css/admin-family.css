@@ -149,6 +149,88 @@
 }
 
 /*
+ * WP_List_Table interop.
+ *
+ * The rules above were written for hand-rolled markup. A WP_List_Table wearing
+ * `wbam-admin-table` (see the List_Table_Family trait) brings structure they do
+ * not anticipate: a checkbox column WordPress sizes itself, sortable headers
+ * that wrap their label in an anchor, a tfoot that repeats thead, and a
+ * row-actions block that stays in flow while parked off-screen. Left alone the
+ * family's padding misaligns the checkbox and flattens the sort affordance.
+ */
+
+/* WordPress sizes and pads the checkbox column itself; family padding pushes
+   the checkbox out of alignment with the row. */
+.wbam-admin-table .check-column {
+	padding:    11px 0 0 3px;
+	width:      2.2em;
+	vertical-align: top;
+}
+
+/* Tighter horizontal padding on WP-generated tables only. The family's
+   `space-4` is sized for hand-rolled tables carrying three or four columns; a
+   list table runs to eight under `table-layout: fixed`, where every extra pixel
+   of padding comes straight out of the content box and pushes cells into
+   wrapping. Measured on Campaigns (8 columns): `space-4` took the median row
+   from 118px to 145px purely through extra wrap, while Advertisers (6 columns)
+   moved 109px to 117px. `space-3` keeps the vertical rhythm and holds the wide
+   tables near their original density. */
+.wp-list-table.wbam-admin-table th,
+.wp-list-table.wbam-admin-table td {
+	padding-inline: var(--wbam-space-3);
+}
+
+/* Sortable headers put their label inside an <a>, and core zeroes the cell's
+   own padding to suit — `.widefat th.sortable { padding: 0 }` in list-tables.css
+   outranks the family's `.wbam-admin-table th`, so a sortable header rendered
+   flush against the row while its non-sortable neighbours kept the family
+   spacing. The padding has to move onto the anchor, which is where core puts
+   its own. The anchor also needs the family colour, or the sort target renders
+   in the theme's link blue and breaks the header row's typography. */
+.wbam-admin-table thead th.sortable a,
+.wbam-admin-table thead th.sorted a,
+.wbam-admin-table tfoot th.sortable a,
+.wbam-admin-table tfoot th.sorted a {
+	display:         flex;
+	align-items:     center;
+	gap:             var(--wbam-space-1);
+	padding:         var(--wbam-space-3) var(--wbam-space-3);
+	color:           inherit;
+	text-decoration: none;
+}
+
+/* tfoot repeats thead — it must read identically or the table looks like it
+   changes vocabulary halfway down. */
+.wbam-admin-table tfoot th {
+	background:     var(--wbam-surface);
+	font-weight:    var(--wbam-weight-semibold);
+	color:          var(--wbam-text-muted);
+	text-transform: uppercase;
+	font-size:      var(--wbam-font-size-xs);
+	letter-spacing: 0.03em;
+	white-space:    nowrap;
+	border-top:     1px solid var(--wbam-border-subtle);
+}
+
+/* The density lever. This block reserves vertical space on every row even while
+   parked off-screen, which is why tables carrying row actions measured ~109px
+   against ~55px for those without. Fixing the line-height makes that reservation
+   the same on every screen instead of inheriting whatever the cell set. The file
+   has no line-height token scale, so this matches the literal convention used by
+   the page-header and badge rules rather than inventing one. */
+.wbam-admin-table .row-actions {
+	line-height: 1.4;
+	padding-top: var(--wbam-space-1);
+}
+
+/* `striped` paints alternating row backgrounds; the family hover must win on
+   both parities or hovering reads as a no-op on every other row. */
+.wbam-admin-table.striped > tbody > tr:hover,
+.wbam-admin-table.striped > tbody > tr:nth-child(odd):hover {
+	background: var(--wbam-surface);
+}
+
+/*
  * WordPress list tables (WP_List_Table -> .wp-list-table) are used by several
  * screens we do not rewrite. Normalise them toward the family so a native list
  * table and a .wbam-admin-table read the same — scoped to our admin screens via
