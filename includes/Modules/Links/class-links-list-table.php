@@ -30,7 +30,7 @@ class Links_List_Table extends \WP_List_Table {
 	 * FREE that predates the helper; falling back to WordPress's own list keeps
 	 * the table looking stock rather than fataling.
 	 *
-	 * @since 2.10.1
+	 * @since 3.0.0
 	 * @return string[]
 	 */
 	protected function get_table_classes() {
