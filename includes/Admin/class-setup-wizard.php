@@ -118,6 +118,17 @@ class Setup_Wizard {
 			return;
 		}
 
+		// The wizard renders its own standalone page and exits from admin_init,
+		// which runs BEFORE wp-admin/admin.php resolves the capability attached
+		// to add_dashboard_page(). Core's gate therefore never runs for us, and
+		// the page check above matches on any admin file — profile.php?page=wbam-setup
+		// included, which subscribers can load. Without this check any logged-in
+		// user could render the wizard, obtain a valid wbam_setup_sample nonce
+		// and POST save_step to create sample ads. Authorize here or not at all.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		// Start output buffering early to allow redirects.
 		ob_start();
 
@@ -426,6 +437,13 @@ class Setup_Wizard {
 	 * Step: Sample Ads - Save.
 	 */
 	public function step_sample_save() {
+		// This creates ad posts. It is a public method reachable through the
+		// wbam_setup_wizard_steps filter, so it authorizes itself rather than
+		// trusting setup_wizard() to have done it.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		// Verify nonce.
 		if ( ! isset( $_POST['wbam_setup_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wbam_setup_nonce'] ) ), 'wbam_setup_sample' ) ) {
 			return;
