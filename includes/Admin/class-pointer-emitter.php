@@ -3,7 +3,7 @@
  * Shared wp-pointer emitter.
  *
  * @package WB_Ad_Manager
- * @since   2.10.1
+ * @since   3.0.0
  */
 
 namespace WBAM\Admin;
@@ -29,14 +29,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * pointer definitions, their own AJAX action and their own dismissal meta -
  * those are genuinely per-plugin and should not be shared.
  *
- * @since 2.10.1
+ * @since 3.0.0
  */
 final class Pointer_Emitter {
 
 	/**
 	 * Enqueue the walkthrough for a set of pointers.
 	 *
-	 * @since 2.10.1
+	 * @since 3.0.0
 	 * @param array  $pointers      Slug => { target, title, content, edge, align }.
 	 * @param string $ajax_action   Action name the dismissal posts to. Also used
 	 *                              as the nonce action.

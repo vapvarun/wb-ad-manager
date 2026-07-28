@@ -254,7 +254,7 @@ class Plugin {
 	 * or toast opts in with a bare `wp_enqueue_script()` / `wp_enqueue_style()`
 	 * call.
 	 *
-	 * @since 2.10.0
+	 * @since 3.0.0
 	 */
 	public function register_shared_assets(): void {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';

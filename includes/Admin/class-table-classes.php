@@ -3,7 +3,7 @@
  * Shared list-table class list.
  *
  * @package WB_Ad_Manager
- * @since   2.10.1
+ * @since   3.0.0
  */
 
 namespace WBAM\Admin;
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * parent::get_table_classes(), so the worst case is a table that looks like
  * stock WordPress for one update cycle.
  *
- * @since 2.10.1
+ * @since 3.0.0
  */
 final class Table_Classes {
 
@@ -40,7 +40,7 @@ final class Table_Classes {
 	 * `fixed` is kept. Dropping it switches the column-width algorithm for every
 	 * table at once, which can only be judged per screen against real data.
 	 *
-	 * @since 2.10.1
+	 * @since 3.0.0
 	 * @param string $plural Plural table arg; several screens' CSS and JS key off
 	 *                       the per-table class WordPress generates from it.
 	 * @return string[]
