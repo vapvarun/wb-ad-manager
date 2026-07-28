@@ -253,6 +253,13 @@ class Links_List_Table extends \WP_List_Table {
 			return;
 		}
 
+		// Deletes and status changes run from here. The menu capability on the
+		// parent page already gates the normal path; this makes the guarantee
+		// local so it survives the table being instantiated somewhere else.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'bulk-links' ) ) {
 			return;
 		}

@@ -163,6 +163,12 @@ class First_Install_Pointers {
 			wp_send_json_error( 'no_user', 403 );
 		}
 
+		// The pointers only appear on the ad edit screen, so only people who can
+		// edit ads have anything to dismiss.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( 'forbidden', 403 );
+		}
+
 		$slug = isset( $_POST['pointer'] ) ? sanitize_key( wp_unslash( $_POST['pointer'] ) ) : '';
 		if ( '' === $slug ) {
 			wp_send_json_error( 'no_slug', 400 );

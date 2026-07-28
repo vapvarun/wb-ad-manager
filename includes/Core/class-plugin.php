@@ -238,6 +238,12 @@ class Plugin {
 	public function ajax_dismiss_notice() {
 		check_ajax_referer( 'wbam_dismiss_notice', 'nonce' );
 
+		// The notices this dismisses only render on the wbam-ad screen, so the
+		// audience is people who can edit ads. Match that.
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error();
+		}
+
 		$type    = isset( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '';
 		$allowed = array( 'bp', 'jetonomy' );
 		if ( ! in_array( $type, $allowed, true ) ) {
