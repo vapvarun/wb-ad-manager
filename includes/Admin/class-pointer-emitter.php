@@ -1,0 +1,87 @@
+<?php
+/**
+ * Shared wp-pointer emitter.
+ *
+ * @package WB_Ad_Manager
+ * @since   2.10.1
+ */
+
+namespace WBAM\Admin;
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Builds and enqueues the wp-pointer walkthrough script.
+ *
+ * Both this plugin and Pro ship onboarding pointers, and both had their own
+ * copy of the same twenty lines of inline JavaScript that drives them. The two
+ * copies had already drifted: Pro passed an explicit admin-ajax URL because the
+ * `ajaxurl` global does not exist on the frontend, and used `.first()` so a
+ * selector matching several nodes could not open a pointer per node. This
+ * plugin's copy had neither, which is latent rather than harmless - it is
+ * admin-only today, and would break the moment a pointer was pointed at
+ * anything on the frontend.
+ *
+ * One emitter, carrying the better of the two behaviours. Callers keep their own
+ * pointer definitions, their own AJAX action and their own dismissal meta -
+ * those are genuinely per-plugin and should not be shared.
+ *
+ * @since 2.10.1
+ */
+final class Pointer_Emitter {
+
+	/**
+	 * Enqueue the walkthrough for a set of pointers.
+	 *
+	 * @since 2.10.1
+	 * @param array  $pointers      Slug => { target, title, content, edge, align }.
+	 * @param string $ajax_action   Action name the dismissal posts to. Also used
+	 *                              as the nonce action.
+	 * @param string $pointer_class Extra class on the pointer element, so each
+	 *                              plugin can style its own.
+	 * @return void
+	 */
+	public static function emit( array $pointers, $ajax_action, $pointer_class ) {
+		if ( empty( $pointers ) ) {
+			return;
+		}
+
+		wp_enqueue_style( 'wp-pointer' );
+		wp_enqueue_script( 'wp-pointer' );
+		wp_enqueue_script( 'jquery' );
+
+		$inline  = 'jQuery(function($){';
+		$inline .= 'var pointers = ' . wp_json_encode( $pointers ) . ';';
+		$inline .= 'var ajaxAction = ' . wp_json_encode( $ajax_action ) . ';';
+		$inline .= 'var nonce = ' . wp_json_encode( wp_create_nonce( $ajax_action ) ) . ';';
+		// Explicit rather than relying on the `ajaxurl` global, which WordPress
+		// only defines in the admin. A frontend pointer would post to undefined.
+		$inline .= 'var ajaxUrl = ' . wp_json_encode( admin_url( 'admin-ajax.php' ) ) . ';';
+		$inline .= 'function showNext(keys){';
+		$inline .= 'if(!keys.length){return;}';
+		$inline .= 'var slug = keys.shift();';
+		$inline .= 'var p = pointers[slug];';
+		$inline .= 'if(!p){showNext(keys);return;}';
+		$inline .= 'var $t = $(p.target);';
+		$inline .= 'if(!$t.length){showNext(keys);return;}';
+		// .first() so a selector that matches several nodes opens one pointer,
+		// not one per node.
+		$inline .= '$t.first().pointer({';
+		$inline .= 'content: "<h3>" + p.title + "</h3><p>" + p.content + "</p>",';
+		$inline .= 'position: { edge: p.edge || "top", align: p.align || "center" },';
+		$inline .= 'pointerClass: ' . wp_json_encode( 'wp-pointer ' . $pointer_class ) . ',';
+		$inline .= 'close: function(){';
+		$inline .= '$.post(ajaxUrl, { action: ajaxAction, pointer: slug, _ajax_nonce: nonce });';
+		$inline .= 'showNext(keys);';
+		$inline .= '}';
+		$inline .= '}).pointer("open");';
+		$inline .= '}';
+		$inline .= 'showNext(Object.keys(pointers));';
+		$inline .= '});';
+
+		wp_add_inline_script( 'wp-pointer', $inline );
+	}
+}
