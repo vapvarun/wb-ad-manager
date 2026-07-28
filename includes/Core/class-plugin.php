@@ -219,6 +219,18 @@ class Plugin {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'wp_ajax_wbam_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
 
+		// Canonical registration for the shared toast/confirm toolkit
+		// (`wbam-toast`). Hooked at init@1 so the handle exists in the
+		// script/style registry before ANY request type — admin, frontend,
+		// or AJAX — reaches a point where it, or WB Ad Manager Pro, needs
+		// to enqueue it. Pro's advertiser portal and classifieds run on the
+		// frontend, where `WBAM\Admin\Admin` (is_admin()-gated) never
+		// loads, so registration lives here in the always-on bootstrap
+		// instead. Every consumer calls `wp_enqueue_script( 'wbam-toast' )`
+		// / `wp_enqueue_style( 'wbam-toast' )` with the bare handle — they
+		// MUST NOT re-register.
+		add_action( 'init', array( $this, 'register_shared_assets' ), 1 );
+
 		// Invalidate the per-placement ad-count cache (Settings screen,
 		// Task 7) on the same triggers Placement_Engine already uses to
 		// invalidate its own placement cache — see
@@ -230,6 +242,41 @@ class Plugin {
 		add_action( 'delete_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
 		add_action( 'trashed_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
 		add_action( 'untrashed_post', array( '\WBAM\Admin\Placement_Settings', 'clear_count_cache' ) );
+	}
+
+	/**
+	 * Register the shared toast/confirm toolkit (script + style).
+	 *
+	 * Single source of truth for the `wbam-toast` handle — both this plugin
+	 * and WB Ad Manager Pro depend on it. Mirrors the guard pattern in
+	 * `Admin::enqueue_admin_tokens()`: registered (not enqueued) here so it
+	 * exists everywhere, and each screen/shortcode that renders a confirm
+	 * or toast opts in with a bare `wp_enqueue_script()` / `wp_enqueue_style()`
+	 * call.
+	 *
+	 * @since 2.10.0
+	 */
+	public function register_shared_assets(): void {
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		if ( ! wp_script_is( 'wbam-toast', 'registered' ) ) {
+			wp_register_script(
+				'wbam-toast',
+				WBAM_URL . 'assets/js/toast' . $suffix . '.js',
+				array(),
+				WBAM_VERSION,
+				true
+			);
+		}
+
+		if ( ! wp_style_is( 'wbam-toast', 'registered' ) ) {
+			wp_register_style(
+				'wbam-toast',
+				WBAM_URL . 'assets/css/toast' . $suffix . '.css',
+				array(),
+				WBAM_VERSION
+			);
+		}
 	}
 
 	/**

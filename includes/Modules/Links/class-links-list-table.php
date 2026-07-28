@@ -342,7 +342,7 @@ class Links_List_Table extends \WP_List_Table {
 				esc_html__( 'Copy Shortcode', 'wb-ads-rotator-with-split-test' )
 			),
 			'delete'         => sprintf(
-				'<a href="%s" onclick="return confirm(\'%s\');" class="delete">%s</a>',
+				'<a href="%s" data-wbam-confirm="%s" data-wbam-confirm-tone="danger" class="delete">%s</a>',
 				esc_url( $delete_url ),
 				esc_attr__( 'Are you sure you want to delete this link?', 'wb-ads-rotator-with-split-test' ),
 				__( 'Delete', 'wb-ads-rotator-with-split-test' )
