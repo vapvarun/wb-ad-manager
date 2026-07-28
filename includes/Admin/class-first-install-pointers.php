@@ -112,41 +112,7 @@ class First_Install_Pointers {
 			$emit[ $slug ] = $pointers[ $slug ];
 		}
 
-		wp_enqueue_style( 'wp-pointer' );
-		wp_enqueue_script( 'wp-pointer' );
-		wp_enqueue_script( 'jquery' );
-
-		$nonce = wp_create_nonce( self::AJAX_ACTION );
-
-		// Build a safe JSON payload. Keys are slugs, values are
-		// { target, title, content, edge, align }.
-		$payload = wp_json_encode( $emit );
-
-		$inline  = 'jQuery(function($){';
-		$inline .= 'var pointers = ' . $payload . ';';
-		$inline .= 'var ajaxAction = ' . wp_json_encode( self::AJAX_ACTION ) . ';';
-		$inline .= 'var nonce = ' . wp_json_encode( $nonce ) . ';';
-		$inline .= 'function showNext(keys){';
-		$inline .= 'if(!keys.length){return;}';
-		$inline .= 'var slug = keys.shift();';
-		$inline .= 'var p = pointers[slug];';
-		$inline .= 'if(!p){showNext(keys);return;}';
-		$inline .= 'var $t = $(p.target);';
-		$inline .= 'if(!$t.length){showNext(keys);return;}';
-		$inline .= '$t.pointer({';
-		$inline .= 'content: "<h3>" + p.title + "</h3><p>" + p.content + "</p>",';
-		$inline .= 'position: { edge: p.edge || "top", align: p.align || "center" },';
-		$inline .= 'pointerClass: "wp-pointer wbam-pointer",';
-		$inline .= 'close: function(){';
-		$inline .= '$.post(ajaxurl, { action: ajaxAction, pointer: slug, _ajax_nonce: nonce });';
-		$inline .= 'showNext(keys);';
-		$inline .= '}';
-		$inline .= '}).pointer("open");';
-		$inline .= '}';
-		$inline .= 'showNext(Object.keys(pointers));';
-		$inline .= '});';
-
-		wp_add_inline_script( 'wp-pointer', $inline );
+		Pointer_Emitter::emit( $emit, self::AJAX_ACTION, 'wbam-pointer' );
 	}
 
 	/**
