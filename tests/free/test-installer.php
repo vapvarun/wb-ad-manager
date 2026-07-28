@@ -38,8 +38,26 @@ class Test_Installer extends WP_UnitTestCase {
 		);
 	}
 
-	public function test_default_settings_option_seeded(): void {
-		$this->assertNotFalse( get_option( 'wbam_settings', false ) );
+	/**
+	 * Seeding happens in wbam_activate(), the register_activation_hook callback.
+	 *
+	 * The test bootstrap loads the plugin but never activates it, so this used
+	 * to assert a post-activation state that nothing in the run had produced -
+	 * a guaranteed failure that said nothing about the product. Run the seeding
+	 * the way activation does, then assert, so the test covers the contract
+	 * "activation leaves wbam_settings present" instead of "something else
+	 * happened to create the option".
+	 */
+	public function test_activation_seeds_default_settings_option(): void {
+		delete_option( 'wbam_settings' );
+		$this->assertFalse( get_option( 'wbam_settings', false ), 'Precondition: option cleared.' );
+
+		wbam_activate();
+
+		$this->assertNotFalse(
+			get_option( 'wbam_settings', false ),
+			'Activation must seed wbam_settings so first-run reads have a value.'
+		);
 	}
 
 	public function test_cpt_registered_after_init(): void {
