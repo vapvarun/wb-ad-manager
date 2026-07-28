@@ -37,7 +37,8 @@ final class Pointer_Emitter {
 	 * Enqueue the walkthrough for a set of pointers.
 	 *
 	 * @since 3.0.0
-	 * @param array  $pointers      Slug => { target, title, content, edge, align }.
+	 * @param array<string, array<string, string>> $pointers Slug => { target,
+	 *                              title, content, edge, align }.
 	 * @param string $ajax_action   Action name the dismissal posts to. Also used
 	 *                              as the nonce action.
 	 * @param string $pointer_class Extra class on the pointer element, so each
