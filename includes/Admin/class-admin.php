@@ -236,6 +236,69 @@ class Admin {
 			<option value="disabled" <?php selected( $current, 'disabled' ); ?>><?php esc_html_e( 'Disabled', 'wb-ads-rotator-with-split-test' ); ?></option>
 		</select>
 		<?php
+
+		$this->render_ad_tag_filter();
+	}
+
+	/**
+	 * Tag filter on the ads list.
+	 *
+	 * This is what makes bulk actions work on a group. "Disable everything for
+	 * this sponsor" needs no new bulk action - the existing Enable/Disable act
+	 * on whatever is selected, and narrowing the list is what makes selecting a
+	 * group possible at all.
+	 *
+	 * Note the limit: select-all covers the current page, so an inventory larger
+	 * than the page size needs either several rounds or a higher per-page value
+	 * from Screen Options. That is WordPress's behaviour on every post list, not
+	 * something introduced here.
+	 *
+	 * Submitting under the taxonomy's own name with the term slug is the pattern
+	 * WP_Query understands natively, so no pre_get_posts handling is needed -
+	 * unlike the status filter above, which is meta-based and has to be applied
+	 * by hand.
+	 *
+	 * @since 3.1.0
+	 * @return void
+	 */
+	private function render_ad_tag_filter() {
+		if ( ! taxonomy_exists( 'wbam_ad_tag' ) ) {
+			return;
+		}
+
+		// Nothing to filter by yet - an empty dropdown is worse than none.
+		$has_terms = get_terms(
+			array(
+				'taxonomy'   => 'wbam_ad_tag',
+				'hide_empty' => false,
+				'number'     => 1,
+				'fields'     => 'ids',
+			)
+		);
+
+		if ( is_wp_error( $has_terms ) || empty( $has_terms ) ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only list-table filter; nonce-less GET is the standard WP admin pattern.
+		$selected = isset( $_GET['wbam_ad_tag'] ) ? sanitize_text_field( wp_unslash( $_GET['wbam_ad_tag'] ) ) : '';
+
+		wp_dropdown_categories(
+			array(
+				'taxonomy'        => 'wbam_ad_tag',
+				'name'            => 'wbam_ad_tag',
+				'id'              => 'wbam_ad_tag',
+				'value_field'     => 'slug',
+				'selected'        => $selected,
+				'show_option_all' => __( 'All ad tags', 'wb-ads-rotator-with-split-test' ),
+				// A tag created a moment ago carries nothing yet; hiding it
+				// would read as the tag having failed to save.
+				'hide_empty'      => false,
+				'hierarchical'    => false,
+				'show_count'      => true,
+				'orderby'         => 'name',
+			)
+		);
 	}
 
 	/**
@@ -494,6 +557,11 @@ class Admin {
 				// Ads.
 				'edit.php?post_type=wbam-ad'     => 'ads',
 				'post-new.php?post_type=wbam-ad' => 'ads',
+				// Ad Tags organises ads, so it sits with them. Unmapped it falls
+				// into the trailing bucket and renders under Settings, which
+				// reads as a configuration screen rather than an inventory one.
+				'edit-tags.php?taxonomy=wbam_ad_tag&amp;post_type=wbam-ad' => 'ads',
+				'edit-tags.php?taxonomy=wbam_ad_tag&post_type=wbam-ad' => 'ads',
 				// Delivery.
 				'wbam-inventory'                 => 'delivery',
 				'wbam-ab-testing'                => 'delivery',
@@ -1641,7 +1709,7 @@ class Admin {
 	 * Email Capture ad preview.
 	 *
 	 * @param array<string,mixed> $data    Ad data.
-	 * @param int   $post_id Ad post ID (for CSS isolation hints).
+	 * @param int                 $post_id Ad post ID (for CSS isolation hints).
 	 * @return void
 	 */
 	private function render_preview_email_capture( $data, $post_id ) {
@@ -2154,11 +2222,11 @@ class Admin {
 	 *
 	 * @since 2.11.1
 	 * @param array<string,array{name?:string,accepted_formats?:array<int,string>}> $registry   Placement registry (wbam_get_placements shape).
-	 * @param string[]            $selected   Placement slugs ticked in the Placements metabox.
-	 * @param string               $responsive '1' when the Responsive sizing mode is selected.
-	 * @param string               $ad_format  Raw `_wbam_ad_format` meta value ('' = auto-detect, 'custom', or a named slug).
-	 * @param int                  $ad_width   Persisted custom width, if any.
-	 * @param int                  $ad_height  Persisted custom height, if any.
+	 * @param string[]                                                              $selected   Placement slugs ticked in the Placements metabox.
+	 * @param string                                                                $responsive '1' when the Responsive sizing mode is selected.
+	 * @param string                                                                $ad_format  Raw `_wbam_ad_format` meta value ('' = auto-detect, 'custom', or a named slug).
+	 * @param int                                                                   $ad_width   Persisted custom width, if any.
+	 * @param int                                                                   $ad_height  Persisted custom height, if any.
 	 * @return array{label:string, value:string}
 	 */
 	private static function initial_compat_summary( array $registry, array $selected, $responsive, $ad_format, $ad_width, $ad_height ) {

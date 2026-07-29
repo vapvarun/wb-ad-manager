@@ -481,7 +481,25 @@
       "where": "includes/Core/class-plugin.php:274"
     }
   ],
-  "taxonomies": [],
+  "taxonomies": [
+    {
+      "name": "wbam_ad_tag",
+      "post_type": "wbam-ad",
+      "hierarchical": false,
+      "show_ui": true,
+      "show_in_rest": false,
+      "rewrite": false,
+      "capabilities": {
+        "manage_terms": "manage_options",
+        "edit_terms": "manage_options",
+        "delete_terms": "manage_options",
+        "assign_terms": "edit_posts"
+      },
+      "registered_at": "includes/Core/class-plugin.php::register_ad_tag_taxonomy()",
+      "filter": "wbam_ad_tag_taxonomy_args",
+      "purpose": "Groups ads for finding, filtering and bulk enable/disable. Organisation only - does not affect delivery."
+    }
+  ],
   "tables": [
     {
       "name": "{prefix}wbam_links",

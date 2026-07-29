@@ -187,6 +187,15 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 
 == Changelog ==
 
+= 3.1.0 - July 2026 =
+
+Ad tags, so a large set of ads can be grouped, found and switched on or off together.
+
+* New      - Ad tags. Group ads by sponsor, season, format or anything else, with as many tags on one ad as you need. Filter the ads list by tag, then use the existing Enable or Disable bulk actions to act on that whole group at once.
+* Dev      - New wbam_ad_tag taxonomy on the ad post type, flat, admin-only, with term management gated on manage_options and assignment on edit_posts. Registration arguments are filterable through wbam_ad_tag_taxonomy_args.
+* Dev      - Uninstall now removes ad tag terms. WordPress leaves terms behind when a taxonomy stops being registered, so they would otherwise persist invisibly.
+* Compat   - Tagging does not change which ads serve. Delivery is unaffected until tag based targeting ships.
+
 = 3.0.0 - July 2026 =
 
 Ad slots you control at two levels, a security fix for the setup wizard, one consistent admin design, and Email Capture leads you can finally see and export.
