@@ -277,6 +277,11 @@ class Links_Admin {
 
 		<?php if ( $is_edit && $link ) : ?>
 			<?php
+			// A cloaked URL only exists when cloaking is ON for this link —
+			// with it off, the /go/ URL is not served, so advertising it
+			// here (with copy + test buttons, no less) handed the admin a
+			// dead URL. Cloaking off means the shortcode is the one way in.
+			$is_cloaked   = $link->cloaking_enabled && ! empty( $link->slug );
 			$cloak_prefix = Link_Cloaker::get_instance()->get_cloak_prefix();
 			$cloaked_url  = home_url( '/' . $cloak_prefix . '/' . $link->slug );
 			$shortcode    = '[wbam_link id="' . (int) $link->id . '"]' . $link->name . '[/wbam_link]';
@@ -286,9 +291,16 @@ class Links_Admin {
 					<?php esc_html_e( 'Your link is ready to use', 'wb-ads-rotator-with-split-test' ); ?>
 				</h3>
 				<p style="margin:0 0 10px;font-size:13px;color:#50575e;">
-					<?php esc_html_e( 'Pick one of these two ways to put the link in your content.', 'wb-ads-rotator-with-split-test' ); ?>
+					<?php
+					if ( $is_cloaked ) {
+						esc_html_e( 'Pick one of these two ways to put the link in your content.', 'wb-ads-rotator-with-split-test' );
+					} else {
+						esc_html_e( 'Cloaking is off for this link, so use the shortcode to place it in your content.', 'wb-ads-rotator-with-split-test' );
+					}
+					?>
 				</p>
 
+				<?php if ( $is_cloaked ) : ?>
 				<p style="margin:0 0 6px;"><strong><?php esc_html_e( '1. Cloaked URL', 'wb-ads-rotator-with-split-test' ); ?></strong>
 					. <?php esc_html_e( 'Paste this anywhere a link is accepted (posts, menus, widgets). Redirects to your destination URL.', 'wb-ads-rotator-with-split-test' ); ?>
 				</p>
@@ -305,6 +317,11 @@ class Links_Admin {
 				<p style="margin:0 0 6px;"><strong><?php esc_html_e( '2. Shortcode with custom anchor text', 'wb-ads-rotator-with-split-test' ); ?></strong>
 					. <?php esc_html_e( 'Use this in post content when you want specific anchor text and full rel-attribute control.', 'wb-ads-rotator-with-split-test' ); ?>
 				</p>
+				<?php else : ?>
+				<p style="margin:0 0 6px;"><strong><?php esc_html_e( 'Shortcode with custom anchor text', 'wb-ads-rotator-with-split-test' ); ?></strong>
+					. <?php esc_html_e( 'Use this in post content when you want specific anchor text and full rel-attribute control.', 'wb-ads-rotator-with-split-test' ); ?>
+				</p>
+				<?php endif; ?>
 				<p style="margin:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
 					<input type="text" readonly value="<?php echo esc_attr( $shortcode ); ?>" aria-label="<?php esc_attr_e( 'Link shortcode', 'wb-ads-rotator-with-split-test' ); ?>" class="regular-text" style="font-family:monospace;max-width:460px;" onclick="this.select();">
 					<button type="button" class="button wbam-copy-btn" data-copy="<?php echo esc_attr( $shortcode ); ?>">
@@ -608,7 +625,16 @@ class Links_Admin {
 				<h3><?php esc_html_e( 'Link Information', 'wb-ads-rotator-with-split-test' ); ?></h3>
 				<table class="widefat">
 					<tr>
-						<th><?php esc_html_e( 'Cloaked URL', 'wb-ads-rotator-with-split-test' ); ?></th>
+						<?php // get_url() already returns the destination when cloaking is off; the label has to say which one the admin is looking at. ?>
+						<th>
+							<?php
+							if ( $link->cloaking_enabled && ! empty( $link->slug ) ) {
+								esc_html_e( 'Cloaked URL', 'wb-ads-rotator-with-split-test' );
+							} else {
+								esc_html_e( 'Destination URL', 'wb-ads-rotator-with-split-test' );
+							}
+							?>
+						</th>
 						<td>
 							<code><?php echo esc_html( $link->get_url() ); ?></code>
 							<button type="button" class="button button-small wbam-copy-url" data-url="<?php echo esc_attr( $link->get_url() ); ?>">
