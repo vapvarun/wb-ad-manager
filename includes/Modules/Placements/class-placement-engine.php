@@ -450,6 +450,24 @@ class Placement_Engine {
 			return '';
 		}
 
+		// Full delivery gate on EVERY render path. Placement selection
+		// already filters through Targeting_Engine::should_display(), but
+		// by-id surfaces (the [wbam_ad] / [wbam_ads] shortcodes) used to
+		// reach here directly - honouring _wbam_enabled above while
+		// silently ignoring schedule windows, impression caps, session
+		// limits, geo, and the wbam_should_display_ad filter. An expired
+		// seasonal creative dropped into a post with a shortcode kept
+		// serving years past its end date. Admin/preview surfaces are
+		// exempt (an owner must be able to preview a scheduled ad), and
+		// callers that already gated can pass skip_targeting to avoid the
+		// re-check.
+		if ( empty( $options['skip_targeting'] ) && ! is_admin() ) {
+			$targeting = \WBAM\Modules\Targeting\Targeting_Engine::get_instance();
+			if ( ! $targeting->should_display( $ad_id ) ) {
+				return '';
+			}
+		}
+
 		$data    = get_post_meta( $ad_id, '_wbam_ad_data', true );
 		$ad_type = isset( $data['type'] ) ? $data['type'] : '';
 
