@@ -141,6 +141,18 @@ class Placement_Engine {
 	 * @return Ad_Type_Interface|null
 	 */
 	public function get_ad_type( $id ) {
+		// Normalize legacy stored spellings to the canonical registered id.
+		// The Rich Content handler registers as 'rich-content' but the setup
+		// wizard, admin preview, and abilities API all wrote 'rich_content'
+		// for years - so every such ad silently rendered as an empty string
+		// (the whole creative type was dead, including the sample ad every
+		// fresh install ships). PRO's installer migrates stored values, but
+		// FREE-only sites never run it, so the lookup itself has to accept
+		// the legacy forms. Same alias set as PRO's migration.
+		if ( ! isset( $this->ad_types[ $id ] ) && in_array( $id, array( 'rich_content', 'rich', 'content' ), true ) ) {
+			$id = 'rich-content';
+		}
+
 		return isset( $this->ad_types[ $id ] ) ? $this->ad_types[ $id ] : null;
 	}
 
@@ -438,6 +450,24 @@ class Placement_Engine {
 			return '';
 		}
 
+		// Full delivery gate on EVERY render path. Placement selection
+		// already filters through Targeting_Engine::should_display(), but
+		// by-id surfaces (the [wbam_ad] / [wbam_ads] shortcodes) used to
+		// reach here directly - honouring _wbam_enabled above while
+		// silently ignoring schedule windows, impression caps, session
+		// limits, geo, and the wbam_should_display_ad filter. An expired
+		// seasonal creative dropped into a post with a shortcode kept
+		// serving years past its end date. Admin/preview surfaces are
+		// exempt (an owner must be able to preview a scheduled ad), and
+		// callers that already gated can pass skip_targeting to avoid the
+		// re-check.
+		if ( empty( $options['skip_targeting'] ) && ! is_admin() ) {
+			$targeting = \WBAM\Modules\Targeting\Targeting_Engine::get_instance();
+			if ( ! $targeting->should_display( $ad_id ) ) {
+				return '';
+			}
+		}
+
 		$data    = get_post_meta( $ad_id, '_wbam_ad_data', true );
 		$ad_type = isset( $data['type'] ) ? $data['type'] : '';
 
@@ -579,6 +609,19 @@ class Placement_Engine {
 
 		$enabled = get_post_meta( $ad_id, '_wbam_enabled', true );
 		if ( ! $enabled ) {
+			return false;
+		}
+
+		// Creative-health probe: an enabled ad whose creative cannot render
+		// (image deleted from the media library, required field empty) must
+		// lose the slot to a healthy competitor, not blank it. Kept cheap by
+		// design - types opt in via has_creative(), which checks required
+		// fields without rendering; types without the method are assumed
+		// healthy, exactly as before.
+		$data    = get_post_meta( $ad_id, '_wbam_ad_data', true );
+		$type_id = isset( $data['type'] ) ? $data['type'] : '';
+		$handler = $this->get_ad_type( $type_id );
+		if ( $handler && method_exists( $handler, 'has_creative' ) && ! $handler->has_creative( $ad_id ) ) {
 			return false;
 		}
 

@@ -5,7 +5,7 @@ Tags: ads, ad manager, ad rotation, split test, adsense
 Requires at least: 5.8
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.0.0
+Stable tag: 3.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -186,6 +186,20 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 7. Free vs PRO comparison. Row-by-row feature table so you know exactly what you're getting at each tier.
 
 == Changelog ==
+
+= 3.1.0 - August 2026 =
+
+Ad tags for grouping and bulk-switching ads, plus a round of delivery and rendering fixes.
+
+* New      - Ad tags. Group ads by sponsor, season, format or anything else, with as many tags on one ad as you need. Filter the ads list by tag, then use the existing Enable or Disable bulk actions to act on that whole group at once.
+* Fix      - Rich Content ads render again. The type name was normalized so saved ads using older slug variants resolve to the same handler.
+* Fix      - Ads rendered directly by ID now respect the full delivery gate set, including schedule, frequency caps and geo targeting, matching rotation-served ads.
+* Fix      - An ad whose creative is missing or broken gives up its slot to the next eligible ad instead of rendering an empty space.
+* Fix      - Partnership links no longer advertise the cloaked URL when link cloaking is turned off.
+* Fix      - Ads rendered by the placement shortcode keep their configured spacing, and the ads-list tag filter shows clean counts.
+* Dev      - New wbam_ad_tag taxonomy on the ad post type, flat, admin-only, with term management gated on manage_options and assignment on edit_posts. Registration arguments are filterable through wbam_ad_tag_taxonomy_args.
+* Dev      - Uninstall now removes ad tag terms. WordPress leaves terms behind when a taxonomy stops being registered, so they would otherwise persist invisibly.
+* Compat   - Aligned with WB Ad Manager Pro 3.1.0. Install both updates together; the Pro Ad Folders screen builds on this release's tags and menu.
 
 = 3.0.0 - July 2026 =
 

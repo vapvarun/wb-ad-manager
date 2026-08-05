@@ -342,6 +342,92 @@ class Plugin {
 		);
 
 		register_post_type( 'wbam-ad', $args );
+
+		$this->register_ad_tag_taxonomy();
+	}
+
+	/**
+	 * Register the ad tag taxonomy.
+	 *
+	 * Ads were the only thing here with no grouping. Placements are grouped in
+	 * the picker, campaigns group ads for billing, packages group placements for
+	 * sale - but the ads themselves had nothing, so at any real inventory size a
+	 * site owner could not find one sponsor's ads, stop them all when a contract
+	 * lapsed, or hand them to someone else to manage.
+	 *
+	 * Called from register_post_type() rather than its own `init` listener: a
+	 * taxonomy attached to a post type that has not registered yet silently does
+	 * nothing, and two listeners on one hook is a reordering waiting to happen.
+	 *
+	 * Flat, not hierarchical. Real inventories group flat - "Sponsor A",
+	 * "Season 2026", "Leaderboards" - and nesting only earns its keep when
+	 * someone wants everything under a parent as one action. Flat can be made
+	 * hierarchical later by flipping one argument, with terms intact; the
+	 * reverse is not true once site owners have built trees.
+	 *
+	 * @since 3.1.0
+	 * @return void
+	 */
+	private function register_ad_tag_taxonomy() {
+		$labels = array(
+			'name'                       => _x( 'Ad Tags', 'Taxonomy General Name', 'wb-ads-rotator-with-split-test' ),
+			'singular_name'              => _x( 'Ad Tag', 'Taxonomy Singular Name', 'wb-ads-rotator-with-split-test' ),
+			'menu_name'                  => __( 'Ad Tags', 'wb-ads-rotator-with-split-test' ),
+			'all_items'                  => __( 'All Ad Tags', 'wb-ads-rotator-with-split-test' ),
+			'new_item_name'              => __( 'New Ad Tag', 'wb-ads-rotator-with-split-test' ),
+			'add_new_item'               => __( 'Add New Ad Tag', 'wb-ads-rotator-with-split-test' ),
+			'edit_item'                  => __( 'Edit Ad Tag', 'wb-ads-rotator-with-split-test' ),
+			'update_item'                => __( 'Update Ad Tag', 'wb-ads-rotator-with-split-test' ),
+			'view_item'                  => __( 'View Ad Tag', 'wb-ads-rotator-with-split-test' ),
+			'separate_items_with_commas' => __( 'Separate tags with commas', 'wb-ads-rotator-with-split-test' ),
+			'add_or_remove_items'        => __( 'Add or remove tags', 'wb-ads-rotator-with-split-test' ),
+			'choose_from_most_used'      => __( 'Most used tags', 'wb-ads-rotator-with-split-test' ),
+			'popular_items'              => __( 'Popular tags', 'wb-ads-rotator-with-split-test' ),
+			'search_items'               => __( 'Search Ad Tags', 'wb-ads-rotator-with-split-test' ),
+			'not_found'                  => __( 'No ad tags found', 'wb-ads-rotator-with-split-test' ),
+			'no_terms'                   => __( 'No ad tags', 'wb-ads-rotator-with-split-test' ),
+			'items_list'                 => __( 'Ad tags list', 'wb-ads-rotator-with-split-test' ),
+			'items_list_navigation'      => __( 'Ad tags list navigation', 'wb-ads-rotator-with-split-test' ),
+		);
+
+		$args = array(
+			'labels'             => $labels,
+			'hierarchical'       => false,
+			// No archive: an ad has no front-end URL of its own, so a tag
+			// archive would route to a page that cannot render anything.
+			'public'             => false,
+			'publicly_queryable' => false,
+			'show_ui'            => true,
+			'show_admin_column'  => true,
+			'show_in_nav_menus'  => false,
+			'show_tagcloud'      => false,
+			// Off /wp/v2 for the same reason the CPT is: ads are served through
+			// /wbam/v1, which filters by enabled state and placement, and the
+			// core route has none of that filtering. See tests/free/test-cpt.php.
+			'show_in_rest'       => false,
+			'rewrite'            => false,
+			'capabilities'       => array(
+				// Inventing the filing system is an owner decision.
+				'manage_terms' => 'manage_options',
+				'edit_terms'   => 'manage_options',
+				'delete_terms' => 'manage_options',
+				// Filing an ad you can already edit is not.
+				'assign_terms' => 'edit_posts',
+			),
+		);
+
+		/**
+		 * Filter the ad tag taxonomy arguments.
+		 *
+		 * Lets a site relabel the taxonomy, widen its capabilities, or turn on
+		 * hierarchy without forking the plugin.
+		 *
+		 * @since 3.1.0
+		 * @param array $args Arguments passed to register_taxonomy().
+		 */
+		$args = apply_filters( 'wbam_ad_tag_taxonomy_args', $args );
+
+		register_taxonomy( 'wbam_ad_tag', array( 'wbam-ad' ), $args );
 	}
 
 	/**

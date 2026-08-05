@@ -104,6 +104,8 @@ if [ -n "$PRO_VERSION" ]; then
 	rsync -a \
 		--exclude=.git --exclude=.github --exclude=node_modules \
 		--exclude=tests --exclude=dist --exclude=docs --exclude=marketing \
+		--exclude=/bin --exclude=/plan --exclude=/audit \
+		--exclude=.contract-audit-baseline.json --exclude=.phpcs-cache \
 		--exclude=.distignore --exclude=.editorconfig --exclude=.gitattributes \
 		--exclude=.gitignore --exclude=.phpunit.result.cache \
 		--exclude=composer.json --exclude=composer.lock \

@@ -41,6 +41,26 @@ foreach ( $wbam_ad_posts as $wbam_post_id ) {
 	wp_delete_post( $wbam_post_id, true );
 }
 
+/*
+ * Remove ad tag terms.
+ *
+ * WordPress does not clean up terms when a taxonomy stops being registered - it
+ * only stops showing them. Deleting the ads above removes the relationships but
+ * leaves every term behind in wp_terms and wp_term_taxonomy, invisible and
+ * permanent. The taxonomy is not registered at uninstall time either, so
+ * get_terms() cannot be used; ask the term table for the taxonomy by name.
+ */
+$wbam_tag_term_ids = $wpdb->get_col(
+	$wpdb->prepare(
+		"SELECT term_id FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s",
+		'wbam_ad_tag'
+	)
+); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- uninstall cleanup; taxonomy is not registered here so the term APIs are unavailable.
+
+foreach ( $wbam_tag_term_ids as $wbam_term_id ) {
+	wp_delete_term( (int) $wbam_term_id, 'wbam_ad_tag' );
+}
+
 // Drop custom database tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}wbam_links" );
