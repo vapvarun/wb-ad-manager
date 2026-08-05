@@ -60,6 +60,33 @@ class Image_Ad implements Ad_Type_Interface {
 	 * @param array $options Options.
 	 * @return string
 	 */
+	/**
+	 * Cheap creative-health probe: does this ad have a renderable image?
+	 *
+	 * No rendering, no HTTP - just the required field plus, when the ad
+	 * tracks a media-library attachment, that the attachment still exists.
+	 * Deleting an image from the media library while an ad points at it is
+	 * the realistic way an enabled, published, healthy-looking ad silently
+	 * blanks its slot.
+	 *
+	 * @param int $ad_id Ad ID.
+	 * @return bool
+	 */
+	public function has_creative( $ad_id ) {
+		$data      = get_post_meta( $ad_id, '_wbam_ad_data', true );
+		$image_url = isset( $data['image_url'] ) ? $data['image_url'] : '';
+		if ( empty( $image_url ) ) {
+			return false;
+		}
+
+		$attachment_id = (int) get_post_meta( $ad_id, '_wbam_ad_image_id', true );
+		if ( $attachment_id && ! wp_get_attachment_url( $attachment_id ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public function render( $ad_id, $options = array() ) {
 		$data      = get_post_meta( $ad_id, '_wbam_ad_data', true );
 		$image_url = isset( $data['image_url'] ) ? $data['image_url'] : '';

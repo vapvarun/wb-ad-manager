@@ -2519,6 +2519,18 @@ class Admin {
 				$class   = '1' === $enabled ? 'wbam-enabled' : 'wbam-disabled';
 				$text    = '1' === $enabled ? __( 'Enabled', 'wb-ads-rotator-with-split-test' ) : __( 'Disabled', 'wb-ads-rotator-with-split-test' );
 				echo '<span class="wbam-status-badge ' . esc_attr( $class ) . '">' . esc_html( $text ) . '</span>';
+
+				// Creative-health marker: an enabled ad whose creative cannot
+				// render (image deleted from the media library) is skipped by
+				// delivery - without this badge the list said "Enabled" while
+				// the slot served nothing and revenue stopped silently.
+				if ( '1' === $enabled ) {
+					$ad_data      = get_post_meta( $post_id, '_wbam_ad_data', true );
+					$type_handler = Placement_Engine::get_instance()->get_ad_type( isset( $ad_data['type'] ) ? $ad_data['type'] : '' );
+					if ( $type_handler && method_exists( $type_handler, 'has_creative' ) && ! $type_handler->has_creative( $post_id ) ) {
+						echo ' <span class="wbam-status-badge wbam-disabled" title="' . esc_attr__( 'This ad is skipped by delivery until its creative is restored.', 'wb-ads-rotator-with-split-test' ) . '">' . esc_html__( 'Creative missing', 'wb-ads-rotator-with-split-test' ) . '</span>';
+					}
+				}
 				break;
 		}
 	}

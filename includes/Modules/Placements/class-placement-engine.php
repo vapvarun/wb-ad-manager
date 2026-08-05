@@ -612,6 +612,19 @@ class Placement_Engine {
 			return false;
 		}
 
+		// Creative-health probe: an enabled ad whose creative cannot render
+		// (image deleted from the media library, required field empty) must
+		// lose the slot to a healthy competitor, not blank it. Kept cheap by
+		// design - types opt in via has_creative(), which checks required
+		// fields without rendering; types without the method are assumed
+		// healthy, exactly as before.
+		$data    = get_post_meta( $ad_id, '_wbam_ad_data', true );
+		$type_id = isset( $data['type'] ) ? $data['type'] : '';
+		$handler = $this->get_ad_type( $type_id );
+		if ( $handler && method_exists( $handler, 'has_creative' ) && ! $handler->has_creative( $ad_id ) ) {
+			return false;
+		}
+
 		return true;
 	}
 }
