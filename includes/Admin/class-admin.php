@@ -297,6 +297,9 @@ class Admin {
 				'hierarchical'    => false,
 				'show_count'      => true,
 				'orderby'         => 'name',
+				// Core's Walker_CategoryDropdown hardcodes two &nbsp;
+				// before the count; this walker renders a single space.
+				'walker'          => new Single_Space_Count_Dropdown_Walker(),
 			)
 		);
 	}

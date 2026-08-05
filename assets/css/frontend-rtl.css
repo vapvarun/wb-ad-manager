@@ -303,6 +303,14 @@
 	margin: var(--wbam-spacing) 0;
 }
 
+/* Stacked creatives in a multi-ad shortcode need separation - flush
+   ads read as one broken image rather than several ads. General-sibling
+   combinator because a 1x1 tracking pixel sits between the slot
+   wrappers, which defeats the adjacent-sibling selector. */
+.wbam-placement-shortcode .wbam-ad-slot ~ .wbam-ad-slot {
+	margin-top: var(--wbam-spacing, 16px);
+}
+
 /* ==========================================================================
    BuddyPress Activity
    ========================================================================== */
