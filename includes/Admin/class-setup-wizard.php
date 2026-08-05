@@ -514,10 +514,10 @@ class Setup_Wizard {
 			),
 			'content_promo'  => array(
 				'title'      => __( 'Sample In-Content Promo', 'wb-ads-rotator-with-split-test' ),
-				'type'       => 'rich_content',
+				'type'       => 'rich-content',
 				'placements' => array( 'after_paragraph' ),
 				'data'       => array(
-					'type'            => 'rich_content',
+					'type'            => 'rich-content',
 					'content'         => '<div style="background: #f8f9fa; border-left: 4px solid #28a745; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
 	<strong style="color: #28a745;">💡 ' . esc_html__( 'Pro Tip:', 'wb-ads-rotator-with-split-test' ) . '</strong>
 	<p style="margin: 10px 0 0;">' . esc_html__( 'This is a sample in-content promotion. It appears after paragraph 2 in your posts. Great for newsletter signups, related content, or special offers!', 'wb-ads-rotator-with-split-test' ) . '</p>

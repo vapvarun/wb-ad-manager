@@ -211,7 +211,7 @@ class Abilities {
 			'wbam/create-ad',
 			array(
 				'label'               => __( 'Create Ad', 'wb-ads-rotator-with-split-test' ),
-				'description'         => __( 'Create a new ad with specified type (image, code, rich_content, email_capture, adsense), content, and placement assignments.', 'wb-ads-rotator-with-split-test' ),
+				'description'         => __( 'Create a new ad with specified type (image, code, rich-content, email_capture, adsense), content, and placement assignments.', 'wb-ads-rotator-with-split-test' ),
 				'category'            => 'wbam-ads',
 				'input_schema'        => array(
 					'type'       => 'object',
@@ -223,7 +223,7 @@ class Abilities {
 						),
 						'type'       => array(
 							'type'        => 'string',
-							'enum'        => array( 'image', 'code', 'rich_content', 'email_capture', 'adsense' ),
+							'enum'        => array( 'image', 'code', 'rich-content', 'rich_content', 'email_capture', 'adsense' ),
 							'description' => __( 'Ad format type.', 'wb-ads-rotator-with-split-test' ),
 						),
 						'content'    => array(

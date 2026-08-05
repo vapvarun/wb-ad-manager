@@ -141,6 +141,18 @@ class Placement_Engine {
 	 * @return Ad_Type_Interface|null
 	 */
 	public function get_ad_type( $id ) {
+		// Normalize legacy stored spellings to the canonical registered id.
+		// The Rich Content handler registers as 'rich-content' but the setup
+		// wizard, admin preview, and abilities API all wrote 'rich_content'
+		// for years - so every such ad silently rendered as an empty string
+		// (the whole creative type was dead, including the sample ad every
+		// fresh install ships). PRO's installer migrates stored values, but
+		// FREE-only sites never run it, so the lookup itself has to accept
+		// the legacy forms. Same alias set as PRO's migration.
+		if ( ! isset( $this->ad_types[ $id ] ) && in_array( $id, array( 'rich_content', 'rich', 'content' ), true ) ) {
+			$id = 'rich-content';
+		}
+
 		return isset( $this->ad_types[ $id ] ) ? $this->ad_types[ $id ] : null;
 	}
 

@@ -1572,7 +1572,8 @@ class Admin {
 			case 'image':
 				$this->render_preview_image( $ad_data );
 				break;
-			case 'rich_content':
+			case 'rich-content':
+			case 'rich_content': // Legacy stored spelling.
 				$this->render_preview_rich_content( $ad_data );
 				break;
 			case 'code':
