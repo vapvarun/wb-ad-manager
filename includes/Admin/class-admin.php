@@ -565,6 +565,8 @@ class Admin {
 				// reads as a configuration screen rather than an inventory one.
 				'edit-tags.php?taxonomy=wbam_ad_tag&amp;post_type=wbam-ad' => 'ads',
 				'edit-tags.php?taxonomy=wbam_ad_tag&post_type=wbam-ad' => 'ads',
+				// Pro's folder browser organises ads too, so it sits with them.
+				'wbam-folders'                   => 'ads',
 				// Delivery.
 				'wbam-inventory'                 => 'delivery',
 				'wbam-ab-testing'                => 'delivery',
