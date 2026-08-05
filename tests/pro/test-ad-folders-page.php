@@ -186,6 +186,32 @@ class Test_Ad_Folders_Page extends Pro_Test_Case {
 	}
 
 	/**
+	 * With the Campaigns module off the screen degrades to advertiser/tag
+	 * browsing: a campaign selection in the URL must collapse to no filter
+	 * instead of silently filtering by a folder the UI no longer shows.
+	 */
+	public function test_campaign_selection_collapses_when_module_off() {
+		$enabled = \WBAM_Pro\Core\Settings_Helper::get( 'enabled_modules', array() );
+
+		$_GET['adv']  = '77';
+		$_GET['camp'] = '501';
+
+		try {
+			\WBAM_Pro\Core\Settings_Helper::update( 'enabled_modules', array_merge( $enabled, array( 'campaigns' => true ) ) );
+			$selection = $this->call_private( 'get_selection' );
+			$this->assertSame( 501, $selection['camp'], 'Campaign folder honoured while module is on.' );
+
+			\WBAM_Pro\Core\Settings_Helper::update( 'enabled_modules', array_merge( $enabled, array( 'campaigns' => false ) ) );
+			$selection = $this->call_private( 'get_selection' );
+			$this->assertSame( 0, $selection['camp'], 'Campaign folder collapses while module is off.' );
+			$this->assertSame( 77, $selection['adv'], 'Advertiser folder survives the collapse.' );
+		} finally {
+			\WBAM_Pro\Core\Settings_Helper::update( 'enabled_modules', $enabled );
+			unset( $_GET['adv'], $_GET['camp'] );
+		}
+	}
+
+	/**
 	 * Bulk folder actions must refuse to run without a folder scope — the
 	 * guard that keeps "disable all" from ever meaning "all ads sitewide".
 	 */
