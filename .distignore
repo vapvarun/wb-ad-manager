@@ -7,6 +7,7 @@
 # (they must never ship at any depth).
 .git
 node_modules
+.superpowers
 /.github
 /.wordpress-org
 /tests
@@ -62,6 +63,7 @@ CLAUDE.md
 
 # Internal tooling artifacts (never ship)
 .contract-audit-baseline.json
+AUDIT-VERDICT.md
 
 # IDE/Editor files
 .idea
