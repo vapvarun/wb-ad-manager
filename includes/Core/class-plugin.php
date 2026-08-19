@@ -438,8 +438,10 @@ class Plugin {
 			delete_transient( '_wbam_activation_redirect' );
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No form data processed, just checking activation type.
 			if ( ! isset( $_GET['activate-multi'] ) ) {
-				// Redirect to setup wizard if not completed.
-				if ( ! get_option( 'wbam_setup_complete' ) && ! get_option( 'wbam_setup_dismissed' ) ) {
+				// Redirect to setup wizard if not completed. Uses the shared
+				// helper so a site that finished PRO's wizard is not bounced
+				// back into the free one.
+				if ( ! \WBAM\Admin\Setup_Wizard::is_setup_complete() ) {
 					wp_safe_redirect( admin_url( 'index.php?page=wbam-setup' ) );
 				} else {
 					wp_safe_redirect( admin_url( 'edit.php?post_type=wbam-ad' ) );

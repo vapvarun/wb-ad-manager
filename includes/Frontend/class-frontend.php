@@ -147,12 +147,20 @@ class Frontend {
 
 		if ( $ad_id > 0 ) {
 			// Record click in analytics table.
-			$result = $this->record_analytics( $ad_id, 'click', $placement );
+			//
+			// Skipped when PRO is active: PRO's Analytics_Tracker writes its own
+			// row in response to the `wbam_ad_clicked` action fired below, so
+			// recording here too counts every click twice and inflates CTR 2x.
+			// This mirrors the guard maybe_track_impression() already applies,
+			// which is why impressions were unaffected while clicks doubled.
+			if ( ! defined( 'WBAM_PRO_VERSION' ) ) {
+				$result = $this->record_analytics( $ad_id, 'click', $placement );
 
-			// Log if analytics recording failed (table missing or insert error).
-			if ( false === $result && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-				error_log( sprintf( '[WBAM] Click tracking failed for ad %d on placement %s', $ad_id, $placement ) );
+				// Log if analytics recording failed (table missing or insert error).
+				if ( false === $result && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+					error_log( sprintf( '[WBAM] Click tracking failed for ad %d on placement %s', $ad_id, $placement ) );
+				}
 			}
 
 			/**
