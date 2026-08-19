@@ -218,7 +218,7 @@ class Frontend {
 
 		// GDPR: Store empty string for IP address - use visitor_hash for unique visitor detection.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		return $wpdb->insert(
+		$inserted = $wpdb->insert(
 			$table_name,
 			array(
 				'ad_id'        => $ad_id,
@@ -233,6 +233,13 @@ class Frontend {
 			),
 			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
+
+		// The ads list table caches its totals for an hour; drop them so the
+		// column reflects this event instead of sitting stale behind a
+		// persistent object cache.
+		\WBAM\Admin\Admin::flush_event_totals( $ad_id );
+
+		return $inserted;
 	}
 
 	/**
