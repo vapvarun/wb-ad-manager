@@ -552,7 +552,7 @@ class Settings {
 	 * Resolve both placement gates from a settings POST.
 	 *
 	 * The stored value has three states (all / none / explicit list) and a
-	 * checkbox column has one (the ticks that happened to be on). The two
+	 * checkbox column has one (the ticks that happened to be on). The
 	 * transport-only hidden fields the matrix emits close that gap. See
 	 * Settings_Helper::GATE_NONE for the canonical encoding; this method is
 	 * the only writer of it.
@@ -575,6 +575,12 @@ class Settings {
 	 * Known limitation: once the gate is an explicit list (row 4), a slot
 	 * registered afterwards IS closed until an admin ticks it. That is
 	 * inherent to an allowlist, and it is the state an admin opted into.
+	 *
+	 * The Advertisers column carries its own flag on the same pattern,
+	 * `placement_gates_adv_submitted`, because free hides that column
+	 * outright: a screen that never drew the question must land on row 1 for
+	 * the advertiser gate while the Site gate still resolves normally from
+	 * rows 2-4. One flag for the whole matrix cannot express that.
 	 *
 	 * @since 2.11.0
 	 * @param array<string,mixed> $input Raw settings POST.
@@ -639,6 +645,19 @@ class Settings {
 		// again on read, because a crafted POST is not the only way a bad
 		// pair could reach the option.
 		$sellable = empty( $site ) ? $offered : array_values( array_intersect( $offered, $site ) );
+
+		// Free hides the Advertisers column entirely - selling slots needs the
+		// Pro portal. The column therefore has to say it was on screen, because
+		// "no sell boxes ticked" and "no sell boxes drawn" arrive as the same
+		// empty POST. Without this an admin who saves Placements while Pro is
+		// deactivated would see resolve_gate() read zero-of-N ticked as a
+		// deliberate "none" and store GATE_NONE, so nothing would be sellable
+		// when Pro came back. An empty offered set makes resolve_gate() return
+		// the stored gate untouched, which is what a screen that never asked
+		// the question should do.
+		if ( empty( $input['placement_gates_adv_submitted'] ) ) {
+			$sellable = array();
+		}
 
 		$advertiser = self::resolve_gate(
 			self::sanitize_placement_ids( $input['advertiser_placements'] ?? array() ),
