@@ -1,13 +1,32 @@
 #!/usr/bin/env bash
 #
-# Build two distribution zips:
+# Build three distribution zips:
 #   1. wb-ads-rotator-with-split-test-<version>.zip   (free only)
-#   2. wb-ad-manager-combo-<free>+<pro>.zip           (both plugin folders)
+#   2. wb-ad-manager-pro-<version>.zip                (pro only)
+#   3. wb-ad-manager-combo-<free>+<pro>.zip           (both plugin folders)
 #
-# Both respect the free plugin's .distignore. The pro folder reuses the
-# same exclusion list so tests/phpstan/bin never leak into a release.
+# All respect the free plugin's .distignore. The pro folder adds its own
+# exclusions on top, defined once in PRO_EXCLUDES and shared by the
+# standalone and combo builds.
+#
+# Packaging is gated on a green browser smoke report — see docs/qa/.
 
 set -euo pipefail
+
+# --- flags ---------------------------------------------------------
+SKIP_BROWSER_SMOKE=0
+for arg in "$@"; do
+	case "$arg" in
+		--skip-browser-smoke) SKIP_BROWSER_SMOKE=1 ;;
+		-h|--help)
+			echo "Usage: $0 [--skip-browser-smoke]"
+			echo "  --skip-browser-smoke  Package without a green smoke report."
+			echo "                        Internal builds only, never a customer release."
+			exit 0
+			;;
+		*) echo "Unknown option: $arg" >&2; exit 2 ;;
+	esac
+done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FREE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -31,8 +50,40 @@ fi
 echo "Free version: $FREE_VERSION"
 echo "Pro version:  ${PRO_VERSION:-<not found>}"
 
+# ------------------------------------------------------------------
+# Browser-smoke gate — refuses to package without a fresh green report.
+# No release ships unless a run of docs/qa/AGENT_SMOKE_RUNBOOK.md reported
+# zero failures and zero debug.log entries. Version-matched so yesterday's
+# green report cannot wave through today's code.
+# ------------------------------------------------------------------
+SMOKE_REPORT="$FREE_DIR/docs/qa/.last-smoke-pass.json"
+if [ "$SKIP_BROWSER_SMOKE" -eq 1 ]; then
+	echo "WARN: browser smoke gate skipped (--skip-browser-smoke). Not for customer releases."
+elif [ ! -f "$SMOKE_REPORT" ]; then
+	echo "FAIL: no browser smoke report at $SMOKE_REPORT" >&2
+	echo "      Run /wp-plugin-smoke combo to generate it." >&2
+	echo "      Emergency only: rerun with --skip-browser-smoke." >&2
+	exit 30
+else
+	REPORT_VERSION="$(grep -oE '"release_version"[[:space:]]*:[[:space:]]*"[^"]+"' "$SMOKE_REPORT" | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' || true)"
+	if [ "$REPORT_VERSION" != "$FREE_VERSION" ]; then
+		echo "FAIL: smoke report version ($REPORT_VERSION) does not match release version ($FREE_VERSION)" >&2
+		echo "      Re-run /wp-plugin-smoke combo against HEAD before packaging." >&2
+		exit 30
+	fi
+	if grep -qE '"failures"[[:space:]]*:[[:space:]]*\[[[:space:]]*\{' "$SMOKE_REPORT"; then
+		echo "FAIL: smoke report has failures. Fix them before packaging." >&2
+		exit 30
+	fi
+	if grep -qE '"debug_log_issues"[[:space:]]*:[[:space:]]*\[[[:space:]]*\{' "$SMOKE_REPORT"; then
+		echo "FAIL: smoke report recorded debug.log entries during the walk. Fix before packaging." >&2
+		exit 30
+	fi
+	echo "    smoke report OK ($REPORT_VERSION)"
+fi
+
 rm -rf "$BUILD_DIR"
-mkdir -p "$BUILD_DIR/free" "$BUILD_DIR/combo" "$DIST_DIR"
+mkdir -p "$BUILD_DIR/free" "$BUILD_DIR/pro" "$BUILD_DIR/combo" "$DIST_DIR"
 
 # rsync exclude list driven by .distignore.
 build_exclude_args() {
@@ -55,13 +106,26 @@ verify_runtime_assets() {
 	local target="$1"
 	local missing=0
 	local ref
+	# Two exclusions, both learned the hard way when this guard was first
+	# pointed at the Pro payload:
+	#
+	#   vendor/  — bundled dependencies resolve assets against their OWN
+	#              base path, not the plugin root. The Credits SDK's
+	#              assets/js/checkout.js lives at vendor/wbcom-credits-sdk/
+	#              and is perfectly present; looking for it at the root
+	#              reports a phantom.
+	#   comments — a docblock describing an enqueue that was REMOVED is not
+	#              a runtime reference. Skip lines that are comment lines.
 	while IFS= read -r ref; do
 		if [ ! -f "$target/$ref" ]; then
 			echo "ERROR: PHP references '$ref' but it is missing from the build payload." >&2
 			missing=1
 		fi
-	done < <(grep -rhoE "assets/(css|js|vendor|images)/[A-Za-z0-9@_./-]+\.(css|js|png|svg|gif|woff2?)" \
-		--include='*.php' "$target" | sort -u)
+	done < <(grep -rhE "assets/(css|js|vendor|images)/[A-Za-z0-9@_./-]+\.(css|js|png|svg|gif|woff2?)" \
+		--include='*.php' --exclude-dir=vendor "$target" \
+		| grep -vE "^[[:space:]]*(\*|//|#)" \
+		| grep -oE "assets/(css|js|vendor|images)/[A-Za-z0-9@_./-]+\.(css|js|png|svg|gif|woff2?)" \
+		| sort -u)
 	if [ "$missing" -ne 0 ]; then
 		echo "Build aborted: runtime assets stripped from the zip (check .distignore anchoring)." >&2
 		exit 1
@@ -90,7 +154,68 @@ rm -f "$FREE_ZIP"
 ( cd "$BUILD_DIR/free" && zip -rq "$FREE_ZIP" "wb-ads-rotator-with-split-test" )
 
 # ------------------------------------------------------------------
-# 2. Combo zip (only if pro is present)
+# Pro rsync rules — defined once, used by both the standalone Pro zip
+# and the combo. This previously lived inline in the combo branch only,
+# so any future standalone build would have drifted from it.
+#
+# vendor/ needs surgery rather than a blanket rule. The bundled Credits
+# SDK lives there and MUST ship — Pro fatals without it. Everything else
+# under vendor/ is composer dev tooling: phpstan alone is 47MB. Shipping
+# it took the combo from 2.9MB to 18MB of static analysers.
+#
+# This is not hypothetical: the release gate now runs `composer install`
+# itself so PHPStan can gate, which means the very next build after that
+# change would have shipped the whole dev toolchain to customers. Include
+# rules must precede the exclude — rsync applies rules in order.
+# ------------------------------------------------------------------
+PRO_EXCLUDES=(
+	--include=/vendor/
+	--include=/vendor/wbcom-credits-sdk/***
+	--exclude=/vendor/*
+	--exclude=.git --exclude=.github --exclude=node_modules
+	--exclude=tests --exclude=dist --exclude=docs --exclude=marketing
+	--exclude=/bin --exclude=/plan --exclude=/audit
+	--exclude=.contract-audit-baseline.json --exclude=.phpcs-cache
+	--exclude=.distignore --exclude=.editorconfig --exclude=.gitattributes
+	--exclude=.gitignore --exclude=.phpunit.result.cache
+	--exclude=composer.json --exclude=composer.lock
+	--exclude=package.json --exclude=package-lock.json --exclude=Gruntfile.js
+	--exclude=phpunit.xml --exclude=phpunit.xml.dist
+	--exclude=phpcs.xml --exclude=phpcs.xml.dist
+	--exclude=phpstan.neon --exclude=phpstan-baseline.neon --exclude=phpstan-bootstrap.php
+	--exclude='*.md' --exclude=CLAUDE.md --exclude=sales-page.html
+)
+
+# ------------------------------------------------------------------
+# 2. Pro standalone zip (only if pro is present)
+#
+# Pro-only customers and the wbcom-services dist need an artifact that
+# is not the combo. 3.1.0 shipped without one.
+# ------------------------------------------------------------------
+if [ -n "$PRO_VERSION" ]; then
+	PRO_TARGET="$BUILD_DIR/pro/wb-ad-manager-pro"
+	mkdir -p "$PRO_TARGET"
+
+	rsync -a "${PRO_EXCLUDES[@]}" "$PRO_DIR/" "$PRO_TARGET/"
+
+	verify_runtime_assets "$PRO_TARGET"
+
+	# The bundled Credits SDK is a runtime dependency, not a dev one.
+	# Pro fatals on activation without it, and .distignore-style vendor
+	# exclusions have stripped it before.
+	if [ ! -f "$PRO_TARGET/vendor/wbcom-credits-sdk/wbcom-credits-sdk.php" ]; then
+		echo "ERROR: bundled Credits SDK missing from the Pro payload." >&2
+		echo "       Pro cannot boot without vendor/wbcom-credits-sdk/." >&2
+		exit 1
+	fi
+
+	PRO_ZIP="$DIST_DIR/wb-ad-manager-pro-${PRO_VERSION}.zip"
+	rm -f "$PRO_ZIP"
+	( cd "$BUILD_DIR/pro" && zip -rq "$PRO_ZIP" "wb-ad-manager-pro" )
+fi
+
+# ------------------------------------------------------------------
+# 3. Combo zip (only if pro is present)
 # ------------------------------------------------------------------
 if [ -n "$PRO_VERSION" ]; then
 	COMBO_FREE_TARGET="$BUILD_DIR/combo/wb-ads-rotator-with-split-test"
@@ -98,23 +223,7 @@ if [ -n "$PRO_VERSION" ]; then
 	mkdir -p "$COMBO_FREE_TARGET" "$COMBO_PRO_TARGET"
 
 	rsync -a "${FREE_EXCLUDES[@]}" "$FREE_DIR/" "$COMBO_FREE_TARGET/"
-
-	# Pro exclude list. Use the free .distignore as a baseline — fine
-	# because the pro plugin does not ship tests/ or phpstan/ itself yet.
-	rsync -a \
-		--exclude=.git --exclude=.github --exclude=node_modules \
-		--exclude=tests --exclude=dist --exclude=docs --exclude=marketing \
-		--exclude=/bin --exclude=/plan --exclude=/audit \
-		--exclude=.contract-audit-baseline.json --exclude=.phpcs-cache \
-		--exclude=.distignore --exclude=.editorconfig --exclude=.gitattributes \
-		--exclude=.gitignore --exclude=.phpunit.result.cache \
-		--exclude=composer.json --exclude=composer.lock \
-		--exclude=package.json --exclude=package-lock.json --exclude=Gruntfile.js \
-		--exclude=phpunit.xml --exclude=phpunit.xml.dist \
-		--exclude=phpcs.xml --exclude=phpcs.xml.dist \
-		--exclude=phpstan.neon --exclude=phpstan-baseline.neon --exclude=phpstan-bootstrap.php \
-		--exclude='*.md' --exclude=CLAUDE.md --exclude=sales-page.html \
-		"$PRO_DIR/" "$COMBO_PRO_TARGET/"
+	rsync -a "${PRO_EXCLUDES[@]}" "$PRO_DIR/" "$COMBO_PRO_TARGET/"
 
 	COMBO_ZIP="$DIST_DIR/wb-ad-manager-combo-${FREE_VERSION}+${PRO_VERSION}.zip"
 	rm -f "$COMBO_ZIP"
