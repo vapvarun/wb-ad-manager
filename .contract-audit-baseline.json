@@ -1,41 +1,46 @@
 {
- "generated": "2026-06-25T00:00:00+00:00",
- "note": "Free-scope (no --pair) contract-audit baseline. Each entry individually verified during the 2.9.0 release triage. Pro-scope findings (reads/writes living inside wb-ad-manager-pro) are tracked in the Pro repo's own baseline, not here.",
- "suppressions": [
-  {
-   "id": "hook-consumed-never-fired:wbam_settings_tabs",
-   "severity": "error",
-   "reason": "FOLLOW-UP (dead hook, pre-existing since <=2.8.1). Links module add_filter('wbam_settings_tabs') is never fired by any apply_filters() in Free or Pro. The legacy filter-based settings page was superseded by the REST settings API; the Links tab definition is orphaned. Link cloaking still works because values are read via Settings_Helper::get() with safe defaults. Decide remove-vs-rewire in a dedicated Links-settings task; not a 2.9.0 regression."
-  },
-  {
-   "id": "hook-consumed-never-fired:wbam_settings_fields",
-   "severity": "error",
-   "reason": "FOLLOW-UP (dead hook, pre-existing since <=2.8.1). Pairs with wbam_settings_tabs above. add_settings_fields() defines link_cloak_prefix / link_default_nofollow / link_default_sponsored / link_default_new_tab against a filter that nothing fires. Field VALUES are consumed via Settings_Helper::get(..., default) so the feature runs on defaults; only the admin UI to change them is missing. Tracked for the Links-settings migration task."
-  },
-  {
-   "id": "option-read-never-written:wbam_currency",
-   "severity": "error",
-   "reason": "Reads get_option('wbam_currency','USD') as a safe default in Links\\class-partnership.php. No global currency setting is wired (per-link payments use the separate 'payment_currency' key). Returns 'USD' until/unless a global setting is added. Minor, pre-existing, no crash."
-  },
-  {
-   "id": "option-read-never-written:wbam_format_matching_enabled",
-   "severity": "error",
-   "reason": "Intentional, documented opt-in feature flag (class-placement-engine.php). Read with default false and additionally filterable via 'wbam_enforce_format_matching'; sites opt in via update_option or the filter after reviewing backfilled ad formats. By-design read-with-default, not a missing write."
-  },
-  {
-   "id": "user_meta-read-never-written:wbam_dismiss_bp_notice",
-   "severity": "error",
-   "reason": "FALSE POSITIVE. Written via a dynamically-built key in Core\\class-plugin.php::ajax_dismiss_notice(): update_user_meta( $uid, 'wbam_dismiss_' . $type . '_notice', 1 ) where $type is whitelisted to {bp, jetonomy}. Static audit cannot match the literal read to the concatenated write. Dismissal persists correctly."
-  },
-  {
-   "id": "user_meta-read-never-written:wbam_dismiss_jetonomy_notice",
-   "severity": "error",
-   "reason": "FALSE POSITIVE. Same dynamic-key write as wbam_dismiss_bp_notice ('wbam_dismiss_' . $type . '_notice', $type='jetonomy') in ajax_dismiss_notice(). Dismissal persists correctly."
-  },
-  {
-   "id": "post_meta-read-never-written:_wbam_ad_image_id",
-   "severity": "error",
-   "reason": "FALSE POSITIVE (cross-boundary + historic key). Written by Pro's ad-submission image flow; also a documented historic key variant (_wbam_image_id vs _wbam_ad_image_id, see Pro functions.php wbam_pro_first_post_meta usage). Free's Image_Ad::has_creative() reads it DEFENSIVELY: the creative-health guard only tightens when the meta exists and the attachment fails to resolve; absent meta falls back to the image_url check. Verified during the 3.1.0 release triage."
-  }
- ]
+  "generated": "2026-06-25T00:00:00+00:00",
+  "note": "Free-scope (no --pair) contract-audit baseline. Each entry individually verified during the 2.9.0 release triage. Pro-scope findings (reads/writes living inside wb-ad-manager-pro) are tracked in the Pro repo's own baseline, not here.",
+  "suppressions": [
+    {
+      "id": "hook-consumed-never-fired:wbam_settings_tabs",
+      "severity": "error",
+      "reason": "FOLLOW-UP (dead hook, pre-existing since <=2.8.1). Links module add_filter('wbam_settings_tabs') is never fired by any apply_filters() in Free or Pro. The legacy filter-based settings page was superseded by the REST settings API; the Links tab definition is orphaned. Link cloaking still works because values are read via Settings_Helper::get() with safe defaults. Decide remove-vs-rewire in a dedicated Links-settings task; not a 2.9.0 regression."
+    },
+    {
+      "id": "hook-consumed-never-fired:wbam_settings_fields",
+      "severity": "error",
+      "reason": "FOLLOW-UP (dead hook, pre-existing since <=2.8.1). Pairs with wbam_settings_tabs above. add_settings_fields() defines link_cloak_prefix / link_default_nofollow / link_default_sponsored / link_default_new_tab against a filter that nothing fires. Field VALUES are consumed via Settings_Helper::get(..., default) so the feature runs on defaults; only the admin UI to change them is missing. Tracked for the Links-settings migration task."
+    },
+    {
+      "id": "option-read-never-written:wbam_currency",
+      "severity": "error",
+      "reason": "Reads get_option('wbam_currency','USD') as a safe default in Links\\class-partnership.php. No global currency setting is wired (per-link payments use the separate 'payment_currency' key). Returns 'USD' until/unless a global setting is added. Minor, pre-existing, no crash."
+    },
+    {
+      "id": "option-read-never-written:wbam_format_matching_enabled",
+      "severity": "error",
+      "reason": "Intentional, documented opt-in feature flag (class-placement-engine.php). Read with default false and additionally filterable via 'wbam_enforce_format_matching'; sites opt in via update_option or the filter after reviewing backfilled ad formats. By-design read-with-default, not a missing write."
+    },
+    {
+      "id": "user_meta-read-never-written:wbam_dismiss_bp_notice",
+      "severity": "error",
+      "reason": "FALSE POSITIVE. Written via a dynamically-built key in Core\\class-plugin.php::ajax_dismiss_notice(): update_user_meta( $uid, 'wbam_dismiss_' . $type . '_notice', 1 ) where $type is whitelisted to {bp, jetonomy}. Static audit cannot match the literal read to the concatenated write. Dismissal persists correctly."
+    },
+    {
+      "id": "user_meta-read-never-written:wbam_dismiss_jetonomy_notice",
+      "severity": "error",
+      "reason": "FALSE POSITIVE. Same dynamic-key write as wbam_dismiss_bp_notice ('wbam_dismiss_' . $type . '_notice', $type='jetonomy') in ajax_dismiss_notice(). Dismissal persists correctly."
+    },
+    {
+      "id": "post_meta-read-never-written:_wbam_ad_image_id",
+      "severity": "error",
+      "reason": "FALSE POSITIVE (cross-boundary + historic key). Written by Pro's ad-submission image flow; also a documented historic key variant (_wbam_image_id vs _wbam_ad_image_id, see Pro functions.php wbam_pro_first_post_meta usage). Free's Image_Ad::has_creative() reads it DEFENSIVELY: the creative-health guard only tightens when the meta exists and the attachment fails to resolve; absent meta falls back to the image_url check. Verified during the 3.1.0 release triage."
+    },
+    {
+      "id": "option-read-never-written:wbam_pro_setup_complete",
+      "severity": "error",
+      "reason": "FALSE POSITIVE in free-only scope: the writer lives in Pro. Setup_Wizard::is_setup_complete() treats Pro's completed wizard as completing free's too, so a site that finished Pro's setup is not nagged to run free's. Free deliberately never writes this option - it only reads Pro's. Reading it absent is the correct free-only answer (false), which is why the check is right to flag it and wrong to fail on it. Verified: Pro writes wbam_pro_setup_complete in its own setup wizard; run the audit with --pair=../wb-ad-manager-pro and the finding disappears."
+    }
+  ]
 }
