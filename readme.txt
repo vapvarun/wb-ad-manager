@@ -192,11 +192,16 @@ The plugin supports ip-api.com (free), ipinfo.io (free tier), and ipapi.co for I
 Ad tags for grouping and bulk-switching ads, plus a round of delivery and rendering fixes.
 
 * New      - Ad tags. Group ads by sponsor, season, format or anything else, with as many tags on one ad as you need. Filter the ads list by tag, then use the existing Enable or Disable bulk actions to act on that whole group at once.
+* Improve  - The BuddyPress and Jetonomy notices appear on the ads list only, instead of stacking above the form on every Settings tab.
 * Fix      - Rich Content ads render again. The type name was normalized so saved ads using older slug variants resolve to the same handler.
 * Fix      - Ads rendered directly by ID now respect the full delivery gate set, including schedule, frequency caps and geo targeting, matching rotation-served ads.
 * Fix      - An ad whose creative is missing or broken gives up its slot to the next eligible ad instead of rendering an empty space.
 * Fix      - Partnership links no longer advertise the cloaked URL when link cloaking is turned off.
 * Fix      - Ads rendered by the placement shortcode keep their configured spacing, and the ads-list tag filter shows clean counts.
+* Fix      - A click on an ad is recorded once when WB Ad Manager Pro is active, not twice, so click counts and click-based billing are no longer doubled.
+* Fix      - The ads list Impressions and Clicks columns include aggregated daily rows, so they agree with Ad Analytics instead of dropping to zero once older events roll up.
+* Fix      - Finishing the Pro setup wizard clears the free plugin's "Run Setup Wizard" prompt as well.
+* Fix      - Saving Placements no longer clears which slots may be sold to advertisers. The Advertisers column is hidden when Pro is absent, and a hidden column previously read as "sell nothing", so a site that saved Placements with Pro deactivated could not sell any slot when Pro came back.
 * Dev      - New wbam_ad_tag taxonomy on the ad post type, flat, admin-only, with term management gated on manage_options and assignment on edit_posts. Registration arguments are filterable through wbam_ad_tag_taxonomy_args.
 * Dev      - Uninstall now removes ad tag terms. WordPress leaves terms behind when a taxonomy stops being registered, so they would otherwise persist invisibly.
 * Compat   - Aligned with WB Ad Manager Pro 3.1.0. Install both updates together; the Pro Ad Folders screen builds on this release's tags and menu.
