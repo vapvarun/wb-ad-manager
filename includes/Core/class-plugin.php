@@ -460,6 +460,17 @@ class Plugin {
 			return;
 		}
 
+		// The ad list only. `post_type` is also true on every submenu page
+		// registered under the CPT, which is how these integration notices
+		// ended up stacked above the Settings form on all of its tabs - a
+		// screen the admin opened to configure something, being told about
+		// two plugins they have not installed. They are still worth showing,
+		// so they stay on the list screen where the admin is browsing rather
+		// than filling in a form.
+		if ( 'edit-wbam-ad' !== $screen->id ) {
+			return;
+		}
+
 		$user_id = get_current_user_id();
 
 		if ( ! class_exists( 'BuddyPress' ) && ! get_user_meta( $user_id, 'wbam_dismiss_bp_notice', true ) ) {
