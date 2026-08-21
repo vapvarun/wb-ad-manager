@@ -15,6 +15,12 @@ node_modules
 /docs
 /bin
 /build
+# Finder/rsync duplicates ("build 2", "dist 2") are untracked scratch, but the
+# anchored /build above does not match them. One such folder put 24 empty
+# vendor/squizlabs/... directory entries inside the shipped free zip - no dev
+# files, but a wp.org reviewer opening the zip would see a phpcs tree.
+/build */
+/dist */
 /coverage
 /audit
 /plan

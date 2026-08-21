@@ -111,7 +111,7 @@ verify_runtime_assets() {
 	#
 	#   vendor/  — bundled dependencies resolve assets against their OWN
 	#              base path, not the plugin root. The Credits SDK's
-	#              assets/js/checkout.js lives at vendor/wbcom-credits-sdk/
+	#              assets/js/checkout.js lives at libs/wbcom-credits-sdk/
 	#              and is perfectly present; looking for it at the root
 	#              reports a phantom.
 	#   comments — a docblock describing an enqueue that was REMOVED is not
@@ -122,7 +122,7 @@ verify_runtime_assets() {
 			missing=1
 		fi
 	done < <(grep -rhE "assets/(css|js|vendor|images)/[A-Za-z0-9@_./-]+\.(css|js|png|svg|gif|woff2?)" \
-		--include='*.php' --exclude-dir=vendor "$target" \
+		--include='*.php' --exclude-dir=vendor --exclude-dir=libs "$target" \
 		| grep -vE "^[[:space:]]*(\*|//|#)" \
 		| grep -oE "assets/(css|js|vendor|images)/[A-Za-z0-9@_./-]+\.(css|js|png|svg|gif|woff2?)" \
 		| sort -u)
@@ -158,20 +158,20 @@ rm -f "$FREE_ZIP"
 # and the combo. This previously lived inline in the combo branch only,
 # so any future standalone build would have drifted from it.
 #
-# vendor/ needs surgery rather than a blanket rule. The bundled Credits
-# SDK lives there and MUST ship — Pro fatals without it. Everything else
-# under vendor/ is composer dev tooling: phpstan alone is 47MB. Shipping
-# it took the combo from 2.9MB to 18MB of static analysers.
+# vendor/ used to need surgery: the bundled Credits SDK lived inside it and
+# MUST ship, while everything else under vendor/ is composer dev tooling
+# (phpstan alone is 47MB). Keeping both meant include-before-exclude rsync
+# rules, and getting them slightly wrong is how the combo went from 2.9MB to
+# 18MB of static analysers, and how the 3.1.0 zip reached customers carrying
+# the dev tree.
 #
-# This is not hypothetical: the release gate now runs `composer install`
-# itself so PHPStan can gate, which means the very next build after that
-# change would have shipped the whole dev toolchain to customers. Include
-# rules must precede the exclude — rsync applies rules in order.
+# Pro now bundles the SDK at libs/wbcom-credits-sdk (portfolio standard), so
+# vendor/ is dev-only and excluded outright. No ordering to get wrong, and no
+# dev dependency can ship by sitting next to something that must.
 # ------------------------------------------------------------------
 PRO_EXCLUDES=(
-	--include=/vendor/
-	--include=/vendor/wbcom-credits-sdk/***
-	--exclude=/vendor/*
+	--exclude=/vendor
+	--exclude=/libs/wbcom-credits-sdk/docs
 	--exclude=.git --exclude=.github --exclude=node_modules
 	--exclude=tests --exclude=dist --exclude=docs --exclude=marketing
 	--exclude=/bin --exclude=/plan --exclude=/audit
@@ -203,9 +203,16 @@ if [ -n "$PRO_VERSION" ]; then
 	# The bundled Credits SDK is a runtime dependency, not a dev one.
 	# Pro fatals on activation without it, and .distignore-style vendor
 	# exclusions have stripped it before.
-	if [ ! -f "$PRO_TARGET/vendor/wbcom-credits-sdk/wbcom-credits-sdk.php" ]; then
+	if [ ! -f "$PRO_TARGET/libs/wbcom-credits-sdk/wbcom-credits-sdk.php" ]; then
 		echo "ERROR: bundled Credits SDK missing from the Pro payload." >&2
-		echo "       Pro cannot boot without vendor/wbcom-credits-sdk/." >&2
+		echo "       Pro cannot boot without libs/wbcom-credits-sdk/." >&2
+		exit 1
+	fi
+
+	# The composer tree must never reach a customer. Cheap to assert, and the
+	# thing that actually went wrong in 3.1.0.
+	if [ -d "$PRO_TARGET/vendor" ]; then
+		echo "ERROR: vendor/ present in the Pro payload — dev toolchain would ship." >&2
 		exit 1
 	fi
 
