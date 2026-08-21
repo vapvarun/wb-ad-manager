@@ -56,10 +56,28 @@ class Setup_Wizard {
 	}
 
 	/**
+	 * Whether first-run setup should be considered finished.
+	 *
+	 * PRO takes over the first-run flow on its own activation and records
+	 * completion under `wbam_pro_setup_complete`, never touching this
+	 * plugin's `wbam_setup_complete`. Without treating the PRO flag as
+	 * sufficient the free setup nag can never clear on a PRO site, because
+	 * the free wizard is never reached to set its own flag.
+	 *
+	 * @since 3.1.1
+	 * @return bool
+	 */
+	public static function is_setup_complete() {
+		return (bool) get_option( 'wbam_setup_complete' )
+			|| (bool) get_option( 'wbam_setup_dismissed' )
+			|| (bool) get_option( 'wbam_pro_setup_complete' );
+	}
+
+	/**
 	 * Show setup notice.
 	 */
 	public function show_setup_notice() {
-		if ( get_option( 'wbam_setup_complete' ) || get_option( 'wbam_setup_dismissed' ) ) {
+		if ( self::is_setup_complete() ) {
 			return;
 		}
 

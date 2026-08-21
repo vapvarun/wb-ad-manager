@@ -119,6 +119,12 @@ class Placement_Settings {
 		$option     = \WBAM\Admin\Settings::OPTION_NAME;
 		$offered    = array();
 
+		// The Advertisers column gates which slots may be SOLD, which only
+		// means anything once the Pro advertiser portal exists. Free has no
+		// portal, packages, or submissions, so the column is three clicks of
+		// confusion with nothing behind it. Drawing it is Pro's call.
+		$show_adv = defined( 'WBAM_PRO_VERSION' );
+
 		// Column header text is reused as the mobile card's row label (via
 		// the `data-label` attribute + a CSS `content: attr()` rule below
 		// 782px — see .wbam-placement-matrix in assets/css/admin.css).
@@ -133,14 +139,16 @@ class Placement_Settings {
 				<tr role="row">
 					<th scope="col" role="columnheader"><?php esc_html_e( 'Slot', 'wb-ads-rotator-with-split-test' ); ?></th>
 					<th scope="col" role="columnheader"><?php echo esc_html( $label_site ); ?></th>
-					<th scope="col" role="columnheader"><?php echo esc_html( $label_adv ); ?></th>
+					<?php if ( $show_adv ) : ?>
+						<th scope="col" role="columnheader"><?php echo esc_html( $label_adv ); ?></th>
+					<?php endif; ?>
 					<th scope="col" role="columnheader"><?php echo esc_html( $label_ads ); ?></th>
 				</tr>
 			</thead>
 			<tbody role="rowgroup">
 			<?php foreach ( $grouped as $group => $placements ) : ?>
 				<tr class="wbam-placement-matrix__group" role="row">
-					<th colspan="4" scope="colgroup" role="columnheader"><?php echo esc_html( ucfirst( (string) $group ) ); ?></th>
+					<th colspan="<?php echo $show_adv ? 4 : 3; ?>" scope="colgroup" role="columnheader"><?php echo esc_html( ucfirst( (string) $group ) ); ?></th>
 				</tr>
 				<?php
 				foreach ( $placements as $id => $placement ) :
@@ -178,23 +186,25 @@ class Placement_Settings {
 									<?php checked( $site_on ); ?> />
 							</label>
 						</td>
-						<td role="cell" data-label="<?php echo esc_attr( $label_adv ); ?>">
-							<label>
-								<span class="screen-reader-text">
-									<?php
-									/* translators: %s: placement name. */
-									echo esc_html( sprintf( __( 'Sell %s to advertisers', 'wb-ads-rotator-with-split-test' ), $placement->get_name() ) );
-									?>
-								</span>
-								<input type="checkbox"
-									class="wbam-gate-advertiser"
-									data-placement="<?php echo esc_attr( $id ); ?>"
-									name="<?php echo esc_attr( $option . '[advertiser_placements][]' ); ?>"
-									value="<?php echo esc_attr( $id ); ?>"
-									<?php checked( $adv_on ); ?>
-									<?php disabled( ! $site_on ); ?> />
-							</label>
-						</td>
+						<?php if ( $show_adv ) : ?>
+							<td role="cell" data-label="<?php echo esc_attr( $label_adv ); ?>">
+								<label>
+									<span class="screen-reader-text">
+										<?php
+										/* translators: %s: placement name. */
+										echo esc_html( sprintf( __( 'Sell %s to advertisers', 'wb-ads-rotator-with-split-test' ), $placement->get_name() ) );
+										?>
+									</span>
+									<input type="checkbox"
+										class="wbam-gate-advertiser"
+										data-placement="<?php echo esc_attr( $id ); ?>"
+										name="<?php echo esc_attr( $option . '[advertiser_placements][]' ); ?>"
+										value="<?php echo esc_attr( $id ); ?>"
+										<?php checked( $adv_on ); ?>
+										<?php disabled( ! $site_on ); ?> />
+								</label>
+							</td>
+						<?php endif; ?>
 						<td role="cell" data-label="<?php echo esc_attr( $label_ads ); ?>"><?php echo esc_html( (string) $count ); ?></td>
 					</tr>
 				<?php endforeach; ?>
@@ -202,8 +212,23 @@ class Placement_Settings {
 			</tbody>
 		</table>
 		</div>
+		<?php if ( ! $show_adv ) : ?>
+			<p class="description wbam-placement-matrix__upsell">
+				<?php
+				printf(
+					/* translators: %s: link to the Upgrade to PRO screen. */
+					esc_html__( 'Want to sell these slots to advertisers and take submissions? That needs %s.', 'wb-ads-rotator-with-split-test' ),
+					'<a href="' . esc_url( admin_url( 'edit.php?post_type=wbam-ad&page=wbam-upgrade' ) ) . '">' . esc_html__( 'WB Ad Manager Pro', 'wb-ads-rotator-with-split-test' ) . '</a>'
+				);
+				?>
+			</p>
+		<?php endif; ?>
 		<input type="hidden" name="<?php echo esc_attr( $option . '[placement_gates_submitted]' ); ?>" value="1" />
 		<input type="hidden" name="<?php echo esc_attr( $option . '[placement_gates_offered]' ); ?>" value="<?php echo esc_attr( implode( ',', $offered ) ); ?>" />
+		<?php if ( $show_adv ) : ?>
+			<?php // Says the Advertisers column was on screen. Without it a free-side save reads as "every sell box unticked" and stores GATE_NONE. ?>
+			<input type="hidden" name="<?php echo esc_attr( $option . '[placement_gates_adv_submitted]' ); ?>" value="1" />
+		<?php endif; ?>
 		<?php
 	}
 }

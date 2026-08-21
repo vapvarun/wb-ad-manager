@@ -2470,53 +2470,11 @@ class Admin {
 				break;
 
 			case 'impressions':
-				$cache_key = 'wbam_impressions_' . $post_id;
-				$count     = wp_cache_get( $cache_key, 'wbam' );
-				if ( false === $count ) {
-					global $wpdb;
-					$table_name = $wpdb->prefix . 'wbam_analytics';
-					// Check if table exists (cached to avoid repeated queries).
-					if ( $this->table_exists( $table_name ) ) {
-						// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-						$count = $wpdb->get_var(
-							$wpdb->prepare(
-								'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'wbam_analytics WHERE ad_id = %d AND event_type = %s',
-								$post_id,
-								'impression'
-							)
-						);
-						// phpcs:enable
-					} else {
-						$count = 0;
-					}
-					wp_cache_set( $cache_key, $count, 'wbam', HOUR_IN_SECONDS );
-				}
-				echo '<strong>' . esc_html( number_format_i18n( absint( $count ) ) ) . '</strong>';
+				echo '<strong>' . esc_html( number_format_i18n( $this->get_event_total( $post_id, 'impression' ) ) ) . '</strong>';
 				break;
 
 			case 'clicks':
-				$cache_key = 'wbam_clicks_' . $post_id;
-				$count     = wp_cache_get( $cache_key, 'wbam' );
-				if ( false === $count ) {
-					global $wpdb;
-					$table_name = $wpdb->prefix . 'wbam_analytics';
-					// Check if table exists (cached to avoid repeated queries).
-					if ( $this->table_exists( $table_name ) ) {
-						// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-						$count = $wpdb->get_var(
-							$wpdb->prepare(
-								'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'wbam_analytics WHERE ad_id = %d AND event_type = %s',
-								$post_id,
-								'click'
-							)
-						);
-						// phpcs:enable
-					} else {
-						$count = 0;
-					}
-					wp_cache_set( $cache_key, $count, 'wbam', HOUR_IN_SECONDS );
-				}
-				echo '<strong>' . esc_html( number_format_i18n( absint( $count ) ) ) . '</strong>';
+				echo '<strong>' . esc_html( number_format_i18n( $this->get_event_total( $post_id, 'click' ) ) ) . '</strong>';
 				break;
 
 			case 'status':
@@ -2538,6 +2496,81 @@ class Admin {
 				}
 				break;
 		}
+	}
+
+	/**
+	 * Lifetime total of an event type for one ad, as shown in the list table.
+	 *
+	 * Counts rows in the raw events table. That table is not the whole story
+	 * once PRO is active: PRO rolls events older than its aggregation window
+	 * into `wbam_analytics_daily` and DELETES the raw rows, so a raw-only count
+	 * silently decays to zero while Ad Analytics still reports lifetime totals.
+	 * The `wbam_ad_event_total` filter is the seam PRO uses to add the
+	 * aggregated remainder back, keeping both screens in agreement.
+	 *
+	 * @since 3.1.1
+	 *
+	 * @param int    $post_id    Ad ID.
+	 * @param string $event_type Event type ('impression' or 'click').
+	 * @return int
+	 */
+	private function get_event_total( $post_id, $event_type ) {
+		$cache_key = 'wbam_total_' . $event_type . '_' . $post_id;
+		$count     = wp_cache_get( $cache_key, 'wbam' );
+
+		if ( false === $count ) {
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'wbam_analytics';
+
+			if ( $this->table_exists( $table_name ) ) {
+				// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$count = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						'SELECT COUNT(*) FROM ' . $wpdb->prefix . 'wbam_analytics WHERE ad_id = %d AND event_type = %s',
+						$post_id,
+						$event_type
+					)
+				);
+				// phpcs:enable
+			} else {
+				$count = 0;
+			}
+
+			/**
+			 * Filters the lifetime event total shown in the ads list table.
+			 *
+			 * PRO adds the aggregated daily rows, which the raw table no
+			 * longer holds after aggregation has run.
+			 *
+			 * @since 3.1.1
+			 *
+			 * @param int    $count      Count from the raw events table.
+			 * @param int    $post_id    Ad ID.
+			 * @param string $event_type Event type ('impression' or 'click').
+			 */
+			$count = (int) apply_filters( 'wbam_ad_event_total', $count, $post_id, $event_type );
+
+			wp_cache_set( $cache_key, $count, 'wbam', HOUR_IN_SECONDS );
+		}
+
+		return absint( $count );
+	}
+
+	/**
+	 * Invalidate the cached list-table totals for one ad.
+	 *
+	 * The totals are cached for an hour with no invalidation path before
+	 * 3.1.1, so on a site with a persistent object cache the column could sit
+	 * stale after every recorded event.
+	 *
+	 * @since 3.1.1
+	 *
+	 * @param int $post_id Ad ID.
+	 * @return void
+	 */
+	public static function flush_event_totals( $post_id ) {
+		wp_cache_delete( 'wbam_total_impression_' . (int) $post_id, 'wbam' );
+		wp_cache_delete( 'wbam_total_click_' . (int) $post_id, 'wbam' );
 	}
 
 	/**

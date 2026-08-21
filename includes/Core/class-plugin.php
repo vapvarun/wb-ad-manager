@@ -438,8 +438,10 @@ class Plugin {
 			delete_transient( '_wbam_activation_redirect' );
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No form data processed, just checking activation type.
 			if ( ! isset( $_GET['activate-multi'] ) ) {
-				// Redirect to setup wizard if not completed.
-				if ( ! get_option( 'wbam_setup_complete' ) && ! get_option( 'wbam_setup_dismissed' ) ) {
+				// Redirect to setup wizard if not completed. Uses the shared
+				// helper so a site that finished PRO's wizard is not bounced
+				// back into the free one.
+				if ( ! \WBAM\Admin\Setup_Wizard::is_setup_complete() ) {
 					wp_safe_redirect( admin_url( 'index.php?page=wbam-setup' ) );
 				} else {
 					wp_safe_redirect( admin_url( 'edit.php?post_type=wbam-ad' ) );
@@ -455,6 +457,17 @@ class Plugin {
 	public function admin_notices() {
 		$screen = get_current_screen();
 		if ( ! $screen || 'wbam-ad' !== $screen->post_type ) {
+			return;
+		}
+
+		// The ad list only. `post_type` is also true on every submenu page
+		// registered under the CPT, which is how these integration notices
+		// ended up stacked above the Settings form on all of its tabs - a
+		// screen the admin opened to configure something, being told about
+		// two plugins they have not installed. They are still worth showing,
+		// so they stay on the list screen where the admin is browsing rather
+		// than filling in a form.
+		if ( 'edit-wbam-ad' !== $screen->id ) {
 			return;
 		}
 
