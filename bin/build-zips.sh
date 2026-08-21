@@ -182,6 +182,11 @@ PRO_EXCLUDES=(
 	--exclude=package.json --exclude=package-lock.json --exclude=Gruntfile.js
 	--exclude=phpunit.xml --exclude=phpunit.xml.dist
 	--exclude=phpcs.xml --exclude=phpcs.xml.dist
+	# Dot-prefixed variants are separate filenames, not matched by the rules
+	# above. Pro's own .distignore excludes .phpcs.xml.dist, so the standalone
+	# Pro zip was clean while the combo - which builds its Pro payload from
+	# this list instead - shipped it.
+	--exclude=.phpcs.xml.dist --exclude=.phpstan.neon --exclude=.phpunit.result.cache
 	--exclude=phpstan.neon --exclude=phpstan-baseline.neon --exclude=phpstan-bootstrap.php
 	--exclude='*.md' --exclude=CLAUDE.md --exclude=sales-page.html
 )
