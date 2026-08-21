@@ -66,7 +66,7 @@ class Email_Captures {
 	public function count() {
 		global $wpdb;
 		$table = $this->table();
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table name from $wpdb->prefix.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table name from $wpdb->prefix.
 		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" );
 	}
 
@@ -84,7 +84,7 @@ class Email_Captures {
 		$per_page = max( 1, min( 200, (int) $per_page ) );
 		$offset   = ( $page - 1 ) * $per_page;
 
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom table name from $wpdb->prefix (identifier, not a value; no user input reaches it); LIMIT/OFFSET are prepared below.
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table name from $wpdb->prefix (identifier, not a value; no user input reaches it); LIMIT/OFFSET are prepared below.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT id, ad_id, email, name, ip_address, created_at
@@ -260,7 +260,7 @@ class Email_Captures {
 
 		if ( $id > 0 ) {
 			global $wpdb;
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table, no WP API; id is bound as %d.
 			$wpdb->delete( $this->table(), array( 'id' => $id ), array( '%d' ) );
 		}
 

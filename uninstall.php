@@ -50,6 +50,7 @@ foreach ( $wbam_ad_posts as $wbam_post_id ) {
  * permanent. The taxonomy is not registered at uninstall time either, so
  * get_terms() cannot be used; ask the term table for the taxonomy by name.
  */
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall runs with the taxonomy unregistered, so get_terms() is unavailable and there is no cache to prime; the table is a core one and the taxonomy name is bound.
 $wbam_tag_term_ids = $wpdb->get_col(
 	$wpdb->prepare(
 		"SELECT term_id FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s",
