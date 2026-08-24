@@ -59,12 +59,17 @@ phpstan-combined.neon.dist
 sales-page.html
 marketing
 
-# Documentation
+# Documentation and every other markdown file, at any depth.
+# Enumerating names by hand is what let AUDIT-VERDICT.md reach the 3.1.0
+# customer zip: it was not on the list, so nothing stopped it. Customer zips
+# ship readme.txt, never *.md - so match the extension, not the filenames.
+*.md
 README.md
 CHANGELOG.md
 ROADMAP.md
 CONTRIBUTING.md
 CLAUDE.md
+AUDIT-VERDICT.md
 
 # Internal tooling artifacts (never ship)
 .contract-audit-baseline.json

@@ -132,6 +132,44 @@ verify_runtime_assets() {
 	fi
 }
 
+# Guard: no internal artifact may reach a customer zip. .distignore and
+# PRO_EXCLUDES are allow-by-omission - anything nobody thought to list ships.
+# That is exactly how AUDIT-VERDICT.md went out in 3.1.0. This asserts the
+# payload after the copy, so a stray file fails the build instead of a QA card.
+#
+# Customer zips ship readme.txt; *.md is always internal (docs, audits,
+# changelogs, bundled-dependency READMEs).
+verify_no_internal_artifacts() {
+	local target="$1"
+	local label="$2"
+	local found=0
+	local hit
+
+	while IFS= read -r hit; do
+		echo "ERROR: [$label] internal artifact in payload: ${hit#$target/}" >&2
+		found=1
+	done < <(find "$target" \
+		\( -name '*.md' \
+		   -o -name '.contract-audit-baseline.json' \
+		   -o -name 'AUDIT-VERDICT.md' \
+		   -o -name '.phpcs*' \
+		   -o -name 'phpcs.xml*' \
+		   -o -name 'phpstan*' \
+		   -o -name 'composer.json' \
+		   -o -name 'composer.lock' \
+		   -o -name '.distignore' \
+		   -o -name '.gitignore' \
+		   -o -name '.gitattributes' \
+		   -o -name '.DS_Store' \
+		\) -print | sort)
+
+	if [ "$found" -ne 0 ]; then
+		echo "Build aborted: dev/QA artifacts would ship to customers." >&2
+		echo "  Add them to .distignore (free) or PRO_EXCLUDES (pro) and rebuild." >&2
+		exit 1
+	fi
+}
+
 # ------------------------------------------------------------------
 # 1. Free-only zip
 # ------------------------------------------------------------------
@@ -148,6 +186,7 @@ done < <(build_exclude_args "$FREE_DIR/.distignore")
 rsync -a "${FREE_EXCLUDES[@]}" "$FREE_DIR/" "$FREE_TARGET/"
 
 verify_runtime_assets "$FREE_TARGET"
+verify_no_internal_artifacts "$FREE_TARGET" "free"
 
 FREE_ZIP="$DIST_DIR/wb-ads-rotator-with-split-test-${FREE_VERSION}.zip"
 rm -f "$FREE_ZIP"
@@ -204,6 +243,7 @@ if [ -n "$PRO_VERSION" ]; then
 	rsync -a "${PRO_EXCLUDES[@]}" "$PRO_DIR/" "$PRO_TARGET/"
 
 	verify_runtime_assets "$PRO_TARGET"
+	verify_no_internal_artifacts "$PRO_TARGET" "pro"
 
 	# The bundled Credits SDK is a runtime dependency, not a dev one.
 	# Pro fatals on activation without it, and .distignore-style vendor
@@ -236,6 +276,9 @@ if [ -n "$PRO_VERSION" ]; then
 
 	rsync -a "${FREE_EXCLUDES[@]}" "$FREE_DIR/" "$COMBO_FREE_TARGET/"
 	rsync -a "${PRO_EXCLUDES[@]}" "$PRO_DIR/" "$COMBO_PRO_TARGET/"
+
+	verify_no_internal_artifacts "$COMBO_FREE_TARGET" "combo/free"
+	verify_no_internal_artifacts "$COMBO_PRO_TARGET" "combo/pro"
 
 	COMBO_ZIP="$DIST_DIR/wb-ad-manager-combo-${FREE_VERSION}+${PRO_VERSION}.zip"
 	rm -f "$COMBO_ZIP"
